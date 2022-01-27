@@ -84,6 +84,11 @@
                     <div style="font-size: large"><span style="color: rgb(200, 0, 0)">Evil: </span><span id="evilDisplay"></span></div>
                     <div style="color: gray" class="sidebar-element">Affects dark magic XP gain</div>
                 </span>
+				
+				<span id="essenceInfo">
+                    <div style="font-size: large"><span style="color: rgb(24, 210, 217)">Essence: </span><span id="essenceDisplay"></span></div>
+                    <div style="color: gray" class="sidebar-element">Affects Galactic Council XP gain</div>
+                </span>
 
                 <!--
                 <span id="scheduling">
@@ -200,6 +205,7 @@
                                 <span></span>
                             </span>
                             <span style="color: rgb(200, 0, 0)" class="evil"></span>
+							<span style="color: rgb(24, 210, 217)" class="essence"></span>
                         </span>
                     </td> 
                 </template>
@@ -225,6 +231,7 @@
                             You stumble across a strange looking amulet on your 25th birthday. It does not look like
                             it has any worth on the market given that it's made from cheap-looking copper. However, you
                             feel a weird urge to keep the amulet, so you slip it into your pocket for safekeeping.
+
                         </li>
                         <li style="margin: 8px;" id="rebirthNote1">
                             On your 45th birthday, you feel the amulet shiver uncontrollably in your pocket. You take it
@@ -240,7 +247,7 @@
                             </div>
                             <i style="color: grey">
                                 By touching the eyeball, you will be reborn and have to restart life again, losing all your levels and coins.
-                                However, you will gain <b>xp multipliers</b> for your jobs and skills equivalent to: <b>1 + the max level of the skill or job / 10.</b>
+                                However, you will gain <b>xp multipliers</b> for your jobs and skills equivalent to: <b>1 + the max level of the class or ability / 10.</b>
                                 This means you will learn everything again much more quickly than you did in your previous life. <span style="color: rgb(200, 0, 0)">
                                 Something tells you that the amulet might evolve after living for <b>2 whole centuries</b> and transform even further after living for
 								a <b>millennium</b> and reach its final form after <b>ten millenia</b>...
@@ -258,7 +265,7 @@
                             <i style="color: rgb(200, 0, 0)">
                                 If you decide to embrace evil, all of your levels, coins and even max levels will be reset.
                                 You will be reborn as a fresh slate. However, you will unlock a new line of skills and gain
-                                <b><span id="evilGainDisplay"></span> evil</b>, which will heavily impact your future lives.
+                                <b><span id="evilGainDisplay"></span> evil</b>, and which will heavily impact your future lives.
                             </i>
                             </br>
                                 <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px" onClick="rebirthTwo()">Embrace evil</button>
@@ -284,8 +291,14 @@
                                 You have unlocked <b>"Galactic Council"</b> class category along with <b>"Celestial Powers"</b> abilities.
 								<i style="color: grey">
 								</br>
-                                By clicking on <b>Transcend</b>, you will be reborn once again, losing all your coins and levels.
-								However you will keep your evil and your max level won't be erased but multiplied with <b>Cosmic Recollection</b> ability.
+                                By clicking on <b>Transcend</b>, you will be reborn once again, losing all your coins, <b>evil</b> and current levels.
+								However your max level won't be erased but multiplied with <b>Cosmic Recollection</b> ability and you will gain
+								<i style="color: rgb(24, 210, 217)">
+								<b><span id="essenceGainDisplay"></span> essence</b>, 
+								</i>
+								new ability that will boost you even further in your journey.
+								
+								</br>
 								<i style="color: rgb(200, 0, 0)">
                                 Transced will only show up if you have <b>Cosmic Recollection</b> ability unlocked!
                                 
