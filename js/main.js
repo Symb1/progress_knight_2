@@ -125,10 +125,10 @@ const skillBaseData = {
 	"Void Influence": {name: "Void Influence", maxXp: 100, effect: 0.0028, description: "All XP"},
 	"Time Loop": {name: "Time Loop", maxXp: 100, effect: 0.001, description: "Gamespeed"},
 
-    "Ying Yang": {name: "Ying Yang", maxXp: 100, effect: 0.0125, description: "Essence + Evil Gain"},
+    "Ying Yang": {name: "Ying Yang", maxXp: 100, effect: 0.018, description: "Essence + Evil Gain"},
 	"Parallel Universe": {name: "Parallel Universe", maxXp: 100, effect: 0.02, description: "All XP"},
 	"Higher Dimensions": {name: "Higher Dimensions", maxXp: 100, effect: 0.001, description: "Longer Lifespan"},
-
+	"Epiphany": {name: "Epiphany", maxXp: 100, effect: 0.01, description: "Galactic Council XP"},
 
 }
 
@@ -188,7 +188,7 @@ const skillCategories = {
     "Dark Magic"             : ["Dark Influence", "Evil Control", "Intimidation", "Demon Training", "Blood Meditation", "Demon's Wealth", "Dark Knowledge", "Void Influence", "Time Loop"],
 	"Void Manipulation"      : ["Absolute Wish", "Void Amplification", "Mind Seize", "Ceaseless Abyss", "Void Symbiosis", "Void Embodiment", "Abyss Manipulation"],
 	"Celestial Powers"       : ["Cosmic Longevity", "Cosmic Recollection", "Essence Collector", "Galactic Command"],
-	"Almightiness"           : ["Ying Yang", "Parallel Universe", "Higher Dimensions"]
+	"Almightiness"           : ["Ying Yang", "Parallel Universe", "Higher Dimensions", "Epiphany"]
 	
 }
 
@@ -311,6 +311,7 @@ const tooltips = {
 	"Ying Yang": "Born from chaos when the universe was first created, believed to exist in harmony, balacing evil and good.",
 	"Parallel Universe": "Self-contained plane of existence, co-existing with one's own, helping you restore fragments of your forgotten power",
 	"Higher Dimensions": "By possesing the power to partially alter the laws of physics and transceding lower dimensional spaces, your existence becomes never-ending.",
+	"Epiphany": "You become one with everything.",
 	
     //Properties
     "Homeless": "Sleep on the uncomfortable, filthy streets while almost freezing to death every night. It cannot get any worse than this.",
@@ -424,8 +425,11 @@ function addMultipliers() {
 			task.xpMultipliers.push(getBindedItemEffect("Void Dust"))
 		} else if (jobCategories["Galactic Council"].includes(task.name)) {
 			task.xpMultipliers.push(getBindedItemEffect("Celestial Robe"))
+			task.xpMultipliers.push(getBindedTaskEffect("Epiphany"))
         } else if (skillCategories["Dark Magic"].includes(task.name)) {
             task.xpMultipliers.push(getEvil)
+        } else if (skillCategories["Almightiness"].includes(task.name)) {
+			task.xpMultipliers.push(getEssence)
         } else if (skillCategories["Fundamentals"].includes(task.name)) {
 			task.xpMultipliers.push(getBindedItemEffect("Mind's Eye"))
 		}	
@@ -1401,7 +1405,7 @@ gameData.requirements = {
     "Nova": new TaskRequirement([getTaskElement("Nova")], [{task: "Eternal Wanderer", requirement: 15}, {task: "Cosmic Longevity", requirement: 4000}]),
 	"Sigma Proioxis": new TaskRequirement([getTaskElement("Sigma Proioxis")], [{task: "Nova", requirement: 200}, {task: "Cosmic Recollection", requirement: 4500}]),
 	"Acallaris": new TaskRequirement([getTaskElement("Acallaris")], [{task: "Galactic Command", requirement: 5000}, {task: "Sigma Proioxis", requirement: 1000}]),
-	"One Above All": new TaskRequirement([getTaskElement("One Above All")], [{task: "Meditation", requirement: 7000}, {task: "Acallaris", requirement: 10000}]),
+	"One Above All": new TaskRequirement([getTaskElement("One Above All")], [{task: "Meditation", requirement: 7000}, {task: "Acallaris", requirement: 1500}]),
 
 	
 
@@ -1430,7 +1434,7 @@ gameData.requirements = {
     "Evil Control": new EvilRequirement([getTaskElement("Evil Control")], [{requirement: 1}]),
     "Intimidation": new EvilRequirement([getTaskElement("Intimidation")], [{requirement: 1}]),
     "Demon Training": new EvilRequirement([getTaskElement("Demon Training")], [{requirement: 20}]),
-    "Blood Meditation": new EvilRequirement([getTaskElement("Blood Meditation")], [{requirement: 75}]),
+    "Blood Meditation": new EvilRequirement([getTaskElement("Blood Meditation")], [{requirement: 50}]),
     "Demon's Wealth": new EvilRequirement([getTaskElement("Demon's Wealth")], [{requirement: 500}]),
 	"Dark Knowledge": new EvilRequirement([getTaskElement("Dark Knowledge")], [{requirement: 5000}]),
 	"Void Influence": new EvilRequirement([getTaskElement("Void Influence")], [{requirement: 50000}]),
@@ -1457,6 +1461,7 @@ gameData.requirements = {
 	"Ying Yang": new EssenceRequirement([getTaskElement("Ying Yang")], [{requirement: 1}]),
 	"Parallel Universe": new EssenceRequirement([getTaskElement("Parallel Universe")], [{requirement: 1}]),
 	"Higher Dimensions": new EssenceRequirement([getTaskElement("Higher Dimensions")], [{requirement: 10000}]),
+	"Epiphany": new EssenceRequirement([getTaskElement("Epiphany")], [{requirement: 30000}]),
 
 
     //Properties
