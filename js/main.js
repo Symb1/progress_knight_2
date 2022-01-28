@@ -424,7 +424,6 @@ function addMultipliers() {
 			task.xpMultipliers.push(getBindedItemEffect("Void Dust"))
 		} else if (jobCategories["Galactic Council"].includes(task.name)) {
 			task.xpMultipliers.push(getBindedItemEffect("Celestial Robe"))
-			task.xpMultipliers.push(getEssence)
         } else if (skillCategories["Dark Magic"].includes(task.name)) {
             task.xpMultipliers.push(getEvil)
         } else if (skillCategories["Fundamentals"].includes(task.name)) {
