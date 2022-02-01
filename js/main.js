@@ -75,7 +75,7 @@ const jobBaseData = {
 	"Eternal Wanderer": {name: "Eternal Wanderer", maxXp: 55000000000000000000, income: 1000000000000},
     "Nova": {name: "Nova", maxXp: 51000000000000000000, income: 3000000000000},
     "Sigma Proioxis": {name: "Sigma Proioxis", maxXp: 500000000000000000000, income: 25000000000000},
-	"Acallaris": {name: "Acallaris", maxXp: 50000000000000000000000, income: 250000000000000},
+	"Acallaris": {name: "Acallaris", maxXp: 50000000000000000000000, income: 215000000000000},
 	"One Above All": {name: "One Above All", maxXp: 5000000000000000000000000000, income: 25000000000000000},
 	
 	
@@ -110,7 +110,7 @@ const skillBaseData = {
 	
 	
 	"Cosmic Longevity": {name: "Cosmic Longevity", maxXp: 100, effect: 0.0015, description: "Longer Lifespan"},
-    "Cosmic Recollection": {name: "Cosmic Recollection", maxXp: 100, effect: 0.0005, description: "Max Lvl Multiplier"},
+    "Cosmic Recollection": {name: "Cosmic Recollection", maxXp: 100, effect: 0.00065, description: "Max Lvl Multiplier"},
 	"Essence Collector": {name: "Essence Collector", maxXp: 100, effect: 0.01, description: "Essence Gain"},
 	"Galactic Command": {name: "Galactic Command", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
 	
@@ -124,6 +124,8 @@ const skillBaseData = {
 	"Dark Knowledge": {name: "Dark Knowledge", maxXp: 100, effect: 0.003, description: "Class XP"},
 	"Void Influence": {name: "Void Influence", maxXp: 100, effect: 0.0028, description: "All XP"},
 	"Time Loop": {name: "Time Loop", maxXp: 100, effect: 0.001, description: "Gamespeed"},
+	"Evil Incarnate": {name: "Evil Incarnate", maxXp: 100, effect: 0.0004, description: "Ability XP"},
+	
 
     "Ying Yang": {name: "Ying Yang", maxXp: 100, effect: 0.018, description: "Essence + Evil Gain"},
 	"Parallel Universe": {name: "Parallel Universe", maxXp: 100, effect: 0.02, description: "All XP"},
@@ -185,7 +187,7 @@ const skillCategories = {
     "Fundamentals"           : ["Concentration", "Productivity", "Bargaining", "Meditation"],
     "Combat"                 : ["Strength", "Battle Tactics", "Muscle Memory"],
     "Magic"                  : ["Mana Control", "Life Essence", "Time Warping", "Astral Body", "Temporal Dimension", "All Seeing Eye", "Brainwashing"],
-    "Dark Magic"             : ["Dark Influence", "Evil Control", "Intimidation", "Demon Training", "Blood Meditation", "Demon's Wealth", "Dark Knowledge", "Void Influence", "Time Loop"],
+    "Dark Magic"             : ["Dark Influence", "Evil Control", "Intimidation", "Demon Training", "Blood Meditation", "Demon's Wealth", "Dark Knowledge", "Void Influence", "Time Loop", "Evil Incarnate"],
 	"Void Manipulation"      : ["Absolute Wish", "Void Amplification", "Mind Seize", "Ceaseless Abyss", "Void Symbiosis", "Void Embodiment", "Abyss Manipulation"],
 	"Celestial Powers"       : ["Cosmic Longevity", "Cosmic Recollection", "Essence Collector", "Galactic Command"],
 	"Almightiness"           : ["Ying Yang", "Parallel Universe", "Higher Dimensions", "Epiphany"]
@@ -291,6 +293,7 @@ const tooltips = {
 	"Dark Knowledge": "Sealed for a very long time, you utilized these forbidden texts for your own personal gain.",
 	"Void Influence": "Tapping into the powers of the Void while combining them with evil grants you an ulimited potential.",
 	"Time Loop": "Mastery is achieved when 'telling time' becomes 'telling time what to do'.",
+	"Evil Incarnate": "You have became the very thing you swore to destroy.",
 	
 	//Void Manipulation
 	"Absolute Wish": "The power to fulfill absolutely any and all wishes without any limitations.",
@@ -304,12 +307,12 @@ const tooltips = {
 	//Celestial Powers - Endgame
 	"Cosmic Longevity": "You have seen it all, from the very beginning to the very end.",
 	"Cosmic Recollection": "Being able to exist in multiple parallel timelines and manipulating you parallel selves, influencing their lives as you see fit.",
-	"Essence Collector": "Exploit the unlimited potential of multiverse energies and collect its resources",
+	"Essence Collector": "Exploit the unlimited potential of multiverse energies and collect its resources.",
 	"Galactic Command": "Absolute power corrupts absolutely.",
 	
 	//Almightiness
-	"Ying Yang": "Born from chaos when the universe was first created, believed to exist in harmony, balacing evil and good.",
-	"Parallel Universe": "Self-contained plane of existence, co-existing with one's own, helping you restore fragments of your forgotten power",
+	"Ying Yang": "Born from chaos when the universe was first created, believed to exist in harmony, balancing evil and good.",
+	"Parallel Universe": "Self-contained plane of existence, co-existing with one's own, helping you restore fragments of your forgotten power.",
 	"Higher Dimensions": "By possesing the power to partially alter the laws of physics and transceding lower dimensional spaces, your existence becomes never-ending.",
 	"Epiphany": "You become one with everything.",
 	
@@ -346,13 +349,13 @@ const tooltips = {
 	"Void Armor": "Generates an innate armor as a part of you body, which is resistant to attacks, harm or pain.",
 	"Void Blade": "Forged from void dust and dark matter, can slash through dimensional barriers. It's a weapon of choice for every Void Reaver.",
 	"Void Orb": "When the orb touches non void entities, it instantly disintegrate them. Harnesting its power from Void realm.",
-	"Void Dust": "Purest version of void created material, one gram is as heavey as a small planet. ",
+	"Void Dust": "Purest version of void created material, a teaspoon of it is as heavy as a small planet. ",
 	"Celestial Robe": "The most powerful and essential equipment of any Celestial. Acts as a source of infinite power.",
 	"Universe Fragment": "From the time the universe was born. Can create another small universes.",
 	"Multiverse Fragment": "Came into existance long before our universe was created, this strange looking object with no shape radiates unlimited energy.",
 }
 
-const units = ["", "k", "M", "B", "T", "q", "Q", "Sx", "Sp", "Oc", "Nv", "Vg", "Uv", "Tg", "Omg"];
+const units = ["", "k", "M", "B", "T", "q", "Q", "Sx", "Sp", "Oc", "Nv", "Vg", "Uv", "Dv", "Tv", "Qt", "Qv", "Sv", "Oc", "Nd", "Tg", "OMG"];
 
 const jobTabButton = document.getElementById("jobTabButton")
 
@@ -398,6 +401,8 @@ function addMultipliers() {
 			task.xpMultipliers.push(getBindedItemEffect("Void Blade"))
 			task.xpMultipliers.push(getBindedTaskEffect("Void Symbiosis"))
 			task.xpMultipliers.push(getBindedItemEffect("Universe Fragment"))
+			task.xpMultipliers.push(getBindedTaskEffect("Evil Incarnate"))
+			
 
 		
 		
@@ -498,7 +503,7 @@ function setCustomEffects() {
 	var unholyRecall = gameData.taskData["Cosmic Recollection"];
     unholyRecall.getEffect = function()
     {
-        var multiplier = unholyRecall.level * 0.0005;
+        var multiplier = unholyRecall.level * 0.00065;
         return multiplier;
     }
 }
@@ -862,7 +867,7 @@ function updateText() {
 	document.getElementById("essenceDisplay").textContent = gameData.essence.toFixed(1)
 	document.getElementById("essenceGainDisplay").textContent = getEssenceGain().toFixed(1)
 
-    document.getElementById("timeWarpingDisplay").textContent = "x" + gameData.taskData["Time Warping"].getEffect().toFixed(1) * gameData.taskData["Temporal Dimension"].getEffect().toFixed(1) * gameData.taskData["Time Loop"].getEffect().toFixed(1)
+    document.getElementById("timeWarpingDisplay").textContent = "x" + gameData.taskData["Time Warping"].getEffect().toFixed(0) * gameData.taskData["Temporal Dimension"].getEffect().toFixed(0) * gameData.taskData["Time Loop"].getEffect().toFixed(0)
     document.getElementById("timeWarpingButton").textContent = gameData.timeWarpingEnabled ? "Disable warp" : "Enable warp"
 }
 
@@ -1405,7 +1410,7 @@ gameData.requirements = {
     "Nova": new TaskRequirement([getTaskElement("Nova")], [{task: "Eternal Wanderer", requirement: 15}, {task: "Cosmic Longevity", requirement: 4000}]),
 	"Sigma Proioxis": new TaskRequirement([getTaskElement("Sigma Proioxis")], [{task: "Nova", requirement: 200}, {task: "Cosmic Recollection", requirement: 4500}]),
 	"Acallaris": new TaskRequirement([getTaskElement("Acallaris")], [{task: "Galactic Command", requirement: 5000}, {task: "Sigma Proioxis", requirement: 1000}]),
-	"One Above All": new TaskRequirement([getTaskElement("One Above All")], [{task: "Meditation", requirement: 7000}, {task: "Acallaris", requirement: 1500}]),
+	"One Above All": new TaskRequirement([getTaskElement("One Above All")], [{task: "Meditation", requirement: 6500}, {task: "Acallaris", requirement: 1500}]),
 
 	
 
@@ -1439,6 +1444,7 @@ gameData.requirements = {
 	"Dark Knowledge": new EvilRequirement([getTaskElement("Dark Knowledge")], [{requirement: 5000}]),
 	"Void Influence": new EvilRequirement([getTaskElement("Void Influence")], [{requirement: 50000}]),
 	"Time Loop": new EvilRequirement([getTaskElement("Time Loop")], [{requirement: 2500000}]),
+	"Evil Incarnate": new EvilRequirement([getTaskElement("Evil Incarnate")], [{requirement: 1000000000}]),
 
 
 	
