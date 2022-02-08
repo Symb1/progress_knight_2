@@ -10,14 +10,17 @@
 </head>
 <body id="body" class="dark">
     <div class="w3-margin"> 
-        <h1>Progress Knight 2.0</h1>
+        <div class="header">
+          <img src="img/logos.png" alt="logos" />
+          <h1>Progress Knight 2.0</h1>
+        </div>
         <div style="width: 1220px; height: 600px"> 
-            <div class="panel w3-padding" style="width: 300px; height: auto; float: left">
+            <div class="panel w3-padding" style="width: 300px; height: auto; float: left; position: fixed">
                 <span id="deathText">
                     <div style="font-size: large; color: red">Age has caught up to you</div>
                     <div class="sidebar-element" style="color: gray">Your age has met your lifespan, use the amulet to rebirth before you pass away</div>
                 </span>
-
+                
                 <div class="" style="font-size: large">Age <span id="ageDisplay">14</span> Day <span id="dayDisplay">0</span></div>
                 <div class="sidebar-element" style="color: gray">Lifespan: <span id="lifespanDisplay">70</span> years</div>
                 
@@ -90,6 +93,7 @@
                     <div style="font-size: large"><span style="color: rgb(24, 210, 217)">Essence: </span><span id="essenceDisplay"></span></div>
                     <div style="color: gray" class="sidebar-element">Affects Almightiness XP gain</div>
                 </span>
+				
 
                 <!--
                 <span id="scheduling">
@@ -110,8 +114,9 @@
                     <button id="timeWarpingButton" class="w3-button button sidebar-element" style="margin-top: 5px; width:150px" onClick="setTimeWarping()">Enable warp</button>
                 </span>
             </div>
+			</ul>
 
-            <div class="panel w3-margin-left" style="width: 900px; height: 40px; float: left">
+            <div class="panel w3-margin-left" style="width: 900px; height: 40px; float: right">
                 <div class="w3-button w3-bar-item tabButton" id="jobTabButton" onClick="setTab(this, 'jobs')">Classes</div>
                 <div class="w3-button w3-bar-item tabButton" onClick="setTab(this, 'skills')">Abilities</div>
                 <div class="w3-button w3-bar-item tabButton" id="shopTabButton" onClick="setTab(this, 'shop')">Shop</div>
@@ -119,7 +124,7 @@
                 <div class="w3-button w3-bar-item tabButton" onClick="setTab(this, 'settings')" style="float: right">Settings</div>
             </div>
 
-            <div class="panel w3-margin-left w3-margin-top w3-padding" style="width: 900px; height: auto; float: left">
+            <div class="panel w3-margin-left w3-margin-top w3-padding" style="width: 900px; height: auto; float: right">
                 <template class="headerRowTaskTemplate">
                     <tr>
                         <th class="category" style="width: 250px">Job</th>

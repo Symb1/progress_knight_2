@@ -127,10 +127,10 @@ const skillBaseData = {
 	"Evil Incarnate": {name: "Evil Incarnate", maxXp: 100, effect: 0.0004, description: "Ability XP"},
 	
 
-    "Ying Yang": {name: "Ying Yang", maxXp: 100, effect: 0.018, description: "Essence + Evil Gain"},
+    "Yin Yang": {name: "Yin Yang", maxXp: 100, effect: 0.020, description: "Essence + Evil Gain"},
 	"Parallel Universe": {name: "Parallel Universe", maxXp: 100, effect: 0.02, description: "All XP"},
 	"Higher Dimensions": {name: "Higher Dimensions", maxXp: 100, effect: 0.001, description: "Longer Lifespan"},
-	"Epiphany": {name: "Epiphany", maxXp: 100, effect: 0.01, description: "Galactic Council XP"},
+	"Epiphany": {name: "Epiphany", maxXp: 100, effect: 0.012, description: "Galactic Council XP"},
 
 }
 
@@ -190,7 +190,7 @@ const skillCategories = {
     "Dark Magic"             : ["Dark Influence", "Evil Control", "Intimidation", "Demon Training", "Blood Meditation", "Demon's Wealth", "Dark Knowledge", "Void Influence", "Time Loop", "Evil Incarnate"],
 	"Void Manipulation"      : ["Absolute Wish", "Void Amplification", "Mind Seize", "Ceaseless Abyss", "Void Symbiosis", "Void Embodiment", "Abyss Manipulation"],
 	"Celestial Powers"       : ["Cosmic Longevity", "Cosmic Recollection", "Essence Collector", "Galactic Command"],
-	"Almightiness"           : ["Ying Yang", "Parallel Universe", "Higher Dimensions", "Epiphany"]
+	"Almightiness"           : ["Yin Yang", "Parallel Universe", "Higher Dimensions", "Epiphany"]
 	
 }
 
@@ -311,7 +311,7 @@ const tooltips = {
 	"Galactic Command": "Absolute power corrupts absolutely.",
 	
 	//Almightiness
-	"Ying Yang": "Born from chaos when the universe was first created, believed to exist in harmony, balancing evil and good.",
+	"Yin Yang": "Born from chaos when the universe was first created, believed to exist in harmony, balancing evil and good.",
 	"Parallel Universe": "Self-contained plane of existence, co-existing with one's own, helping you restore fragments of your forgotten power.",
 	"Higher Dimensions": "By possesing the power to partially alter the laws of physics and transceding lower dimensional spaces, your existence becomes never-ending.",
 	"Epiphany": "You become one with everything.",
@@ -545,17 +545,19 @@ function getEvilGain() {
     var bloodMeditation = gameData.taskData["Blood Meditation"]
 	var absoluteWish = gameData.taskData ["Absolute Wish"]
 	var oblivionEmbodiment = gameData.taskData ["Void Embodiment"]
-	var yingYang = gameData.taskData ["Ying Yang"]
+	var yingYang = gameData.taskData ["Yin Yang"]
     var evil = evilControl.getEffect() * bloodMeditation.getEffect() * absoluteWish.getEffect() * oblivionEmbodiment.getEffect() * yingYang.getEffect()
     return evil
 }
 
 function getEssenceGain() {
-    var essenceControl = gameData.taskData["Ying Yang"]
+    var essenceControl = gameData.taskData["Yin Yang"]
 	var essenceCollector = gameData.taskData["Essence Collector"]
     var essence = essenceControl.getEffect() * essenceCollector.getEffect()
     return essence
+	
 }
+
 
 function getGameSpeed() {
     var timeWarping = gameData.taskData["Time Warping"]
@@ -867,7 +869,7 @@ function updateText() {
 	document.getElementById("essenceDisplay").textContent = gameData.essence.toFixed(1)
 	document.getElementById("essenceGainDisplay").textContent = getEssenceGain().toFixed(1)
 
-    document.getElementById("timeWarpingDisplay").textContent = "x" + gameData.taskData["Time Warping"].getEffect().toFixed(0) * gameData.taskData["Temporal Dimension"].getEffect().toFixed(0) * gameData.taskData["Time Loop"].getEffect().toFixed(0)
+    document.getElementById("timeWarpingDisplay").textContent = "x" + (gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toFixed(1)
     document.getElementById("timeWarpingButton").textContent = gameData.timeWarpingEnabled ? "Disable warp" : "Enable warp"
 }
 
@@ -1135,7 +1137,11 @@ function rebirthTwo() {
 
 function rebirthThree() {
     gameData.rebirthThreeCount += 1
+	if (gameData.essence < 30000) {
 	gameData.essence += getEssenceGain()
+	} else {
+		gameData.essence += getEssenceGain() * 1.5;
+	}	
 	gameData.evil = 0
 
 	
@@ -1410,7 +1416,7 @@ gameData.requirements = {
     "Nova": new TaskRequirement([getTaskElement("Nova")], [{task: "Eternal Wanderer", requirement: 15}, {task: "Cosmic Longevity", requirement: 4000}]),
 	"Sigma Proioxis": new TaskRequirement([getTaskElement("Sigma Proioxis")], [{task: "Nova", requirement: 200}, {task: "Cosmic Recollection", requirement: 4500}]),
 	"Acallaris": new TaskRequirement([getTaskElement("Acallaris")], [{task: "Galactic Command", requirement: 5000}, {task: "Sigma Proioxis", requirement: 1000}]),
-	"One Above All": new TaskRequirement([getTaskElement("One Above All")], [{task: "Meditation", requirement: 6500}, {task: "Acallaris", requirement: 1500}]),
+	"One Above All": new TaskRequirement([getTaskElement("One Above All")], [{task: "Meditation", requirement: 6300}, {task: "Acallaris", requirement: 1400}]),
 
 	
 
@@ -1464,7 +1470,7 @@ gameData.requirements = {
 	"Galactic Command": new TaskRequirement([getTaskElement("Galactic Command")], [{task: "Essence Collector", requirement: 5000}, {task: "Bargaining", requirement: 5000}]),
 
     //Essence
-	"Ying Yang": new EssenceRequirement([getTaskElement("Ying Yang")], [{requirement: 1}]),
+	"Yin Yang": new EssenceRequirement([getTaskElement("Yin Yang")], [{requirement: 1}]),
 	"Parallel Universe": new EssenceRequirement([getTaskElement("Parallel Universe")], [{requirement: 1}]),
 	"Higher Dimensions": new EssenceRequirement([getTaskElement("Higher Dimensions")], [{requirement: 10000}]),
 	"Epiphany": new EssenceRequirement([getTaskElement("Epiphany")], [{requirement: 30000}]),

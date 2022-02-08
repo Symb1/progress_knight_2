@@ -109,7 +109,7 @@ button:focus {
 .slider {
     -webkit-appearance: none;
     width: 50%;
-    height: 15px;
+    height: 5px;
     border-radius: 5px;
     background: #d3d3d3;
     outline: none;
@@ -150,4 +150,20 @@ button:focus {
 
 .small-margin  {
     margin-bottom: 2px;
+}
+
+.heading {
+  position: relative;
+}
+
+.header img {
+  float: left;
+  width: 60px;
+  height: 60px;
+}
+
+.header h1 {
+  position: relative;
+  top: 2px;
+  left: 10px;
 }
