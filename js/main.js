@@ -127,10 +127,10 @@ const skillBaseData = {
 	"Evil Incarnate": {name: "Evil Incarnate", maxXp: 100, effect: 0.0004, description: "Ability XP"},
 	
 
-    "Yin Yang": {name: "Yin Yang", maxXp: 100, effect: 0.020, description: "Essence + Evil Gain"},
+    "Yin Yang": {name: "Yin Yang", maxXp: 100, effect: 0.018, description: "Essence + Evil Gain"},
 	"Parallel Universe": {name: "Parallel Universe", maxXp: 100, effect: 0.02, description: "All XP"},
 	"Higher Dimensions": {name: "Higher Dimensions", maxXp: 100, effect: 0.001, description: "Longer Lifespan"},
-	"Epiphany": {name: "Epiphany", maxXp: 100, effect: 0.012, description: "Galactic Council XP"},
+	"Epiphany": {name: "Epiphany", maxXp: 100, effect: 0.01, description: "Galactic Council XP"},
 
 }
 
@@ -1137,11 +1137,7 @@ function rebirthTwo() {
 
 function rebirthThree() {
     gameData.rebirthThreeCount += 1
-	if (gameData.essence < 30000) {
 	gameData.essence += getEssenceGain()
-	} else {
-		gameData.essence += getEssenceGain() * 1.5;
-	}	
 	gameData.evil = 0
 
 	
@@ -1416,7 +1412,7 @@ gameData.requirements = {
     "Nova": new TaskRequirement([getTaskElement("Nova")], [{task: "Eternal Wanderer", requirement: 15}, {task: "Cosmic Longevity", requirement: 4000}]),
 	"Sigma Proioxis": new TaskRequirement([getTaskElement("Sigma Proioxis")], [{task: "Nova", requirement: 200}, {task: "Cosmic Recollection", requirement: 4500}]),
 	"Acallaris": new TaskRequirement([getTaskElement("Acallaris")], [{task: "Galactic Command", requirement: 5000}, {task: "Sigma Proioxis", requirement: 1000}]),
-	"One Above All": new TaskRequirement([getTaskElement("One Above All")], [{task: "Meditation", requirement: 6300}, {task: "Acallaris", requirement: 1400}]),
+	"One Above All": new TaskRequirement([getTaskElement("One Above All")], [{task: "Meditation", requirement: 6500}, {task: "Acallaris", requirement: 1500}]),
 
 	
 
