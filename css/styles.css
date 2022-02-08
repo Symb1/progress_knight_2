@@ -168,3 +168,13 @@ button:focus {
   top: 2px;
   left: 10px;
 }
+
+.row {
+    display: flex;
+    align-items: flex-start;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
