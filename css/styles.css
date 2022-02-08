@@ -151,3 +151,20 @@ button:focus {
 .small-margin  {
     margin-bottom: 2px;
 }
+
+.heading {
+  position: relative;
+}
+
+.header img {
+  position: static;
+  float: left;
+  width: 60px;
+  height: 60px;
+}
+
+.header h1 {
+  position: static;
+  top: 2px;
+  left: 10px;
+}
