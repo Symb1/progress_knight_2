@@ -157,13 +157,14 @@ button:focus {
 }
 
 .header img {
+  position: static;
   float: left;
   width: 60px;
   height: 60px;
 }
 
 .header h1 {
-  position: relative;
+  position: static;
   top: 2px;
   left: 10px;
 }
