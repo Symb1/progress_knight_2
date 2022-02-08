@@ -17,6 +17,10 @@ var gameData = {
     currentSkill: null,
     currentProperty: null,
     currentMisc: null,
+
+    settings: {
+        stickySidebar: false
+    }
 }
 
 var tempData = {}
@@ -591,6 +595,10 @@ function goBankrupt() {
     gameData.currentMisc = []
 }
 
+function initUI() {
+    setStickySidebar(gameData.settings.stickySidebar);
+}
+
 function setTab(element, selectedTab) {
 
     var tabs = Array.prototype.slice.call(document.getElementsByClassName("tab"))
@@ -821,6 +829,12 @@ function updateTaskRows() {
             valueElement.getElementsByClassName("effect")[0].textContent = task.getEffectDescription()
         }
     }
+}
+
+function setStickySidebar(sticky) {
+    gameData.settings.stickySidebar = sticky;
+    settingsStickySidebar.checked = sticky;
+    info.style.position = sticky ? 'sticky' : 'initial';
 }
 
 function updateItemRows() {
@@ -1283,6 +1297,7 @@ function loadGameData() {
         replaceSaveDict(gameData.requirements, gameDataSave.requirements)
         replaceSaveDict(gameData.taskData, gameDataSave.taskData)
         replaceSaveDict(gameData.itemData, gameDataSave.itemData)
+        replaceSaveDict(gameData.settings, gameDataSave.settings)
 
         gameData = gameDataSave
     }
@@ -1514,11 +1529,6 @@ gameData.requirements = {
 	"Celestial Robe": new CoinRequirement([getItemElement("Celestial Robe")], [{requirement: gameData.itemData["Celestial Robe"].getExpense() * 100}]),
 	"Universe Fragment": new CoinRequirement([getItemElement("Universe Fragment")], [{requirement: gameData.itemData["Universe Fragment"].getExpense() * 100}]),
 	"Multiverse Fragment": new CoinRequirement([getItemElement("Multiverse Fragment")], [{requirement: gameData.itemData["Multiverse Fragment"].getExpense() * 100}]),
-	
-
-
-	
-	
 }
 
 tempData["requirements"] = {}
@@ -1528,6 +1538,8 @@ for (key in gameData.requirements) {
 }
 
 loadGameData()
+
+initUI()
 
 setCustomEffects()
 addMultipliers()
