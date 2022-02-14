@@ -1061,23 +1061,18 @@ function increaseDays() {
     gameData.days += increase
 }
 
-function format(number) {
-
+function format(number,decimals= 1) {
     // what tier? (determines SI symbol)
     var tier = Math.log10(number) / 3 | 0;
-
     // if zero, we don't need a suffix
     if(tier == 0) return number;
-
     // get suffix and determine scale
     var suffix = units[tier];
     var scale = Math.pow(10, tier * 3);
-
     // scale the number
     var scaled = number / scale;
-
     // format number and add suffix
-    return scaled.toFixed(1) + suffix;
+    return scaled.toFixed(decimals) + suffix;
 }
 
 function formatCoins(coins, element) {
@@ -1090,15 +1085,15 @@ function formatCoins(coins, element) {
     }
     var leftOver = coins
     var i = 0
-    for (tier of tiers) {
+    for (var tier of tiers) {
         var x = Math.floor(leftOver / Math.pow(10, (tiers.length - i) * 2))
         var leftOver = Math.floor(leftOver - x * Math.pow(10, (tiers.length - i) * 2))
-        var text = format(String(x)) + tier + " "
+        var text = (coins > 1e9 && i > 0) ? "" : format(String(x),2) + tier + " "
         element.children[i].textContent = x > 0 ? text : ""
         element.children[i].style.color = colors[tier]
         i += 1
     }
-    if (leftOver == 0 && coins > 0) {element.children[3].textContent = ""; return}
+    if (leftOver == 0 && coins > 0 || coins > 1e9) {element.children[3].textContent = ""; return}
     var text = String(Math.floor(leftOver)) + "c"
     element.children[3].textContent = text
     element.children[3].style.color = colors["c"]
@@ -1347,6 +1342,102 @@ function exportGameData() {
     importExportBox.value = window.btoa(JSON.stringify(gameData))
 }
 
+
+// Keyboard shortcuts + Loadouts ( courtesy of Pseiko )
+
+function changeTab(direction){
+    var tabs = Array.prototype.slice.call(document.getElementsByClassName("tab"))
+    var tabButtons = Array.prototype.slice.call(document.getElementsByClassName("tabButton"))
+
+    var currentTab = 0
+    for (i in tabs) {
+        if (!tabs[i].style.display.includes("none"))
+             currentTab = i*1
+    }
+    var targetTab = currentTab+direction
+    targetTab = Math.max(0,targetTab)
+    if( targetTab > (tabs.length-1)) targetTab = 0
+    while(tabButtons[targetTab].style.display.includes("none")){
+        targetTab = targetTab+direction
+        targetTab = Math.max(0,targetTab) 
+        if( targetTab > (tabs.length-1)) targetTab = 0
+    }
+	
+
+	button = tabButtons[targetTab]
+	setTab(button, tabs[targetTab].id)
+
+} 
+
+loadouts = {}
+
+function saveLoadout(num){
+	loadouts[num] = {
+		job : gameData.currentJob.name,
+		skill: gameData.currentSkill.name,
+		property:gameData.currentProperty.name,
+		misc: []
+	}
+	for (i in gameData.currentMisc) loadouts[num].misc.push(gameData.currentMisc[i].name)
+}
+
+function loadLoadout(num){
+	if (num in loadouts)
+	{
+		gameData.currentMisc = []
+		for (i in  loadouts[num].misc) setMisc( loadouts[num].misc[i])
+		setProperty(loadouts[num].property)
+		setTask(loadouts[num].skill)
+		setTask(loadouts[num].job)
+	}
+	 document.getElementById("autoLearn").checked = false
+	 document.getElementById("autoPromote").checked= false
+}
+
+window.addEventListener('keydown', function(e) {
+    if (e.key == "1" && e.altKey) saveLoadout(1)
+    if (e.key == "1" ) loadLoadout(1)
+    if (e.key == "2" && e.altKey) saveLoadout(2)
+    if (e.key == "2" ) loadLoadout(2)
+    if (e.key == "3" && e.altKey) saveLoadout(3)
+    if (e.key == "3" ) loadLoadout(3)
+	
+	if(e.key==" " && !e.repeat ) {
+		setPause()
+		if(e.target == document.body) {
+			e.preventDefault();
+		}
+	}	
+    if(e.key=="ArrowRight") changeTab(1) 
+    if(e.key=="ArrowLeft") changeTab(-1) 
+    if(e.key=="l" || e.key=="L") document.getElementById("autoLearn").checked = !document.getElementById("autoLearn").checked
+    if(e.key=="p" || e.key=="P") document.getElementById("autoPromote").checked = !document.getElementById("autoPromote").checked
+});
+
+(function() {
+    let span = document.createElement('span');
+    let div = document.createElement('div');
+    div.classList.add('inline');
+    div.textContent = 'Auto-pause(Void)';
+    span.append(div);
+    let checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.classList.add('inline');
+    checkbox.id = 'autoPause';
+    span.append(checkbox);
+    document.querySelector('span#automation').prepend(document.createElement('br'));
+    document.querySelector('span#automation').prepend(span);
+    increaseDays = () => {
+        var increase = applySpeed(1)
+        var autoPause = document.getElementById("autoPause").checked;
+        if (gameData.days < 365000 && gameData.days + increase > 365000 && autoPause){
+            gameData.paused = true;
+        }
+        gameData.days += increase
+    }
+})()
+
+
 //Init
 
 createAllRows(jobCategories, "jobTable")
@@ -1376,6 +1467,7 @@ gameData.requirements = {
     "Rebirth note 1": new AgeRequirement([document.getElementById("rebirthNote1")], [{requirement: 45}]),
     "Rebirth note 2": new AgeRequirement([document.getElementById("rebirthNote2")], [{requirement: 65}]),
     "Rebirth note 3": new AgeRequirement([document.getElementById("rebirthNote3")], [{requirement: 200}]),
+	"Rebirth note 4": new AgeRequirement([document.getElementById("rebirthNote4")], [{requirement: 1000}]),
 	"Rebirth note 4": new AgeRequirement([document.getElementById("rebirthNote4")], [{requirement: 1000}]),
 	"Rebirth note 5": new AgeRequirement([document.getElementById("rebirthNote5")], [{requirement: 10000}]),
 	"Rebirth note 6": new TaskRequirement([document.getElementById("rebirthNote6")], [{task: "Cosmic Recollection", requirement: 1}]),
