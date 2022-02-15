@@ -875,7 +875,7 @@ function updateText() {
     formatCoins(getIncome(), document.getElementById("incomeDisplay"))
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
-    document.getElementById("happinessDisplay").textContent = format(getHappiness(),2)
+    document.getElementById("happinessDisplay").textContent = format(getHappiness(),2).toFixed(1)
 
     document.getElementById("evilDisplay").textContent = format(gameData.evil,2)
     document.getElementById("evilGainDisplay").textContent = format(getEvilGain(),2)
