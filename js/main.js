@@ -875,15 +875,15 @@ function updateText() {
     formatCoins(getIncome(), document.getElementById("incomeDisplay"))
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
-    document.getElementById("happinessDisplay").textContent = getHappiness().toFixed(1)
+    document.getElementById("happinessDisplay").textContent = format(getHappiness(),2)
 
-    document.getElementById("evilDisplay").textContent = gameData.evil.toFixed(1)
-    document.getElementById("evilGainDisplay").textContent = getEvilGain().toFixed(1)
-	
-	document.getElementById("essenceDisplay").textContent = gameData.essence.toFixed(1)
-	document.getElementById("essenceGainDisplay").textContent = getEssenceGain().toFixed(1)
+    document.getElementById("evilDisplay").textContent = format(gameData.evil,2)
+    document.getElementById("evilGainDisplay").textContent = format(getEvilGain(),2)
+    
+    document.getElementById("essenceDisplay").textContent = format(gameData.essence,2)
+    document.getElementById("essenceGainDisplay").textContent = format(getEssenceGain())
 
-    document.getElementById("timeWarpingDisplay").textContent = "x" + (gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toFixed(1)
+    document.getElementById("timeWarpingDisplay").textContent = "x" + format(gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect(),2)
     document.getElementById("timeWarpingButton").textContent = gameData.timeWarpingEnabled ? "Disable warp" : "Enable warp"
 }
 
@@ -1436,6 +1436,7 @@ window.addEventListener('keydown', function(e) {
         gameData.days += increase
     }
 })()
+
 
 
 //Init
