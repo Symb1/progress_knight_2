@@ -1282,6 +1282,7 @@ function replaceSaveDict(dict, saveDict) {
 
 function saveGameData() {
     localStorage.setItem("gameDataSave", JSON.stringify(gameData))
+	setInterval(saveGameData, 30000)
 }
 
 function loadGameData() {
