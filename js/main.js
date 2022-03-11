@@ -1415,6 +1415,17 @@ window.addEventListener('keydown', function(e) {
 });
 
 (function() {
+    let spanBankrupt = document.createElement('span');
+    let divBankrupt = document.createElement('div');
+    divBankrupt.classList.add('inline');
+    divBankrupt.textContent = 'Auto-pause(Bankruptcy)';
+    spanBankrupt.append(divBankrupt);
+    let checkboxBankrupt = document.createElement('input');
+    checkboxBankrupt.type = 'checkbox';
+    checkboxBankrupt.classList.add('inline');
+    checkboxBankrupt.id = 'autoPauseBankrupt';
+    spanBankrupt.append(checkboxBankrupt);
+
     let spanVoid = document.createElement('span');
     let divVoid = document.createElement('div');
     divVoid.classList.add('inline');
@@ -1438,11 +1449,14 @@ window.addEventListener('keydown', function(e) {
     spanGalactic.append(checkboxGalactic);
 
     document.querySelector('span#automation').prepend(document.createElement('br'));
+    document.querySelector('span#automation').prepend(spanBankrupt);
+    document.querySelector('span#automation').prepend(document.createElement('br'));
     document.querySelector('span#automation').prepend(spanVoid);
     document.querySelector('span#automation').prepend(document.createElement('br'));
     document.querySelector('span#automation').prepend(spanGalactic);
     increaseDays = () => {
         var increase = applySpeed(1)
+        var autoPauseBankrupt = document.getElementById("autoPauseBankrupt").checked;
         var autoPauseVoid = document.getElementById("autoPauseVoid").checked;
         var autoPauseGalactic = document.getElementById("autoPauseGalactic").checked;
         if (gameData.days < 365 * 1000 && gameData.days + increase > 365 * 1000 && autoPauseVoid){
@@ -1451,7 +1465,12 @@ window.addEventListener('keydown', function(e) {
         if (gameData.days < 365 * 10000 && gameData.days + increase > 365 * 10000 && autoPauseGalactic){
             gameData.paused = true;
         }
-        gameData.days += increase
+        if (gameData.coins + (getIncome() - getExpense()) * increase < 0 && autoPauseBankrupt) {
+            gameData.paused = true;
+        }
+        else {
+            gameData.days += increase;
+        }
     }
 })()
 
