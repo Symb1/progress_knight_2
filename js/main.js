@@ -1415,22 +1415,40 @@ window.addEventListener('keydown', function(e) {
 });
 
 (function() {
-    let span = document.createElement('span');
-    let div = document.createElement('div');
-    div.classList.add('inline');
-    div.textContent = 'Auto-pause(Void)';
-    span.append(div);
-    let checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.classList.add('inline');
-    checkbox.id = 'autoPause';
-    span.append(checkbox);
+    let spanVoid = document.createElement('span');
+    let divVoid = document.createElement('div');
+    divVoid.classList.add('inline');
+    divVoid.textContent = 'Auto-pause(Void)';
+    spanVoid.append(divVoid);
+    let checkboxVoid = document.createElement('input');
+    checkboxVoid.type = 'checkbox';
+    checkboxVoid.classList.add('inline');
+    checkboxVoid.id = 'autoPauseVoid';
+    spanVoid.append(checkboxVoid);
+
+    let spanGalactic = document.createElement('span');
+    let divGalactic = document.createElement('div');
+    divGalactic.classList.add('inline');
+    divGalactic.textContent = 'Auto-pause(Galactic)';
+    spanGalactic.append(divGalactic);
+    let checkboxGalactic = document.createElement('input');
+    checkboxGalactic.type = 'checkbox';
+    checkboxGalactic.classList.add('inline');
+    checkboxGalactic.id = 'autoPauseGalactic';
+    spanGalactic.append(checkboxGalactic);
+
     document.querySelector('span#automation').prepend(document.createElement('br'));
-    document.querySelector('span#automation').prepend(span);
+    document.querySelector('span#automation').prepend(spanVoid);
+    document.querySelector('span#automation').prepend(document.createElement('br'));
+    document.querySelector('span#automation').prepend(spanGalactic);
     increaseDays = () => {
         var increase = applySpeed(1)
-        var autoPause = document.getElementById("autoPause").checked;
-        if (gameData.days < 365000 && gameData.days + increase > 365000 && autoPause){
+        var autoPauseVoid = document.getElementById("autoPauseVoid").checked;
+        var autoPauseGalactic = document.getElementById("autoPauseGalactic").checked;
+        if (gameData.days < 365 * 1000 && gameData.days + increase > 365 * 1000 && autoPauseVoid){
+            gameData.paused = true;
+        }
+        if (gameData.days < 365 * 10000 && gameData.days + increase > 365 * 10000 && autoPauseGalactic){
             gameData.paused = true;
         }
         gameData.days += increase
