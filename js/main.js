@@ -929,7 +929,7 @@ function createItemData(baseData) {
 
 function doCurrentTask(task) {
     task.increaseXp()
-    if (task instanceof Job) {
+    if (task instanceof Job && task == gameData.currentJob) {
         increaseCoins()
     }
 }
