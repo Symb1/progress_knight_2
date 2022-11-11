@@ -1055,34 +1055,42 @@ function autoLearn() {
     gameData.currentSkill = skillWithLowestMaxXp
 
     var usedExpense = 0;
+    var income = getIncome()
 
     // auto items
-    for (key in gameData.itemData)
-    {
-        if (itemCategories['Properties'].indexOf(key) != -1)
-        {
-            if (gameData.requirements[key].completed)
-            {
-                if (gameData.itemData[key].getExpense() < getIncome()) {
-                    gameData.currentProperty = gameData.itemData[key]
-                    usedExpense = gameData.itemData[key].getExpense()
+    for (key in gameData.itemData) {
+        if (gameData.requirements[key].completed) {
+            var item = gameData.itemData[key]
+            var expense = item.getExpense()
+
+            if (itemCategories['Properties'].indexOf(key) != -1) {
+                if (expense < income) {
+                    gameData.currentProperty = item
+                    usedExpense = expense
                 }
             }
         }
+    }
 
-        if (itemCategories['Misc'].indexOf(key) != -1) {
-            if (gameData.requirements[key].completed) {
-                if (gameData.itemData[key].getExpense() < getIncome() - usedExpense) {
-                    if (gameData.currentMisc.indexOf(gameData.itemData[key]) == -1)
-                    {
-                        gameData.currentMisc.push(gameData.itemData[key])
+    for (key in gameData.currentMisc)
+    {
+        usedExpense += gameData.currentMisc[key].getExpense()
+    }
+
+    for (key in gameData.itemData) {
+        if (gameData.requirements[key].completed) {
+            var item = gameData.itemData[key]
+            var expense = item.getExpense()
+            if (itemCategories['Misc'].indexOf(key) != -1) {
+                if (expense < income - usedExpense) {
+                    if (gameData.currentMisc.indexOf(item) == -1) {
+                        gameData.currentMisc.push(item)
+                        usedExpense += expense
                     }
                 }
             }
         }
-
     }
-
 }
 
 function yearsToDays(years) {
