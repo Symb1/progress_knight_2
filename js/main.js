@@ -970,10 +970,6 @@ function getNextEntity(data, categoryType, entityName) {
 
 function autoPromote() {
     if (!autoPromoteElement.checked) return
-    //var nextEntity = getNextEntity(gameData.taskData, jobCategories, gameData.currentJob.name)
-    //if (nextEntity == null) return
-    //var requirement = gameData.requirements[nextEntity.name]
-    //if (requirement.isCompleted()) gameData.currentJob = nextEntity
     var Max_Income = 0;
     for (key in gameData.taskData) {
         var task = gameData.taskData[key]
@@ -987,7 +983,6 @@ function autoPromote() {
             }
         }
     }
-
 }
 
 function checkSkillSkipped(skill) {
@@ -1058,6 +1053,34 @@ function getKeyOfLowestValueFromDict(dict) {
 function autoLearn() {
     if (!autoLearnElement.checked || !skillWithLowestMaxXp) return
     gameData.currentSkill = skillWithLowestMaxXp
+
+
+    // auto items
+    for (key in gameData.itemData)
+    {
+        if (itemCategories['Properties'].indexOf(key) != -1)
+        {
+            if (gameData.requirements[key].completed)
+            {
+                if (gameData.itemData[key].getExpense() < getIncome()) {
+                    gameData.currentProperty = gameData.itemData[key]
+                }
+            }
+        }
+
+        if (itemCategories['Misc'].indexOf(key) != -1) {
+            if (gameData.requirements[key].completed) {
+                if (gameData.itemData[key].getExpense() < getIncome()) {
+                    if (gameData.currentMisc.indexOf(gameData.itemData[key]) == -1)
+                    {
+                        gameData.currentMisc.push(gameData.itemData[key])
+                    }
+                }
+            }
+        }
+
+    }
+
 }
 
 function yearsToDays(years) {
