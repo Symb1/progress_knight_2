@@ -1320,10 +1320,8 @@ function update() {
     autoLearn()
     for (key in gameData.taskData) {
         var task = gameData.taskData[key]
-        if (gameData.requirements[key].completed)
+        if ((task instanceof Skill || task instanceof Job) && gameData.requirements[key].completed)
             doCurrentTask(task)
-        //doCurrentTask(gameData.currentJob)
-        //doCurrentTask(gameData.currentSkill)
     }
     applyExpenses()
     updateUI()
