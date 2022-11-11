@@ -970,10 +970,24 @@ function getNextEntity(data, categoryType, entityName) {
 
 function autoPromote() {
     if (!autoPromoteElement.checked) return
-    var nextEntity = getNextEntity(gameData.taskData, jobCategories, gameData.currentJob.name)
-    if (nextEntity == null) return
-    var requirement = gameData.requirements[nextEntity.name]
-    if (requirement.isCompleted()) gameData.currentJob = nextEntity
+    //var nextEntity = getNextEntity(gameData.taskData, jobCategories, gameData.currentJob.name)
+    //if (nextEntity == null) return
+    //var requirement = gameData.requirements[nextEntity.name]
+    //if (requirement.isCompleted()) gameData.currentJob = nextEntity
+    var Max_Income = 0;
+    for (key in gameData.taskData) {
+        var task = gameData.taskData[key]
+        if (task instanceof Job && gameData.requirements[key].completed)
+        {
+            var income = task.getIncome();
+            if (income > Max_Income)
+            {
+                Max_Income = income;
+                gameData.currentJob = task;
+            }
+        }
+    }
+
 }
 
 function checkSkillSkipped(skill) {
