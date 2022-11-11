@@ -1054,6 +1054,7 @@ function autoLearn() {
     if (!autoLearnElement.checked || !skillWithLowestMaxXp) return
     gameData.currentSkill = skillWithLowestMaxXp
 
+    var usedExpense = 0;
 
     // auto items
     for (key in gameData.itemData)
@@ -1064,13 +1065,14 @@ function autoLearn() {
             {
                 if (gameData.itemData[key].getExpense() < getIncome()) {
                     gameData.currentProperty = gameData.itemData[key]
+                    usedExpense = gameData.itemData[key].getExpense()
                 }
             }
         }
 
         if (itemCategories['Misc'].indexOf(key) != -1) {
             if (gameData.requirements[key].completed) {
-                if (gameData.itemData[key].getExpense() < getIncome()) {
+                if (gameData.itemData[key].getExpense() < getIncome() - usedExpense) {
                     if (gameData.currentMisc.indexOf(gameData.itemData[key]) == -1)
                     {
                         gameData.currentMisc.push(gameData.itemData[key])
