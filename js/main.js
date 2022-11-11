@@ -1318,8 +1318,13 @@ function update() {
     increaseDays()
     autoPromote()
     autoLearn()
-    doCurrentTask(gameData.currentJob)
-    doCurrentTask(gameData.currentSkill)
+    for (key in gameData.taskData) {
+        var task = gameData.taskData[key]
+        if (gameData.requirements[key].completed)
+            doCurrentTask(task)
+        //doCurrentTask(gameData.currentJob)
+        //doCurrentTask(gameData.currentSkill)
+    }
     applyExpenses()
     updateUI()
 }
