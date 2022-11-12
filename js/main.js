@@ -875,15 +875,15 @@ function updateText() {
     formatCoins(getIncome(), document.getElementById("incomeDisplay"))
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
-    document.getElementById("happinessDisplay").textContent = getHappiness().toFixed(0)
+    document.getElementById("happinessDisplay").textContent = format(getHappiness().toFixed(1))
 
-    document.getElementById("evilDisplay").textContent = gameData.evil.toFixed(0)
-    document.getElementById("evilGainDisplay").textContent = getEvilGain().toFixed(0)
-    document.getElementById("evilGainButtonDisplay").textContent = "+" + getEvilGain().toFixed(0)
+    document.getElementById("evilDisplay").textContent = format(gameData.evil.toFixed(1))
+    document.getElementById("evilGainDisplay").textContent = format(getEvilGain().toFixed(1))
+    document.getElementById("evilGainButtonDisplay").textContent = "+" + format(getEvilGain().toFixed(1))
 	
-	document.getElementById("essenceDisplay").textContent = gameData.essence.toFixed(1)
-    document.getElementById("essenceGainDisplay").textContent = getEssenceGain().toFixed(1)
-    document.getElementById("essenceGainButtonDisplay").textContent = "+" + getEssenceGain().toFixed(1)
+    document.getElementById("essenceDisplay").textContent = format(gameData.essence.toFixed(1))
+    document.getElementById("essenceGainDisplay").textContent = format(getEssenceGain().toFixed(1))
+    document.getElementById("essenceGainButtonDisplay").textContent = "+" + format(getEssenceGain().toFixed(1))
 
     document.getElementById("timeWarpingDisplay").textContent = "x" + (gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toFixed(1)
     document.getElementById("timeWarpingButton").textContent = gameData.timeWarpingEnabled ? "Disable warp" : "Enable warp"
@@ -1069,7 +1069,7 @@ function formatCoins(coins, element) {
     for (var tier of tiers) {
         var x = Math.floor(leftOver / Math.pow(10, (tiers.length - i) * 2))
         var leftOver = Math.floor(leftOver - x * Math.pow(10, (tiers.length - i) * 2))
-        var text = (coins > 1e9 && i > 0) ? "" : format(String(x),2) + tier + " "
+        var text = (coins > 1e9 && i > 0) ? "" : format(String(x),1) + tier + " "
         element.children[i].textContent = x > 0 ? text : ""
         element.children[i].style.color = colors[tier]
         i += 1        
