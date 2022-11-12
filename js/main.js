@@ -1056,6 +1056,11 @@ function increaseDays() {
     gameData.days += increase
 }
 
+function increaseRealtime() {
+    if (!gameData.paused)
+        gameData.realtime += 1.0 / updateSpeed;
+}
+
 function format(number,decimals= 1) {
     // what tier? (determines SI symbol)
     var tier = Math.log10(number) / 3 | 0;
@@ -1310,7 +1315,7 @@ function updateUI() {
 }
 
 function update() {
-    gameData.realtime += 1.0 / updateSpeed;
+    increaseRealtime()
     increaseDays()
     autoPromote()
     autoBuy()
