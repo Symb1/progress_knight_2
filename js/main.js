@@ -1453,31 +1453,6 @@ window.addEventListener('keydown', function(e) {
     if(e.key=="p" || e.key=="P") document.getElementById("autoPromote").checked = !document.getElementById("autoPromote").checked
 });
 
-/*
-(function() {
-    let span = document.createElement('span');
-    let div = document.createElement('div');
-    div.classList.add('inline');
-    div.textContent = 'Auto-pause(Void)';
-    span.append(div);
-    let checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.classList.add('inline');
-    checkbox.id = 'autoPause';
-    span.append(checkbox);
-    document.querySelector('span#automation').prepend(document.createElement('br'));
-    document.querySelector('span#automation').prepend(span);
-    increaseDays = () => {
-        var increase = applySpeed(1)
-        var autoPause = document.getElementById("autoPause").checked;
-        if (gameData.days < 365000 && gameData.days + increase > 365000 && autoPause){
-            gameData.paused = true;
-        }
-        gameData.days += increase
-    }
-})()*/
-
-
 
 //Init
 

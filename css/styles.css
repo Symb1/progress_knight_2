@@ -63,7 +63,7 @@ td {
 }
 
 .button {
-    border: 1px solid black !important;
+    border: 1px groove black !important;
 }
 
 .item-button {
