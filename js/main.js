@@ -619,18 +619,21 @@ function setTimeWarping() {
     gameData.timeWarpingEnabled = !gameData.timeWarpingEnabled
 }
 
-function setTask(taskName) {
+function setTask(taskName) {    
+    document.getElementById("autoPromote").checked = false
     var task = gameData.taskData[taskName]
     if (task instanceof Job)
         gameData.currentJob = task 
 }
 
 function setProperty(propertyName) {
+    document.getElementById("autoLearn").checked = false
     var property = gameData.itemData[propertyName]
     gameData.currentProperty = property
 }
 
 function setMisc(miscName) {
+    document.getElementById("autoLearn").checked = false
     var misc = gameData.itemData[miscName]
     if (gameData.currentMisc.includes(misc)) {
         for (i = 0; i < gameData.currentMisc.length; i++) {
@@ -872,11 +875,11 @@ function updateText() {
 
     document.getElementById("evilDisplay").textContent = gameData.evil.toFixed(0)
     document.getElementById("evilGainDisplay").textContent = getEvilGain().toFixed(0)
-    document.getElementById("evilGainButtonDisplay").textContent = getEvilGain().toFixed(0)
+    document.getElementById("evilGainButtonDisplay").textContent = "+" + getEvilGain().toFixed(0)
 	
 	document.getElementById("essenceDisplay").textContent = gameData.essence.toFixed(1)
     document.getElementById("essenceGainDisplay").textContent = getEssenceGain().toFixed(1)
-    document.getElementById("essenceGainButtonDisplay").textContent = getEssenceGain().toFixed(1)
+    document.getElementById("essenceGainButtonDisplay").textContent = "+" + getEssenceGain().toFixed(1)
 
     document.getElementById("timeWarpingDisplay").textContent = "x" + (gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toFixed(1)
     document.getElementById("timeWarpingButton").textContent = gameData.timeWarpingEnabled ? "Disable warp" : "Enable warp"
@@ -1364,11 +1367,10 @@ function loadLoadout(num){
 		gameData.currentMisc = []
 		for (i in  loadouts[num].misc) setMisc( loadouts[num].misc[i])
 		setProperty(loadouts[num].property)
-		setTask(loadouts[num].skill)
 		setTask(loadouts[num].job)
 	}
-	 document.getElementById("autoLearn").checked = false
-	 document.getElementById("autoPromote").checked= false
+	 document.getElementById("autoLearn").checked = true
+	 document.getElementById("autoPromote").checked= true
 }
 
 window.addEventListener('keydown', function(e) {
@@ -1433,7 +1435,7 @@ gameData.requirements = {
 	"Essence info": new EssenceRequirement([document.getElementById("essenceInfo")], [{requirement: 1}]),
     "Time warping info": new TaskRequirement([document.getElementById("timeWarping")], [{task: "Adept Mage", requirement: 10}]),
 
-    "Automation": new AgeRequirement([document.getElementById("automation")], [{requirement: 20}]),
+    //"Automation": new AgeRequirement([document.getElementById("automation")], [{requirement: 20}]),
     "Quick task display": new AgeRequirement([document.getElementById("quickTaskDisplay")], [{requirement: 20}]),
 
     //Common work
