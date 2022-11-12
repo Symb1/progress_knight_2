@@ -21,7 +21,8 @@ var gameData = {
         stickySidebar: false
     },
 
-    realtime: 0.0
+    realtime: 0.0,
+    darkTheme: true
 }
 
 var tempData = {}
@@ -598,6 +599,8 @@ function goBankrupt() {
 
 function initUI() {
     setStickySidebar(gameData.settings.stickySidebar);
+    if (!gameData.darkTheme)
+        setLightDarkMode()
 }
 
 function setTab(element, selectedTab) {
@@ -1121,6 +1124,7 @@ function getElementsByClass(className) {
 function setLightDarkMode() {
     var body = document.getElementById("body")
     body.classList.contains("dark") ? body.classList.remove("dark") : body.classList.add("dark")
+    gameData.darkTheme = body.classList.contains("dark")
 }
 
 function removeSpaces(string) {
@@ -1443,7 +1447,6 @@ gameData.requirements = {
     "Rebirth note 1": new AgeRequirement([document.getElementById("rebirthNote1")], [{requirement: 45}]),
     "Rebirth note 2": new AgeRequirement([document.getElementById("rebirthNote2")], [{requirement: 65}]),
     "Rebirth note 3": new AgeRequirement([document.getElementById("rebirthNote3")], [{requirement: 200}]),
-	"Rebirth note 4": new AgeRequirement([document.getElementById("rebirthNote4")], [{requirement: 1000}]),
 	"Rebirth note 4": new AgeRequirement([document.getElementById("rebirthNote4")], [{requirement: 1000}]),
 	"Rebirth note 5": new AgeRequirement([document.getElementById("rebirthNote5")], [{requirement: 10000}]),
     "Rebirth note 6": new TaskRequirement([document.getElementById("rebirthNote6")], [{ task: "Cosmic Recollection", requirement: 1 }]),
