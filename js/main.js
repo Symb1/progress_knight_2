@@ -19,7 +19,9 @@ var gameData = {
 
     settings: {
         stickySidebar: false
-    }
+    },
+
+    realtime: 0.0
 }
 
 var tempData = {}
@@ -862,11 +864,23 @@ function updateHeaderRows(categories) {
     }
 }
 
+function formatTime(sec_num) {    
+    var hours = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = Math.floor(sec_num - (hours * 3600) - (minutes * 60));
+
+    if (hours < 10) { hours = "0" + hours; }
+    if (minutes < 10) { minutes = "0" + minutes; }
+    if (seconds < 10) { seconds = "0" + seconds; }
+    return hours + ':' + minutes + ':' + seconds;    
+}
+
 function updateText() {
     //Sidebar
     document.getElementById("ageDisplay").textContent = daysToYears(gameData.days)
     document.getElementById("dayDisplay").textContent = getDay()
     document.getElementById("lifespanDisplay").textContent = daysToYears(getLifespan())
+    document.getElementById("realtimeDisplay").textContent = formatTime(gameData.realtime)
     document.getElementById("pauseButton").textContent = gameData.paused ? "Play" : "Pause"
 
     formatCoins(gameData.coins, document.getElementById("coinDisplay"))
@@ -1151,6 +1165,7 @@ function rebirthReset() {
 
     gameData.coins = 0
     gameData.days = 365 * 14
+    gameData.realtime = 0
     gameData.currentJob = gameData.taskData["Beggar"]
     gameData.currentProperty = gameData.itemData["Homeless"]
     gameData.currentMisc = []
@@ -1295,6 +1310,7 @@ function updateUI() {
 }
 
 function update() {
+    gameData.realtime += 1.0 / updateSpeed;
     increaseDays()
     autoPromote()
     autoBuy()
