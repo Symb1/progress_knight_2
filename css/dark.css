@@ -1,6 +1,7 @@
 .dark {
     background-color: rgb(32, 32, 32);
-    color: white
+    color: white;
+    font-size: x-small;
 }
 
 .dark .panel {
@@ -15,6 +16,18 @@
 
 .dark .w3-bordered tr, .w3-table-all tr {
     border-bottom: 1px solid rgb(73, 73, 73);
+    font-size: x-small;
+    padding: 0 0 0 0;
+}
+
+.dark .w3-bordered th, .w3-table-all th {
+    padding: 2px 0 3px 0;
+    padding-left: 8px;
+}
+
+.dark .w3-bordered td, .w3-table-all td {
+    padding: 2px 0 2px 0;
+    padding-left: 8px;
 }
 
 .dark .w3-button:hover {

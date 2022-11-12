@@ -36,7 +36,7 @@ const baseLifespan = 365 * 70
 
 const baseGameSpeed = 4
 
-const permanentUnlocks = ["Scheduling", "Shop", "Automation", "Quick task display"]
+const permanentUnlocks = ["Scheduling", "Automation", "Quick task display"]
 
 const jobBaseData = {
     "Beggar": {name: "Beggar", maxXp: 50, income: 5},
@@ -605,7 +605,7 @@ function setTab(element, selectedTab) {
     tabs.forEach(function(tab) {
         tab.style.display = "none"
     })
-    document.getElementById(selectedTab).style.display = "block"
+    document.getElementById(selectedTab).style.display = "flex"
 
     var tabButtons = document.getElementsByClassName("tabButton")
     for (tabButton of tabButtons) {
@@ -820,9 +820,6 @@ function updateTaskRows() {
         valueElement.getElementsByClassName("income")[0].style.display = task instanceof Job
         valueElement.getElementsByClassName("effect")[0].style.display = task instanceof Skill
 
-        var skipSkillElement = row.getElementsByClassName("skipSkill")[0]
-        skipSkillElement.style.display = task instanceof Skill && autoLearnElement.checked ? "block" : "none"
-
         if (task instanceof Job) {
             formatCoins(task.getIncome(), valueElement.getElementsByClassName("income")[0])
         } else {
@@ -857,8 +854,6 @@ function updateHeaderRows(categories) {
         var headerRow = document.getElementsByClassName(className)[0]
         var maxLevelElement = headerRow.getElementsByClassName("maxLevel")[0]
         gameData.rebirthOneCount > 0 ? maxLevelElement.classList.remove("hidden") : maxLevelElement.classList.add("hidden")
-        var skipSkillElement = headerRow.getElementsByClassName("skipSkill")[0]
-        skipSkillElement.style.display = categories == skillCategories && autoLearnElement.checked ? "block" : "none"
     }
 }
 
@@ -985,12 +980,6 @@ function autoPromote() {
     }
 }
 
-function checkSkillSkipped(skill) {
-    var row = document.getElementById("row " + skill.name)
-    var isSkillSkipped = row.getElementsByClassName("checkbox")[0].checked
-    return isSkillSkipped
-}
-
 function setSkillWithLowestMaxXp() {
       var enabledSkills = []
 
@@ -1016,7 +1005,7 @@ function setSkillWithLowestMaxXp() {
             if(requirement == null) {
                 requirement = gameData.requirements["Concentration"];
             }
-            if (requirement.isCompleted() && !checkSkillSkipped(skill)) {
+            if (requirement.isCompleted()) {
                 enabledSkills.push(skill)
             }
         }
@@ -1464,6 +1453,7 @@ window.addEventListener('keydown', function(e) {
     if(e.key=="p" || e.key=="P") document.getElementById("autoPromote").checked = !document.getElementById("autoPromote").checked
 });
 
+/*
 (function() {
     let span = document.createElement('span');
     let div = document.createElement('div');
@@ -1485,7 +1475,7 @@ window.addEventListener('keydown', function(e) {
         }
         gameData.days += increase
     }
-})()
+})()*/
 
 
 
@@ -1513,7 +1503,7 @@ gameData.requirements = {
 	"Celestial Powers": new AgeRequirement(getElementsByClass("Celestial Powers"), [{requirement: 10000}]),
     "Dark Magic": new EvilRequirement(getElementsByClass("Dark Magic"), [{requirement: 1}]),
 	"Almightiness": new EssenceRequirement(getElementsByClass("Almightiness"), [{requirement: 1}]),
-    "Shop": new CoinRequirement([document.getElementById("shopTabButton")], [{requirement: gameData.itemData["Tent"].getExpense() * 50}]),
+    //"Shop": new CoinRequirement([document.getElementById("shopTabButton")], [{requirement: gameData.itemData["Tent"].getExpense() * 50}]),
     "Rebirth tab": new AgeRequirement([document.getElementById("rebirthTabButton")], [{requirement: 25}]),
     "Rebirth note 1": new AgeRequirement([document.getElementById("rebirthNote1")], [{requirement: 45}]),
     "Rebirth note 2": new AgeRequirement([document.getElementById("rebirthNote2")], [{requirement: 65}]),
@@ -1521,7 +1511,12 @@ gameData.requirements = {
 	"Rebirth note 4": new AgeRequirement([document.getElementById("rebirthNote4")], [{requirement: 1000}]),
 	"Rebirth note 4": new AgeRequirement([document.getElementById("rebirthNote4")], [{requirement: 1000}]),
 	"Rebirth note 5": new AgeRequirement([document.getElementById("rebirthNote5")], [{requirement: 10000}]),
-	"Rebirth note 6": new TaskRequirement([document.getElementById("rebirthNote6")], [{task: "Cosmic Recollection", requirement: 1}]),
+    "Rebirth note 6": new TaskRequirement([document.getElementById("rebirthNote6")], [{ task: "Cosmic Recollection", requirement: 1 }]),
+
+    "Rebirth button 1": new AgeRequirement([document.getElementById("rebirthButton1")], [{ requirement: 65 }]),
+    "Rebirth button 2": new AgeRequirement([document.getElementById("rebirthButton2")], [{ requirement: 200 }]),
+    "Rebirth button 3": new TaskRequirement([document.getElementById("rebirthButton3")], [{ task: "Cosmic Recollection", requirement: 1 }]),
+
     "Evil info": new EvilRequirement([document.getElementById("evilInfo")], [{requirement: 1}]),
 	"Essence info": new EssenceRequirement([document.getElementById("essenceInfo")], [{requirement: 1}]),
     "Time warping info": new TaskRequirement([document.getElementById("timeWarping")], [{task: "Adept Mage", requirement: 10}]),
