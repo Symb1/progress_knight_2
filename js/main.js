@@ -14,7 +14,6 @@ var gameData = {
 	rebirthThreeCount: 0,
 
     currentJob: null,
-    currentSkill: null,
     currentProperty: null,
     currentMisc: null,
 
@@ -24,8 +23,6 @@ var gameData = {
 }
 
 var tempData = {}
-
-var skillWithLowestMaxXp = null
 
 const autoPromoteElement = document.getElementById("autoPromote")
 const autoLearnElement = document.getElementById("autoLearn")
@@ -624,7 +621,8 @@ function setTimeWarping() {
 
 function setTask(taskName) {
     var task = gameData.taskData[taskName]
-    task instanceof Job ? gameData.currentJob = task : gameData.currentSkill = task
+    if (task instanceof Job)
+        gameData.currentJob = task 
 }
 
 function setProperty(propertyName) {
@@ -719,10 +717,10 @@ function createAllRows(categoryType, tableId) {
     }
 }
 
-function updateQuickTaskDisplay(taskType) {
-    var currentTask = taskType == "job" ? gameData.currentJob : gameData.currentSkill
+function updateQuickTaskDisplay() {
+    var currentTask = gameData.currentJob
     var quickTaskDisplayElement = document.getElementById("quickTaskDisplay")
-    var progressBar = quickTaskDisplayElement.getElementsByClassName(taskType)[0]
+    var progressBar = quickTaskDisplayElement.getElementsByClassName("job")[0]
     progressBar.getElementsByClassName("name")[0].textContent = currentTask.name + " lvl " + currentTask.level
     progressBar.getElementsByClassName("progressFill")[0].style.width = currentTask.xp / currentTask.getMaxXp() * 100 + "%"
 }
@@ -814,7 +812,7 @@ function updateTaskRows() {
 
         var progressFill = row.getElementsByClassName("progressFill")[0]
         progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
-        task == gameData.currentJob || task == gameData.currentSkill ? progressFill.classList.add("current") : progressFill.classList.remove("current")
+        task == gameData.currentJob ? progressFill.classList.add("current") : progressFill.classList.remove("current")
 
         var valueElement = row.getElementsByClassName("value")[0]
         valueElement.getElementsByClassName("income")[0].style.display = task instanceof Job
@@ -870,13 +868,15 @@ function updateText() {
     formatCoins(getIncome(), document.getElementById("incomeDisplay"))
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
-    document.getElementById("happinessDisplay").textContent = getHappiness().toFixed(1)
+    document.getElementById("happinessDisplay").textContent = getHappiness().toFixed(0)
 
-    document.getElementById("evilDisplay").textContent = gameData.evil.toFixed(1)
-    document.getElementById("evilGainDisplay").textContent = getEvilGain().toFixed(1)
+    document.getElementById("evilDisplay").textContent = gameData.evil.toFixed(0)
+    document.getElementById("evilGainDisplay").textContent = getEvilGain().toFixed(0)
+    document.getElementById("evilGainButtonDisplay").textContent = getEvilGain().toFixed(0)
 	
 	document.getElementById("essenceDisplay").textContent = gameData.essence.toFixed(1)
-	document.getElementById("essenceGainDisplay").textContent = getEssenceGain().toFixed(1)
+    document.getElementById("essenceGainDisplay").textContent = getEssenceGain().toFixed(1)
+    document.getElementById("essenceGainButtonDisplay").textContent = getEssenceGain().toFixed(1)
 
     document.getElementById("timeWarpingDisplay").textContent = "x" + (gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toFixed(1)
     document.getElementById("timeWarpingButton").textContent = gameData.timeWarpingEnabled ? "Disable warp" : "Enable warp"
@@ -980,73 +980,12 @@ function autoPromote() {
     }
 }
 
-function setSkillWithLowestMaxXp() {
-      var enabledSkills = []
-
-    for (skillName in gameData.taskData) {
-        var skill = gameData.taskData[skillName]
-        var requirement = gameData.requirements[skillName]
-        /*
-        Getting an autolearn error, and the dev console says there is an uncaught
-        TypeError at this line of code below during the requirement.isCompleted() call. 
-        I think the error is saying that when calling requirement.isCompleted, requirement is undefined.
-        This would make sense if I have a skill that doesn't have any unlock requirements, which I think
-        is true of Novel Knowledge for table rendering reasons. So the game logic assumes each skill has a requirement
-        without actually checking if requirement is non-null. 
-        */
-        if (skill instanceof Skill) {
-            //This check on the requirement variable is here to handle the case of a skill
-            //having no requirements. By setting requirement equal to Concentration's requirements, 
-            //we prevent unchecked TypeErrors that have been breaking the auto learn feature. 
-            
-            // NOTE : FRAGILE FIX
-            // This fix will break if the Concentration skill is either removed from the game, renamed, or the requirement is no
-            // longer immediately satisfied upon starting a new game. 
-            if(requirement == null) {
-                requirement = gameData.requirements["Concentration"];
-            }
-            if (requirement.isCompleted()) {
-                enabledSkills.push(skill)
-            }
-        }
-    }
-
-    if (enabledSkills.length == 0) {
-        skillWithLowestMaxXp = gameData.taskData["Concentration"]
-        return
-    }
-	
-	enabledSkills.sort((lhs, rhs) => { return lhs.getMaxXp() / lhs.getXpGain() - rhs.getMaxXp() / rhs.getXpGain() })
-
-    var skillName = enabledSkills[0].name
-    skillWithLowestMaxXp = gameData.taskData[skillName]
-}
-
-function getKeyOfLowestValueFromDict(dict) {
-    var values = []
-    for (key in dict) {
-        var value = dict[key]
-        values.push(value)
-    }
-
-    values.sort(function(a, b){return a - b})
-
-    for (key in dict) {
-        var value = dict[key]
-        if (value == values[0]) {
-            return key
-        }
-    }
-}
-
 function autoLearn() {
-    if (!autoLearnElement.checked || !skillWithLowestMaxXp) return
-    gameData.currentSkill = skillWithLowestMaxXp
+    if (!autoLearnElement.checked) return
 
     var usedExpense = 0;
     var income = getIncome()
 
-    // auto items
     for (key in gameData.itemData) {
         if (gameData.requirements[key].completed) {
             var item = gameData.itemData[key]
@@ -1127,12 +1066,14 @@ function formatCoins(coins, element) {
         var text = (coins > 1e9 && i > 0) ? "" : format(String(x),2) + tier + " "
         element.children[i].textContent = x > 0 ? text : ""
         element.children[i].style.color = colors[tier]
-        i += 1
+        i += 1        
     }
-    if (leftOver == 0 && coins > 0 || coins > 1e9) {element.children[3].textContent = ""; return}
-    var text = String(Math.floor(leftOver)) + "c"
-    element.children[3].textContent = text
-    element.children[3].style.color = colors["c"]
+    if (leftOver == 0 && coins > 0 || coins > 1e9) { element.children[3].textContent = ""; return }
+    if (coins < 1e4) {
+        var text = String(Math.floor(leftOver)) + "c"
+        element.children[3].textContent = text
+        element.children[3].style.color = colors["c"]
+    }
 }
 
 function getTaskElement(taskName) {
@@ -1205,7 +1146,6 @@ function rebirthReset() {
     gameData.coins = 0
     gameData.days = 365 * 14
     gameData.currentJob = gameData.taskData["Beggar"]
-    gameData.currentSkill = gameData.taskData["Concentration"]
     gameData.currentProperty = gameData.itemData["Homeless"]
     gameData.currentMisc = []
 
@@ -1289,7 +1229,6 @@ function assignMethods() {
     }
 
     gameData.currentJob = gameData.taskData[gameData.currentJob.name]
-    gameData.currentSkill = gameData.taskData[gameData.currentSkill.name]
     gameData.currentProperty = gameData.itemData[gameData.currentProperty.name]
     var newArray = []
     for (misc of gameData.currentMisc) {
@@ -1344,8 +1283,7 @@ function updateUI() {
     updateRequiredRows(gameData.itemData, itemCategories)
     updateHeaderRows(jobCategories)
     updateHeaderRows(skillCategories)
-    updateQuickTaskDisplay("job")
-    updateQuickTaskDisplay("skill")
+    updateQuickTaskDisplay()
     hideEntities()
     updateText()  
 }
@@ -1413,7 +1351,7 @@ loadouts = {}
 function saveLoadout(num){
 	loadouts[num] = {
 		job : gameData.currentJob.name,
-		skill: gameData.currentSkill.name,
+		skill: "Concentration",
 		property:gameData.currentProperty.name,
 		misc: []
 	}
@@ -1465,7 +1403,6 @@ createData(gameData.taskData, skillBaseData)
 createData(gameData.itemData, itemBaseData) 
 
 gameData.currentJob = gameData.taskData["Beggar"]
-gameData.currentSkill = gameData.taskData["Concentration"]
 gameData.currentProperty = gameData.itemData["Homeless"]
 gameData.currentMisc = []
 
@@ -1662,4 +1599,3 @@ setTab(jobTabButton, "jobs")
 update()
 setInterval(update, 1000 / updateSpeed)
 setInterval(saveGameData, 3000)
-setInterval(setSkillWithLowestMaxXp, 1000)
