@@ -212,6 +212,8 @@ const headerRowColors = {
 	"Almightiness": "#18d2d9",
 	"Void Manipulation": "#762B91",
 	"Celestial Powers": "#D5C010",
+    "Properties_Auto": "#21cc5e",
+    "Misc_Auto": "#f54546",
     "Properties": "#219ebc",
     "Misc": "#b56576",
 }
@@ -841,7 +843,10 @@ function updateItemRows() {
         var button = row.getElementsByClassName("button")[0]
         button.disabled = gameData.coins < item.getExpense()
         var active = row.getElementsByClassName("active")[0]
-        var color = itemCategories["Properties"].includes(item.name) ? headerRowColors["Properties"] : headerRowColors["Misc"]
+        var color = autoBuyEnabled
+            ? itemCategories["Properties"].includes(item.name) ? headerRowColors["Properties_Auto"] : headerRowColors["Misc_Auto"]
+            : itemCategories["Properties"].includes(item.name) ? headerRowColors["Properties"] : headerRowColors["Misc"]
+
         active.style.backgroundColor = gameData.currentMisc.includes(item) || item == gameData.currentProperty ? color : "white"
         row.getElementsByClassName("effect")[0].textContent = item.getEffectDescription()
         formatCoins(item.getExpense(), row.getElementsByClassName("expense")[0])
