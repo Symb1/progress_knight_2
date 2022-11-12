@@ -1079,29 +1079,31 @@ function format(number,decimals= 1) {
 }
 
 function formatCoins(coins, element) {
-    var tiers = ["p", "g", "s"]
-    var colors = {
-        "p": "#79b9c7",
-        "g": "#E5C100",
-        "s": "#a8a8a8",
-        "c": "#a15c2f"
+
+    var platina = Math.floor(coins / 1e6)
+    var gold = Math.floor((coins - platina * 1e6) / 1e4)
+    var silver = Math.floor((coins - platina * 1e6 - gold * 1e4) / 100)
+    var copper = Math.floor(coins - platina * 1e6 - gold * 1e4 - silver * 100)
+
+    var money = {
+        "p": { "color": "#79b9c7", "showbefore": null, "value": platina },
+        "g": { "color": "#E5C100", "showbefore": 1e8, "value": gold },
+        "s": { "color": "#a8a8a8", "showbefore": 1e6, "value": silver },
+        "c": { "color": "#a15c2f", "showbefore": 1e4, "value": copper },
     }
-    var leftOver = coins
     var i = 0
-    for (var tier of tiers) {
-        var x = Math.floor(leftOver / Math.pow(10, (tiers.length - i) * 2))
-        var leftOver = Math.floor(leftOver - x * Math.pow(10, (tiers.length - i) * 2))
-        var text = (coins > 1e9 && i > 0) ? "" : format(String(x),1) + tier + " "
-        element.children[i].textContent = x > 0 ? text : ""
-        element.children[i].style.color = colors[tier]
-        i += 1        
+    for (var key in money) {
+        if ((money[key].showbefore == null || coins < money[key].showbefore) && (money[key].value > 0 || key == "c")) {
+            element.children[i].textContent = format(money[key].value) + key
+            element.children[i].style.color = money[key].color
+        }
+        else {
+            element.children[i].textContent = ""            
+        }
+        i++;
     }
-    if (leftOver == 0 && coins > 0 || coins > 1e9) { element.children[3].textContent = ""; return }
-    if (coins < 1e4) {
-        var text = String(Math.floor(leftOver)) + "c"
-        element.children[3].textContent = text
-        element.children[3].style.color = colors["c"]
-    }
+
+    
 }
 
 function getTaskElement(taskName) {
