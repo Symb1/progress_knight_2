@@ -24,8 +24,7 @@ var gameData = {
 
 var tempData = {}
 
-const autoPromoteElement = document.getElementById("autoPromote")
-const autoLearnElement = document.getElementById("autoLearn")
+var autoBuyEnabled = true
 
 const updateSpeed = 20
 
@@ -590,6 +589,7 @@ function goBankrupt() {
     gameData.coins = 0
     gameData.currentProperty = gameData.itemData["Homeless"]
     gameData.currentMisc = []
+    autoBuyEnabled = true
 }
 
 function initUI() {
@@ -620,20 +620,19 @@ function setTimeWarping() {
 }
 
 function setTask(taskName) {    
-    document.getElementById("autoPromote").checked = false
     var task = gameData.taskData[taskName]
     if (task instanceof Job)
         gameData.currentJob = task 
 }
 
 function setProperty(propertyName) {
-    document.getElementById("autoLearn").checked = false
+    autoBuyEnabled = false
     var property = gameData.itemData[propertyName]
     gameData.currentProperty = property
 }
 
 function setMisc(miscName) {
-    document.getElementById("autoLearn").checked = false
+    autoBuyEnabled = false
     var misc = gameData.itemData[miscName]
     if (gameData.currentMisc.includes(misc)) {
         for (i = 0; i < gameData.currentMisc.length; i++) {
@@ -967,7 +966,6 @@ function getNextEntity(data, categoryType, entityName) {
 }
 
 function autoPromote() {
-    if (!autoPromoteElement.checked) return
     var Max_Income = 0;
     for (key in gameData.taskData) {
         var task = gameData.taskData[key]
@@ -983,8 +981,8 @@ function autoPromote() {
     }
 }
 
-function autoLearn() {
-    if (!autoLearnElement.checked) return
+function autoBuy() {
+    if (!autoBuyEnabled) return
 
     var usedExpense = 0;
     var income = getIncome()
@@ -1294,7 +1292,7 @@ function updateUI() {
 function update() {
     increaseDays()
     autoPromote()
-    autoLearn()
+    autoBuy()
     for (key in gameData.taskData) {
         var task = gameData.taskData[key]
         if ((task instanceof Skill || task instanceof Job) && gameData.requirements[key].completed)
@@ -1368,9 +1366,8 @@ function loadLoadout(num){
 		for (i in  loadouts[num].misc) setMisc( loadouts[num].misc[i])
 		setProperty(loadouts[num].property)
 		setTask(loadouts[num].job)
-	}
-	 document.getElementById("autoLearn").checked = true
-	 document.getElementById("autoPromote").checked= true
+    }
+    autoBuyEnabled = true
 }
 
 window.addEventListener('keydown', function(e) {
@@ -1388,9 +1385,7 @@ window.addEventListener('keydown', function(e) {
 		}
 	}	
     if(e.key=="ArrowRight") changeTab(1) 
-    if(e.key=="ArrowLeft") changeTab(-1) 
-    if(e.key=="l" || e.key=="L") document.getElementById("autoLearn").checked = !document.getElementById("autoLearn").checked
-    if(e.key=="p" || e.key=="P") document.getElementById("autoPromote").checked = !document.getElementById("autoPromote").checked
+    if(e.key=="ArrowLeft") changeTab(-1)     
 });
 
 
