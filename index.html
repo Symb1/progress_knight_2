@@ -22,8 +22,10 @@
                 </span>
 
                 <div class="" style="font-size: small">Age <span id="ageDisplay">14</span> Day <span id="dayDisplay">0</span></div>
-                <div class="sidebar-element" style="color: gray">Lifespan: <span id="lifespanDisplay">70</span> years
-                <br>RealTime: <span id="realtimeDisplay">0</span></div>
+                <div class="sidebar-element" style="color: gray">
+                    Lifespan: <span id="lifespanDisplay">70</span> years
+                    <br>RealTime: <span id="realtimeDisplay">0</span>
+                </div>
 
                 <button id="pauseButton" class="w3-button button sidebar-element" onClick="setPause()">Pause</button>
 
@@ -91,15 +93,21 @@
                     <div style="color: gray">Affects game speed</div>
                     <button id="timeWarpingButton" class="w3-button button sidebar-element" style="margin-top: 5px; width:150px" onClick="setTimeWarping()">Enable warp</button>
                 </span>
-                <div id="rebirthButton1">
-                    <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px; width: 150px" onClick="rebirthOne()">Touch the eye</button>
+
+                <div>
+                    <div style="font-size: small"><span style="color: rgb(34, 219, 202)">Rebirth</span></div>
+
+                    <div id="rebirthButton1">
+                        <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px; width: 150px" onClick="rebirthOne()">Touch the eye</button>
+                    </div>
+                    <div id="rebirthButton2">
+                        <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px; width: 150px" onClick="rebirthTwo()">Embrace evil: <span style="color: rgb(240, 0, 0)" id="evilGainButtonDisplay"></span></button>
+                    </div>
+                    <div id="rebirthButton3">
+                        <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px; width: 150px" onClick="rebirthThree()">Transcend: <span style="color: rgb(24, 210, 217)" id="essenceGainButtonDisplay"></span></button>
+                    </div>
                 </div>
-                <div id="rebirthButton2">
-                    <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px; width: 150px" onClick="rebirthTwo()">Embrace evil: <span style="color: rgb(240, 0, 0)" id="evilGainButtonDisplay"></span></button>
-                </div>
-                <div id="rebirthButton3">
-                    <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px; width: 150px" onClick="rebirthThree()">Transcend: <span style="color: rgb(24, 210, 217)" id="essenceGainButtonDisplay"></span></button>
-                </div>
+
             </div>
                     <div class="column">
                         <div class="panel w3-margin-left" style="width: 1460px; height: 30px;">
