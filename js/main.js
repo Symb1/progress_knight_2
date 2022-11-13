@@ -7,7 +7,7 @@ var gameData = {
     evil: 0,
 	essence: 0,
     paused: false,
-    timeWarpingEnabled: false,
+    timeWarpingEnabled: true,
 
     rebirthOneCount: 0,
     rebirthTwoCount: 0,
@@ -559,8 +559,7 @@ function getEssenceGain() {
     var essenceControl = gameData.taskData["Yin Yang"]
 	var essenceCollector = gameData.taskData["Essence Collector"]
     var essence = essenceControl.getEffect() * essenceCollector.getEffect()
-    return essence
-	
+    return essence	
 }
 
 
@@ -568,7 +567,7 @@ function getGameSpeed() {
     var timeWarping = gameData.taskData["Time Warping"]
 	var temporalDimension = gameData.taskData["Temporal Dimension"]
 	var timeLoop = gameData.taskData["Time Loop"]
-    var timeWarpingSpeed = gameData.timeWarpingEnabled ? timeWarping.getEffect() + temporalDimension.getEffect() * timeLoop.getEffect() : 1
+    var timeWarpingSpeed = timeWarping.getEffect() + temporalDimension.getEffect() * timeLoop.getEffect()
     var gameSpeed = baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed
     return gameSpeed
 }
@@ -620,10 +619,6 @@ function setTab(element, selectedTab) {
 
 function setPause() {
     gameData.paused = !gameData.paused
-}
-
-function setTimeWarping() {
-    gameData.timeWarpingEnabled = !gameData.timeWarpingEnabled
 }
 
 function setTask(taskName) {    
@@ -903,7 +898,6 @@ function updateText() {
     document.getElementById("essenceGainButtonDisplay").textContent = "+" + format(getEssenceGain().toFixed(1))
 
     document.getElementById("timeWarpingDisplay").textContent = "x" + format((gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toFixed(1))
-    document.getElementById("timeWarpingButton").textContent = gameData.timeWarpingEnabled ? "Disable warp" : "Enable warp"
 	}
 
 function setSignDisplay() {
@@ -1335,6 +1329,7 @@ function update() {
 }
 
 function resetGameData() {
+    if (!confirm('Are you sure you want to reset the game?')) return;
     localStorage.clear()
     location.reload()
 }
