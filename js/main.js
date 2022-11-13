@@ -1350,6 +1350,7 @@ function importGameData() {
 function exportGameData() {
     var importExportBox = document.getElementById("importExportBox")
     importExportBox.value = window.btoa(JSON.stringify(gameData))
+    copyTextToClipboard(importExportBox.value)
 }
 
 
@@ -1401,6 +1402,22 @@ function loadLoadout(num){
     }
     autoBuyEnabled = true
 }
+
+function copyTextToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function () {
+        var tooltip = document.getElementById("exportTooltip");
+        tooltip.innerHTML = "Save copied to clipboard!" ;
+    }, function (err) {
+        //console.error('Async: Could not copy text: ', err);
+    });
+}
+
+function outExportButton() {
+    var tooltip = document.getElementById("exportTooltip");
+    tooltip.innerHTML = "";
+}
+
+
 
 window.addEventListener('keydown', function(e) {
     if (e.key == "1" && e.altKey) saveLoadout(1)
