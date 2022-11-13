@@ -778,23 +778,23 @@ function updateRequiredRows(data, categoryType) {
             if (data == gameData.taskData) {
                 if (requirementObject instanceof EvilRequirement) {
                     evilElement.classList.remove("hiddenTask")
-                    evilElement.textContent = format(requirements[0].requirement) + " evil"	
+                    evilElement.textContent = format(requirements[0].requirement) + " evil"
                 } else if (requirementObject instanceof EssenceRequirement) {
-                           essenceElement.classList.remove("hiddenTask")
-                           essenceElement.textContent = format(requirements[0].requirement) + " essence"
+                    essenceElement.classList.remove("hiddenTask")
+                    essenceElement.textContent = format(requirements[0].requirement) + " essence"
                 } else {
                     levelElement.classList.remove("hiddenTask")
                     for (requirement of requirements) {
                         var task = gameData.taskData[requirement.task]
                         if (task.level >= requirement.requirement) continue
-                        var text = " " + requirement.task + " level " + format(task.level) + "/" + format(requirement.requirement) + ","
+                        var text = " " + requirement.task + " " + task.level + "/" + requirement.requirement + ","
                         finalText += text
                     }
                     finalText = finalText.substring(0, finalText.length - 1)
                     levelElement.textContent = finalText
                 }
-            } 
-		        else if (data == gameData.itemData) {
+            }
+            else if (data == gameData.itemData) {
                 coinElement.classList.remove("hiddenTask")
                 formatCoins(requirements[0].requirement, coinElement)
             }
