@@ -1060,7 +1060,7 @@ function increaseDays() {
 }
 
 function increaseRealtime() {
-    if (!gameData.paused)
+    if (!gameData.paused && isAlive())
         gameData.realtime += 1.0 / updateSpeed;
 }
 
