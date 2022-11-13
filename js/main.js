@@ -902,7 +902,7 @@ function updateText() {
     document.getElementById("essenceGainDisplay").textContent = format(getEssenceGain().toFixed(1))
     document.getElementById("essenceGainButtonDisplay").textContent = "+" + format(getEssenceGain().toFixed(1))
 
-    document.getElementById("timeWarpingDisplay").textContent = "x" + (gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toFixed(1)
+    document.getElementById("timeWarpingDisplay").textContent = "x" + format(gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toFixed(1)
     document.getElementById("timeWarpingButton").textContent = gameData.timeWarpingEnabled ? "Disable warp" : "Enable warp"
 	}
 
