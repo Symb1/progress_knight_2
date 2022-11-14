@@ -177,19 +177,8 @@ const milestoneBaseData = {
     "Magic Eye": { name: "Magic Eye", expense: 5000, tier: 1 },
     "Almighty Eye": { name: "Almighty Eye", expense: 15000, tier: 2 },
     "Deal with the Devil": { name: "Deal with the Devil", expense: 30000, tier: 3 },
-    "Hell Portal": { name: "Hell Portal", expense: 50000, tier: 4 }
-    /*
-     75000
-    105000
-    140000
-    180000
-    225000
-    275000
-    330000
-    390000
-    455000
-    525000
-    */
+    "Transcend Master": { name: "Transcend Master", expense: 50000, tier: 4 },
+    "Hell Portal": { name: "Hell Portal", expense: 100000, tier: 5 },
 }
 
 const jobCategories = {
@@ -218,7 +207,7 @@ const itemCategories = {
 }
 
 const milestoneCategories = {
-    "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Hell Portal"],
+    "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcend Master", "Hell Portal"],
 }
 
 const headerRowColors = {
@@ -383,6 +372,7 @@ const tooltips = {
     "Magic Eye": "The amulet will automatically update max level of jobs and skills when eyeball emerges from its centre",
     "Almighty Eye": "The amulet will always automatically update max level of jobs and skills",
     "Deal with the Devil": "Your evil will grow slowly",
+    "Transcend Master": "You gain x1.5 more essence",
     "Hell Portal": "You opened portal to the Hell. Your evil is limitless"
 }
 
@@ -581,6 +571,10 @@ function getEssenceGain() {
     var essenceControl = gameData.taskData["Yin Yang"]
 	var essenceCollector = gameData.taskData["Essence Collector"]
     var essence = essenceControl.getEffect() * essenceCollector.getEffect()
+
+    if (gameData.requirements["Transcend Master"].isCompleted()) 
+        essence *= 1.5    
+
     return essence	
 }
 
@@ -1201,14 +1195,9 @@ function rebirthTwo() {
 }
 
 function rebirthThree() {
-    gameData.rebirthThreeCount += 1
-	if (gameData.essence < 30000) {
-	gameData.essence += getEssenceGain()
-	} else {
-		gameData.essence += getEssenceGain() * 1.5;
-	}	
+    gameData.rebirthThreeCount += 1	
+	gameData.essence += getEssenceGain()	
 	gameData.evil = 0
-
 	
 	var recallEffect = gameData.taskData["Cosmic Recollection"].getEffect();
 
@@ -1731,7 +1720,8 @@ gameData.requirements = {
     "Magic Eye": new EssenceRequirement([getMilestoneElement("Magic Eye")], [{ requirement: 5000 }]),
     "Almighty Eye": new EssenceRequirement([getMilestoneElement("Almighty Eye")], [{ requirement: 15000 }]),
     "Deal with the Devil": new EssenceRequirement([getMilestoneElement("Deal with the Devil")], [{ requirement: 30000 }]),
-    "Hell Portal": new EssenceRequirement([getMilestoneElement("Hell Portal")], [{ requirement: 50000 }]),
+    "Transcend Master": new EssenceRequirement([getMilestoneElement("Transcend Master")], [{ requirement: 50000 }]),    
+    "Hell Portal": new EssenceRequirement([getMilestoneElement("Hell Portal")], [{ requirement: 100000 }]),
 }
 
 tempData["requirements"] = {}
