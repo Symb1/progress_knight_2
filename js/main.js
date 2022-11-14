@@ -96,7 +96,7 @@ const skillBaseData = {
     "Life Essence": {name: "Life Essence", maxXp: 100, effect: 0.01, description: "Longer Lifespan"},
     "Time Warping": {name: "Time Warping", maxXp: 100, effect: 0.01, description: "Gamespeed"},
     "Astral Body": {name: "Astral Body", maxXp: 100, effect: 0.0035, description: "Longer lifespan"},
-	"Temporal Dimension": {name: "Temporal Dimension", maxXp: 100, effect: 0.025, description: "Gamespeed"},
+	"Temporal Dimension": {name: "Temporal Dimension", maxXp: 100, effect: 0.006, description: "Gamespeed"},
 	"All Seeing Eye": {name: "All Seeing Eye", maxXp: 100, effect: 0.0027, description: "T.A.A Pay"},
 	"Brainwashing": {name: "Brainwashing", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
 	
@@ -178,7 +178,9 @@ const milestoneBaseData = {
     "Almighty Eye": { name: "Almighty Eye", expense: 15000, tier: 2 },
     "Deal with the Devil": { name: "Deal with the Devil", expense: 30000, tier: 3 },
     "Transcend Master": { name: "Transcend Master", expense: 50000, tier: 4 },
-    "Hell Portal": { name: "Hell Portal", expense: 100000, tier: 5 },
+    "Warp Drive": { name: "Warp Drive", expense: 75000, tier: 5 },
+    "Hell Portal": { name: "Hell Portal", expense: 100000, tier: 6 },
+    "God's Blessings": { name: "God's Blessings", expense: 200000, tier: 7 },
 }
 
 const jobCategories = {
@@ -207,7 +209,7 @@ const itemCategories = {
 }
 
 const milestoneCategories = {
-    "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcend Master", "Hell Portal"],
+    "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcend Master", "Warp Drive", "Hell Portal", "God's Blessings"],
 }
 
 const headerRowColors = {
@@ -373,7 +375,9 @@ const tooltips = {
     "Almighty Eye": "The amulet will always automatically update max level of jobs and skills",
     "Deal with the Devil": "Your evil will grow slowly",
     "Transcend Master": "You gain x1.5 more essence",
-    "Hell Portal": "You opened portal to the Hell. Your evil is limitless"
+    "Warp Drive": "You get timewarp boost x2",
+    "Hell Portal": "You opened portal to the Hell. Your evil is limitless",
+    "God's Blessings": "Your Happinnes grows 10x more",
 }
 
 const units = ["", "k", "M", "B", "T", "q", "Q", "Sx", "Sp", "Oc", "Nv", "Vg", "Uv", "Dv", "Tv", "Qt", "Qv", "Sv", "Oc", "Nd", "Tg", "OMG"];
@@ -529,8 +533,9 @@ function getHappiness() {
     var meditationEffect = getBindedTaskEffect("Meditation")
     var butlerEffect = getBindedItemEffect("Butler")
 	var mindseizeEffect = getBindedTaskEffect("Mind Seize")
-	var multiverseFragment = getBindedItemEffect("Multiverse Fragment")
-    var happiness = meditationEffect() * butlerEffect() / mindseizeEffect() * multiverseFragment() * gameData.currentProperty.getEffect()
+    var multiverseFragment = getBindedItemEffect("Multiverse Fragment")
+    var godsBlessings = gameData.requirements["God's Blessings"].isCompleted() ? 10 : 1
+    var happiness = godsBlessings * meditationEffect() * butlerEffect() / mindseizeEffect() * multiverseFragment() * gameData.currentProperty.getEffect()
     return happiness
 }
 
@@ -582,9 +587,10 @@ function getEssenceGain() {
 function getGameSpeed() {
     var timeWarping = gameData.taskData["Time Warping"]
 	var temporalDimension = gameData.taskData["Temporal Dimension"]
-	var timeLoop = gameData.taskData["Time Loop"]
-    var timeWarpingSpeed = timeWarping.getEffect() + temporalDimension.getEffect() * timeLoop.getEffect()
-    var gameSpeed = baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed
+    var timeLoop = gameData.taskData["Time Loop"]
+    var warpDrive = (gameData.requirements["Warp Drive"].isCompleted()) ? 2 : 1
+    var timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive
+    var gameSpeed = baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed 
     return gameSpeed
 }
 
@@ -939,7 +945,12 @@ function updateText() {
     document.getElementById("essenceGainDisplay").textContent = format(getEssenceGain().toFixed(1))
     document.getElementById("essenceGainButtonDisplay").textContent = "+" + format(getEssenceGain().toFixed(1))
 
-    document.getElementById("timeWarpingDisplay").textContent = "x" + format((gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toFixed(1))
+    document.getElementById("timeWarpingDisplay").textContent = "x" + format(
+        (gameData.taskData["Time Warping"].getEffect() *
+            gameData.taskData["Temporal Dimension"].getEffect() *
+            gameData.taskData["Time Loop"].getEffect() *
+            ((gameData.requirements["Warp Drive"].isCompleted()) ? 2 : 1)
+        ).toFixed(1))
 	}
 
 function setSignDisplay() {
@@ -1226,7 +1237,7 @@ function applyMilestones() {
         if (gameData.evil < evilGain)
             gameData.evil *= 1.001
     }
-
+    
     if (gameData.requirements["Hell Portal"].isCompleted()) {
         var evilGain = getEvilGain()
         if (gameData.evil == 0)
@@ -1721,7 +1732,9 @@ gameData.requirements = {
     "Almighty Eye": new EssenceRequirement([getMilestoneElement("Almighty Eye")], [{ requirement: 15000 }]),
     "Deal with the Devil": new EssenceRequirement([getMilestoneElement("Deal with the Devil")], [{ requirement: 30000 }]),
     "Transcend Master": new EssenceRequirement([getMilestoneElement("Transcend Master")], [{ requirement: 50000 }]),    
+    "Warp Drive": new EssenceRequirement([getMilestoneElement("Warp Drive")], [{ requirement: 75000 }]),    
     "Hell Portal": new EssenceRequirement([getMilestoneElement("Hell Portal")], [{ requirement: 100000 }]),
+    "God's Blessings": new EssenceRequirement([getMilestoneElement("God's Blessings")], [{ requirement: 200000 }]),
 }
 
 tempData["requirements"] = {}
