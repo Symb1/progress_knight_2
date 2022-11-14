@@ -1,6 +1,7 @@
 var gameData = {
     taskData: {},
     itemData: {},
+    milestoneData: {},
 
     coins: 0,
     days: 365 * 14,
@@ -73,15 +74,11 @@ const jobBaseData = {
 	"Abyss God": {name: "Abyss God", maxXp: 400000000000000000000, income: 1000000000000},
 
 
-
-
 	"Eternal Wanderer": {name: "Eternal Wanderer", maxXp: 55000000000000000000, income: 1000000000000},
     "Nova": {name: "Nova", maxXp: 51000000000000000000, income: 3000000000000},
     "Sigma Proioxis": {name: "Sigma Proioxis", maxXp: 500000000000000000000, income: 25000000000000},
 	"Acallaris": {name: "Acallaris", maxXp: 50000000000000000000000, income: 215000000000000},
 	"One Above All": {name: "One Above All", maxXp: 5000000000000000000000000000, income: 25000000000000000},
-	
-	
 	
 }
 
@@ -174,7 +171,25 @@ const itemBaseData = {
 	"Celestial Robe": {name: "Celestial Robe", expense: 300002050000000, effect: 5, description: "Galactic Council XP"},
 	"Universe Fragment": {name: "Universe Fragment", expense: 18500002050000000, effect: 3, description: "Ability XP"},
 	"Multiverse Fragment": {name: "Multiverse Fragment", expense: 200500002050000000, effect: 5, description: "Happiness"},
+}
 
+const milestoneBaseData = {
+    "Magic Eye": { name: "Magic Eye", expense: 5000, tier: 1 },
+    "Almighty Eye": { name: "Almighty Eye", expense: 15000, tier: 2 },
+    "Deal with the Devil": { name: "Deal with the Devil", expense: 30000, tier: 3 },
+    "Hell Portal": { name: "Hell Portal", expense: 50000, tier: 4 }
+    /*
+     75000
+    105000
+    140000
+    180000
+    225000
+    275000
+    330000
+    390000
+    455000
+    525000
+    */
 }
 
 const jobCategories = {
@@ -202,6 +217,10 @@ const itemCategories = {
     "Misc"                   : ["Book", "Dumbbells", "Personal Squire", "Steel Longsword", "Butler", "Sapphire Charm", "Study Desk", "Library", "Observatory", "Mind's Eye", "Void Necklace", "Void Armor", "Void Blade", "Void Orb", "Void Dust", "Celestial Robe", "Universe Fragment", "Multiverse Fragment"]
 }
 
+const milestoneCategories = {
+    "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Hell Portal"],
+}
+
 const headerRowColors = {
     "Common work": "#55a630",
     "Military": "#e63946",
@@ -219,6 +238,7 @@ const headerRowColors = {
     "Misc_Auto": "#f54546",
     "Properties": "#219ebc",
     "Misc": "#b56576",
+    "Essence Milestones":"#0066ff"
 }
 
 const tooltips = {
@@ -357,7 +377,13 @@ const tooltips = {
 	"Void Dust": "Purest version of void created material, a teaspoon of it is as heavy as a small planet. ",
 	"Celestial Robe": "The most powerful and essential equipment of any Celestial. Acts as a source of infinite power.",
 	"Universe Fragment": "From the time the universe was born. Can create another small universes.",
-	"Multiverse Fragment": "Came into existance long before our universe was created, this strange looking object with no shape radiates unlimited energy.",
+    "Multiverse Fragment": "Came into existance long before our universe was created, this strange looking object with no shape radiates unlimited energy.",
+
+    //Milestones
+    "Magic Eye": "The amulet will automatically update max level of jobs and skills when eyeball emerges from its centre",
+    "Almighty Eye": "The amulet will always automatically update max level of jobs and skills",
+    "Deal with the Devil": "Your evil will grow slowly",
+    "Hell Portal": "You opened portal to the Hell. Your evil is limitless"
 }
 
 const units = ["", "k", "M", "B", "T", "q", "Q", "Sx", "Sp", "Oc", "Nv", "Vg", "Uv", "Dv", "Tv", "Qt", "Qv", "Sv", "Oc", "Nd", "Tg", "OMG"];
@@ -407,10 +433,6 @@ function addMultipliers() {
 			task.xpMultipliers.push(getBindedTaskEffect("Void Symbiosis"))
 			task.xpMultipliers.push(getBindedItemEffect("Universe Fragment"))
 			task.xpMultipliers.push(getBindedTaskEffect("Evil Incarnate"))
-			
-
-		
-		
         }
 
         if (jobCategories["Military"].includes(task.name)) {
@@ -656,7 +678,8 @@ function createData(data, baseData) {
 
 function createEntity(data, entity) {
     if ("income" in entity) {data[entity.name] = new Job(entity)}
-    else if ("maxXp" in entity) {data[entity.name] = new Skill(entity)}
+    else if ("maxXp" in entity) { data[entity.name] = new Skill(entity) }
+    else if ("tier" in entity) { data[entity.name] = new Milestone(entity) }
     else {data[entity.name] = new Item(entity)}
     data[entity.name].id = "row " + entity.name
 }
@@ -672,7 +695,7 @@ function createRequiredRow(categoryName) {
 function createHeaderRow(templates, categoryType, categoryName) {
     var headerRow = templates.headerRow.content.firstElementChild.cloneNode(true)
     headerRow.getElementsByClassName("category")[0].textContent = categoryName
-    if (categoryType != itemCategories) {
+    if (categoryType == jobCategories || categoryType == skillCategories) {
         headerRow.getElementsByClassName("valueType")[0].textContent = categoryType == jobCategories ? "Income/day" : "Effect"
     }
 
@@ -689,10 +712,13 @@ function createRow(templates, name, categoryName, categoryType) {
     row.getElementsByClassName("name")[0].textContent = name
     row.getElementsByClassName("tooltipText")[0].textContent = tooltips[name]
     row.id = "row " + name
-    if (categoryType != itemCategories) {
-        row.getElementsByClassName("progressBar")[0].onclick = function() {setTask(name)}
-    } else {
-        row.getElementsByClassName("button")[0].onclick = categoryName == "Properties" ? function() {setProperty(name)} : function() {setMisc(name)}
+    if (categoryType == jobCategories || categoryType == skillCategories) {
+        row.getElementsByClassName("progressBar")[0].onclick = function () { setTask(name) }
+    } else if (categoryType == itemCategories) {
+        row.getElementsByClassName("button")[0].onclick = categoryName == "Properties" ? function () { setProperty(name) } : function () { setMisc(name) }
+    } else if (categoryType == milestoneCategories)
+    {
+        // milestones
     }
 
     return row
@@ -700,8 +726,16 @@ function createRow(templates, name, categoryName, categoryType) {
 
 function createAllRows(categoryType, tableId) {
     var templates = {
-        headerRow: document.getElementsByClassName(categoryType == itemCategories ? "headerRowItemTemplate" : "headerRowTaskTemplate")[0],
-        row: document.getElementsByClassName(categoryType == itemCategories ? "rowItemTemplate" : "rowTaskTemplate")[0],
+        headerRow: document.getElementsByClassName(
+            categoryType == itemCategories
+                ? "headerRowItemTemplate"
+                : (categoryType == milestoneCategories ? "headerRowMilestoneTemplate" : "headerRowTaskTemplate")
+
+        )[0],
+        row: document.getElementsByClassName(
+            categoryType == itemCategories
+                ? "rowItemTemplate"
+                : (categoryType == milestoneCategories ? "rowMilestoneTemplate": "rowTaskTemplate"))[0],
     }
 
     var table = document.getElementById(tableId)
@@ -798,9 +832,23 @@ function updateRequiredRows(data, categoryType) {
                 coinElement.classList.remove("hiddenTask")
                 formatCoins(requirements[0].requirement, coinElement)
             }
+            else if (data == gameData.milestoneData) {
+                essenceElement.classList.remove("hiddenTask")
+                essenceElement.textContent = format(requirements[0].requirement) + " essence"
+            }
         }   
     }
 }
+
+function updateMilestoneRows()
+{
+    for (key in gameData.milestoneData) {
+        var milestone = gameData.milestoneData[key]
+        var row = document.getElementById("row " + milestone.name)
+        row.getElementsByClassName("essence")[0].textContent = format(milestone.expense)
+    }
+}
+
 
 function updateTaskRows() {
     for (key in gameData.taskData) {
@@ -1112,6 +1160,12 @@ function getItemElement(itemName) {
     return element
 }
 
+function getMilestoneElement(milestoneName) {
+    var milestone = gameData.milestoneData[milestoneName]
+    var element = document.getElementById(milestone.id)
+    return element
+}
+
 function getElementsByClass(className) {
     var elements = document.getElementsByClassName(removeSpaces(className))
     return elements
@@ -1157,11 +1211,39 @@ function rebirthThree() {
 
 	
 	var recallEffect = gameData.taskData["Cosmic Recollection"].getEffect();
-    rebirthReset()
-	
+
 	for (taskName in gameData.taskData) {
         var task = gameData.taskData[taskName]
-        task.maxLevel = Math.floor(recallEffect * task.maxLevel);
+        task.maxLevel = Math.floor(recallEffect * task.level);
+    }
+
+    rebirthReset()
+}
+
+function applyMilestones() {
+    if (((gameData.requirements["Magic Eye"].isCompleted()) && (gameData.requirements["Rebirth note 2"].isCompleted())) ||
+        (gameData.requirements["Almighty Eye"].isCompleted())){
+        for (taskName in gameData.taskData) {
+            var task = gameData.taskData[taskName]
+            if (task.level > task.maxLevel) task.maxLevel = task.level
+        }
+    }
+
+    if (gameData.requirements["Deal with the Devil"].isCompleted() && gameData.requirements["Rebirth note 3"].isCompleted())
+    {
+        var evilGain = getEvilGain()
+        if (gameData.evil == 0)
+            gameData.evil = 1
+        if (gameData.evil < evilGain)
+            gameData.evil *= 1.001
+    }
+
+    if (gameData.requirements["Hell Portal"].isCompleted()) {
+        var evilGain = getEvilGain()
+        if (gameData.evil == 0)
+            gameData.evil = 1
+        if (gameData.evil < evilGain)
+            gameData.evil *= 1.01
     }
 }
 
@@ -1293,6 +1375,7 @@ function loadGameData() {
         replaceSaveDict(gameData.requirements, gameDataSave.requirements)
         replaceSaveDict(gameData.taskData, gameDataSave.taskData)
         replaceSaveDict(gameData.itemData, gameDataSave.itemData)
+        replaceSaveDict(gameData.milestoneData, gameDataSave.milestoneData)
         replaceSaveDict(gameData.settings, gameDataSave.settings)
 
         gameData = gameDataSave
@@ -1304,17 +1387,30 @@ function loadGameData() {
 function updateUI() {
     updateTaskRows()
     updateItemRows()
+    updateMilestoneRows()
     updateRequiredRows(gameData.taskData, jobCategories)
     updateRequiredRows(gameData.taskData, skillCategories)
     updateRequiredRows(gameData.itemData, itemCategories)
+    updateRequiredRows(gameData.milestoneData, milestoneCategories)
+
     updateHeaderRows(jobCategories)
     updateHeaderRows(skillCategories)
+
     updateQuickTaskDisplay()
     hideEntities()
     updateText()  
 }
 
-function update() {
+function addMinutes(count = 1) {
+    for (var i = 0; i < count * 60 * updateSpeed; i++) {
+        update(false)
+        if (i % 60 * updateSpeed == 0)
+            updateUI()
+    }
+}
+
+function update(needUpdateUI = true) {
+    //
     increaseRealtime()
     increaseDays()
     autoPromote()
@@ -1323,9 +1419,11 @@ function update() {
         var task = gameData.taskData[key]
         if ((task instanceof Skill || task instanceof Job) && gameData.requirements[key].completed)
             doCurrentTask(task)
-    }
+    }    
+    applyMilestones();    
     applyExpenses()
-    updateUI()
+    if (needUpdateUI)
+        updateUI()
 }
 
 function resetGameData() {
@@ -1438,10 +1536,13 @@ window.addEventListener('keydown', function(e) {
 createAllRows(jobCategories, "jobTable")
 createAllRows(skillCategories, "skillTable")
 createAllRows(itemCategories, "itemTable") 
+createAllRows(milestoneCategories, "milestoneTable")
 
 createData(gameData.taskData, jobBaseData)
 createData(gameData.taskData, skillBaseData)
-createData(gameData.itemData, itemBaseData) 
+createData(gameData.itemData, itemBaseData)
+createData(gameData.milestoneData, milestoneBaseData) 
+
 
 gameData.currentJob = gameData.taskData["Beggar"]
 gameData.currentProperty = gameData.itemData["Homeless"]
@@ -1618,7 +1719,14 @@ gameData.requirements = {
 	"Void Dust": new CoinRequirement([getItemElement("Void Dust")], [{requirement: gameData.itemData["Void Dust"].getExpense() * 100}]),
 	"Celestial Robe": new CoinRequirement([getItemElement("Celestial Robe")], [{requirement: gameData.itemData["Celestial Robe"].getExpense() * 100}]),
 	"Universe Fragment": new CoinRequirement([getItemElement("Universe Fragment")], [{requirement: gameData.itemData["Universe Fragment"].getExpense() * 100}]),
-	"Multiverse Fragment": new CoinRequirement([getItemElement("Multiverse Fragment")], [{requirement: gameData.itemData["Multiverse Fragment"].getExpense() * 100}]),
+    "Multiverse Fragment": new CoinRequirement([getItemElement("Multiverse Fragment")], [{ requirement: gameData.itemData["Multiverse Fragment"].getExpense() * 100 }]),
+
+    // Milestones
+    "Milestones": new EssenceRequirement([document.getElementById("milestoneTabButton")], [{ requirement: 1 }]),
+    "Magic Eye": new EssenceRequirement([getMilestoneElement("Magic Eye")], [{ requirement: 5000 }]),
+    "Almighty Eye": new EssenceRequirement([getMilestoneElement("Almighty Eye")], [{ requirement: 15000 }]),
+    "Deal with the Devil": new EssenceRequirement([getMilestoneElement("Deal with the Devil")], [{ requirement: 30000 }]),
+    "Hell Portal": new EssenceRequirement([getMilestoneElement("Hell Portal")], [{ requirement: 50000 }]),
 }
 
 tempData["requirements"] = {}

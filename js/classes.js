@@ -41,6 +41,17 @@ class Task {
     }
 }
 
+class Milestone {
+    constructor(baseData) {
+        this.baseData = baseData
+        this.name = baseData.name
+        this.tier = baseData.tier
+        this.expense = baseData.expense
+    }
+
+    getTier() { return this.tier }
+}
+
 class Job extends Task {
     constructor(baseData) {
         super(baseData)   
