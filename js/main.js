@@ -1378,12 +1378,10 @@ function loadGameData() {
             replaceSaveDict(gameData.itemData, gameDataSave.itemData)
             replaceSaveDict(gameData.milestoneData, gameDataSave.milestoneData)
             replaceSaveDict(gameData.settings, gameDataSave.settings)
-
             gameData = gameDataSave
         }
     }
-    catch (error)
-    {
+    catch (error) {
         console.error(error)
     }
 
