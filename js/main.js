@@ -1441,6 +1441,7 @@ function resetGameData() {
 function importGameData() {
     var importExportBox = document.getElementById("importExportBox")
     var data = JSON.parse(window.atob(importExportBox.value))
+    clearInterval(gameloop)
     gameData = data
     saveGameData()
     location.reload()
@@ -1751,5 +1752,5 @@ addMultipliers()
 setTab(jobTabButton, "jobs")
 
 update()
-setInterval(update, 1000 / updateSpeed)
+var gameloop = setInterval(update, 1000 / updateSpeed)
 setInterval(saveGameData, 3000)
