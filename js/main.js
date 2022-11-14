@@ -1286,16 +1286,22 @@ function saveGameData() {
 }
 
 function loadGameData() {
-    var gameDataSave = JSON.parse(localStorage.getItem("gameDataSave"))
+    try {
+        var gameDataSave = JSON.parse(localStorage.getItem("gameDataSave"))
 
-    if (gameDataSave !== null) {
-        replaceSaveDict(gameData, gameDataSave)
-        replaceSaveDict(gameData.requirements, gameDataSave.requirements)
-        replaceSaveDict(gameData.taskData, gameDataSave.taskData)
-        replaceSaveDict(gameData.itemData, gameDataSave.itemData)
-        replaceSaveDict(gameData.settings, gameDataSave.settings)
+        if (gameDataSave !== null) {
+            replaceSaveDict(gameData, gameDataSave)
+            replaceSaveDict(gameData.requirements, gameDataSave.requirements)
+            replaceSaveDict(gameData.taskData, gameDataSave.taskData)
+            replaceSaveDict(gameData.itemData, gameDataSave.itemData)
+            replaceSaveDict(gameData.milestoneData, gameDataSave.milestoneData)
+            replaceSaveDict(gameData.settings, gameDataSave.settings)
 
-        gameData = gameDataSave
+            gameData = gameDataSave
+        }
+    }
+    catch (error) {
+        console.error(error)
     }
 
     assignMethods()
