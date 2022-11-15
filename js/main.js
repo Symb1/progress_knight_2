@@ -373,13 +373,13 @@ const tooltips = {
     "Multiverse Fragment": "Came into existance long before our universe was created, this strange looking object with no shape radiates unlimited energy.",
 
     //Milestones
-    "Magic Eye": "The amulet will automatically update max level of jobs and skills when eyeball emerges from its centre",
-    "Almighty Eye": "The amulet will always automatically update max level of jobs and skills",
-    "Deal with the Devil": "Your evil will grow slowly",
-    "Transcend Master": "You gain x1.5 more essence",
-    "Warp Drive": "You get timewarp boost x2",
-    "Hell Portal": "You opened portal to the Hell. Your evil is limitless",
-    "God's Blessings": "Your Happinnes grows 10x more",
+    "Magic Eye": "The amulet will automatically update max level of jobs and skills when eyeball appears.",
+    "Almighty Eye": "The amulet will always automatically update max level of jobs and skills.",
+    "Deal with the Devil": "You made a deal with the Devil. Your evil will grow slowly.",
+    "Transcend Master": "You've mastered Transcension. You gain x1.5 more essence.",
+    "Warp Drive": "You bought warp drive for your ship. Got x2 timewarp boost.",
+    "Hell Portal": "You opened portal to the Hell. Your evil is limitless.",
+    "God's Blessings": "God bless you. You got x10M Happiness multiplier.",
 }
 
 const units = ["", "k", "M", "B", "T", "q", "Q", "Sx", "Sp", "Oc", "Nv", "Vg", "Uv", "Dv", "Tv", "Qt", "Qv", "Sv", "Oc", "Nd", "Tg", "OMG"];
@@ -536,7 +536,7 @@ function getHappiness() {
     var butlerEffect = getBindedItemEffect("Butler")
 	var mindseizeEffect = getBindedTaskEffect("Mind Seize")
     var multiverseFragment = getBindedItemEffect("Multiverse Fragment")
-    var godsBlessings = gameData.requirements["God's Blessings"].isCompleted() ? 10 : 1
+    var godsBlessings = gameData.requirements["God's Blessings"].isCompleted() ? 10000000 : 1
     var happiness = godsBlessings * meditationEffect() * butlerEffect() / mindseizeEffect() * multiverseFragment() * gameData.currentProperty.getEffect()
     return happiness
 }
