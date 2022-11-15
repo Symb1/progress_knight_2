@@ -380,8 +380,8 @@ const tooltips = {
     "Deal with the Devil": "You made a deal with the Devil. Your evil will grow slowly.",
     "Transcend Master": "You've mastered Transcension. You gain x1.5 more essence.",
     "Warp Drive": "You bought warp drive for your ship. Got x2 timewarp boost.",
-    "Hell Portal": "You opened portal to the Hell. Your evil is limitless.",
-    "God's Blessings": "God bless you. You got x10M Happiness multiplier.",
+    "Hell Portal": "You opened portal to the Hell. Your evil grow faster.",
+    "God's Blessings": "God bless you! You got x10M Happiness multiplier.",
 }
 
 const units = ["", "k", "M", "B", "T", "q", "Q", "Sx", "Sp", "Oc", "Nv", "Vg", "Uv", "Dv", "Tv", "Qt", "Qv", "Sv", "Oc", "Nd", "Tg", "OMG"];
@@ -1122,7 +1122,6 @@ function increaseRealtime() {
 function format(number,decimals= 1) {
     // what tier? (determines SI symbol)
     var tier = Math.log10(number) / 3 | 0;
-    // if zero, we don't need a suffix
     if (tier == 0) return number.toFixed(decimals);
 
     if (gameData.settings.numberNotation == 0 || tier < 3) {
@@ -1154,7 +1153,7 @@ function formatCoins(coins, element) {
     var i = 0
     for (var key in money) {
         if ((money[key].showbefore == null || coins < money[key].showbefore) && (money[key].value > 0 || key == "c")) {
-            element.children[i].textContent = format(money[key].value) + key
+            element.children[i].textContent = format(money[key].value, money[key].value < 1000000? 0: 1) + key
             element.children[i].style.color = money[key].color
         }
         else {
