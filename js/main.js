@@ -177,13 +177,13 @@ const itemBaseData = {
 }
 
 const milestoneBaseData = {
-    "Magic Eye": { name: "Magic Eye", expense: 5000, tier: 1 },
-    "Almighty Eye": { name: "Almighty Eye", expense: 15000, tier: 2 },
-    "Deal with the Devil": { name: "Deal with the Devil", expense: 30000, tier: 3 },
-    "Transcendent Master": { name: "Transcendent Master", expense: 50000, tier: 4 },
-    "Warp Drive": { name: "Warp Drive", expense: 75000, tier: 5 },
-    "Hell Portal": { name: "Hell Portal", expense: 100000, tier: 6 },
-    "God's Blessings": { name: "God's Blessings", expense: 200000, tier: 7 },
+    "Magic Eye": { name: "Magic Eye", expense: 5000, tier: 1, description: "Auto max level at age 65" },
+    "Almighty Eye": { name: "Almighty Eye", expense: 15000, tier: 2, description: "Auto max level from born" },
+    "Deal with the Devil": { name: "Deal with the Devil", expense: 30000, tier: 3, description: "Slow Auto Evil" },
+    "Transcendent Master": { name: "Transcendent Master", expense: 50000, tier: 4, description: "x1.5 Essence gain" },
+    "Warp Drive": { name: "Warp Drive", expense: 75000, tier: 5, description: "x2 Time Warping" },
+    "Hell Portal": { name: "Hell Portal", expense: 100000, tier: 6, description: "Fast Auto Evil" },
+    "God's Blessings": { name: "God's Blessings", expense: 200000, tier: 7, description: "x10M Happiness" },
 }
 
 const jobCategories = {
@@ -850,6 +850,7 @@ function updateMilestoneRows()
         var milestone = gameData.milestoneData[key]
         var row = document.getElementById("row " + milestone.name)
         row.getElementsByClassName("essence")[0].textContent = format(milestone.expense)
+        row.getElementsByClassName("description")[0].textContent = milestone.description
     }
 }
 

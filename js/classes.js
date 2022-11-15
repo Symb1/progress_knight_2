@@ -47,6 +47,7 @@ class Milestone {
         this.name = baseData.name
         this.tier = baseData.tier
         this.expense = baseData.expense
+        this.description = baseData.description
     }
 
     getTier() { return this.tier }
