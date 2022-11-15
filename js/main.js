@@ -148,9 +148,10 @@ const itemBaseData = {
 	"Nation Ruler": {name: "Nation Ruler", expense: 13000000000, effect: 1200},
 	"Pocket Dimension": {name: "Pocket Dimension", expense: 49000000000, effect: 5000},
     "Void Realm": {name: "Void Realm", expense: 121000000000, effect: 15000},
-	"Void Universe": {name: "Void Universe", expense: 2000000000000, effect: 30000},
-	"Astral Realm": {name: "Astral Realm", expense: 160000000000000, effect: 150000},
-	"Galactic Throne": {name: "Galactic Throne", expense: 5000000000000000, effect: 300000},
+	"Void Universe": {name: "Void Universe",         expense: 2000000000000, effect: 30000},
+	"Astral Realm": {name: "Astral Realm",         expense: 160000000000000, effect: 150000},
+    "Galactic Throne": { name: "Galactic Throne", expense: 5000000000000000, effect: 300000 },
+    "Spaceship": { name: "Spaceship", expense: 1000000000000000000, effect: 1500000 },
 
 
     "Book": {name: "Book", expense: 10, effect: 1.5, description: "Ability XP"},
@@ -204,7 +205,7 @@ const skillCategories = {
 }
 
 const itemCategories = {
-    "Properties"             : ["Homeless", "Tent", "Wooden Hut", "Cottage", "House", "Large House", "Small Palace", "Grand Palace", "Town Ruler", "City Ruler", "Nation Ruler", "Pocket Dimension", "Void Realm", "Void Universe", "Astral Realm", "Galactic Throne"],
+    "Properties": ["Homeless", "Tent", "Wooden Hut", "Cottage", "House", "Large House", "Small Palace", "Grand Palace", "Town Ruler", "City Ruler", "Nation Ruler", "Pocket Dimension", "Void Realm", "Void Universe", "Astral Realm", "Galactic Throne", "Spaceship"],
     "Misc"                   : ["Book", "Dumbbells", "Personal Squire", "Steel Longsword", "Butler", "Sapphire Charm", "Study Desk", "Library", "Observatory", "Mind's Eye", "Void Necklace", "Void Armor", "Void Blade", "Void Orb", "Void Dust", "Celestial Robe", "Universe Fragment", "Multiverse Fragment"]
 }
 
@@ -348,7 +349,8 @@ const tooltips = {
 	"Void Realm": "Unknown how or when the Void realm came into existence, containing elements which don’t exist outside of its dimensional plane are now all to your disposal",
 	"Void Universe": "Predating our own universe, the Void has an ulimited amount of space for your belongings, if you are willing to submit to it.",
 	"Astral Realm": "Beneath personality and ego lays the source of our deep character, our personhood. Here are the psychic senses, our deep mind and emotions, symbols and inner reality.",
-	"Galactic Throne": "You sit on your throne, overseeing the existence itself.", 
+    "Galactic Throne": "You sit on your throne, overseeing the existence itself.", 
+    "Spaceship": "Your own personal cosmic house.",
 
     //Misc
     "Book": "A place to write down all your thoughts and discoveries, allowing you to learn a lot more quickly.",
@@ -1703,7 +1705,8 @@ gameData.requirements = {
 	"Void Realm": new CoinRequirement([getItemElement("Void Realm")], [{requirement: gameData.itemData["Void Realm"].getExpense() * 100}]),
 	"Void Universe": new CoinRequirement([getItemElement("Void Universe")], [{requirement: gameData.itemData["Void Universe"].getExpense() * 100}]),
 	"Astral Realm": new CoinRequirement([getItemElement("Astral Realm")], [{requirement: gameData.itemData["Astral Realm"].getExpense() * 100}]),
-	"Galactic Throne": new CoinRequirement([getItemElement("Galactic Throne")], [{requirement: gameData.itemData["Galactic Throne"].getExpense() * 100}]),
+    "Galactic Throne": new CoinRequirement([getItemElement("Galactic Throne")], [{ requirement: gameData.itemData["Galactic Throne"].getExpense() * 100 }]),
+    "Spaceship": new CoinRequirement([getItemElement("Spaceship")], [{ requirement: gameData.itemData["Spaceship"].getExpense() * 100 }]),
 
 
     //Misc
