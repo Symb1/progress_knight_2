@@ -182,7 +182,7 @@ const milestoneBaseData = {
     "Deal with the Devil": { name: "Deal with the Devil", expense: 30000, tier: 3, description: "Slow Auto Evil" },
     "Transcendent Master": { name: "Transcendent Master", expense: 50000, tier: 4, description: "x1.5 Essence gain" },
     "Warp Drive": { name: "Warp Drive", expense: 75000, tier: 5, description: "x2 Time Warping" },
-    "Hell Portal": { name: "Hell Portal", expense: 100000, tier: 6, description: "Fast Auto Evil" },
+    "Hell Portal": { name: "Hell Portal", expense: 120000, tier: 6, description: "Fast Auto Evil" },
     "God's Blessings": { name: "God's Blessings", expense: 200000, tier: 7, description: "x10M Happiness" },
 }
 
@@ -1747,7 +1747,7 @@ gameData.requirements = {
     "Deal with the Devil": new EssenceRequirement([getMilestoneElement("Deal with the Devil")], [{ requirement: 30000 }]),
     "Transcendent Master": new EssenceRequirement([getMilestoneElement("Transcendent Master")], [{ requirement: 50000 }]),    
     "Warp Drive": new EssenceRequirement([getMilestoneElement("Warp Drive")], [{ requirement: 75000 }]),    
-    "Hell Portal": new EssenceRequirement([getMilestoneElement("Hell Portal")], [{ requirement: 100000 }]),
+    "Hell Portal": new EssenceRequirement([getMilestoneElement("Hell Portal")], [{ requirement: 120000 }]),
     "God's Blessings": new EssenceRequirement([getMilestoneElement("God's Blessings")], [{ requirement: 200000 }]),
 }
 
