@@ -19,11 +19,13 @@ var gameData = {
     currentMisc: null,
 
     settings: {
-        stickySidebar: false
+        stickySidebar: false,
+        darkTheme: true,
+        numberNotation: 0,
     },
 
     realtime: 0.0,
-    darkTheme: true
+    
 }
 
 var tempData = {}
@@ -622,7 +624,7 @@ function goBankrupt() {
 
 function initUI() {
     setStickySidebar(gameData.settings.stickySidebar);
-    if (!gameData.darkTheme)
+    if (!gameData.settings.darkTheme)
         setLightDarkMode()
 }
 
@@ -886,6 +888,10 @@ function setStickySidebar(sticky) {
     info.style.position = sticky ? 'sticky' : 'initial';
 }
 
+function setNotation(id) {
+    gameData.settings.numberNotation = id
+}
+
 function updateItemRows() {
     for (key in gameData.itemData) {
         var item = gameData.itemData[key]
@@ -937,22 +943,22 @@ function updateText() {
     formatCoins(getIncome(), document.getElementById("incomeDisplay"))
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
-    document.getElementById("happinessDisplay").textContent = format(getHappiness().toFixed(1))
+    document.getElementById("happinessDisplay").textContent = format(getHappiness())
 
-    document.getElementById("evilDisplay").textContent = format(gameData.evil.toFixed(1))
-    document.getElementById("evilGainDisplay").textContent = format(getEvilGain().toFixed(1))
-    document.getElementById("evilGainButtonDisplay").textContent = "+" + format(getEvilGain().toFixed(1))
+    document.getElementById("evilDisplay").textContent = format(gameData.evil)
+    document.getElementById("evilGainDisplay").textContent = format(getEvilGain())
+    document.getElementById("evilGainButtonDisplay").textContent = "+" + format(getEvilGain())
 	
-    document.getElementById("essenceDisplay").textContent = format(gameData.essence.toFixed(1))
-    document.getElementById("essenceGainDisplay").textContent = format(getEssenceGain().toFixed(1))
-    document.getElementById("essenceGainButtonDisplay").textContent = "+" + format(getEssenceGain().toFixed(1))
+    document.getElementById("essenceDisplay").textContent = format(gameData.essence)
+    document.getElementById("essenceGainDisplay").textContent = format(getEssenceGain())
+    document.getElementById("essenceGainButtonDisplay").textContent = "+" + format(getEssenceGain())
 
     document.getElementById("timeWarpingDisplay").textContent = "x" + format(
         (gameData.taskData["Time Warping"].getEffect() *
             gameData.taskData["Temporal Dimension"].getEffect() *
             gameData.taskData["Time Loop"].getEffect() *
             ((gameData.requirements["Warp Drive"].isCompleted()) ? 2 : 1)
-        ).toFixed(1))
+        ))
 	}
 
 function setSignDisplay() {
@@ -1117,14 +1123,19 @@ function format(number,decimals= 1) {
     // what tier? (determines SI symbol)
     var tier = Math.log10(number) / 3 | 0;
     // if zero, we don't need a suffix
-    if(tier == 0) return number;
-    // get suffix and determine scale
-    var suffix = units[tier];
-    var scale = Math.pow(10, tier * 3);
-    // scale the number
-    var scaled = number / scale;
-    // format number and add suffix
-    return scaled.toFixed(decimals) + suffix;
+    if (tier == 0) return number;
+
+    if (gameData.settings.numberNotation == 0 || tier < 3) {
+        // get suffix and determine scale
+        var suffix = units[tier];
+        var scale = Math.pow(10, tier * 3);
+        // scale the number
+        var scaled = number / scale;
+        // format number and add suffix
+        return scaled.toFixed(decimals) + suffix;
+    }
+    else
+        return number.toExponential(decimals).replace("e+","e")
 }
 
 function formatCoins(coins, element) {
@@ -1181,7 +1192,7 @@ function getElementsByClass(className) {
 function setLightDarkMode() {
     var body = document.getElementById("body")
     body.classList.contains("dark") ? body.classList.remove("dark") : body.classList.add("dark")
-    gameData.darkTheme = body.classList.contains("dark")
+    gameData.settings.darkTheme = body.classList.contains("dark")
 }
 
 function removeSpaces(string) {
@@ -1506,7 +1517,7 @@ function loadLoadout(num){
 function copyTextToClipboard(text) {
     navigator.clipboard.writeText(text).then(function () {
         var tooltip = document.getElementById("exportTooltip");
-        tooltip.innerHTML = "Save copied to clipboard!" ;
+        tooltip.innerHTML = "&nbsp;&nbsp;Save copied to clipboard!" ;
     }, function (err) {
         //console.error('Async: Could not copy text: ', err);
     });
