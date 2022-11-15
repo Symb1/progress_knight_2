@@ -180,7 +180,7 @@ const milestoneBaseData = {
     "Magic Eye": { name: "Magic Eye", expense: 5000, tier: 1 },
     "Almighty Eye": { name: "Almighty Eye", expense: 15000, tier: 2 },
     "Deal with the Devil": { name: "Deal with the Devil", expense: 30000, tier: 3 },
-    "Transcend Master": { name: "Transcend Master", expense: 50000, tier: 4 },
+    "Transcendent Master": { name: "Transcendent Master", expense: 50000, tier: 4 },
     "Warp Drive": { name: "Warp Drive", expense: 75000, tier: 5 },
     "Hell Portal": { name: "Hell Portal", expense: 100000, tier: 6 },
     "God's Blessings": { name: "God's Blessings", expense: 200000, tier: 7 },
@@ -212,7 +212,7 @@ const itemCategories = {
 }
 
 const milestoneCategories = {
-    "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcend Master", "Warp Drive", "Hell Portal", "God's Blessings"],
+    "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcendent Master", "Warp Drive", "Hell Portal", "God's Blessings"],
 }
 
 const headerRowColors = {
@@ -375,13 +375,13 @@ const tooltips = {
     "Multiverse Fragment": "Came into existance long before our universe was created, this strange looking object with no shape radiates unlimited energy.",
 
     //Milestones
-    "Magic Eye": "The amulet will automatically update max level of jobs and skills when eyeball appears.",
-    "Almighty Eye": "The amulet will always automatically update max level of jobs and skills.",
+    "Magic Eye": "The amulet will automatically update the max level of jobs and skills when an eyeball appears.",
+    "Almighty Eye": "The amulet will always automatically update the max level of jobs and skills.",
     "Deal with the Devil": "You made a deal with the Devil. Your evil will grow slowly.",
-    "Transcend Master": "You've mastered Transcension. You gain x1.5 more essence.",
-    "Warp Drive": "You bought warp drive for your ship. Got x2 timewarp boost.",
-    "Hell Portal": "You opened portal to the Hell. Your evil grow faster.",
-    "God's Blessings": "God bless you! You got x10M Happiness multiplier.",
+    "Transcendent Master": "You've mastered Transcendence. You gain x1.5 more essence.",
+    "Warp Drive": "You've got a warp drive for your ship. Got x2 timewarp boost.",
+    "Hell Portal": "You've opened a portal to Hell. Your evil is growing faster.",
+    "God's Blessings": "God bless you! You have got x10M Happiness multiplier.",
 }
 
 const units = ["", "k", "M", "B", "T", "q", "Q", "Sx", "Sp", "Oc", "Nv", "Vg", "Uv", "Dv", "Tv", "Qt", "Qv", "Sv", "Oc", "Nd", "Tg", "OMG"];
@@ -581,7 +581,7 @@ function getEssenceGain() {
 	var essenceCollector = gameData.taskData["Essence Collector"]
     var essence = essenceControl.getEffect() * essenceCollector.getEffect()
 
-    if (gameData.requirements["Transcend Master"].isCompleted()) 
+    if (gameData.requirements["Transcendent Master"].isCompleted()) 
         essence *= 1.5    
 
     return essence	
@@ -1744,7 +1744,7 @@ gameData.requirements = {
     "Magic Eye": new EssenceRequirement([getMilestoneElement("Magic Eye")], [{ requirement: 5000 }]),
     "Almighty Eye": new EssenceRequirement([getMilestoneElement("Almighty Eye")], [{ requirement: 15000 }]),
     "Deal with the Devil": new EssenceRequirement([getMilestoneElement("Deal with the Devil")], [{ requirement: 30000 }]),
-    "Transcend Master": new EssenceRequirement([getMilestoneElement("Transcend Master")], [{ requirement: 50000 }]),    
+    "Transcendent Master": new EssenceRequirement([getMilestoneElement("Transcendent Master")], [{ requirement: 50000 }]),    
     "Warp Drive": new EssenceRequirement([getMilestoneElement("Warp Drive")], [{ requirement: 75000 }]),    
     "Hell Portal": new EssenceRequirement([getMilestoneElement("Hell Portal")], [{ requirement: 100000 }]),
     "God's Blessings": new EssenceRequirement([getMilestoneElement("God's Blessings")], [{ requirement: 200000 }]),
