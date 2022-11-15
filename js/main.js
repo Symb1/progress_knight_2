@@ -1123,7 +1123,7 @@ function format(number,decimals= 1) {
     // what tier? (determines SI symbol)
     var tier = Math.log10(number) / 3 | 0;
     // if zero, we don't need a suffix
-    if (tier == 0) return number;
+    if (tier == 0) return number.toFixed(decimals);
 
     if (gameData.settings.numberNotation == 0 || tier < 3) {
         // get suffix and determine scale
