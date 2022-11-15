@@ -126,7 +126,7 @@ const skillBaseData = {
 	"Dark Knowledge": {name: "Dark Knowledge", maxXp: 100, effect: 0.003, description: "Class XP"},
 	"Void Influence": {name: "Void Influence", maxXp: 100, effect: 0.0028, description: "All XP"},
 	"Time Loop": {name: "Time Loop", maxXp: 100, effect: 0.001, description: "Gamespeed"},
-	"Evil Incarnate": {name: "Evil Incarnate", maxXp: 100, effect: 0.0004, description: "Ability XP"},
+	"Evil Incarnate": {name: "Evil Incarnate", maxXp: 100, effect: 0.01, description: "Ability XP"},
 	
 
     "Yin Yang": {name: "Yin Yang", maxXp: 100, effect: 0.020, description: "Essence + Evil Gain"},
@@ -181,9 +181,12 @@ const milestoneBaseData = {
     "Almighty Eye": { name: "Almighty Eye", expense: 15000, tier: 2, description: "Auto max level from born" },
     "Deal with the Devil": { name: "Deal with the Devil", expense: 30000, tier: 3, description: "Slow Auto Evil" },
     "Transcendent Master": { name: "Transcendent Master", expense: 50000, tier: 4, description: "x1.5 Essence gain" },
-    "Warp Drive": { name: "Warp Drive", expense: 75000, tier: 5, description: "x2 Time Warping" },
+    "Eternal Time": { name: "Eternal Time", expense: 75000, tier: 5, description: "x2 Time Warping" },
     "Hell Portal": { name: "Hell Portal", expense: 120000, tier: 6, description: "Fast Auto Evil" },
-    "God's Blessings": { name: "God's Blessings", expense: 200000, tier: 7, description: "x10M Happiness" },
+    "Inferno": { name: "Inferno", expense: 170000, tier: 7, description: "x5 Evil gain" },
+    "God's Blessings": { name: "God's Blessings", expense: 250000, tier: 8, description: "x10M Happiness" },
+    "Faint Hope": { name: "Faint Hope", expense: 400000, tier: 9, description: "Essence gain increases over time" },
+    "New Beginning": { name: "New Beginning", expense: 5000000, tier: 10, description: "???" },
 }
 
 const jobCategories = {
@@ -212,7 +215,7 @@ const itemCategories = {
 }
 
 const milestoneCategories = {
-    "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcendent Master", "Warp Drive", "Hell Portal", "God's Blessings"],
+    "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcendent Master", "Eternal Time", "Hell Portal", "Inferno", "God's Blessings", "Faint Hope", "New Beginning"],
 }
 
 const headerRowColors = {
@@ -375,13 +378,16 @@ const tooltips = {
     "Multiverse Fragment": "Came into existance long before our universe was created, this strange looking object with no shape radiates unlimited energy.",
 
     //Milestones
-    "Magic Eye": "The amulet will automatically update the max level of jobs and skills when an eyeball appears.",
-    "Almighty Eye": "The amulet will always automatically update the max level of jobs and skills.",
-    "Deal with the Devil": "You made a deal with the Devil. Your evil will grow slowly.",
-    "Transcendent Master": "You've mastered Transcendence. You gain x1.5 more essence.",
-    "Warp Drive": "You've got a warp drive for your ship. Got x2 timewarp boost.",
-    "Hell Portal": "You've opened a portal to Hell. Your evil is growing faster.",
-    "God's Blessings": "God bless you! You have got x10M Happiness multiplier.",
+    "Magic Eye": "The Eye in your Amulet starts to glow.",
+    "Almighty Eye": "The Eye in your Amulet shines like a star.",
+    "Deal with the Devil": "You made a deal with the Devil.",
+    "Transcendent Master": "You've mastered Transcendence.",
+    "Eternal Time": "Is time matters now?",
+    "Hell Portal": "You've opened a portal to Hell.",
+    "Inferno": "You are at the last level of Hell. What is next?",
+    "God's Blessings": "God bless you!",
+    "Faint Hope": "Maybe there is hope?",
+    "New Beginning": "???",
 }
 
 const units = ["", "k", "M", "B", "T", "q", "Q", "Sx", "Sp", "Oc", "Nv", "Vg", "Uv", "Dv", "Tv", "Qt", "Qv", "Sv", "Oc", "Nd", "Tg", "OMG"];
@@ -571,8 +577,9 @@ function getEvilGain() {
     var bloodMeditation = gameData.taskData["Blood Meditation"]
 	var absoluteWish = gameData.taskData ["Absolute Wish"]
 	var oblivionEmbodiment = gameData.taskData ["Void Embodiment"]
-	var yingYang = gameData.taskData ["Yin Yang"]
-    var evil = evilControl.getEffect() * bloodMeditation.getEffect() * absoluteWish.getEffect() * oblivionEmbodiment.getEffect() * yingYang.getEffect()
+    var yingYang = gameData.taskData["Yin Yang"]
+    var inferno = gameData.requirements["Inferno"].isCompleted() ? 5 : 1
+    var evil = evilControl.getEffect() * bloodMeditation.getEffect() * absoluteWish.getEffect() * oblivionEmbodiment.getEffect() * yingYang.getEffect() * inferno
     return evil
 }
 
@@ -583,6 +590,8 @@ function getEssenceGain() {
 
     if (gameData.requirements["Transcendent Master"].isCompleted()) 
         essence *= 1.5    
+    if (gameData.requirements["Faint Hope"].isCompleted() && gameData.realtime > 5*60)           
+        essence *= 1 + (gameData.realtime - 5 * 60) / 600    
 
     return essence	
 }
@@ -592,7 +601,7 @@ function getGameSpeed() {
     var timeWarping = gameData.taskData["Time Warping"]
 	var temporalDimension = gameData.taskData["Temporal Dimension"]
     var timeLoop = gameData.taskData["Time Loop"]
-    var warpDrive = (gameData.requirements["Warp Drive"].isCompleted()) ? 2 : 1
+    var warpDrive = (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
     var timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive
     var gameSpeed = baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed 
     return gameSpeed
@@ -932,9 +941,10 @@ function formatTime(sec_num) {
 
 function updateText() {
     //Sidebar
-    document.getElementById("ageDisplay").textContent = daysToYears(gameData.days)
-    document.getElementById("dayDisplay").textContent = getDay()
-    document.getElementById("lifespanDisplay").textContent = daysToYears(getLifespan())
+    //document.getElementById("ageDisplay").textContent = daysToYears(gameData.days)
+    //document.getElementById("dayDisplay").textContent = getDay(gameData.days)
+    document.getElementById("ageDisplay").textContent = formatAge(gameData.days)
+    document.getElementById("lifespanDisplay").textContent = format(daysToYears(getLifespan()),0)
     document.getElementById("realtimeDisplay").textContent = formatTime(gameData.realtime)
     document.getElementById("pauseButton").textContent = gameData.paused ? "Play" : "Pause"
 
@@ -958,7 +968,7 @@ function updateText() {
         (gameData.taskData["Time Warping"].getEffect() *
             gameData.taskData["Temporal Dimension"].getEffect() *
             gameData.taskData["Time Loop"].getEffect() *
-            ((gameData.requirements["Warp Drive"].isCompleted()) ? 2 : 1)
+            ((gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1)
         ))
 	}
 
@@ -1018,11 +1028,6 @@ function getIncome() {
 function increaseCoins() {
     var coins = applySpeed(getIncome())
     gameData.coins += coins
-}
-
-function daysToYears(days) {
-    var years = Math.floor(days / 365)
-    return years
 }
 
 function getCategoryFromEntityName(categoryType, entityName) {
@@ -1104,10 +1109,24 @@ function yearsToDays(years) {
     var days = years * 365
     return days
 }
+
+function daysToYears(days) {
+    var years = Math.floor(days / 365)
+    return years
+}
  
-function getDay() {
-    var day = Math.floor(gameData.days - daysToYears(gameData.days) * 365)
+function getDay(days) {
+    var day = Math.floor(days - daysToYears(days) * 365)
     return day
+}
+
+function formatAge(days) {
+    var years = daysToYears(days)
+    var day = getDay(days)
+    if (years > 10000)    
+        return "Age " + format(years)    
+    else
+        return "Age " + years + " Day " + day
 }
 
 function increaseDays() {
@@ -1746,9 +1765,12 @@ gameData.requirements = {
     "Almighty Eye": new EssenceRequirement([getMilestoneElement("Almighty Eye")], [{ requirement: 15000 }]),
     "Deal with the Devil": new EssenceRequirement([getMilestoneElement("Deal with the Devil")], [{ requirement: 30000 }]),
     "Transcendent Master": new EssenceRequirement([getMilestoneElement("Transcendent Master")], [{ requirement: 50000 }]),    
-    "Warp Drive": new EssenceRequirement([getMilestoneElement("Warp Drive")], [{ requirement: 75000 }]),    
+    "Eternal Time": new EssenceRequirement([getMilestoneElement("Eternal Time")], [{ requirement: 75000 }]),    
     "Hell Portal": new EssenceRequirement([getMilestoneElement("Hell Portal")], [{ requirement: 120000 }]),
-    "God's Blessings": new EssenceRequirement([getMilestoneElement("God's Blessings")], [{ requirement: 200000 }]),
+    "Inferno": new EssenceRequirement([getMilestoneElement("Inferno")], [{ requirement: 170000 }]),    
+    "God's Blessings": new EssenceRequirement([getMilestoneElement("God's Blessings")], [{ requirement: 250000 }]),
+    "Faint Hope": new EssenceRequirement([getMilestoneElement("Faint Hope")], [{ requirement: 400000 }]),
+    "New Beginning": new EssenceRequirement([getMilestoneElement("New Beginning")], [{ requirement: 5000000 }]),
 }
 
 tempData["requirements"] = {}
