@@ -1326,7 +1326,12 @@ function format(number,decimals= 1) {
         return scaled.toFixed(decimals) + suffix;
     }
     else
-        return number.toExponential(decimals).replace("e+","e")
+    {
+        if (gameData.settings.numberNotation == 1)
+            return number.toExponential(decimals).replace("e+", "e")
+        else
+            return math.format(number, { notation: 'engineering', precision: 3 }).replace("e+", "e")
+    }
 }
 
 function formatCoins(coins, element) {
