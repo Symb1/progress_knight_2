@@ -12,7 +12,10 @@ body {
 
 body .w3-bordered tr, .w3-table-all tr {
     font-size: x-small;
-    padding: 0 0 0 0;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 body .w3-bordered th, .w3-table-all th {
@@ -21,8 +24,19 @@ body .w3-bordered th, .w3-table-all th {
 }
 
 body .w3-bordered td, .w3-table-all td {
-    padding: 2px 0 2px 0;
+    padding-bottom: 0px;
+    padding-top: 0px;
     padding-left: 4px;
+}
+
+table {
+    text-indent: each-line;
+    white-space: normal;
+    line-height: normal;
+    font-weight: normal;
+    font-style: normal;
+    text-align: start;
+    font-variant: normal;
 }
 
 
@@ -30,8 +44,16 @@ td {
     vertical-align: middle !important;
 }
 
+.legendary {
+    color: rgb(245, 119, 13);
+}
+
 .current {
-    background-color: orange !important;
+    background-color: orange !important;    
+}
+
+.current-hero {
+    background-color: rgb(39, 234, 17) !important;
 }
 
 .progress-text {
@@ -46,12 +68,24 @@ td {
     position: relative;
     background-color: rgb(12, 101, 173);
     cursor: pointer;
-    width: 120px;
+    width: 150px;
 }
 
 .progress-fill {
     height: 17px;
     background-color: rgb(46, 148, 231)
+}
+
+.progress-bar-hero {
+    position: relative;
+    background-color: rgb(108 59 59);
+    cursor: pointer;
+    width: 150px;
+}
+
+.progress-fill-hero {
+    height: 17px;
+    background-color: rgb(165 60 21)
 }
 
 .hidden {
@@ -69,8 +103,8 @@ td {
 .item-button {
     background-color: white;
     text-align: center;
-    width: 120px;
-    height: 16px;
+    width: 140px;
+    height: 19px;
     padding: 0px;
 }
 

@@ -71,7 +71,7 @@
 
                 <div id="quickTaskDisplay">
                     <div style="width: 150px;" class="small-margin inline job progress-bar progressBar">
-                        <div class="progress-fill progressFill" style="background-color:rgb(225, 165, 0)"></div>
+                        <div class="progress-fill progressFill current"></div>
                         <div class="progress-text name">Task</div>
                     </div>
                 </div>
@@ -107,16 +107,16 @@
 
             </div>
                     <div class="column">
-                        <div class="panel w3-margin-left" style="width: 1560px; height: 30px;">
+                        <div class="panel w3-margin-left" style="width: 1660px; height: 30px;">
                             <div class="w3-button w3-bar-item tabButton" id="jobTabButton" onClick="setTab(this, 'jobs')">Hero</div>
                             <div class="w3-button w3-bar-item tabButton" id="rebirthTabButton" onClick="setTab(this, 'rebirth')">Amulet</div>
                             <div class="w3-button w3-bar-item tabButton" id="milestoneTabButton" onClick="setTab(this, 'milestones')">Milestones</div>
                             <div class="w3-button w3-bar-item tabButton" onClick="setTab(this, 'settings')" style="float: right">Settings</div>
                         </div>
-                        <div class="panel w3-margin-left w3-margin-top w3-padding" style="width: 1560px; height: auto; float: right">
+                        <div class="panel w3-margin-left w3-margin-top w3-padding" style="width: 1660px; height: auto; float: right">
                             <template class="headerRowTaskTemplate">
                                 <tr>
-                                    <th class="category" style="width: 150px">Job</th>
+                                    <th class="category" style="width: 180px">Job</th>
                                     <th>Level</th>
                                     <th class="valueType">Value type</th>
                                     <th>Xp/day</th>
@@ -127,9 +127,9 @@
 
                             <template class="headerRowItemTemplate">
                                 <tr>
-                                    <th class="category" style="width: 140px">Item</th>
+                                    <th class="category" style="width: 160px">Item</th>
                                     <th style="width: 50px">Active</th>
-                                    <th style="width: 150px">Effect</th>
+                                    <th style="width: 190px">Effect</th>
                                     <th>Expense/day</th>
                                 </tr>
                             </template>
@@ -137,8 +137,8 @@
                             <template class="headerRowMilestoneTemplate">
                                 <tr>
                                     <th style="width: 100px">Target Essence</th>
-                                    <th class="category" style="width: 340px">Milestone Tier</th>
-                                    <th style="width: 200px">Effect</th>
+                                    <th class="category" style="width: 240px">Milestone Tier</th>
+                                    <th style="width: 250px">Effect</th>
                                 </tr>
 
                             </template>
@@ -197,10 +197,10 @@
                                 <tr>
                                     <td style="color: rgb(24, 210, 217)" class="essence"></td>
                                     <td>
-                                        <div class="progress-bar progressBar tooltip" style="width: 340px">
+                                        <div class="progress-bar progressBar tooltip" style="width: 240px">
                                             <div class="progress-fill progressFill" style="background-color: green"></div>
-                                            <div class="progress-text name">Milestone</div>
                                             <span class="tooltipText"></span>
+                                            <div class="progress-text name">Milestone</div>
                                         </div>
                                     </td>
                                     <td class="description"></td>

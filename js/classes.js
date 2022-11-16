@@ -5,13 +5,14 @@ class Task {
         this.level = 0
         this.maxLevel = 0 
         this.xp = 0
+        this.isHero = false
 
         this.xpMultipliers = [
         ]
     }
 
     getMaxXp() {
-        var maxXp = Math.round(this.baseData.maxXp * (this.level + 1) * Math.pow(1.01, this.level))
+        var maxXp = Math.round((this.isHero ? heroMaxXpMult : 1) * this.baseData.maxXp * (this.level + 1) * Math.pow(this.isHero ? 1.1 : 1.01, this.level))
         return maxXp
     }
 
@@ -25,7 +26,7 @@ class Task {
     }
 
     getXpGain() {
-        return applyMultipliers(10, this.xpMultipliers)
+        return (this.isHero ? getHeroXpGainMultipliers(this) : 1) * applyMultipliers(10, this.xpMultipliers)
     }
 
     increaseXp() {
@@ -66,7 +67,7 @@ class Job extends Task {
     }
     
     getIncome() {
-        return applyMultipliers(this.baseData.income, this.incomeMultipliers) 
+        return (this.isHero ? heroIncomeMult : 1) * applyMultipliers(this.baseData.income, this.incomeMultipliers) 
     }
 }
 
@@ -76,7 +77,7 @@ class Skill extends Task {
     }
 
     getEffect() {
-        var effect = 1 + this.baseData.effect * this.level
+        var effect = 1 + this.baseData.effect * (this.isHero ? 1000 * this.level + 8000 : this.level)
         return effect
     }
 
@@ -94,23 +95,60 @@ class Item {
         this.expenseMultipliers = [
          
         ]
+        this.isHero = false
     }
 
     getEffect() {
-        if (gameData.currentProperty != this && !gameData.currentMisc.includes(this)) return 1
-        var effect = this.baseData.effect
+        var effect = this.baseData.effect        
+
+        if (this.isHero) {
+            if (itemCategories["Misc"].includes(this.name))
+            {
+                if (gameData.currentMisc.includes(this))
+                    effect *= 10        
+            }
+
+            if (itemCategories["Properties"].includes(this.name))
+            {
+                if (gameData.currentProperty == this)
+                    effect *= 2000000
+                else
+                    effect = 1
+            }
+        }
+        else
+        {
+            if (gameData.currentProperty != this && !gameData.currentMisc.includes(this)) return 1
+        }
+
         return effect
     }
 
     getEffectDescription() {
         var description = this.baseData.description
-        if (itemCategories["Properties"].includes(this.name)) description = "Happiness"
-        var text = "x" + format(this.baseData.effect) + " " + description
+        var effect = this.baseData.effect
+
+        if (this.isHero) {
+            if (itemCategories["Misc"].includes(this.name)) {
+                    effect *= 10
+            }
+
+            if (itemCategories["Properties"].includes(this.name)) {
+                description = "Happiness"
+                effect *= 2000000
+            }
+        }
+        else {
+            if (itemCategories["Properties"].includes(this.name)) description = "Happiness"
+        }
+
+        var text = "x" + format(effect) + " " + description
         return text
     }
 
     getExpense() {
-        return applyMultipliers(this.baseData.expense, this.expenseMultipliers)
+        var heromult = this.baseData.heromult
+        return (this.isHero ? 4 * Math.pow(10, heromult) * heroIncomeMult : 1) * applyMultipliers(this.baseData.expense, this.expenseMultipliers) 
     }
 }
 
@@ -129,6 +167,15 @@ class Requirement {
             }
         }
         this.completed = true
+        return true
+    }
+
+    isCompletedActual() {
+        for (var requirement of this.requirements) {
+            if (!this.getCondition(requirement)) {
+                return false
+            }
+        }
         return true
     }
 }

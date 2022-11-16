@@ -38,6 +38,10 @@ const baseLifespan = 365 * 70
 
 const baseGameSpeed = 4
 
+const heroMaxXpMult = 1e36
+const heroIncomeMult = 2500000000000000000
+
+
 const permanentUnlocks = ["Scheduling", "Automation", "Quick task display"]
 
 const jobBaseData = {
@@ -137,43 +141,43 @@ const skillBaseData = {
 }
 
 const itemBaseData = {
-    "Homeless": {name: "Homeless", expense: 0, effect: 1},
-    "Tent": {name: "Tent", expense: 15, effect: 1.4},
-    "Wooden Hut": {name: "Wooden Hut", expense: 100, effect: 2},
-    "Cottage": {name: "Cottage", expense: 750, effect: 3.5},
-    "House": {name: "House", expense: 3000, effect: 6},
-    "Large House": {name: "Large House", expense: 25000, effect: 12},
-    "Small Palace": {name: "Small Palace", expense: 300000, effect: 25},
-    "Grand Palace": {name: "Grand Palace", expense: 5000000, effect: 60},
-	"Town Ruler": {name: "Town Ruler", expense: 35000000, effect: 120},
-	"City Ruler": {name: "City Ruler", expense: 1100000000, effect: 500},
-	"Nation Ruler": {name: "Nation Ruler", expense: 13000000000, effect: 1200},
-	"Pocket Dimension": {name: "Pocket Dimension", expense: 49000000000, effect: 5000},
-    "Void Realm": {name: "Void Realm", expense: 121000000000, effect: 15000},
-	"Void Universe": {name: "Void Universe",         expense: 2000000000000, effect: 30000},
-	"Astral Realm": {name: "Astral Realm",         expense: 160000000000000, effect: 150000},
-    "Galactic Throne": { name: "Galactic Throne", expense: 5000000000000000, effect: 300000 },
-    "Spaceship": { name: "Spaceship", expense: 1000000000000000000, effect: 1500000 },
+    "Homeless":     {name: "Homeless",          expense: 0, effect: 1, heromult: 2},
+    "Tent":         { name: "Tent",             expense: 15, effect: 1.4, heromult: 2 },
+    "Wooden Hut":   { name: "Wooden Hut",       expense: 100, effect: 2, heromult: 3 },
+    "Cottage":      { name: "Cottage",          expense: 750, effect: 3.5, heromult: 3 },
+    "House":        { name: "House",            expense: 3000, effect: 6, heromult: 4 },
+    "Large House":  { name: "Large House",      expense: 25000, effect: 12, heromult: 4 },
+    "Small Palace": { name: "Small Palace",     expense: 300000, effect: 25, heromult: 5 },
+    "Grand Palace": { name: "Grand Palace",     expense: 5000000, effect: 60, heromult: 5 },
+    "Town Ruler":   { name: "Town Ruler",       expense: 35000000, effect: 120, heromult: 6 },
+    "City Ruler":   { name: "City Ruler",       expense: 1100000000, effect: 500, heromult: 7 },
+    "Nation Ruler": { name: "Nation Ruler",     expense: 13000000000, effect: 1200, heromult: 8 },
+    "Pocket Dimension": { name: "Pocket Dimension", expense: 49000000000, effect: 5000, heromult: 9 },
+    "Void Realm":   { name: "Void Realm",       expense: 121000000000, effect: 15000,  heromult: 10 },
+    "Void Universe": { name: "Void Universe",   expense: 2000000000000, effect: 30000,  heromult: 11 },
+    "Astral Realm": { name: "Astral Realm",       expense: 160000000000000, effect: 150000, heromult: 12},
+    "Galactic Throne": { name: "Galactic Throne", expense: 5000000000000000, effect: 300000, heromult: 13 },
+    "Spaceship": { name: "Spaceship",             expense: 1000000000000000000, effect: 1500000, heromult: 15 },
+                                                            
 
-
-    "Book": {name: "Book", expense: 10, effect: 1.5, description: "Ability XP"},
-    "Dumbbells": {name: "Dumbbells", expense: 50, effect: 1.5, description: "Strength XP"},
-    "Personal Squire": {name: "Personal Squire", expense: 200, effect: 2, description: "Class XP"},
-    "Steel Longsword": {name: "Steel Longsword", expense: 1000, effect: 2, description: "Military XP"},
-    "Butler": {name: "Butler", expense: 7500, effect: 1.5, description: "Happiness"},
-    "Sapphire Charm": {name: "Sapphire Charm", expense: 50000, effect: 3, description: "Magic XP"},
-    "Study Desk": {name: "Study Desk", expense: 1000000, effect: 2, description: "Ability XP"},
-    "Library": {name: "Library", expense: 10000000, effect: 2, description: "Ability XP"},
-	"Observatory": {name: "Observatory", expense: 140000000, effect: 5, description: "Magic XP"},
-	"Mind's Eye": {name: "Mind's Eye", expense: 3250000000, effect: 10, description: "Fundamentals XP"},
-	"Void Necklace": {name: "Void Necklace", expense: 28050000000, effect: 3, description: "Void Manipulation XP"},
-    "Void Armor": {name: "Void Armor", expense: 197050000000, effect: 3, description: "The Void XP"},
-	"Void Blade": {name: "Void Blade", expense: 502050000000, effect: 3, description: "Ability XP"},
-	"Void Orb": {name: "Void Orb", expense: 1202050000000, effect: 3, description: "Void Manipulation XP"},
-	"Void Dust": {name: "Void Dust", expense: 25002050000000, effect: 3, description: "The Void XP"},
-	"Celestial Robe": {name: "Celestial Robe", expense: 300002050000000, effect: 5, description: "Galactic Council XP"},
-	"Universe Fragment": {name: "Universe Fragment", expense: 18500002050000000, effect: 3, description: "Ability XP"},
-	"Multiverse Fragment": {name: "Multiverse Fragment", expense: 200500002050000000, effect: 5, description: "Happiness"},
+    "Book": { name: "Book", expense: 10, effect: 1.5, description: "Ability XP", heromult: 2 },
+    "Dumbbells": { name: "Dumbbells", expense: 50, effect: 1.5, description: "Strength XP", heromult: 2 },
+    "Personal Squire": { name: "Personal Squire", expense: 200, effect: 2, description: "Class XP", heromult: 3 },
+    "Steel Longsword": { name: "Steel Longsword", expense: 1000, effect: 2, description: "Military XP", heromult: 3 },
+    "Butler": { name: "Butler", expense: 7500, effect: 1.5, description: "Happiness", heromult: 4 },
+    "Sapphire Charm": { name: "Sapphire Charm", expense: 50000, effect: 3, description: "Magic XP", heromult:4 },
+    "Study Desk": { name: "Study Desk", expense: 1000000, effect: 2, description: "Ability XP", heromult: 5 },
+    "Library": { name: "Library", expense: 10000000, effect: 2, description: "Ability XP", heromult: 5 },
+    "Observatory": { name: "Observatory", expense: 140000000, effect: 5, description: "Magic XP", heromult: 6 },
+    "Mind's Eye": { name: "Mind's Eye", expense: 3250000000, effect: 10, description: "Fundamentals XP", heromult: 6 },
+    "Void Necklace": { name: "Void Necklace", expense: 28050000000, effect: 3, description: "Void Manipulation XP", heromult: 7 },
+    "Void Armor": { name: "Void Armor", expense: 197050000000, effect: 3, description: "The Void XP", heromult: 8 },
+    "Void Blade": { name: "Void Blade", expense: 502050000000, effect: 3, description: "Ability XP", heromult: 9 },
+    "Void Orb": { name: "Void Orb", expense: 1202050000000, effect: 3, description: "Void Manipulation XP", heromult: 10 },
+    "Void Dust": { name: "Void Dust", expense: 25002050000000, effect: 3, description: "The Void XP", heromult: 11 },
+    "Celestial Robe": { name: "Celestial Robe", expense: 300002050000000, effect: 5, description: "Galactic Council XP", heromult: 12 },
+    "Universe Fragment": { name: "Universe Fragment", expense: 18500002050000000, effect: 3, description: "Ability XP", heromult: 13 },
+    "Multiverse Fragment": { name: "Multiverse Fragment", expense: 200500002050000000, effect: 5, description: "Happiness", heromult: 15 },
 }
 
 const milestoneBaseData = {
@@ -186,7 +190,23 @@ const milestoneBaseData = {
     "Inferno": { name: "Inferno", expense: 170000, tier: 7, description: "x5 Evil gain" },
     "God's Blessings": { name: "God's Blessings", expense: 250000, tier: 8, description: "x10M Happiness" },
     "Faint Hope": { name: "Faint Hope", expense: 400000, tier: 9, description: "Essence gain increases over time" },
-    "New Beginning": { name: "New Beginning", expense: 5000000, tier: 10, description: "???" },
+    "New Beginning": { name: "New Beginning", expense: 5000000, tier: 10, description: "Heroic jobs, skills and items are unlocked" },
+
+    "Rise of Great Heroes": { name: "Rise of Great Heroes", expense: 10000000, tier: 11, description: "Hero XP" },
+    "Lazy Heroes": { name: "Lazy Heroes", expense: 20000000, tier: 12, description: "Hero XP" },
+    "Dirty Heroes": { name: "Dirty Heroes", expense: 30000000, tier: 13, description: "Hero XP" },
+    "Angry Heroes": { name: "Angry Heroes", expense: 50000000, tier: 14, description: "Hero XP" },
+    "Tired Heroes": { name: "Tired Heroes", expense: 100000000, tier: 15, description: "Hero XP" },
+    "Scared Heroes": { name: "Scared Heroes", expense: 150000000, tier: 16, description: "Hero XP" },
+    "Good Heroes": { name: "Good Heroes", expense: 200000000, tier: 17, description: "Hero XP" },
+    "Funny Heroes": { name: "Funny Heroes", expense: 250000000, tier: 18, description: "Hero XP" },
+    "Beautiful Heroes": { name: "Beautiful Heroes", expense: 300000000, tier: 19, description: "Hero XP" },
+    "Awesome Heroes": { name: "Awesome Heroes", expense: 400000000, tier: 20, description: "Hero XP" },
+    "Furious Heroes": { name: "Furious Heroes", expense: 500000000, tier: 21, description: "Hero XP" },
+    "Gorgeous Heroes": { name: "Gorgeous Heroes", expense: 1000000000000, tier: 22, description: "Hero XP" },
+    "Superb Heroes": { name: "Superb Heroes", expense: 100000000000000, tier: 23, description: "Hero XP" },
+ 
+    
 }
 
 const jobCategories = {
@@ -206,16 +226,38 @@ const skillCategories = {
 	"Void Manipulation"      : ["Absolute Wish", "Void Amplification", "Mind Seize", "Ceaseless Abyss", "Void Symbiosis", "Void Embodiment", "Abyss Manipulation"],
 	"Celestial Powers"       : ["Cosmic Longevity", "Cosmic Recollection", "Essence Collector", "Galactic Command"],
 	"Almightiness"           : ["Yin Yang", "Parallel Universe", "Higher Dimensions", "Epiphany"]
-	
 }
 
 const itemCategories = {
     "Properties": ["Homeless", "Tent", "Wooden Hut", "Cottage", "House", "Large House", "Small Palace", "Grand Palace", "Town Ruler", "City Ruler", "Nation Ruler", "Pocket Dimension", "Void Realm", "Void Universe", "Astral Realm", "Galactic Throne", "Spaceship"],
-    "Misc"                   : ["Book", "Dumbbells", "Personal Squire", "Steel Longsword", "Butler", "Sapphire Charm", "Study Desk", "Library", "Observatory", "Mind's Eye", "Void Necklace", "Void Armor", "Void Blade", "Void Orb", "Void Dust", "Celestial Robe", "Universe Fragment", "Multiverse Fragment"]
+    "Misc": ["Book", "Dumbbells", "Personal Squire", "Steel Longsword", "Butler", "Sapphire Charm", "Study Desk", "Library", "Observatory", "Mind's Eye", "Void Necklace", "Void Armor", "Void Blade", "Void Orb", "Void Dust", "Celestial Robe", "Universe Fragment", "Multiverse Fragment"]
 }
 
 const milestoneCategories = {
-    "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcendent Master", "Eternal Time", "Hell Portal", "Inferno", "God's Blessings", "Faint Hope", "New Beginning"],
+    "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcendent Master", "Eternal Time", "Hell Portal", "Inferno", "God's Blessings", "Faint Hope"],
+    "Heroic Milestones": ["New Beginning", "Rise of Great Heroes", "Lazy Heroes", "Dirty Heroes", "Angry Heroes", "Tired Heroes", "Scared Heroes", "Good Heroes", "Funny Heroes", "Beautiful Heroes", "Awesome Heroes", "Furious Heroes", "Gorgeous Heroes", "Superb Heroes"]
+}
+
+function prevCategory(task)
+{
+    var prev = ""
+    for (category in jobCategories) {
+        for (job of jobCategories[category]) {
+            if (job == task)
+                return prev
+            prev = job
+        }        
+    }
+
+    prev = ""
+    for (category in skillCategories) {
+        for (skill of skillCategories[category]) {
+            if (skill == task)
+                return prev
+            prev = skill
+        }
+    }
+    return prev
 }
 
 const headerRowColors = {
@@ -235,7 +277,8 @@ const headerRowColors = {
     "Misc_Auto": "#f54546",
     "Properties": "#219ebc",
     "Misc": "#b56576",
-    "Essence Milestones":"#0066ff"
+    "Essence Milestones": "#0066ff",
+    "Heroic Milestones": "#ff6600",
 }
 
 const tooltips = {
@@ -387,7 +430,7 @@ const tooltips = {
     "Inferno": "You are at the last level of Hell. What is next?",
     "God's Blessings": "God bless you!",
     "Faint Hope": "Maybe there is hope?",
-    "New Beginning": "???",
+    "New Beginning": "Try to upgrade One Above All to level 2000",
 }
 
 const units = ["", "k", "M", "B", "T", "q", "Q", "Sx", "Sp", "Oc", "Nv", "Vg", "Uv", "Dv", "Tv", "Qt", "Qv", "Sv", "Oc", "Nd", "Tg", "OMG"];
@@ -427,7 +470,7 @@ function addMultipliers() {
             task.incomeMultipliers.push(getBindedTaskEffect("Demon's Wealth"))
             task.xpMultipliers.push(getBindedTaskEffect("Productivity"))
 			task.xpMultipliers.push(getBindedTaskEffect("Dark Knowledge"))
-            task.xpMultipliers.push(getBindedItemEffect("Personal Squire"))    
+            task.xpMultipliers.push(getBindedItemEffect("Personal Squire"))
         } else if (task instanceof Skill) {
             task.xpMultipliers.push(getBindedTaskEffect("Concentration"))
             task.xpMultipliers.push(getBindedItemEffect("Book"))
@@ -482,52 +525,105 @@ function addMultipliers() {
     }
 }
 
+//
+
+function getHeroXpGainMultipliers(job)
+{
+    var baseMult = 1
+
+    if (job instanceof Job)
+        baseMult = 50000
+
+    if (gameData.requirements["Rise of Great Heroes"].isCompleted())
+        baseMult *= 10000
+
+    if (gameData.requirements["Lazy Heroes"].isCompleted())
+        baseMult *= 1e12
+
+    if (gameData.requirements["Dirty Heroes"].isCompleted())
+        baseMult *= 1e20
+
+    if (gameData.requirements["Angry Heroes"].isCompleted())
+        baseMult *= 1e20
+
+    if (gameData.requirements["Tired Heroes"].isCompleted())
+        baseMult *= 1e20
+
+    if (gameData.requirements["Scared Heroes"].isCompleted())
+        baseMult *= 1e20
+
+    if (gameData.requirements["Good Heroes"].isCompleted())
+        baseMult *= 1e14 /// fixed mult
+
+    if (gameData.requirements["Funny Heroes"].isCompleted())
+        baseMult *= 1e25
+
+    if (gameData.requirements["Beautiful Heroes"].isCompleted())
+        baseMult *= 1e50
+
+    if (gameData.requirements["Awesome Heroes"].isCompleted())
+        baseMult *= 1e10
+
+    if (gameData.requirements["Furious Heroes"].isCompleted())
+        baseMult *= 1e12
+
+    if (gameData.requirements["Gorgeous Heroes"].isCompleted())
+        baseMult *= 1e15
+
+    if (gameData.requirements["Superb Heroes"].isCompleted())
+        baseMult *= 1e5
+
+    return baseMult
+}
+
+
 function setCustomEffects() {
     var bargaining = gameData.taskData["Bargaining"]
-    bargaining.getEffect = function() {
-        var multiplier = 1 - getBaseLog(7, bargaining.level + 1) / 10
+    bargaining.getEffect = function () {
+        var multiplier = 1 - getBaseLog(bargaining.isHero? 3 : 7, bargaining.level + 1) / 10
         if (multiplier < 0.1) {multiplier = 0.1}
         return multiplier
     }
 
     var intimidation = gameData.taskData["Intimidation"]
-    intimidation.getEffect = function() {
-        var multiplier = 1 - getBaseLog(7, intimidation.level + 1) / 10
+    intimidation.getEffect = function () {
+        var multiplier = 1 - getBaseLog(intimidation.isHero ? 3 : 7, intimidation.level + 1) / 10
         if (multiplier < 0.1) {multiplier = 0.1}
         return multiplier
     }
 	
 	var brainwashing = gameData.taskData["Brainwashing"]
-    brainwashing.getEffect = function() {
-        var multiplier = 1 - getBaseLog(7, brainwashing.level + 1) / 10
+    brainwashing.getEffect = function () {
+        var multiplier = 1 - getBaseLog(brainwashing.isHero ? 3 : 7, brainwashing.level + 1) / 10
         if (multiplier < 0.1) {multiplier = 0.1}
         return multiplier
     }
 	
 	var abyssManipulation = gameData.taskData["Abyss Manipulation"]
-    abyssManipulation.getEffect = function() {
-        var multiplier = 1 - getBaseLog(7, abyssManipulation.level + 1) / 10
+    abyssManipulation.getEffect = function () {
+        var multiplier = 1 - getBaseLog(abyssManipulation.isHero ? 3 : 7, abyssManipulation.level + 1) / 10
         if (multiplier < 0.1) {multiplier = 0.1}
         return multiplier
     }
 
     var galacticCommand = gameData.taskData["Galactic Command"]
-    galacticCommand.getEffect = function() {
-        var multiplier = 1 - getBaseLog(7, galacticCommand.level + 1) / 10
+    galacticCommand.getEffect = function () {
+        var multiplier = 1 - getBaseLog(galacticCommand.isHero ? 3 : 7, galacticCommand.level + 1) / 10
         if (multiplier < 0.1) {multiplier = 0.1}
         return multiplier
     }
 
 
+
     var timeWarping = gameData.taskData["Time Warping"]
     timeWarping.getEffect = function() {
-        var multiplier = 1 + getBaseLog(13, timeWarping.level + 1) 
+        var multiplier = 1 + getBaseLog(timeWarping.isHero ? 1.005 : 13, timeWarping.level + 1) 
         return multiplier
     }
 
     var immortality = gameData.taskData["Life Essence"]
-    immortality.getEffect = function() {
-        var multiplier = 1 + getBaseLog(33, immortality.level + 1) 
+    immortality.getEffect = function () {
+        var multiplier = 1 + getBaseLog(immortality.isHero? 1.01 : 33, immortality.level + 1) 
         return multiplier
     }
 	
@@ -772,8 +868,11 @@ function updateQuickTaskDisplay() {
     var currentTask = gameData.currentJob
     var quickTaskDisplayElement = document.getElementById("quickTaskDisplay")
     var progressBar = quickTaskDisplayElement.getElementsByClassName("job")[0]
-    progressBar.getElementsByClassName("name")[0].textContent = currentTask.name + " lvl " + currentTask.level
-    progressBar.getElementsByClassName("progressFill")[0].style.width = currentTask.xp / currentTask.getMaxXp() * 100 + "%"
+    progressBar.getElementsByClassName("name")[0].textContent = (currentTask.isHero ? "Great " : "") + currentTask.name + " lvl " + currentTask.level
+    var progressFill = progressBar.getElementsByClassName("progressFill")[0]
+    progressFill.style.width = currentTask.xp / currentTask.getMaxXp() * 100 + "%"
+    currentTask.isHero ? progressFill.classList.add("current-hero") : progressFill.classList.remove("current-hero")
+    currentTask.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
 }
 
 function updateRequiredRows(data, categoryType) {
@@ -829,7 +928,11 @@ function updateRequiredRows(data, categoryType) {
                 } else if (requirementObject instanceof EssenceRequirement) {
                     essenceElement.classList.remove("hiddenTask")
                     essenceElement.textContent = format(requirements[0].requirement) + " essence"
-                } else {
+                } else if (requirementObject instanceof AgeRequirement) {
+                    essenceElement.classList.remove("hiddenTask")
+                    essenceElement.textContent = format(requirements[0].requirement) + " age"
+                }
+                else {
                     levelElement.classList.remove("hiddenTask")
                     for (requirement of requirements) {
                         var task = gameData.taskData[requirement.task]
@@ -872,13 +975,71 @@ function updateTaskRows() {
         row.getElementsByClassName("xpGain")[0].textContent = format(task.getXpGain())
         row.getElementsByClassName("xpLeft")[0].textContent = format(task.getXpLeft())
 
+        var tooltip = tooltips[key]
+
+        if (IsHeroesUnlocked() && task instanceof Task && !task.isHero)
+        {
+            var requirementObject = gameData.requirements[key]
+            var requirements = requirementObject.requirements
+            var prev = prevCategory(key)
+
+            tooltip += "<br> <span style=\"color: red\">Required</span>: <span style=\"color: orange\">"
+            var reqlist = ""
+            var prevReq = ""
+
+            if (prev != "") {
+                var prevTask = gameData.taskData[prev]
+                var prevlvl = (prevTask.isHero ? prevTask.level : 0)
+                if (prevlvl < 20)
+                    prevReq = "Great " + prev + " " + prevlvl + "/20<br>"
+            }
+            
+            if (requirementObject instanceof EvilRequirement) {                
+                reqlist += format(requirements[0].requirement) + " evil<br>"
+            } else if (requirementObject instanceof EssenceRequirement) {
+                reqlist += format(requirements[0].requirement) + " essence<br>"
+            } else if (requirementObject instanceof AgeRequirement) {
+                reqlist += format(requirements[0].requirement) + " age<br>"
+            } else {
+                for (requirement of requirements) {
+                    var task_check = gameData.taskData[requirement.task]
+                    if (task_check.isHero && task_check.level >= requirement.requirement) continue
+                    if (prev != "" && task_check.name == prevTask.name) {
+                        if (requirement.requirement <= 20)
+                            continue
+                        else
+                            prevReq = " Great " + requirement.task + " " + (task_check.isHero ? task_check.level : 0) + "/" + requirement.requirement + "<br>"
+                    }
+                    else {
+                        reqlist += " Great " + requirement.task + " " + (task_check.isHero ? task_check.level : 0) + "/" + requirement.requirement + "<br>"
+                    }
+                }                
+            }
+
+            reqlist += prevReq
+            reqlist = reqlist.substring(0, reqlist.length - 4)                
+            tooltip += reqlist + "</span>"
+        }
+
+        row.getElementsByClassName("tooltipText")[0].innerHTML = tooltip
+
         var maxLevel = row.getElementsByClassName("maxLevel")[0]
         maxLevel.textContent = task.maxLevel
         gameData.rebirthOneCount > 0 ? maxLevel.classList.remove("hidden") : maxLevel.classList.add("hidden")
 
+        var progressBar = row.getElementsByClassName("progressBar")[0]
+
+        progressBar.getElementsByClassName("name")[0].textContent = (task.isHero ? "Great " : "") + task.name
+
+
         var progressFill = row.getElementsByClassName("progressFill")[0]
         progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
-        task == gameData.currentJob ? progressFill.classList.add("current") : progressFill.classList.remove("current")
+
+        task.isHero ? progressFill.classList.add("progress-fill-hero") : progressFill.classList.remove("progress-fill-hero")
+        task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
+
+
+        task == gameData.currentJob ? progressFill.classList.add(task.isHero ? "current-hero" : "current") : progressFill.classList.remove("current", "current-hero")
 
         var valueElement = row.getElementsByClassName("value")[0]
         valueElement.getElementsByClassName("income")[0].style.display = task instanceof Job
@@ -908,6 +1069,17 @@ function updateItemRows() {
         var row = document.getElementById("row " + item.name)
         var button = row.getElementsByClassName("button")[0]
         button.disabled = gameData.coins < item.getExpense()
+        var name = button.getElementsByClassName("name")[0]
+
+        if (IsHeroesUnlocked()) {
+            name.classList.add("legendary")
+           // name.textContent = "Great " + key
+        }
+        else {
+            name.classList.remove("legendary")
+          //  name.textContent = key
+        }
+
         var active = row.getElementsByClassName("active")[0]
         var color = autoBuyEnabled
             ? itemCategories["Properties"].includes(item.name) ? headerRowColors["Properties_Auto"] : headerRowColors["Misc_Auto"]
@@ -1170,9 +1342,10 @@ function formatCoins(coins, element) {
         "s": { "color": "#a8a8a8", "showbefore": 1e6, "value": silver },
         "c": { "color": "#a15c2f", "showbefore": 1e4, "value": copper },
     }
+
     var i = 0
     for (var key in money) {
-        if ((money[key].showbefore == null || coins < money[key].showbefore) && (money[key].value > 0 || key == "c")) {
+        if ((money[key].showbefore == null || coins < money[key].showbefore) && (money[key].value > 0)) {
             element.children[i].textContent = format(money[key].value, money[key].value < 1000000? 0: 1) + key
             element.children[i].style.color = money[key].color
         }
@@ -1180,9 +1353,7 @@ function formatCoins(coins, element) {
             element.children[i].textContent = ""            
         }
         i++;
-    }
-
-    
+    }    
 }
 
 function getTaskElement(taskName) {
@@ -1294,6 +1465,12 @@ function rebirthReset() {
         if (task.level > task.maxLevel) task.maxLevel = task.level
         task.level = 0
         task.xp = 0
+        task.isHero = false
+    }
+
+    for (itemName in gameData.itemData) {
+        var item = gameData.itemData[itemName]        
+        item.isHero = false
     }
 
     for (key in gameData.requirements) {
@@ -1325,6 +1502,66 @@ function isAlive() {
     }
     return condition
 }
+
+function IsHeroesUnlocked() {
+    return gameData.requirements["New Beginning"].isCompleted() && gameData.taskData["One Above All"].level >= 2000
+}
+
+function makeHero(task)
+{
+    if ((task instanceof Job || task instanceof Skill) && !task.isHero)
+    {           
+        task.level = 0
+        task.maxLevel = 0
+        task.xp = 0
+        task.isHero = true
+    }
+}
+
+function makeHeroes()
+{
+    if (!IsHeroesUnlocked()) return
+
+    for (var taskname in gameData.taskData) {
+        var hero = gameData.taskData[taskname]
+
+        if (hero.isHero)
+            continue        
+
+        var prev = prevCategory(taskname)
+
+        if (prev != "" && (!gameData.taskData[prev].isHero || gameData.taskData[prev].level < 20)) 
+                continue
+
+        var req = gameData.requirements[taskname]
+
+        var isNewHero = true
+
+        if (req instanceof TaskRequirement) {
+            if (!req.isCompletedActual())
+                continue
+            for (requirement of req.requirements)
+                if (!(gameData.taskData[requirement.task] && gameData.taskData[requirement.task].isHero)) {
+                    isNewHero = false
+                    break
+                }
+        }
+
+        if (isNewHero)        
+            makeHero(hero)
+    }
+
+    for (var key in gameData.itemData)
+    {
+        var item = gameData.itemData[key]
+        if (item.isHero)
+            continue
+        item.isHero = true
+        gameData.currentProperty = gameData.itemData["Homeless"]
+        gameData.currentMisc = []
+    }    
+}
+
 
 function assignMethods() {
 
@@ -1446,24 +1683,35 @@ function addMinutes(count = 1) {
 }
 
 function update(needUpdateUI = true) {
-    //
+    makeHeroes()
     increaseRealtime()
     increaseDays()
     autoPromote()
     autoBuy()
     for (key in gameData.taskData) {
         var task = gameData.taskData[key]
-        if ((task instanceof Skill || task instanceof Job) && gameData.requirements[key].completed)
-            doCurrentTask(task)
+        if ((task instanceof Skill || task instanceof Job) && gameData.requirements[key].completed) {
+
+            if (task instanceof Skill)
+                doCurrentTask(task)
+            else
+                doCurrentTask(task)
+        }
+            
     }    
-    applyMilestones();    
-    applyExpenses()
+    applyMilestones()
+    applyExpenses()    
     if (needUpdateUI)
         updateUI()
 }
 
 function resetGameData() {
-    if (!confirm('Are you sure you want to reset the game?')) return;
+
+    clearInterval(saveloop)
+    if (!confirm('Are you sure you want to reset the game?')) {
+        saveloop = setInterval(saveGameData, 3000)
+        return;
+    }
     localStorage.clear()
     location.reload()
 }
@@ -1644,7 +1892,7 @@ gameData.requirements = {
 	"Imperator": new TaskRequirement([getTaskElement("Imperator")], [{task: "All Seeing Eye", requirement: 3000}, {task: "Concentration", requirement: 3000},  {task: "Chairman", requirement: 666}]),
 	
 	//The Void
-    "Corrupted": new AgeRequirement([getTaskElement("Corrupted")], [{task: "Squire", requirement: 1000}]),
+    "Corrupted": new AgeRequirement([getTaskElement("Corrupted")], [{requirement: 1000}]),
     "Void Slave": new TaskRequirement([getTaskElement("Void Slave")], [{task: "Corrupted", requirement: 30}]),
     "Void Fiend": new TaskRequirement([getTaskElement("Void Fiend")], [{task: "Brainwashing", requirement: 3000}, {task: "Void Slave", requirement: 200}]),
 	"Abyss Anomaly": new TaskRequirement([getTaskElement("Abyss Anomaly")], [{task: "Mind Seize", requirement: 3000}, {task: "Void Fiend", requirement: 200}]),
@@ -1655,13 +1903,11 @@ gameData.requirements = {
 
 	
 	 //Galactic Council
-    "Eternal Wanderer": new AgeRequirement([getTaskElement("Eternal Wanderer")], [{task: "Squire", requirement: 10000}]),
+    "Eternal Wanderer": new AgeRequirement([getTaskElement("Eternal Wanderer")], [{requirement: 10000}]),
     "Nova": new TaskRequirement([getTaskElement("Nova")], [{task: "Eternal Wanderer", requirement: 15}, {task: "Cosmic Longevity", requirement: 4000}]),
 	"Sigma Proioxis": new TaskRequirement([getTaskElement("Sigma Proioxis")], [{task: "Nova", requirement: 200}, {task: "Cosmic Recollection", requirement: 4500}]),
 	"Acallaris": new TaskRequirement([getTaskElement("Acallaris")], [{task: "Galactic Command", requirement: 5000}, {task: "Sigma Proioxis", requirement: 1000}]),
-	"One Above All": new TaskRequirement([getTaskElement("One Above All")], [{task: "Meditation", requirement: 6300}, {task: "Acallaris", requirement: 1400}]),
-
-	
+	"One Above All": new TaskRequirement([getTaskElement("One Above All")], [{task: "Meditation", requirement: 6300}, {task: "Acallaris", requirement: 1400}]),	
 
     //Fundamentals
     "Concentration": new TaskRequirement([getTaskElement("Concentration")], []),
@@ -1771,6 +2017,20 @@ gameData.requirements = {
     "God's Blessings": new EssenceRequirement([getMilestoneElement("God's Blessings")], [{ requirement: 250000 }]),
     "Faint Hope": new EssenceRequirement([getMilestoneElement("Faint Hope")], [{ requirement: 400000 }]),
     "New Beginning": new EssenceRequirement([getMilestoneElement("New Beginning")], [{ requirement: 5000000 }]),
+    "Rise of Great Heroes": new EssenceRequirement([getMilestoneElement("Rise of Great Heroes")], [{ requirement: 10000000 }]),
+
+    "Lazy Heroes": new EssenceRequirement([getMilestoneElement("Lazy Heroes")], [{ requirement: 20000000 }]),
+    "Dirty Heroes": new EssenceRequirement([getMilestoneElement("Dirty Heroes")], [{ requirement: 30000000 }]),
+    "Angry Heroes": new EssenceRequirement([getMilestoneElement("Angry Heroes")], [{ requirement: 50000000 }]),
+    "Tired Heroes": new EssenceRequirement([getMilestoneElement("Tired Heroes")], [{ requirement: 100000000 }]),
+    "Scared Heroes": new EssenceRequirement([getMilestoneElement("Scared Heroes")], [{ requirement: 150000000 }]),
+    "Good Heroes": new EssenceRequirement([getMilestoneElement("Good Heroes")], [{ requirement: 200000000 }]),
+    "Funny Heroes": new EssenceRequirement([getMilestoneElement("Funny Heroes")], [{ requirement: 250000000 }]),
+    "Beautiful Heroes": new EssenceRequirement([getMilestoneElement("Beautiful Heroes")], [{ requirement: 300000000 }]),
+    "Awesome Heroes": new EssenceRequirement([getMilestoneElement("Awesome Heroes")], [{ requirement: 400000000 }]),
+    "Furious Heroes": new EssenceRequirement([getMilestoneElement("Furious Heroes")], [{ requirement: 500000000 }]),
+    "Gorgeous Heroes": new EssenceRequirement([getMilestoneElement("Gorgeous Heroes")], [{ requirement: 1000000000000 }]),
+    "Superb Heroes": new EssenceRequirement([getMilestoneElement("Superb Heroes")], [{ requirement: 100000000000000 }]),
 }
 
 tempData["requirements"] = {}
@@ -1790,4 +2050,4 @@ setTab(jobTabButton, "jobs")
 
 update()
 var gameloop = setInterval(update, 1000 / updateSpeed)
-setInterval(saveGameData, 3000)
+var saveloop = setInterval(saveGameData, 3000)
