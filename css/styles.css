@@ -118,7 +118,7 @@ button:focus {
 }
 
 .scroll {
-    overflow-y: auto;
+    overflow-y: auto;    
 }
 
 .tooltip {
@@ -229,4 +229,5 @@ button:focus {
 .column {
     display: flex;
     flex-direction: column;
+    overflow-x: auto;
 }

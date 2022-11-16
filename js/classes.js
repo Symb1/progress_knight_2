@@ -13,6 +13,7 @@ class Task {
 
     getMaxXp() {
         var maxXp = Math.round((this.isHero ? heroMaxXpMult : 1) * this.baseData.maxXp * (this.level + 1) * Math.pow(this.isHero ? 1.1 : 1.01, this.level))
+
         return maxXp
     }
 
@@ -26,7 +27,8 @@ class Task {
     }
 
     getXpGain() {
-        return (this.isHero ? getHeroXpGainMultipliers(this) : 1) * applyMultipliers(10, this.xpMultipliers)
+        var xpGain = (this.isHero ? getHeroXpGainMultipliers(this) : 1) * applyMultipliers(10, this.xpMultipliers)
+        return xpGain
     }
 
     increaseXp() {

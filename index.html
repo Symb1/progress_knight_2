@@ -105,6 +105,10 @@
                     <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px; width: 150px" onClick="rebirthThree()">Transcend: <span style="color: rgb(24, 210, 217)" id="essenceGainButtonDisplay"></span></button>
                 </div>
 
+                <div id="rebirthButtonEnd">
+                    <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px; width: 150px" onClick="setTab(this, 'rebirth')"><span style="color: rgb(102, 229, 71)">Check The Amulet</span></button>
+                </div>
+
             </div>
             <div class="column">
                 <div class="panel w3-margin-left" style="width: 1660px; height: 30px;">
@@ -332,6 +336,13 @@
                                     <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px" onClick="rebirthThree()">Transcend</button>
                                 </div>
                             </li>
+
+                            <li style="margin: 8px;" id="rebirthNoteEnd">
+                                <div style="margin-bottom: 8px; color: rgb(102, 229, 71); font-size: small">
+                                    You have completed the game. You can Restart it and get permanent x2 Time Wapring Boost, which will apply at every Game Restart.<br>
+                                    <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px" onClick="restartGame()">Restart the game and get x2 time boost</button>
+                                </div>
+                            </li>
                         </ul>
                     </div>
 
@@ -365,7 +376,9 @@
                             </li>
                             <li>
                                 <h4>Hard reset game</h4>
+                                <span id="completedTimes" style="color: rgb(204, 0, 255)"></span><br><br>
                                 <button class="w3-button button w3-red" onClick="resetGameData()">Reset</button>
+
                             </li>
                             <li>
                                 <h4>Misc</h4>

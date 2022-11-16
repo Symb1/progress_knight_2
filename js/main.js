@@ -25,7 +25,7 @@ var gameData = {
     },
 
     realtime: 0.0,
-    
+    completedTimes: 0    
 }
 
 var tempData = {}
@@ -204,7 +204,7 @@ const milestoneBaseData = {
     "Awesome Heroes": { name: "Awesome Heroes", expense: 400000000, tier: 20, description: "Hero XP" },
     "Furious Heroes": { name: "Furious Heroes", expense: 500000000, tier: 21, description: "Hero XP" },
     "Gorgeous Heroes": { name: "Gorgeous Heroes", expense: 1000000000000, tier: 22, description: "Hero XP" },
-    "Superb Heroes": { name: "Superb Heroes", expense: 100000000000000, tier: 23, description: "Hero XP" },
+    "Superb Heroes": { name: "Superb Heroes",    expense: 10000000000000, tier: 23, description: "Hero XP" },
  
     
 }
@@ -686,8 +686,8 @@ function getEssenceGain() {
 
     if (gameData.requirements["Transcendent Master"].isCompleted()) 
         essence *= 1.5    
-    if (gameData.requirements["Faint Hope"].isCompleted() && gameData.realtime > 5*60)           
-        essence *= 1 + (gameData.realtime - 5 * 60) / 600    
+    if (gameData.requirements["Faint Hope"].isCompleted())
+        essence *= 1 + (gameData.realtime * Math.pow(2, gameData.completedTimes)) / 600    
 
     return essence	
 }
@@ -699,7 +699,7 @@ function getGameSpeed() {
     var timeLoop = gameData.taskData["Time Loop"]
     var warpDrive = (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
     var timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive
-    var gameSpeed = baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed 
+    var gameSpeed = baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * Math.pow(2, gameData.completedTimes)
     return gameSpeed
 }
 
@@ -731,6 +731,11 @@ function initUI() {
     setStickySidebar(gameData.settings.stickySidebar);
     if (!gameData.settings.darkTheme)
         setLightDarkMode()
+
+    if (gameData.completedTimes > 0) {
+        var elem = document.getElementById("completedTimes")
+        elem.textContent = "Game completed " + gameData.completedTimes + " times. Time Boost is x" + Math.pow(2, gameData.completedTimes) + ". All progress will be lost."
+    }
 }
 
 function setTab(element, selectedTab) {
@@ -1492,6 +1497,8 @@ function getLifespan() {
 	var abyss = gameData.taskData["Ceaseless Abyss"]
     var cosmicLongevity = gameData.taskData["Cosmic Longevity"]
     var lifespan = baseLifespan * immortality.getEffect() * superImmortality.getEffect() * abyss.getEffect() * cosmicLongevity.getEffect() * higherDimensions.getEffect()
+    lifespan *= Math.pow(2, gameData.completedTimes)
+
     return lifespan
 }
 
@@ -1710,12 +1717,43 @@ function update(needUpdateUI = true) {
         updateUI()
 }
 
-function resetGameData() {
-
+function restartGame()
+{
+    gameData.paused = true
     clearInterval(saveloop)
+    clearInterval(gameloop)
+
+    gameData.currentJob = gameData.taskData["Beggar"]
+    gameData.currentProperty = gameData.itemData["Homeless"]
+    gameData.currentMisc = []
+
+    gameData.itemData = {}
+    gameData.taskData = {}
+    gameData.milestoneData = {}
+    gameData.requirements = {}
+    gameData.coins = 0
+    gameData.days = 365 * 14
+    gameData.evil = 0
+    gameData.essence = 0
+    gameData.paused = false
+    gameData.timeWarpingEnabled = true
+    gameData.rebirthOneCount = 0
+    gameData.rebirthTwoCount = 0
+    gameData.rebirthThreeCount = 0
+    gameData.realtime = 0
+
+    gameData.completedTimes += 1
+    saveGameData()
+    location.reload()
+}
+
+function resetGameData() {
+    clearInterval(saveloop)
+    clearInterval(gameloop)
     if (!confirm('Are you sure you want to reset the game?')) {
+        gameloop = setInterval(update, 1000 / updateSpeed)
         saveloop = setInterval(saveGameData, 3000)
-        return;
+        return
     }
     localStorage.clear()
     location.reload()
@@ -1823,20 +1861,23 @@ window.addEventListener('keydown', function(e) {
 
 //Init
 
-createAllRows(jobCategories, "jobTable")
-createAllRows(skillCategories, "skillTable")
-createAllRows(itemCategories, "itemTable") 
-createAllRows(milestoneCategories, "milestoneTable")
+
 
 createData(gameData.taskData, jobBaseData)
 createData(gameData.taskData, skillBaseData)
 createData(gameData.itemData, itemBaseData)
 createData(gameData.milestoneData, milestoneBaseData) 
 
-
 gameData.currentJob = gameData.taskData["Beggar"]
 gameData.currentProperty = gameData.itemData["Homeless"]
 gameData.currentMisc = []
+
+
+createAllRows(jobCategories, "jobTable")
+createAllRows(skillCategories, "skillTable")
+createAllRows(itemCategories, "itemTable")
+createAllRows(milestoneCategories, "milestoneTable")
+
 
 gameData.requirements = {
     //Other
@@ -1855,6 +1896,9 @@ gameData.requirements = {
 	"Rebirth note 4": new AgeRequirement([document.getElementById("rebirthNote4")], [{requirement: 1000}]),
 	"Rebirth note 5": new AgeRequirement([document.getElementById("rebirthNote5")], [{requirement: 10000}]),
     "Rebirth note 6": new TaskRequirement([document.getElementById("rebirthNote6")], [{ task: "Cosmic Recollection", requirement: 1 }]),
+
+    "Rebirth note End": new EssenceRequirement([document.getElementById("rebirthNoteEnd")], [{ requirement: 10000000000000 }]),
+    "Rebirth button End": new EssenceRequirement([document.getElementById("rebirthButtonEnd")], [{ requirement: 10000000000000 }]),
 
     "Rebirth button 1": new AgeRequirement([document.getElementById("rebirthButton1")], [{ requirement: 65 }]),
     "Rebirth button 2": new AgeRequirement([document.getElementById("rebirthButton2")], [{ requirement: 200 }]),
@@ -2035,7 +2079,7 @@ gameData.requirements = {
     "Awesome Heroes": new EssenceRequirement([getMilestoneElement("Awesome Heroes")], [{ requirement: 400000000 }]),
     "Furious Heroes": new EssenceRequirement([getMilestoneElement("Furious Heroes")], [{ requirement: 500000000 }]),
     "Gorgeous Heroes": new EssenceRequirement([getMilestoneElement("Gorgeous Heroes")], [{ requirement: 1000000000000 }]),
-    "Superb Heroes": new EssenceRequirement([getMilestoneElement("Superb Heroes")], [{ requirement: 100000000000000 }]),
+    "Superb Heroes": new EssenceRequirement([getMilestoneElement("Superb Heroes")], [{ requirement: 10000000000000 }]),
 }
 
 tempData["requirements"] = {}
