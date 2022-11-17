@@ -400,8 +400,10 @@
                                         <tr>
                                             <td>Font-size</td>
                                             <td style="padding: 0.4em">
-                                                <button class="w3-button button" onclick="setFontSize(gameData.settings.fontSize - 1)">Smaller</button>
-                                                <button class="w3-button button" onclick="setFontSize(gameData.settings.fontSize + 1)">Larger</button>
+                                                <button class="w3-button button" onmouseover="onFontButton()" onmouseout="outFontButton()" onclick="setFontSize(gameData.settings.fontSize - 1)">Smaller</button>
+                                                <button class="w3-button button" onmouseover="onFontButton()" onmouseout="outFontButton()" onclick="setFontSize(gameData.settings.fontSize + 1)">Larger</button>
+                                                <span class="tooltiptext hidden" id="fontSizeTooltip" style="color: gray">keep pressing to change more</span>
+                                                
                                             </td>
                                         </tr>
                                         <tr>

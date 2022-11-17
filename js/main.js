@@ -1894,6 +1894,16 @@ function outExportButton() {
 }
 
 
+function onFontButton() {
+    var tooltip = document.getElementById("fontSizeTooltip");
+    tooltip.classList.remove("hidden")
+}
+
+function outFontButton() {
+    var tooltip = document.getElementById("fontSizeTooltip");
+    tooltip.classList.add("hidden")
+}
+
 
 window.addEventListener('keydown', function (e) {
 	if(e.key==" " && !e.repeat ) {
