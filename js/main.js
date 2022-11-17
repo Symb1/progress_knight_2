@@ -738,7 +738,9 @@ function initUI() {
 
     if (gameData.completedTimes > 0) {
         var elem = document.getElementById("completedTimes")
-        elem.textContent = "Game completed " + gameData.completedTimes + " times. Time Boost is x" + Math.pow(2, gameData.completedTimes) + ". All progress will be lost."
+        elem.textContent = "You completed the game " + gameData.completedTimes + " " +
+            (gameData.completedTimes > 1 ? "times" : "time") + ". Time Boost is x" + Math.pow(2, gameData.completedTimes) +
+            ". All progress will be lost if you click this button."
     }
 }
 
@@ -1080,6 +1082,10 @@ function setLayout(id) {
         document.getElementById("skillsTabButton").classList.add("hidden")
         document.getElementById("shopTabButton").classList.add("hidden")
 
+        document.getElementById("dummyPage1").classList.remove("hidden")
+        document.getElementById("dummyPage2").classList.remove("hidden")
+        document.getElementById("dummyPage3").classList.remove("hidden")
+
         document.getElementById("skills").classList.add("hidden")
         document.getElementById("shop").classList.add("hidden")
 
@@ -1097,6 +1103,10 @@ function setLayout(id) {
     {
         document.getElementById("skillsTabButton").classList.remove("hidden")
         document.getElementById("shopTabButton").classList.remove("hidden")
+
+        document.getElementById("dummyPage1").classList.add("hidden")
+        document.getElementById("dummyPage2").classList.add("hidden")
+        document.getElementById("dummyPage3").classList.add("hidden")
 
         document.getElementById("skills").classList.remove("hidden")
         document.getElementById("shop").classList.remove("hidden")
