@@ -114,6 +114,10 @@ td {
     background-color: rgb(192, 192, 192);
 }
 
+.item-header-row:hover {
+    cursor: pointer;    
+}
+
 button:focus {
     outline: none;
 }
