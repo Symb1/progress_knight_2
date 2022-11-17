@@ -69,7 +69,7 @@
                     </li>
                 </ul>
 
-                <div id="quickTaskDisplay">
+                <div id="quickTaskDisplay" class="hidden">
                     <div class="small-margin inline job progress-bar progressBar">
                         <div class="progress-fill progressFill current"></div>
                         <div class="progress-text name">Task</div>
@@ -79,33 +79,33 @@
                 <div class="text-caption" style="padding-top: 0.2em"><span style="color: rgb(15, 105, 207)">Happiness: </span><span id="happinessDisplay"></span></div>
                 <div style="color: gray" class="sidebar-element">Affects all XP gain</div>
 
-                <div id="evilInfo">
+                <div id="evilInfo" class="hidden">
                     <div class="text-caption"><span style="color: rgb(200, 0, 0)">Evil: </span><span id="evilDisplay"></span></div>
                     <div style="color: gray" class="sidebar-element">Affects dark magic XP gain</div>
                 </div>
 
-                <div id="essenceInfo">
+                <div id="essenceInfo" class="hidden">
                     <div class="text-caption"><span style="color: rgb(24, 210, 217)">Essence: </span><span id="essenceDisplay"></span></div>
                     <div style="color: gray" class="sidebar-element">Affects Almightiness XP gain</div>
                 </div>
 
-                <div id="timeWarping">
+                <div id="timeWarping" class="hidden">
                     <div class="text-caption"><span style="color: rgb(204, 34, 219)">Time Warping: </span><span id="timeWarpingDisplay"></span></div>
                     <div style="color: gray" class="sidebar-element">Affects game speed</div>
                 </div>
 
-                <div id="rebirthButton1">
+                <div id="rebirthButton1" class="hidden">
                     <div class="text-caption"><span style="color: rgb(102, 229, 71)">Rebirth</span></div>
                     <button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100%" onClick="rebirthOne()">Touch the eye</button>
                 </div>
-                <div id="rebirthButton2">
+                <div id="rebirthButton2" class="hidden">
                     <button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100% " onClick="rebirthTwo()">Embrace evil: <span style="color: rgb(240, 0, 0)" id="evilGainButtonDisplay"></span></button>
                 </div>
-                <div id="rebirthButton3">
+                <div id="rebirthButton3" class="hidden">
                     <button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100% " onClick="rebirthThree()">Transcend: <span style="color: rgb(24, 210, 217)" id="essenceGainButtonDisplay"></span></button>
                 </div>
 
-                <div id="rebirthButtonEnd">
+                <div id="rebirthButtonEnd" class="hidden">
                     <button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100% " onClick="setTab('rebirth')"><span style="color: rgb(102, 229, 71)">Check The Amulet</span></button>
                 </div>
             </div>
@@ -254,7 +254,7 @@
                     </div>
 
                     <div class="tab" id="rebirth">
-                        <div id="rebirthPage" style="flex: 1; margin-left: 0.5em;">
+                        <div id="rebirthPage" style="flex: 1; margin-left: 0.5em;" >
                             <ul>
                                 <li style="margin: 0.4em;">
                                     You stumble across a strange looking amulet on your 25th birthday. It does not look like
@@ -262,12 +262,12 @@
                                     feel a weird urge to keep the amulet, so you slip it into your pocket for safekeeping.
 
                                 </li>
-                                <li style="margin: 0.4em;" id="rebirthNote1">
+                                <li style="margin: 0.4em;" id="rebirthNote1" class="hidden">
                                     On your 45th birthday, you feel the amulet shiver uncontrollably in your pocket. You take it
                                     out and the constant shivering suddenly stops. More to your bizarre surprise, you notice
                                     a strange etching on the centre of the amulet.
                                 </li>
-                                <li style="margin: 0.4em;" id="rebirthNote2">
+                                <li style="margin: 0.4em;" id="rebirthNote2" class="hidden">
                                     <div style="margin-bottom: 0.4em">
                                         On your 65th birthday, you once again encounter the strange, unexplained shivering from your
                                         amulet. But this time, a living eyeball emerges from the centre. Although terribly frightened,
@@ -285,7 +285,7 @@
                                     <button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em " onClick="rebirthOne()">Touch the eye</button>
                                     <br>
                                 </li>
-                                <li style="margin: 0.4em;" id="rebirthNote3">
+                                <li style="margin: 0.4em;" id="rebirthNote3" class="hidden">
                                     <div style="margin-bottom: 0.4em;">
                                         Your gut instinct was right. The moment you hit the grand age of 200, you hear an ominous hum coming from the amulet.
                                         A mouth emerges from its surface and begins to cackle, and proceeds to say: "So you've made it this far... Are you ready to embrace evil?"
@@ -302,7 +302,7 @@
                                     <button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em " onClick="rebirthTwo()">Embrace evil</button>
                                     <br>
                                 </li>
-                                <li style="margin: 0.4em;" id="rebirthNote4">
+                                <li style="margin: 0.4em;" id="rebirthNote4" class="hidden">
                                     <div style="margin-bottom: 0.4em;">
                                         A thousand years have come and gone and yet, you still remain alive... somehow. You feel your amulet shivering again and to your surprise, you see small tendrils
                                         full of eyeballs emergin from it. As you are about to drop the amulet, you hear frightening screech followed by whispers in your head... <b>"You have to embrace the Void..."</b>
@@ -315,7 +315,7 @@
                                         You have unlocked <b>"The Void"</b> class category along with <b>"Void Manipulation"</b> abilities.
                                     </i>
                                 </li>
-                                <li style="margin: 0.4em;" id="rebirthNote5">
+                                <li style="margin: 0.4em;" id="rebirthNote5" class="hidden">
                                     <div style="margin-bottom: 0.4em;">
                                         Ten millenia have passed... most of them spent serving the Void, yet there is still a glimpse of humanity inside of you. All of the sudden your amulet starts to glow in the distance,
                                         illuminating darkness around you with the brightness of thousand suns. With the very last remnant of your free will you run to your amulet and touch it... <b>
@@ -343,13 +343,13 @@
                                         <br>
                                     </i>
                                 </li>
-                                <li style="margin: 0.4em;" id="rebirthNote6">
+                                <li style="margin: 0.4em;" id="rebirthNote6" class="hidden">
                                     <div style="margin-bottom: 0.4em;">
                                         <button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em" onClick="rebirthThree()">Transcend</button>
                                     </div>
                                 </li>
 
-                                <li style="margin: 0.4em;" id="rebirthNoteEnd">
+                                <li style="margin: 0.4em;" id="rebirthNoteEnd" class="hidden">
                                     <div class="text-caption" style="margin-bottom: 0.4em; color: rgb(102, 229, 71); ">
                                         Congratulations! You have completed the game. You can Restart it and get permanent x2 Time Wapring Boost, which will apply at every Game Restart.<br>
                                         <button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em" onClick="restartGame()">Restart the game and get x2 time boost</button>
