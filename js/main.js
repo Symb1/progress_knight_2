@@ -771,6 +771,10 @@ function setTask(taskName) {
         gameData.currentJob = task 
 }
 
+function forceAutobuy() {
+    autoBuyEnabled = true
+}
+
 function setProperty(propertyName) {
     autoBuyEnabled = false
     var property = gameData.itemData[propertyName]
