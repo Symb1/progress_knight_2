@@ -19,9 +19,12 @@ var gameData = {
     currentMisc: null,
 
     settings: {
-        stickySidebar: false,
+        stickySidebar: true,
         darkTheme: true,
         numberNotation: 0,
+        layout: 1,
+        fontSize: 3,
+        selectedTab: 'jobs'
     },
 
     realtime: 0.0,
@@ -435,8 +438,6 @@ const tooltips = {
 
 const units = ["", "k", "M", "B", "T", "q", "Q", "Sx", "Sp", "Oc", "Nv", "Vg", "Uv", "Dv", "Tv", "Qt", "Qv", "Sv", "Oc", "Nd", "Tg", "OMG"];
 
-const jobTabButton = document.getElementById("jobTabButton")
-
 function getBaseLog(x, y) {
     return Math.log(y) / Math.log(x);
 }
@@ -728,6 +729,9 @@ function goBankrupt() {
 }
 
 function initUI() {
+    setLayout(gameData.settings.layout)
+    setFontSize(gameData.settings.fontSize)
+
     setStickySidebar(gameData.settings.stickySidebar);
     if (!gameData.settings.darkTheme)
         setLightDarkMode()
@@ -738,7 +742,9 @@ function initUI() {
     }
 }
 
-function setTab(element, selectedTab) {
+function setTab(selectedTab) {
+    var element = document.getElementById(selectedTab+"TabButton")
+    gameData.settings.selectedTab = selectedTab
 
     var tabs = Array.prototype.slice.call(document.getElementsByClassName("tab"))
     tabs.forEach(function(tab) {
@@ -1067,6 +1073,65 @@ function setStickySidebar(sticky) {
 function setNotation(id) {
     gameData.settings.numberNotation = id
 }
+
+function setLayout(id) {
+    gameData.settings.layout = id
+    if (id == 0) {
+        document.getElementById("skillsTabButton").classList.add("hidden")
+        document.getElementById("shopTabButton").classList.add("hidden")
+
+        document.getElementById("skills").classList.add("hidden")
+        document.getElementById("shop").classList.add("hidden")
+
+        document.getElementById("tabcolumn").classList.add("plain-tab-column")
+        document.getElementById("tabcolumn").classList.remove("tabs-tab-column")
+
+        document.getElementById("maincolumn").classList.add("plain-main-column")
+        document.getElementById("maincolumn").classList.remove("tabs-main-column")
+
+        document.getElementById("jobs").appendChild(document.getElementById("skillPage"))
+        document.getElementById("jobs").appendChild(document.getElementById("itemPage"))
+
+    }
+    else
+    {
+        document.getElementById("skillsTabButton").classList.remove("hidden")
+        document.getElementById("shopTabButton").classList.remove("hidden")
+
+        document.getElementById("skills").classList.remove("hidden")
+        document.getElementById("shop").classList.remove("hidden")
+
+        document.getElementById("tabcolumn").classList.add("tabs-tab-column")
+        document.getElementById("tabcolumn").classList.remove("plain-tab-column")
+
+        document.getElementById("maincolumn").classList.add("tabs-main-column")
+        document.getElementById("maincolumn").classList.remove("plain-main-column")
+
+        document.getElementById("skills").appendChild(document.getElementById("skillPage"))
+        document.getElementById("shop").appendChild(document.getElementById("itemPage"))
+
+    }
+}
+
+function setFontSize(id) {
+    var fontSizes = {
+        0: "xx-small",
+        1: "x-small",
+        2: "small",
+        3: "medium",
+        4: "large",
+        5: "x-large",
+        6: "xx-large",
+        7: "xxx-large",
+    }
+
+    if (id < 0) { id = 0 }
+    if (id > 7) { id = 7 }
+
+    gameData.settings.fontSize = id
+    document.getElementById("body").style.fontSize = fontSizes[id]    
+}
+
 
 function updateItemRows() {
     for (key in gameData.itemData) {
@@ -1461,7 +1526,7 @@ function applyMilestones() {
 }
 
 function rebirthReset() {
-    setTab(jobTabButton, "jobs")
+    setTab("jobs")
 
     gameData.coins = 0
     gameData.days = 365 * 14
@@ -1783,46 +1848,26 @@ function changeTab(direction){
 
     var currentTab = 0
     for (i in tabs) {
-        if (!tabs[i].style.display.includes("none"))
+        if (!tabs[i].style.display.includes("none") && !tabs[i].classList.contains("hidden"))
              currentTab = i*1
     }
-    var targetTab = currentTab+direction
+    var targetTab = currentTab + direction
+    if (targetTab < 0)
+    {
+        setTab("settings")
+        return
+    }
     targetTab = Math.max(0,targetTab)
     if( targetTab > (tabs.length-1)) targetTab = 0
-    while(tabButtons[targetTab].style.display.includes("none")){
+    while (tabButtons[targetTab].style.display.includes("none") || tabButtons[targetTab].classList.contains("hidden")){
         targetTab = targetTab+direction
         targetTab = Math.max(0,targetTab) 
         if( targetTab > (tabs.length-1)) targetTab = 0
     }
-	
 
-	button = tabButtons[targetTab]
-	setTab(button, tabs[targetTab].id)
-
+	setTab(tabs[targetTab].id)
 } 
 
-loadouts = {}
-
-function saveLoadout(num){
-	loadouts[num] = {
-		job : gameData.currentJob.name,
-		skill: "Concentration",
-		property:gameData.currentProperty.name,
-		misc: []
-	}
-	for (i in gameData.currentMisc) loadouts[num].misc.push(gameData.currentMisc[i].name)
-}
-
-function loadLoadout(num){
-	if (num in loadouts)
-	{
-		gameData.currentMisc = []
-		for (i in  loadouts[num].misc) setMisc( loadouts[num].misc[i])
-		setProperty(loadouts[num].property)
-		setTask(loadouts[num].job)
-    }
-    autoBuyEnabled = true
-}
 
 function copyTextToClipboard(text) {
     navigator.clipboard.writeText(text).then(function () {
@@ -1840,14 +1885,7 @@ function outExportButton() {
 
 
 
-window.addEventListener('keydown', function(e) {
-    if (e.key == "1" && e.altKey) saveLoadout(1)
-    if (e.key == "1" ) loadLoadout(1)
-    if (e.key == "2" && e.altKey) saveLoadout(2)
-    if (e.key == "2" ) loadLoadout(2)
-    if (e.key == "3" && e.altKey) saveLoadout(3)
-    if (e.key == "3" ) loadLoadout(3)
-	
+window.addEventListener('keydown', function (e) {
 	if(e.key==" " && !e.repeat ) {
 		setPause()
 		if(e.target == document.body) {
@@ -1860,9 +1898,6 @@ window.addEventListener('keydown', function(e) {
 
 
 //Init
-
-
-
 createData(gameData.taskData, jobBaseData)
 createData(gameData.taskData, skillBaseData)
 createData(gameData.itemData, itemBaseData)
@@ -1888,7 +1923,6 @@ gameData.requirements = {
 	"Celestial Powers": new AgeRequirement(getElementsByClass("Celestial Powers"), [{requirement: 10000}]),
     "Dark Magic": new EvilRequirement(getElementsByClass("Dark Magic"), [{requirement: 1}]),
 	"Almightiness": new EssenceRequirement(getElementsByClass("Almightiness"), [{requirement: 1}]),
-    //"Shop": new CoinRequirement([document.getElementById("shopTabButton")], [{requirement: gameData.itemData["Tent"].getExpense() * 50}]),
     "Rebirth tab": new AgeRequirement([document.getElementById("rebirthTabButton")], [{requirement: 25}]),
     "Rebirth note 1": new AgeRequirement([document.getElementById("rebirthNote1")], [{requirement: 45}]),
     "Rebirth note 2": new AgeRequirement([document.getElementById("rebirthNote2")], [{requirement: 65}]),
@@ -2055,7 +2089,7 @@ gameData.requirements = {
     "Multiverse Fragment": new CoinRequirement([getItemElement("Multiverse Fragment")], [{ requirement: gameData.itemData["Multiverse Fragment"].getExpense() * 100 }]),
 
     // Milestones
-    "Milestones": new EssenceRequirement([document.getElementById("milestoneTabButton")], [{ requirement: 1 }]),
+    "Milestones": new EssenceRequirement([document.getElementById("milestonesTabButton")], [{ requirement: 1 }]),
     "Magic Eye": new EssenceRequirement([getMilestoneElement("Magic Eye")], [{ requirement: 5000 }]),
     "Almighty Eye": new EssenceRequirement([getMilestoneElement("Almighty Eye")], [{ requirement: 15000 }]),
     "Deal with the Devil": new EssenceRequirement([getMilestoneElement("Deal with the Devil")], [{ requirement: 30000 }]),
@@ -2095,7 +2129,7 @@ initUI()
 setCustomEffects()
 addMultipliers()
 
-setTab(jobTabButton, "jobs")
+setTab(gameData.settings.selectedTab)
 
 update()
 var gameloop = setInterval(update, 1000 / updateSpeed)

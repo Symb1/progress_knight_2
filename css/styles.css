@@ -1,32 +1,32 @@
 body {
-    background-color: rgb(243, 243, 243);
-    font-size: x-small;
+    background-color: rgb(243, 243, 243);    
 }
 
-.w3-bar-item {
-    width: 200px;
-    height: 30px;
-    text-align: center;
-    font-size: x-small;
+.text-caption {
+    font-size: larger
 }
 
 body .w3-bordered tr, .w3-table-all tr {
-    font-size: x-small;
-    padding-bottom: 0px;
-    padding-top: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
+
 }
 
 body .w3-bordered th, .w3-table-all th {
-    padding: 4px 0 5px 0;
-    padding-left: 8px;
+    height: 2em;
+    padding: 0.4em 1em 0 1em;
 }
 
 body .w3-bordered td, .w3-table-all td {
-    padding-bottom: 0px;
-    padding-top: 0px;
-    padding-left: 4px;
+    height: 2em;
+    padding: 0 0 0 0;
+    padding-left : 0.8em;
+}
+
+.w3-table td:first-child, .w3-table th:first-child {
+    padding-left: 0.3em;
+}
+
+.w3-padding {
+    padding: 0.4em 0.8em !important;
 }
 
 table {
@@ -58,34 +58,35 @@ td {
 
 .progress-text {
     position: absolute;
-    top: 0px;
-    bottom: 0px;
-    padding: 2px;
+    top: 5%;
+    left: 0.5em;
+    bottom: 0%;
     color: white
 }
 
 .progress-bar {
+    margin-top: 0.05em;
     position: relative;
     background-color: rgb(12, 101, 173);
     cursor: pointer;
-    width: 150px;
+    width: 100%;
 }
 
 .progress-fill {
-    height: 17px;
-    background-color: rgb(46, 148, 231)
+    height: 1.6em;
+    background-color: rgb(46, 148, 231);
+}
+
+.progress-fill-hero {
+    height: 1.6em;
+    background-color: rgb(165, 60, 21);
 }
 
 .progress-bar-hero {
     position: relative;
-    background-color: rgb(108 59 59);
+    background-color: rgb(108, 59, 59);
     cursor: pointer;
-    width: 150px;
-}
-
-.progress-fill-hero {
-    height: 17px;
-    background-color: rgb(165 60 21)
+    width: 100%;
 }
 
 .hidden {
@@ -97,15 +98,15 @@ td {
 }
 
 .button {
-    border: 1px groove black !important;
+    border: 0.1em groove black !important;
 }
 
 .item-button {
     background-color: white;
     text-align: center;
-    width: 140px;
-    height: 19px;
-    padding: 0px;
+    width: 93%;
+    height: 1.8em;
+    padding: 0;
 }
 
 .item-button:hover {
@@ -128,18 +129,18 @@ button:focus {
   
 .tooltip .tooltipText {
     visibility: hidden;
-    width: 240px;
+    width: 20em;
     background-color: black;
     color: #fff;
     text-align: center;
-    border-radius: 6px;
-    padding: 10px 0;
+    border-radius: 0.5em;
+    padding: 0.5em 0.5em;
 
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
-    top: -5px;
-    left: 105%;
+    top: 0;
+    left: 102%;
 
     opacity: 0;
     transition: opacity 0.5s;
@@ -151,17 +152,18 @@ button:focus {
 }
 
 .sidebar-element {
-    margin-bottom: 16px;
+    margin-bottom: 0.8em;
 }
 
 .slidecontainer {
     width: 100%;
 }
 
+/*
 .slider {
     -webkit-appearance: none;
     width: 50%;
-    height: 5px;
+    height: 0.5em;
     border-radius: 5px;
     background: #d3d3d3;
     outline: none;
@@ -191,6 +193,7 @@ button:focus {
     background: #4CAF50;
     cursor: pointer;
 }
+*/
 
 .inline {
     display: inline-block;
@@ -201,7 +204,7 @@ button:focus {
 }
 
 .small-margin  {
-    margin-bottom: 2px;
+    margin-bottom: 0.1em;
 }
 
 .heading {
@@ -232,3 +235,36 @@ button:focus {
     overflow-x: auto;
     overflow-y: hidden;
 }
+
+.quick-bar {
+    top: 0;
+}
+
+.tabs-tab-column {
+    width: 60em;
+    height: auto;
+}
+
+.tabs-main-column {
+    width: 60em;
+    height: auto;
+    float: right;
+}
+
+.plain-tab-column {
+    width: 164em;
+    height: auto;
+}
+
+.plain-main-column {
+    width: 164em;
+    height: auto;
+    float: right;
+}
+
+.baritem {
+    width: 9em;
+    height: auto;
+    text-align: center;
+}
+

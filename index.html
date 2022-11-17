@@ -9,20 +9,20 @@
     <title>Progress Knight 2.1</title>
     <link rel="shortcut icon" href="img/logo.ico" />
 </head>
-<body id="body" class="dark">
+<body id="body" class="dark" style="font-size: x-small">
     <div class="w3-margin">
         <div class="header">
             <img src="img/logos.png" alt="logos" />
             <h3>Progress Knight 2.1</h3>
         </div>
-        <div class="row">
-            <div id="info" class="panel w3-padding" style="width: 180px; top: 0;">
+        <div id="row" class="row">
+            <div id="info" class="panel w3-padding quick-bar" style="width:20em">
                 <span id="deathText">
-                    <div style="font-size: small; color: red">Age has caught up to you</div>
+                    <div class="text-caption" style="color: red">Age has caught up to you</div>
                     <div class="sidebar-element" style="color: gray">Your age has met your lifespan, use the amulet to rebirth before you pass away</div>
                 </span>
 
-                <div class="" style="font-size: small"><span id="ageDisplay">14</span></div>
+                <div class="text-caption"><span id="ageDisplay">14</span></div>
                 <div class="sidebar-element" style="color: gray">
                     Lifespan: <span id="lifespanDisplay">70</span> years
                     <br>RealTime: <span id="realtimeDisplay">0</span>
@@ -30,7 +30,7 @@
 
                 <button id="pauseButton" class="w3-button button sidebar-element" onClick="setPause()">Pause</button>
 
-                <div style="font-size: small" id="coinDisplay">
+                <div class="text-caption" id="coinDisplay">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -39,7 +39,7 @@
                 </div>
                 <div style="color: gray">Balance / day</div>
 
-                <ul class="sidebar-element" style="padding-left: 20px;">
+                <ul class="sidebar-element" style="padding-left: 1em;">
                     <li>
                         <span style="color: rgb(9, 160, 230)">Net: </span><b id="signDisplay"></b><span id="netDisplay">
                             <span></span>
@@ -70,83 +70,66 @@
                 </ul>
 
                 <div id="quickTaskDisplay">
-                    <div style="width: 150px;" class="small-margin inline job progress-bar progressBar">
+                    <div class="small-margin inline job progress-bar progressBar">
                         <div class="progress-fill progressFill current"></div>
                         <div class="progress-text name">Task</div>
                     </div>
                 </div>
 
-                <div style="font-size : small; padding-top: 15px"><span style="color: rgb(15, 105, 207)">Happiness: </span><span id="happinessDisplay"></span></div>
+                <div class="text-caption" style="padding-top: 0.2em"><span style="color: rgb(15, 105, 207)">Happiness: </span><span id="happinessDisplay"></span></div>
                 <div style="color: gray" class="sidebar-element">Affects all XP gain</div>
 
                 <div id="evilInfo">
-                    <div style="font-size: small"><span style="color: rgb(200, 0, 0)">Evil: </span><span id="evilDisplay"></span></div>
+                    <div class="text-caption"><span style="color: rgb(200, 0, 0)">Evil: </span><span id="evilDisplay"></span></div>
                     <div style="color: gray" class="sidebar-element">Affects dark magic XP gain</div>
                 </div>
 
                 <div id="essenceInfo">
-                    <div style="font-size: small"><span style="color: rgb(24, 210, 217)">Essence: </span><span id="essenceDisplay"></span></div>
+                    <div class="text-caption"><span style="color: rgb(24, 210, 217)">Essence: </span><span id="essenceDisplay"></span></div>
                     <div style="color: gray" class="sidebar-element">Affects Almightiness XP gain</div>
                 </div>
 
                 <div id="timeWarping">
-                    <div style="font-size: small"><span style="color: rgb(204, 34, 219)">Time Warping: </span><span id="timeWarpingDisplay"></span></div>
+                    <div class="text-caption"><span style="color: rgb(204, 34, 219)">Time Warping: </span><span id="timeWarpingDisplay"></span></div>
                     <div style="color: gray" class="sidebar-element">Affects game speed</div>
                 </div>
 
                 <div id="rebirthButton1">
-                    <div style="font-size: small"><span style="color: rgb(102, 229, 71)">Rebirth</span></div>
-                    <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px; width: 150px" onClick="rebirthOne()">Touch the eye</button>
+                    <div class="text-caption"><span style="color: rgb(102, 229, 71)">Rebirth</span></div>
+                    <button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100%" onClick="rebirthOne()">Touch the eye</button>
                 </div>
                 <div id="rebirthButton2">
-                    <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px; width: 150px" onClick="rebirthTwo()">Embrace evil: <span style="color: rgb(240, 0, 0)" id="evilGainButtonDisplay"></span></button>
+                    <button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100% " onClick="rebirthTwo()">Embrace evil: <span style="color: rgb(240, 0, 0)" id="evilGainButtonDisplay"></span></button>
                 </div>
                 <div id="rebirthButton3">
-                    <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px; width: 150px" onClick="rebirthThree()">Transcend: <span style="color: rgb(24, 210, 217)" id="essenceGainButtonDisplay"></span></button>
+                    <button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100% " onClick="rebirthThree()">Transcend: <span style="color: rgb(24, 210, 217)" id="essenceGainButtonDisplay"></span></button>
                 </div>
 
                 <div id="rebirthButtonEnd">
-                    <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px; width: 150px" onClick="setTab(this, 'rebirth')"><span style="color: rgb(102, 229, 71)">Check The Amulet</span></button>
+                    <button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100% " onClick="setTab('rebirth')"><span style="color: rgb(102, 229, 71)">Check The Amulet</span></button>
                 </div>
-
             </div>
-            <div class="column">
-                <div class="panel w3-margin-left" style="width: 1660px; height: 30px;">
-                    <div class="w3-button w3-bar-item tabButton" id="jobTabButton" onClick="setTab(this, 'jobs')">Hero</div>
-                    <div class="w3-button w3-bar-item tabButton" id="rebirthTabButton" onClick="setTab(this, 'rebirth')">Amulet</div>
-                    <div class="w3-button w3-bar-item tabButton" id="milestoneTabButton" onClick="setTab(this, 'milestones')">Milestones</div>
-                    <div class="w3-button w3-bar-item tabButton" onClick="setTab(this, 'settings')" style="float: right">Settings</div>
+
+            <div id="column" class="column">
+                <div id="tabcolumn" class="panel w3-margin-left tab-column">
+                    <div class="w3-button w3-bar-item tabButton baritem" id="jobsTabButton" onClick="setTab('jobs')">Hero</div>
+                    <div class="w3-button w3-bar-item tabButton baritem hidden" id="skillsTabButton" onClick="setTab('skills')">Skills</div>
+                    <div class="w3-button w3-bar-item tabButton baritem hidden" id="shopTabButton" onClick="setTab('shop')">Shop</div>
+                    <div class="w3-button w3-bar-item tabButton baritem" id="milestonesTabButton" onClick="setTab('milestones')">Milestones</div>
+                    <div class="w3-button w3-bar-item tabButton baritem" id="rebirthTabButton" onClick="setTab('rebirth')">Amulet</div>
+                    <div class="w3-button w3-bar-item tabButton baritem" id="settingsTabButton" onClick="setTab('settings')">Settings</div>
                 </div>
-                <div class="panel w3-margin-left w3-margin-top w3-padding" style="width: 1660px; height: auto; float: right">
+                <div id="maincolumn" class="panel w3-margin-left w3-margin-top w3-padding main-column">
                     <template class="headerRowTaskTemplate">
                         <tr>
-                            <th class="category" style="width: 180px">Job</th>
+                            <th class="category" style="width: 20em">Job</th>
                             <th>Level</th>
-                            <th class="valueType">Value type</th>
+                            <th class="valueType" style="width: 18em">Value type</th>
                             <th>Xp/day</th>
-                            <th>Xp left</th>
+                            <th>Xp/left</th>
                             <th class="maxLevel">Max</th>
                         </tr>
                     </template>
-
-                    <template class="headerRowItemTemplate">
-                        <tr>
-                            <th class="category" style="width: 160px">Item</th>
-                            <th style="width: 50px">Active</th>
-                            <th style="width: 190px">Effect</th>
-                            <th>Expense/day</th>
-                        </tr>
-                    </template>
-
-                    <template class="headerRowMilestoneTemplate">
-                        <tr>
-                            <th style="width: 100px">Target Essence</th>
-                            <th class="category" style="width: 240px">Milestone Tier</th>
-                            <th style="width: 250px">Effect</th>
-                        </tr>
-
-                    </template>
-
                     <template class="rowTaskTemplate">
                         <tr>
                             <td>
@@ -167,24 +150,31 @@
                                 </div>
                             </td>
                             <td class="xpGain">Xp/day</td>
-                            <td class="xpLeft">Xp left</td>
+                            <td class="xpLeft">xp left</td>
                             <td class="maxLevel">Max</td>
                         </tr>
                     </template>
 
+
+                    <template class="headerRowItemTemplate">
+                        <tr>
+                            <th class="category" style="width: 20em">Item</th>
+                            <th>Active</th>
+                            <th style="width: 22em">Effect</th>
+                            <th>Expense/day</th>
+                        </tr>
+                    </template>
                     <template class="rowItemTemplate">
                         <tr>
                             <td>
-
                                 <button class="button item-button tooltip">
                                     <span class="name"></span>
                                     <span class="tooltipText">tooltip</span>
                                 </button>
-
                             </td>
                             <td>
-                                <div class="w3-border w3-circle" style="width: 17px; height: 17px; padding: 2px">
-                                    <div class="active w3-circle" style="width: 11px; height: 11px;"></div>
+                                <div class="w3-border w3-circle" style="width: 1.7em; height: 1.7em; padding: 0.2em">
+                                    <div class="active w3-circle" style="width: 1.2em; height: 1.2em;"></div>
                                 </div>
                             </td>
                             <td class="effect"></td>
@@ -197,11 +187,18 @@
                         </tr>
                     </template>
 
+                    <template class="headerRowMilestoneTemplate">
+                        <tr>
+                            <th style="width: 6em">Goal</th>
+                            <th style="width: 15em" class="category">Milestone Tier</th>
+                            <th  >Effect</th>
+                        </tr>
+                    </template>
                     <template class="rowMilestoneTemplate">
                         <tr>
                             <td style="color: rgb(24, 210, 217)" class="essence"></td>
                             <td>
-                                <div class="progress-bar progressBar tooltip" style="width: 240px">
+                                <div class="progress-bar progressBar tooltip" style="width: 100%">
                                     <div class="progress-fill progressFill" style="background-color: green"></div>
                                     <span class="tooltipText"></span>
                                     <div class="progress-text name">Milestone</div>
@@ -212,7 +209,7 @@
                     </template>
 
                     <template class="requiredRowTemplate">
-                        <td class="w3-text-gray" style="padding-left: 16px; font-size: x-small; height: 22px;" colspan=5>
+                        <td class="w3-text-gray" style="padding-left: 0.8em;" colspan=5>
                             Required:
                             <span class="value" colspan=5>
                                 <span class="levels"></span>
@@ -229,195 +226,212 @@
                     </template>
 
                     <div class="tab" id="jobs">
-                        <div style="flex: 1;">
+                        <div id="jobPage" style="flex: 1; margin-left: 0.5em;">
                             <table id="jobTable" class="w3-table w3-bordered">
                             </table>
                         </div>
-                        <div style="flex: 1; margin-left: 10px;">
+                        <div id="skillPage" style="flex: 1; margin-left: 0.5em;">
                             <table id="skillTable" class="w3-table w3-bordered">
                             </table>
                         </div>
-                        <div style="flex: 1; margin-left: 10px;">
+                        <div id="itemPage" style="flex: 1; margin-left: 0.5em;">
                             <table id="itemTable" class="w3-table w3-bordered">
                             </table>
                         </div>
                     </div>
-                    <div class="tab" id="rebirth">
-                        <ul>
-                            <li style="margin: 8px;">
-                                You stumble across a strange looking amulet on your 25th birthday. It does not look like
-                                it has any worth on the market given that it's made from cheap-looking copper. However, you
-                                feel a weird urge to keep the amulet, so you slip it into your pocket for safekeeping.
 
-                            </li>
-                            <li style="margin: 8px;" id="rebirthNote1">
-                                On your 45th birthday, you feel the amulet shiver uncontrollably in your pocket. You take it
-                                out and the constant shivering suddenly stops. More to your bizarre surprise, you notice
-                                a strange etching on the centre of the amulet.
-                            </li>
-                            <li style="margin: 8px;" id="rebirthNote2">
-                                <div style="margin-bottom: 8px">
-                                    On your 65th birthday, you once again encounter the strange, unexplained shivering from your
-                                    amulet. But this time, a living eyeball emerges from the centre. Although terribly frightened,
-                                    you realise you do not have many years to live left anyway so you consider touching the eye
-                                    to see what happens.
-                                </div>
-                                <i style="color: grey">
-                                    By touching the eyeball, you will be reborn and have to restart life again, losing all your levels and coins.
-                                    However, you will gain <b>xp multipliers</b> for your classes and abilities equivalent to: <b>1 + the max level of the class or ability / 10.</b>
-                                    This means you will learn everything again much more quickly than you did in your previous life. <span style="color: rgb(200, 0, 0)">
-                                        Something tells you that the amulet might evolve after living for <b>2 whole centuries</b>...
-                                    </span>
-                                </i>
-                                <br>
-                                <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px" onClick="rebirthOne()">Touch the eye</button>
-                                <br>
-                            </li>
-                            <li style="margin: 8px;" id="rebirthNote3">
-                                <div style="margin-bottom: 8px;">
-                                    Your gut instinct was right. The moment you hit the grand age of 200, you hear an ominous hum coming from the amulet.
-                                    A mouth emerges from its surface and begins to cackle, and proceeds to say: "So you've made it this far... Are you ready to embrace evil?"
-                                    <br><span style="color: rgb(200, 0, 0)">
-                                        The amulet might transform even further after living for a <b>millennium</b>.
-                                    </span>
-                                </div>
-                                <i style="color: rgb(200, 0, 0)">
-                                    If you decide to embrace evil, all of your levels, coins and even max levels will be reset.
-                                    You will be reborn as a fresh slate. However, you will unlock a new line of skills and gain
-                                    <b><span id="evilGainDisplay"></span> evil</b>, and which will heavily impact your future lives.
-                                </i>
-                                <br>
-                                <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px" onClick="rebirthTwo()">Embrace evil</button>
-                                <br>
-                            </li>
-                            <li style="margin: 8px;" id="rebirthNote4">
-                                <div style="margin-bottom: 8px;">
-                                    A thousand years have come and gone and yet, you still remain alive... somehow. You feel your amulet shivering again and to your surprise, you see small tendrils
-                                    full of eyeballs emergin from it. As you are about to drop the amulet, you hear frightening screech followed by whispers in your head... <b>"You have to embrace the Void..."</b>
-                                    <br>
-                                    <span style="color: rgb(200, 0, 0)">
-                                        The amulet will reach its final form after <b>ten millennia</b>!
-                                    </span>
-                                </div>
-                                <i style="color: rgb(204, 0, 255)">
-                                    You have unlocked <b>"The Void"</b> class category along with <b>"Void Manipulation"</b> abilities.
-                                </i>
-                            </li>
-                            <li style="margin: 8px;" id="rebirthNote5">
-                                <div style="margin-bottom: 8px;">
-                                    Ten millenia have passed... most of them spent serving the Void, yet there is still a glimpse of humanity inside of you. All of the sudden your amulet starts to glow in the distance,
-                                    illuminating darkness around you with the brightness of thousand suns. With the very last remnant of your free will you run to your amulet and touch it... <b>
-                                        "You are now part of something
-                                        bigger than yourself..."
-                                    </b>
-                                </div>
-                                <i style="color: rgb(255, 204, 102)">
-                                    You have unlocked <b>"Galactic Council"</b> class category along with <b>"Celestial Powers"</b> abilities.
-                                    <i style="color: grey">
-                                        <br>
-                                        By clicking on <b>Transcend</b>, you will be reborn once again, losing all your coins, <b>evil</b> and current levels.
-                                        However your max level won't be erased but multiplied with <b>Cosmic Recollection</b> ability and you will gain
-                                        <i style="color: rgb(24, 210, 217)">
-                                            <b><span id="essenceGainDisplay"></span> essence</b>,
-                                        </i>
-                                        new ability that will boost you even further in your journey.
+                    <div class="tab hidden" id="skills">
+                    </div>
 
-                                        <br>
-                                        <i style="color: rgb(200, 0, 0)">
-                                            Transced will only show up if you have <b>Cosmic Recollection</b> ability unlocked!
-
-                                        </i>
-                                    </i>
-                                    <br>
-                                </i>
-                            </li>
-                            <li style="margin: 8px;" id="rebirthNote6">
-                                <div style="margin-bottom: 8px;">
-                                    <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px" onClick="rebirthThree()">Transcend</button>
-                                </div>
-                            </li>
-
-                            <li style="margin: 8px;" id="rebirthNoteEnd">
-                                <div style="margin-bottom: 8px; color: rgb(102, 229, 71); font-size: small">
-                                    You have completed the game. You can Restart it and get permanent x2 Time Wapring Boost, which will apply at every Game Restart.<br>
-                                    <button class="w3-button button" style="margin-bottom: 8px; margin-top: 8px" onClick="restartGame()">Restart the game and get x2 time boost</button>
-                                </div>
-                            </li>
-                        </ul>
+                    <div class="tab hidden" id="shop">
                     </div>
 
                     <div class="tab" id="milestones">
-                        <div>
+                        <div id="milestonePage" style="flex: 1; margin-left: 0.5em; width: 55em ">
                             <table id="milestoneTable" class="w3-table w3-bordered">
                             </table>
                         </div>
                     </div>
 
+                    <div class="tab" id="rebirth">
+                        <div id="rebirthPage" style="flex: 1; margin-left: 0.5em; width: 55em;">
+                            <ul>
+                                <li style="margin: 0.4em;">
+                                    You stumble across a strange looking amulet on your 25th birthday. It does not look like
+                                    it has any worth on the market given that it's made from cheap-looking copper. However, you
+                                    feel a weird urge to keep the amulet, so you slip it into your pocket for safekeeping.
+
+                                </li>
+                                <li style="margin: 0.4em;" id="rebirthNote1">
+                                    On your 45th birthday, you feel the amulet shiver uncontrollably in your pocket. You take it
+                                    out and the constant shivering suddenly stops. More to your bizarre surprise, you notice
+                                    a strange etching on the centre of the amulet.
+                                </li>
+                                <li style="margin: 0.4em;" id="rebirthNote2">
+                                    <div style="margin-bottom: 0.4em">
+                                        On your 65th birthday, you once again encounter the strange, unexplained shivering from your
+                                        amulet. But this time, a living eyeball emerges from the centre. Although terribly frightened,
+                                        you realise you do not have many years to live left anyway so you consider touching the eye
+                                        to see what happens.
+                                    </div>
+                                    <i style="color: grey">
+                                        By touching the eyeball, you will be reborn and have to restart life again, losing all your levels and coins.
+                                        However, you will gain <b>xp multipliers</b> for your classes and abilities equivalent to: <b>1 + the max level of the class or ability / 10.</b>
+                                        This means you will learn everything again much more quickly than you did in your previous life. <span style="color: rgb(200, 0, 0)">
+                                            Something tells you that the amulet might evolve after living for <b>2 whole centuries</b>...
+                                        </span>
+                                    </i>
+                                    <br>
+                                    <button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em " onClick="rebirthOne()">Touch the eye</button>
+                                    <br>
+                                </li>
+                                <li style="margin: 0.4em;" id="rebirthNote3">
+                                    <div style="margin-bottom: 0.4em;">
+                                        Your gut instinct was right. The moment you hit the grand age of 200, you hear an ominous hum coming from the amulet.
+                                        A mouth emerges from its surface and begins to cackle, and proceeds to say: "So you've made it this far... Are you ready to embrace evil?"
+                                        <br><span style="color: rgb(200, 0, 0)">
+                                            The amulet might transform even further after living for a <b>millennium</b>.
+                                        </span>
+                                    </div>
+                                    <i style="color: rgb(200, 0, 0)">
+                                        If you decide to embrace evil, all of your levels, coins and even max levels will be reset.
+                                        You will be reborn as a fresh slate. However, you will unlock a new line of skills and gain
+                                        <b><span id="evilGainDisplay"></span> evil</b>, and which will heavily impact your future lives.
+                                    </i>
+                                    <br>
+                                    <button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em " onClick="rebirthTwo()">Embrace evil</button>
+                                    <br>
+                                </li>
+                                <li style="margin: 0.4em;" id="rebirthNote4">
+                                    <div style="margin-bottom: 0.4em;">
+                                        A thousand years have come and gone and yet, you still remain alive... somehow. You feel your amulet shivering again and to your surprise, you see small tendrils
+                                        full of eyeballs emergin from it. As you are about to drop the amulet, you hear frightening screech followed by whispers in your head... <b>"You have to embrace the Void..."</b>
+                                        <br>
+                                        <span style="color: rgb(200, 0, 0)">
+                                            The amulet will reach its final form after <b>ten millennia</b>!
+                                        </span>
+                                    </div>
+                                    <i style="color: rgb(204, 0, 255)">
+                                        You have unlocked <b>"The Void"</b> class category along with <b>"Void Manipulation"</b> abilities.
+                                    </i>
+                                </li>
+                                <li style="margin: 0.4em;" id="rebirthNote5">
+                                    <div style="margin-bottom: 0.4em;">
+                                        Ten millenia have passed... most of them spent serving the Void, yet there is still a glimpse of humanity inside of you. All of the sudden your amulet starts to glow in the distance,
+                                        illuminating darkness around you with the brightness of thousand suns. With the very last remnant of your free will you run to your amulet and touch it... <b>
+                                            "You are now part of something
+                                            bigger than yourself..."
+                                        </b>
+                                    </div>
+                                    <i style="color: rgb(255, 204, 102)">
+                                        You have unlocked <b>"Galactic Council"</b> class category along with <b>"Celestial Powers"</b> abilities.
+                                        <i style="color: grey">
+                                            <br>
+                                            By clicking on <b>Transcend</b>, you will be reborn once again, losing all your coins, <b>evil</b> and current levels.
+                                            However your max level won't be erased but multiplied with <b>Cosmic Recollection</b> ability and you will gain
+                                            <i style="color: rgb(24, 210, 217)">
+                                                <b><span id="essenceGainDisplay"></span> essence</b>,
+                                            </i>
+                                            new ability that will boost you even further in your journey.
+
+                                            <br>
+                                            <i style="color: rgb(200, 0, 0)">
+                                                Transced will only show up if you have <b>Cosmic Recollection</b> ability unlocked!
+
+                                            </i>
+                                        </i>
+                                        <br>
+                                    </i>
+                                </li>
+                                <li style="margin: 0.4em;" id="rebirthNote6">
+                                    <div style="margin-bottom: 0.4em;">
+                                        <button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em" onClick="rebirthThree()">Transcend</button>
+                                    </div>
+                                </li>
+
+                                <li style="margin: 0.4em;" id="rebirthNoteEnd">
+                                    <div class="text-caption" style="margin-bottom: 0.4em; color: rgb(102, 229, 71); ">
+                                        Congratulations! You have completed the game. You can Restart it and get permanent x2 Time Wapring Boost, which will apply at every Game Restart.<br>
+                                        <button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em" onClick="restartGame()">Restart the game and get x2 time boost</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
 
                     <div class="tab" id="settings">
-                        <ul>
-                            <li>
-                                <h4>Import/export save</h4>
-                                <button class="w3-button button" onClick="importGameData()">Import</button>
-                                <button class="w3-button button" onClick="exportGameData()" onmouseout="outExportButton()">Export</button><span class="tooltiptext" id="exportTooltip"></span>
-                                <form style="margin-top: 16px">
-                                    <input id="importExportBox" type="text" style="width:300px; height:30px">
-                                </form>
-                            </li>
-                            <li>
-                                <h4>Toggle light/dark mode</h4>
-                                <button class="w3-button button" onClick="setLightDarkMode()">Toggle</button>
-                            </li>
-                            <li>
-                                <h4>Join the discord community!</h4>
-                                <a href="https://discord.gg/fTRS4pHGka" target="_blank">
-                                    <img src="img/discord_icon.png" width="100" height="100">
-                                </a>
-                            </li>
-                            <li>
-                                <h4>Hard reset game</h4>
-                                <span id="completedTimes" style="color: rgb(204, 0, 255)"></span><br><br>
-                                <button class="w3-button button w3-red" onClick="resetGameData()">Reset</button>
-
-                            </li>
-                            <li>
-                                <h4>Misc</h4>
-                                <ul>
-                                    <li>
-                                        <label>
-                                            Sticky sidebar
-                                            <input id="settingsStickySidebar" type="checkbox" onclick="setStickySidebar(this.checked)" />
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            Numbers notation
-                                        </label>
-                                        <button class="w3-button button" onclick="setNotation(this.value)" value="0">Standard</button>
-                                        <button class="w3-button button" onclick="setNotation(this.value)" value="1">Scientific</button>
-                                        <button class="w3-button button" onclick="setNotation(this.value)" value="2">Engineering</button>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <h4>Shortcuts</h4>
-                                <div style="margin-bottom: 8px;">
-                                    Arrow Keys - Menu navigation
-                                    <br>
-                                    Spacebar - Pause
-                                    <br>
-                                    Save profile with: Alt + "1-3" / Load profile with "1-3"
-                                </div>
-                            </li>
-                            <li>
-                                <h4>Links</h4>
-                                <div style="margin-bottom: 8px;">
-                                    Based on <a href="https://symb1.github.io/progress_knight_2/">Progress Knight 2.0</a> mod
-                                    <br>Original game: <a href="https://ihtasham42.github.io/progress-knight/">Progress Knight</a>
-
-                                </div>
-                            </li>
-                        </ul>
+                        <div id="settingsPage" style="flex: 1; margin-left: 0.5em;">
+                            <ul>
+                                <li>
+                                    <div class="text-caption">
+                                        <button class="w3-button button" onClick="importGameData()">Import save</button>
+                                        <button class="w3-button button" onClick="exportGameData()" onmouseout="outExportButton()">Export save</button><span class="tooltiptext" id="exportTooltip"></span>
+                                        <form style="margin-top: 0.8em">
+                                            <input id="importExportBox" type="text" style="width:20em">
+                                        </form>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="text-caption" style="margin-top: 0.4em;">Settings</div>
+                                    <table class="w3-table w3-bordered">
+                                        <tr>
+                                            <td style="padding: 0.4em; width:15em">Sticky sidebar</td>
+                                            <td><input id="settingsStickySidebar" type="checkbox" style="width:1.6em;height:1.6em" onclick="setStickySidebar(this.checked)" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Numbers notation</td>
+                                            <td style="padding: 0.4em">
+                                                <button class="w3-button button" onclick="setNotation(0)">Standard</button>
+                                                <button class="w3-button button" onclick="setNotation(1)">Scientific</button>
+                                                <button class="w3-button button" onclick="setNotation(2)">Engineering</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Layout</td>
+                                            <td style="padding: 0.4em">
+                                                <button class="w3-button button" onclick="setLayout(1)">Standard</button>
+                                                <button class="w3-button button" onclick="setLayout(0)">W I D E</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Font-size</td>
+                                            <td style="padding: 0.4em">
+                                                <button class="w3-button button" onclick="setFontSize(gameData.settings.fontSize - 1)">Smaller</button>
+                                                <button class="w3-button button" onclick="setFontSize(gameData.settings.fontSize + 1)">Larger</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td> Toggle light/dark mode</td>
+                                            <td style="padding: 0.4em">
+                                                <button class="w3-button button" onClick="setLightDarkMode()">Toggle</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </li>
+                                <li>
+                                    <div class="text-caption" style="margin-top: 0.4em;">Shortcuts</div>
+                                    <div style="margin-bottom: 8px;">
+                                        Arrow Keys - Menu navigation
+                                        <br>
+                                        Spacebar - Pause
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="text-caption" style="margin-top: 0.4em;">
+                                        <button class="w3-button button w3-red" onClick="resetGameData()">Hard reset game</button>
+                                        <span id="completedTimes" style="color: rgb(204, 0, 255)"></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="text-caption" style="margin-top: 0.4em;">Links</div>
+                                    <div style="margin-bottom: 8px;">
+                                        Based on <a href="https://symb1.github.io/progress_knight_2/">Progress Knight 2.0</a> mod
+                                        <br>Original game: <a href="https://ihtasham42.github.io/progress-knight/">Progress Knight</a>
+                                        <br><a href="https://discord.gg/fTRS4pHGka" target="_blank">Join the discord community! <img src="img/discord_icon.png" style="width:3em; height:3em;"></a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
