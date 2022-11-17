@@ -183,7 +183,7 @@ const itemBaseData = {
     "Multiverse Fragment": { name: "Multiverse Fragment", expense: 200500002050000000, effect: 5, description: "Happiness", heromult: 15 },
 }
 
-const milestoneBaseData = {
+milestoneBaseData = {
     "Magic Eye": { name: "Magic Eye", expense: 5000, tier: 1, description: "Auto max level at age 65" },
     "Almighty Eye": { name: "Almighty Eye", expense: 15000, tier: 2, description: "Auto max level from born" },
     "Deal with the Devil": { name: "Deal with the Devil", expense: 30000, tier: 3, description: "Slow Auto Evil" },
@@ -195,7 +195,7 @@ const milestoneBaseData = {
     "Faint Hope": { name: "Faint Hope", expense: 400000, tier: 9, description: "Essence gain increases over time" },
     "New Beginning": { name: "New Beginning", expense: 5000000, tier: 10, description: "Heroic jobs, skills and items are unlocked" },
 
-    "Rise of Great Heroes": { name: "Rise of Great Heroes", expense: 10000000, tier: 11, description: "Hero XP" },
+    "Rise of Great Heroes": { name: "Rise of Great Heroes", expense: 10000000, tier: 11, description: "Hero XP + Essence gain" },
     "Lazy Heroes": { name: "Lazy Heroes", expense: 20000000, tier: 12, description: "Hero XP" },
     "Dirty Heroes": { name: "Dirty Heroes", expense: 30000000, tier: 13, description: "Hero XP" },
     "Angry Heroes": { name: "Angry Heroes", expense: 50000000, tier: 14, description: "Hero XP" },
@@ -207,9 +207,7 @@ const milestoneBaseData = {
     "Awesome Heroes": { name: "Awesome Heroes", expense: 400000000, tier: 20, description: "Hero XP" },
     "Furious Heroes": { name: "Furious Heroes", expense: 500000000, tier: 21, description: "Hero XP" },
     "Gorgeous Heroes": { name: "Gorgeous Heroes", expense: 1000000000000, tier: 22, description: "Hero XP" },
-    "Superb Heroes": { name: "Superb Heroes",    expense: 10000000000000, tier: 23, description: "Hero XP" },
- 
-    
+    "Superb Heroes": { name: "Superb Heroes", expense: 10000000000000, tier: 23, description: "Hero XP" },
 }
 
 const jobCategories = {
@@ -434,9 +432,26 @@ const tooltips = {
     "God's Blessings": "God bless you!",
     "Faint Hope": "Maybe there is hope?",
     "New Beginning": "Try to upgrade One Above All to level 2000",
+
+    "Rise of Great Heroes": "Every active Great job or skill will increase Essence gain a bit.",
+    "Lazy Heroes": "",
+    "Dirty Heroes": "",
+    "Angry Heroes": "",
+    "Tired Heroes": "",
+    "Scared Heroes": "",
+    "Good Heroes": "",
+    "Funny Heroes": "",
+    "Beautiful Heroes": "",
+    "Awesome Heroes": "",
+    "Furious Heroes": "",
+    "Gorgeous Heroes": "",
+    "Superb Heroes": "",
+
 }
 
-const units = ["", "k", "M", "B", "T", "q", "Q", "Sx", "Sp", "Oc", "Nv", "Vg", "Uv", "Dv", "Tv", "Qt", "Qv", "Sv", "Oc", "Nd", "Tg", "OMG"];
+const units = ["", "k", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "O", "N", "D", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Od", "Nd", "V", "Uv", "Dv", "Tv",
+    "Qav", "Qiv", "Sxv", "Spv", "Ov", "Nv", "Tr", "Ut", "Dt", "Tt"]
+                   
 
 function getBaseLog(x, y) {
     return Math.log(y) / Math.log(x);
@@ -690,6 +705,16 @@ function getEssenceGain() {
     if (gameData.requirements["Faint Hope"].isCompleted())
         essence *= 1 + (gameData.realtime * Math.pow(2, gameData.completedTimes)) / 600    
 
+    if (gameData.requirements["Rise of Great Heroes"].isCompleted())
+    {
+        var countHeroes = 0
+        for (task in gameData.taskData) {
+            if (task.isHero)
+                countHeroes++
+        }
+        essence *= 1 + 4 * countHeroes / 74
+    }
+
     return essence	
 }
 
@@ -803,9 +828,9 @@ function createData(data, baseData) {
 }
 
 function createEntity(data, entity) {
-    if ("income" in entity) {data[entity.name] = new Job(entity)}
+    if ("income" in entity) { data[entity.name] = new Job(entity) }
     else if ("maxXp" in entity) { data[entity.name] = new Skill(entity) }
-    else if ("tier" in entity) { data[entity.name] = new Milestone(entity) }
+    else if ("tier" in entity) { data[entity.name] = new Milestone(entity) }    
     else {data[entity.name] = new Item(entity)}
     data[entity.name].id = "row " + entity.name
 }
@@ -838,14 +863,10 @@ function createRow(templates, name, categoryName, categoryType) {
     row.getElementsByClassName("name")[0].textContent = name
     row.getElementsByClassName("tooltipText")[0].textContent = tooltips[name]
     row.id = "row " + name
-    if (categoryType == jobCategories || categoryType == skillCategories) {
-        row.getElementsByClassName("progressBar")[0].onclick = function () { setTask(name) }
-    } else if (categoryType == itemCategories) {
+
+    if (categoryType == itemCategories) {
         row.getElementsByClassName("button")[0].onclick = categoryName == "Properties" ? function () { setProperty(name) } : function () { setMisc(name) }
-    } else if (categoryType == milestoneCategories)
-    {
-        // milestones
-    }
+    } 
 
     return row
 }
@@ -1400,7 +1421,7 @@ function format(number,decimals= 1) {
     var tier = Math.log10(number) / 3 | 0;
     if (tier == 0) return number.toFixed(decimals);
 
-    if (gameData.settings.numberNotation == 0 || tier < 3) {
+    if ((gameData.settings.numberNotation == 0 || tier < 3) && (tier < units.length)) {
         // get suffix and determine scale
         var suffix = units[tier];
         var scale = Math.pow(10, tier * 3);
@@ -1736,7 +1757,6 @@ function loadGameData() {
             replaceSaveDict(gameData.requirements, gameDataSave.requirements)
             replaceSaveDict(gameData.taskData, gameDataSave.taskData)
             replaceSaveDict(gameData.itemData, gameDataSave.itemData)
-            replaceSaveDict(gameData.milestoneData, gameDataSave.milestoneData)
             replaceSaveDict(gameData.settings, gameDataSave.settings)
             gameData = gameDataSave
         }
@@ -1925,18 +1945,16 @@ window.addEventListener('keydown', function (e) {
 createData(gameData.taskData, jobBaseData)
 createData(gameData.taskData, skillBaseData)
 createData(gameData.itemData, itemBaseData)
-createData(gameData.milestoneData, milestoneBaseData) 
+createData(gameData.milestoneData, milestoneBaseData)
 
 gameData.currentJob = gameData.taskData["Beggar"]
 gameData.currentProperty = gameData.itemData["Homeless"]
 gameData.currentMisc = []
 
-
 createAllRows(jobCategories, "jobTable")
 createAllRows(skillCategories, "skillTable")
 createAllRows(itemCategories, "itemTable")
 createAllRows(milestoneCategories, "milestoneTable")
-
 
 gameData.requirements = {
     //Other
@@ -2047,8 +2065,6 @@ gameData.requirements = {
 	"Void Influence": new EvilRequirement([getTaskElement("Void Influence")], [{requirement: 50000}]),
 	"Time Loop": new EvilRequirement([getTaskElement("Time Loop")], [{requirement: 2500000}]),
 	"Evil Incarnate": new EvilRequirement([getTaskElement("Evil Incarnate")], [{requirement: 1000000000}]),
-
-
 	
 	//Void Manipulation
 	"Absolute Wish": new TaskRequirement([getTaskElement("Absolute Wish")], [{task: "Void Slave", requirement: 25}, {task: "Chairman", requirement: 300}]),
@@ -2071,7 +2087,6 @@ gameData.requirements = {
 	"Higher Dimensions": new EssenceRequirement([getTaskElement("Higher Dimensions")], [{requirement: 10000}]),
 	"Epiphany": new EssenceRequirement([getTaskElement("Epiphany")], [{requirement: 30000}]),
 
-
     //Properties
     "Homeless": new CoinRequirement([getItemElement("Homeless")], [{requirement: 0}]),
     "Tent": new CoinRequirement([getItemElement("Tent")], [{requirement: 0}]),
@@ -2090,7 +2105,6 @@ gameData.requirements = {
 	"Astral Realm": new CoinRequirement([getItemElement("Astral Realm")], [{requirement: gameData.itemData["Astral Realm"].getExpense() * 100}]),
     "Galactic Throne": new CoinRequirement([getItemElement("Galactic Throne")], [{ requirement: gameData.itemData["Galactic Throne"].getExpense() * 100 }]),
     "Spaceship": new CoinRequirement([getItemElement("Spaceship")], [{ requirement: gameData.itemData["Spaceship"].getExpense() * 100 }]),
-
 
     //Misc
     "Book": new CoinRequirement([getItemElement("Book")], [{requirement: 0}]),
@@ -2114,30 +2128,12 @@ gameData.requirements = {
 
     // Milestones
     "Milestones": new EssenceRequirement([document.getElementById("milestonesTabButton")], [{ requirement: 1 }]),
-    "Magic Eye": new EssenceRequirement([getMilestoneElement("Magic Eye")], [{ requirement: 5000 }]),
-    "Almighty Eye": new EssenceRequirement([getMilestoneElement("Almighty Eye")], [{ requirement: 15000 }]),
-    "Deal with the Devil": new EssenceRequirement([getMilestoneElement("Deal with the Devil")], [{ requirement: 30000 }]),
-    "Transcendent Master": new EssenceRequirement([getMilestoneElement("Transcendent Master")], [{ requirement: 50000 }]),    
-    "Eternal Time": new EssenceRequirement([getMilestoneElement("Eternal Time")], [{ requirement: 75000 }]),    
-    "Hell Portal": new EssenceRequirement([getMilestoneElement("Hell Portal")], [{ requirement: 120000 }]),
-    "Inferno": new EssenceRequirement([getMilestoneElement("Inferno")], [{ requirement: 170000 }]),    
-    "God's Blessings": new EssenceRequirement([getMilestoneElement("God's Blessings")], [{ requirement: 250000 }]),
-    "Faint Hope": new EssenceRequirement([getMilestoneElement("Faint Hope")], [{ requirement: 400000 }]),
-    "New Beginning": new EssenceRequirement([getMilestoneElement("New Beginning")], [{ requirement: 5000000 }]),
-    "Rise of Great Heroes": new EssenceRequirement([getMilestoneElement("Rise of Great Heroes")], [{ requirement: 10000000 }]),
+}
 
-    "Lazy Heroes": new EssenceRequirement([getMilestoneElement("Lazy Heroes")], [{ requirement: 20000000 }]),
-    "Dirty Heroes": new EssenceRequirement([getMilestoneElement("Dirty Heroes")], [{ requirement: 30000000 }]),
-    "Angry Heroes": new EssenceRequirement([getMilestoneElement("Angry Heroes")], [{ requirement: 50000000 }]),
-    "Tired Heroes": new EssenceRequirement([getMilestoneElement("Tired Heroes")], [{ requirement: 100000000 }]),
-    "Scared Heroes": new EssenceRequirement([getMilestoneElement("Scared Heroes")], [{ requirement: 150000000 }]),
-    "Good Heroes": new EssenceRequirement([getMilestoneElement("Good Heroes")], [{ requirement: 200000000 }]),
-    "Funny Heroes": new EssenceRequirement([getMilestoneElement("Funny Heroes")], [{ requirement: 250000000 }]),
-    "Beautiful Heroes": new EssenceRequirement([getMilestoneElement("Beautiful Heroes")], [{ requirement: 300000000 }]),
-    "Awesome Heroes": new EssenceRequirement([getMilestoneElement("Awesome Heroes")], [{ requirement: 400000000 }]),
-    "Furious Heroes": new EssenceRequirement([getMilestoneElement("Furious Heroes")], [{ requirement: 500000000 }]),
-    "Gorgeous Heroes": new EssenceRequirement([getMilestoneElement("Gorgeous Heroes")], [{ requirement: 1000000000000 }]),
-    "Superb Heroes": new EssenceRequirement([getMilestoneElement("Superb Heroes")], [{ requirement: 10000000000000 }]),
+for (var key in milestoneBaseData) {
+    var milestone = gameData.milestoneData[key]
+    gameData.requirements[milestone.name] = new EssenceRequirement([getMilestoneElement(milestone.name)],
+        [{ requirement: milestone.expense }])
 }
 
 tempData["requirements"] = {}

@@ -68,7 +68,7 @@ td {
     margin-top: 0.05em;
     position: relative;
     background-color: rgb(12, 101, 173);
-    cursor: pointer;
+    /*cursor: pointer;*/
     width: 100%;
 }
 
