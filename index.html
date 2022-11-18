@@ -6,21 +6,21 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="css/dark.css">
-    <title>Progress Knight 2.1</title>
+    <title>Progress Knight Quest</title>
     <link rel="shortcut icon" href="img/logo.ico" />
 </head>
 <body id="body" class="dark" style="font-size: x-small">
     <div class="w3-margin">
         <div class="header">
             <img src="img/logos.png" alt="logos" />
-            <h3>Progress Knight 2.1</h3>
+            <h3>Progress Knight Quest</h3>
         </div>
         <div id="row" class="row">
             <div id="info" class="panel w3-padding quick-bar" style="width:20em">
-                <span id="deathText" class="hidden">
+                <div id="deathText" class="hidden">
                     <div class="text-caption" style="color: red">Age has caught up to you</div>
                     <div class="sidebar-element" style="color: gray">Your age has met your lifespan, use the amulet to rebirth before you pass away</div>
-                </span>
+                </div>
 
                 <div class="text-caption"><span id="ageDisplay">14</span></div>
                 <div class="sidebar-element" style="color: gray">
@@ -256,6 +256,12 @@
                     <div class="tab" id="rebirth">
                         <div id="rebirthPage" style="flex: 1; margin-left: 0.5em;" >
                             <ul>
+                                <li style="margin: 0.4em;" id="rebirthNoteEnd" class="hidden">
+                                    <div class="text-caption" style="margin-bottom: 0.4em; color: rgb(102, 229, 71); ">
+                                        Congratulations! You have completed the game. You can Restart it and get permanent x2 boost, which will apply again each time you finish the game. You also can continue to grind but there is no more content for now.<br>
+                                        <button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em; " onClick="restartGame()"><span style="color: rgb(204, 0, 255) ">Restart the game and get permanent x2 boost</span></button>
+                                    </div>
+                                </li>
                                 <li style="margin: 0.4em;">
                                     You stumble across a strange looking amulet on your 25th birthday. It does not look like
                                     it has any worth on the market given that it's made from cheap-looking copper. However, you
@@ -348,13 +354,6 @@
                                         <button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em" onClick="rebirthThree()">Transcend</button>
                                     </div>
                                 </li>
-
-                                <li style="margin: 0.4em;" id="rebirthNoteEnd" class="hidden">
-                                    <div class="text-caption" style="margin-bottom: 0.4em; color: rgb(102, 229, 71); ">
-                                        Congratulations! You have completed the game. You can Restart it and get permanent x2 Time Wapring Boost, which will apply at every Game Restart.<br>
-                                        <button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em" onClick="restartGame()">Restart the game and get x2 time boost</button>
-                                    </div>
-                                </li>
                             </ul>
                         </div>
                         <div id="dummyPage2" style="flex: 2; margin-left: 0.5em;">
@@ -423,8 +422,11 @@
                                 <li>
                                     <div class="text-caption" style="margin-top: 0.4em;">
                                         <button class="w3-button button w3-red" onClick="resetGameData()">Hard reset game</button>
-                                        <span id="completedTimes" style="color: rgb(204, 0, 255)"></span>
                                     </div>
+                                    <div class="text-caption" style="margin-top: 0.4em;">
+                                        <span id="completedTimes" style="padding-top: 0.4em; color: rgb(204, 0, 255)"></span>
+                                    </div>
+                                    
                                 </li>
                                 <li>
                                     <div class="text-caption" style="margin-top: 0.4em;">Links</div>

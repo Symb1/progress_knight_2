@@ -6,19 +6,31 @@ class Task {
         this.maxLevel = 0 
         this.xp = 0
         this.isHero = false
+        this.isFinished = false
 
         this.xpMultipliers = [
         ]
     }
 
     getMaxXp() {
-        var maxXp = Math.round((this.isHero ? heroMaxXpMult : 1) * this.baseData.maxXp * (this.level + 1) * Math.pow(this.isHero ? 1.1 : 1.01, this.level))
+        if (this.isFinished)
+            return 1e305
+
+        var maxXp = (this.isHero ? Math.pow(10, this.baseData.heroxp) : 1) * this.baseData.maxXp * (this.level + 1) * Math.pow(this.isHero ? 1.08 : 1.01, this.level)
+
+        if (isNaN(maxXp) || maxXp == Infinity || maxXp > 1e305) {
+            this.isFinished = true
+            return 1e305
+        }
 
         return maxXp
     }
 
     getXpLeft() {
-        return Math.round(this.getMaxXp() - this.xp)
+        if (this.isFinished)
+            return 0
+
+        return this.getMaxXp() - this.xp
     }
 
     getMaxLevelMultiplier() {
@@ -27,12 +39,30 @@ class Task {
     }
 
     getXpGain() {
+        if (this.isFinished)
+            return 0
+
         var xpGain = (this.isHero ? getHeroXpGainMultipliers(this) : 1) * applyMultipliers(10, this.xpMultipliers)
         return xpGain
     }
 
     increaseXp() {
+        if (this.isFinished) {            
+                if (Math.random() < 0.001)
+                    this.level += 1
+            return
+        }
+
         this.xp += applySpeed(this.getXpGain())
+
+        if (this.xp > 1e305)        
+            this.xp = 1e305        
+        else if (isNaN(this.xp))
+        {
+            this.isFinished = true
+            return
+        }
+       
         if (this.xp >= this.getMaxXp()) {
             var excess = this.xp - this.getMaxXp()
             while (excess >= 0) {
@@ -69,7 +99,10 @@ class Job extends Task {
     }
     
     getIncome() {
-        return (this.isHero ? heroIncomeMult : 1) * applyMultipliers(this.baseData.income, this.incomeMultipliers) 
+        return (this.isHero ? heroIncomeMult
+            * (this.baseData.heroxp > 78 ? 1e6 : 1)
+            * (this.baseData.heroxp > 130 ? 1e5 : 1)
+            : 1) * applyMultipliers(this.baseData.income, this.incomeMultipliers) 
     }
 }
 
@@ -106,14 +139,17 @@ class Item {
         if (this.isHero) {
             if (itemCategories["Misc"].includes(this.name))
             {
-                if (gameData.currentMisc.includes(this))
-                    effect *= 10        
+                if (gameData.currentMisc.includes(this)) {
+                    effect *= 10
+                    if (this.name == "Universe Fragment" || this.name == "Multiverse Fragment")
+                        effect *= 100000
+                }
             }
 
             if (itemCategories["Properties"].includes(this.name))
             {
                 if (gameData.currentProperty == this)
-                    effect *= 2000000
+                    effect = this.baseData.heroeffect
                 else
                     effect = 1
             }
@@ -132,12 +168,14 @@ class Item {
 
         if (this.isHero) {
             if (itemCategories["Misc"].includes(this.name)) {
-                    effect *= 10
+                effect *= 10
+                if (this.name == "Universe Fragment" || this.name == "Multiverse Fragment")
+                    effect *= 100000
             }
 
             if (itemCategories["Properties"].includes(this.name)) {
                 description = "Happiness"
-                effect *= 2000000
+                effect = this.baseData.heroeffect
             }
         }
         else {
@@ -164,7 +202,7 @@ class Requirement {
     isCompleted() {
         if (this.completed) {return true}
         for (var requirement of this.requirements) {
-            if (!this.getCondition(requirement)) {
+            if (!this.getCondition(false, requirement)) {
                 return false
             }
         }
@@ -172,9 +210,9 @@ class Requirement {
         return true
     }
 
-    isCompletedActual() {
+    isCompletedActual(isHero = false) {
         for (var requirement of this.requirements) {
-            if (!this.getCondition(requirement)) {
+            if (!this.getCondition(isHero, requirement)) {
                 return false
             }
         }
@@ -188,8 +226,13 @@ class TaskRequirement extends Requirement {
         this.type = "task"
     }
 
-    getCondition(requirement) {
-        return gameData.taskData[requirement.task].level >= requirement.requirement
+    getCondition(isHero, requirement) {
+        if (isHero && requirement.herequirement != null)
+            return gameData.taskData[requirement.task].level >= requirement.herequirement
+        else if (gameData.taskData[requirement.task].isHero && requirement.isHero)
+            return true
+        else
+            return gameData.taskData[requirement.task].level >= requirement.requirement
     }
 }
 
@@ -199,7 +242,7 @@ class CoinRequirement extends Requirement {
         this.type = "coins"
     }
 
-    getCondition(requirement) {
+    getCondition(isHero, requirement) {
         return gameData.coins >= requirement.requirement
     }
 }
@@ -210,7 +253,7 @@ class AgeRequirement extends Requirement {
         this.type = "age"
     }
 
-    getCondition(requirement) {
+    getCondition(isHero, requirement) {
         return daysToYears(gameData.days) >= requirement.requirement
     }
 }
@@ -221,7 +264,7 @@ class EvilRequirement extends Requirement {
         this.type = "evil"
     }
 
-    getCondition(requirement) {
+    getCondition(isHero, requirement) {
         return gameData.evil >= requirement.requirement
     }    
 }
@@ -232,7 +275,7 @@ class EssenceRequirement extends Requirement {
         this.type = "essence"
     }
 
-    getCondition(requirement) {
+    getCondition(isHero, requirement) {
         return gameData.essence >= requirement.requirement
     }    
 }

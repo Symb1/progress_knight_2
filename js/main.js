@@ -28,7 +28,7 @@ var gameData = {
     },
 
     realtime: 0.0,
-    completedTimes: 0    
+    completedTimes: 0,    
 }
 
 var tempData = {}
@@ -41,126 +41,134 @@ const baseLifespan = 365 * 70
 
 const baseGameSpeed = 4
 
-const heroMaxXpMult = 1e36
 const heroIncomeMult = 2500000000000000000
 
 
 const permanentUnlocks = ["Scheduling", "Automation", "Quick task display"]
 
 const jobBaseData = {
-    "Beggar": {name: "Beggar", maxXp: 50, income: 5},
-    "Farmer": {name: "Farmer", maxXp: 100, income: 9},
-    "Fisherman": {name: "Fisherman", maxXp: 200, income: 15},
-    "Miner": {name: "Miner", maxXp: 400, income: 40},
-    "Blacksmith": {name: "Blacksmith", maxXp: 800, income: 80},
-    "Merchant": {name: "Merchant", maxXp: 1600, income: 150},
+    "Beggar": { name: "Beggar", maxXp: 50, income: 5, heroxp: 36 },
+    "Farmer": {name: "Farmer", maxXp: 100, income: 9, heroxp: 37 },
+    "Fisherman": { name: "Fisherman", maxXp: 200, income: 15, heroxp: 38 },
+    "Miner": { name: "Miner", maxXp: 400, income: 40, heroxp: 39 },
+    "Blacksmith": { name: "Blacksmith", maxXp: 800, income: 80, heroxp: 40 },
+    "Merchant": { name: "Merchant", maxXp: 1600, income: 150, heroxp: 41 },
 
-    "Squire": {name: "Squire", maxXp: 100, income: 5},
-    "Footman": {name: "Footman", maxXp: 1000, income: 50},
-    "Veteran footman": {name: "Veteran footman", maxXp: 10000, income: 120},
-    "Centenary": {name: "Centenary", maxXp: 100000, income: 300},
-    "Knight": {name: "Knight", maxXp: 1000000, income: 1000},
-    "Veteran Knight": {name: "Veteran Knight", maxXp: 7500000, income: 3000},
-    "Holy Knight": {name: "Holy Knight", maxXp: 40000000, income: 5000},
-    "Lieutenant General": {name: "Lieutenant General", maxXp: 150000000, income: 50000},
+    "Squire": { name: "Squire", maxXp: 42, income: 5, heroxp: 51 },
+    "Footman": { name: "Footman", maxXp: 1000, income: 50, heroxp: 52 },
+    "Veteran footman": { name: "Veteran footman", maxXp: 10000, income: 120, heroxp: 53 },
+    "Centenary": { name: "Centenary", maxXp: 100000, income: 300, heroxp: 54 },
+    "Knight": { name: "Knight", maxXp: 1000000, income: 1000, heroxp: 63 },
+    "Veteran Knight": { name: "Veteran Knight", maxXp: 7500000, income: 3000, heroxp: 63 },
+    "Holy Knight": { name: "Holy Knight", maxXp: 40000000, income: 5000, heroxp: 64 },
+    "Lieutenant General": { name: "Lieutenant General", maxXp: 150000000, income: 50000, heroxp: 77 },
 
-    "Student": {name: "Student", maxXp: 100000, income: 100},
-    "Apprentice Mage": {name: "Apprentice Mage", maxXp: 1000000, income: 1000},
-    "Adept Mage": {name: "Adept Mage", maxXp: 10000000, income: 9500},
-    "Master Wizard": {name: "Master Wizard", maxXp: 100000000, income: 70000},
-    "Archmage": {name: "Archmage", maxXp: 10000000000, income: 350000},
-	"Chronomancer": {name: "Chronomancer", maxXp: 2000000000000, income: 1000000},
-    "Chairman": {name: "Chairman", maxXp: 20000000000000, income: 10000000},
-	"Imperator": {name: "Imperator", maxXp: 9000000000000000, income: 60000000},
+    "Student": { name: "Student", maxXp: 100000, income: 100, heroxp: 79 },
+    "Apprentice Mage": { name: "Apprentice Mage", maxXp: 1000000, income: 1000, heroxp: 82 },
+    "Adept Mage": { name: "Adept Mage", maxXp: 10000000, income: 9500, heroxp: 82 },
+    "Master Wizard": { name: "Master Wizard", maxXp: 100000000, income: 70000, heroxp: 95 },
+    "Archmage": { name: "Archmage", maxXp: 10000000000, income: 350000, heroxp: 95 },
+    "Chronomancer": { name: "Chronomancer", maxXp: 2000000000000, income: 1000000, heroxp: 95 },
+    "Chairman": { name: "Chairman", maxXp: 20000000000000, income: 10000000, heroxp: 106 },
+    "Imperator": { name: "Imperator", maxXp: 9000000000000000, income: 60000000, heroxp: 129 },
 	
-	"Corrupted": {name: "Corrupted", maxXp: 100000000000000, income: 25000000},
-    "Void Slave": {name: "Void Slave", maxXp: 650000000000000, income: 200000000}, 
-    "Void Fiend": {name: "Void Fiend", maxXp: 18000000000000000, income: 600000000}, 
-    "Abyss Anomaly": {name: "Abyss Anomaly", maxXp: 18000000000000000, income: 1200000000}, 
-	"Void Wraith": {name: "Void Wraith", maxXp: 180000000000000000, income: 5000000000}, 
-    "Void Reaver": {name: "Void Reaver", maxXp: 2600000000000000000, income: 25000000000}, 
-	"Void Lord": {name: "Void Lord", maxXp: 28000000000000000000, income: 100000000000},
-	"Abyss God": {name: "Abyss God", maxXp: 400000000000000000000, income: 1000000000000},
+    "Corrupted": { name: "Corrupted", maxXp: 100000000000000, income: 25000000, heroxp: 131 },
+    "Void Slave": { name: "Void Slave", maxXp: 650000000000000, income: 200000000, heroxp: 134 }, 
 
+    "Void Fiend": { name: "Void Fiend", maxXp: 18000000000000000, income: 600000000, heroxp: 237 }, 
+    "Abyss Anomaly": { name: "Abyss Anomaly", maxXp: 18000000000000000, income: 1200000000, heroxp: 237 }, 
 
-	"Eternal Wanderer": {name: "Eternal Wanderer", maxXp: 55000000000000000000, income: 1000000000000},
-    "Nova": {name: "Nova", maxXp: 51000000000000000000, income: 3000000000000},
-    "Sigma Proioxis": {name: "Sigma Proioxis", maxXp: 500000000000000000000, income: 25000000000000},
-	"Acallaris": {name: "Acallaris", maxXp: 50000000000000000000000, income: 215000000000000},
-	"One Above All": {name: "One Above All", maxXp: 5000000000000000000000000000, income: 25000000000000000},
+    "Void Wraith": { name: "Void Wraith", maxXp: 180000000000000000, income: 5000000000, heroxp: 238 }, 
+    "Void Reaver": { name: "Void Reaver", maxXp: 2600000000000000000, income: 25000000000, heroxp: 238 }, 
+
+    "Void Lord": { name: "Void Lord", maxXp: 28000000000000000000, income: 100000000000, heroxp: 238 },
+    "Abyss God": { name: "Abyss God", maxXp: 400000000000000000000, income: 1000000000000, heroxp: 250 },
+
+    "Eternal Wanderer": { name: "Eternal Wanderer", maxXp: 55000000000000000000, income: 1000000000000, heroxp: 250 },
+
+    "Nova": { name: "Nova", maxXp: 51000000000000000000, income: 3000000000000, heroxp: 250 },
+    "Sigma Proioxis": { name: "Sigma Proioxis", maxXp: 500000000000000000000, income: 25000000000000, heroxp: 260 },
+    "Acallaris": { name: "Acallaris", maxXp: 50000000000000000000000, income: 215000000000000, heroxp: 263 },
+    "One Above All": { name: "One Above All", maxXp: 5000000000000000000000000000, income: 25000000000000000, heroxp: 265 },
 	
 }
 
 const skillBaseData = {
-    "Concentration": {name: "Concentration", maxXp: 100, effect: 0.01, description: "Ability XP"},
-    "Productivity": {name: "Productivity", maxXp: 100, effect: 0.01, description: "Class XP"},
-    "Bargaining": {name: "Bargaining", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
-    "Meditation": {name: "Meditation", maxXp: 100, effect: 0.01, description: "Happiness"},
+    "Concentration": { name: "Concentration", maxXp: 100, heroxp: 36, effect: 0.01, description: "Ability XP"},
+    "Productivity": { name: "Productivity", maxXp: 100, heroxp: 37, effect: 0.01, description: "Class XP"},
+    "Bargaining": { name: "Bargaining", maxXp: 100, heroxp: 38, effect: -0.01, description: "Reduced Expenses"},
+    "Meditation": { name: "Meditation", maxXp: 100, heroxp: 39, effect: 0.01, description: "Happiness"},
 
-    "Strength": {name: "Strength", maxXp: 100, effect: 0.01, description: "Military Pay"},
-    "Battle Tactics": {name: "Battle Tactics", maxXp: 100, effect: 0.01, description: "Military XP"},
-    "Muscle Memory": {name: "Muscle Memory", maxXp: 100, effect: 0.01, description: "Strength XP"},
+    "Strength": { name: "Strength", maxXp: 100, heroxp: 40, effect: 0.01, description: "Military Pay"},
+    "Battle Tactics": { name: "Battle Tactics", maxXp: 100, heroxp: 41, effect: 0.01, description: "Military XP"},
+    "Muscle Memory": { name: "Muscle Memory", maxXp: 100, heroxp: 42, effect: 0.01, description: "Strength XP"},
 
-    "Mana Control": {name: "Mana Control", maxXp: 100, effect: 0.01, description: "T.A.A. XP"},
-    "Life Essence": {name: "Life Essence", maxXp: 100, effect: 0.01, description: "Longer Lifespan"},
-    "Time Warping": {name: "Time Warping", maxXp: 100, effect: 0.01, description: "Gamespeed"},
-    "Astral Body": {name: "Astral Body", maxXp: 100, effect: 0.0035, description: "Longer lifespan"},
-	"Temporal Dimension": {name: "Temporal Dimension", maxXp: 100, effect: 0.006, description: "Gamespeed"},
-	"All Seeing Eye": {name: "All Seeing Eye", maxXp: 100, effect: 0.0027, description: "T.A.A Pay"},
-	"Brainwashing": {name: "Brainwashing", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
+    "Mana Control": { name: "Mana Control", maxXp: 100, heroxp: 46, effect: 0.01, description: "T.A.A. XP"},
+    "Life Essence": { name: "Life Essence", maxXp: 100, heroxp: 82, effect: 0.01, description: "Longer Lifespan"},
+    "Time Warping": { name: "Time Warping", maxXp: 100, heroxp: 82, effect: 0.01, description: "Gamespeed"},
+    "Astral Body": { name: "Astral Body", maxXp: 100, heroxp: 100, effect: 0.0035, description: "Longer lifespan"},
+    "Temporal Dimension": { name: "Temporal Dimension", maxXp: 100, heroxp: 115, effect: 0.006, description: "Gamespeed"},
+    "All Seeing Eye": { name: "All Seeing Eye", maxXp: 100, heroxp: 120, effect: 0.0027, description: "T.A.A Pay"},
+    "Brainwashing": { name: "Brainwashing", maxXp: 100, heroxp: 145, effect: -0.01, description: "Reduced Expenses"},
 	
-	"Absolute Wish": {name: "Absolute Wish", maxXp: 100, effect: 0.005, description: "Evil Gain"},
-    "Void Amplification": {name: "Void Amplification", maxXp: 100, effect: 0.01, description: "The Void XP"},
-    "Mind Seize": {name: "Mind Seize", maxXp: 100, effect: 0.0006, description: "Reduced Happiness"},
-	"Ceaseless Abyss": {name: "Ceaseless Abyss", maxXp: 100, effect: 0.000585, description: "Longer Lifespan"},
-	"Void Symbiosis": {name: "Void Symbiosis", maxXp: 100, effect: 0.0015, description: "Ability XP"},
-    "Void Embodiment": {name: "Void Embodiment", maxXp: 100, effect: 0.0025, description: "Evil Gain"},
-	"Abyss Manipulation": {name: "Abyss Manipulation", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
-	
-	
-	"Cosmic Longevity": {name: "Cosmic Longevity", maxXp: 100, effect: 0.0015, description: "Longer Lifespan"},
-    "Cosmic Recollection": {name: "Cosmic Recollection", maxXp: 100, effect: 0.00065, description: "Max Lvl Multiplier"},
-	"Essence Collector": {name: "Essence Collector", maxXp: 100, effect: 0.01, description: "Essence Gain"},
-	"Galactic Command": {name: "Galactic Command", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
-	
-	
-    "Dark Influence": {name: "Dark Influence", maxXp: 100, effect: 0.01, description: "All XP"},
-    "Evil Control": {name: "Evil Control", maxXp: 100, effect: 0.01, description: "Evil Gain"},
-    "Intimidation": {name: "Intimidation", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
-    "Demon Training": {name: "Demon Training", maxXp: 100, effect: 0.01, description: "All XP"},
-    "Blood Meditation": {name: "Blood Meditation", maxXp: 100, effect: 0.01, description: "Evil Gain"},
-    "Demon's Wealth": {name: "Demon's Wealth", maxXp: 100, effect: 0.002, description: "Class Pay"},
-	"Dark Knowledge": {name: "Dark Knowledge", maxXp: 100, effect: 0.003, description: "Class XP"},
-	"Void Influence": {name: "Void Influence", maxXp: 100, effect: 0.0028, description: "All XP"},
-	"Time Loop": {name: "Time Loop", maxXp: 100, effect: 0.001, description: "Gamespeed"},
-	"Evil Incarnate": {name: "Evil Incarnate", maxXp: 100, effect: 0.01, description: "Ability XP"},
-	
+    "Dark Influence": { name: "Dark Influence", maxXp: 100, heroxp: 155, effect: 0.01, description: "All XP"},
+    "Evil Control": { name: "Evil Control", maxXp: 100, heroxp: 156, effect: 0.01, description: "Evil Gain"},
+    "Intimidation": { name: "Intimidation", maxXp: 100, heroxp: 157, effect: -0.01, description: "Reduced Expenses" },
 
-    "Yin Yang": {name: "Yin Yang", maxXp: 100, effect: 0.020, description: "Essence + Evil Gain"},
-	"Parallel Universe": {name: "Parallel Universe", maxXp: 100, effect: 0.02, description: "All XP"},
-	"Higher Dimensions": {name: "Higher Dimensions", maxXp: 100, effect: 0.001, description: "Longer Lifespan"},
-	"Epiphany": {name: "Epiphany", maxXp: 100, effect: 0.012, description: "Galactic Council XP"},
+    // "Good Heroes": { n
+    "Demon Training": { name: "Demon Training", maxXp: 100, heroxp: 174, effect: 0.01, description: "All XP"},
+    "Blood Meditation": { name: "Blood Meditation", maxXp: 100, heroxp: 176, effect: 0.01, description: "Evil Gain"},
+    "Demon's Wealth": { name: "Demon's Wealth", maxXp: 100, heroxp: 178, effect: 0.002, description: "Class Pay"},
+    "Dark Knowledge": { name: "Dark Knowledge", maxXp: 100, heroxp: 180, effect: 0.003, description: "Class XP" },
+
+    // "Beautiful Heroes"
+    "Void Influence": { name: "Void Influence", maxXp: 100, heroxp: 206, effect: 0.0028, description: "All XP"},
+    "Time Loop": { name: "Time Loop", maxXp: 100, heroxp: 207, effect: 0.001, description: "Gamespeed"},
+    "Evil Incarnate": { name: "Evil Incarnate", maxXp: 100, heroxp: 208, effect: 0.01, description: "Ability XP" },
+    "Absolute Wish": { name: "Absolute Wish", maxXp: 100, heroxp: 198, effect: 0.005, description: "Evil Gain" },
+
+    //"Awesome Heroes": 
+    "Void Amplification": { name: "Void Amplification", maxXp: 100, heroxp: 251, effect: 0.01, description: "The Void XP" },
+    "Mind Seize": { name: "Mind Seize", maxXp: 100, heroxp: 251, effect: 0.0006, description: "Reduced Happiness" },
+    "Ceaseless Abyss": { name: "Ceaseless Abyss", maxXp: 100, heroxp: 251, effect: 0.000585, description: "Longer Lifespan" },
+    "Void Symbiosis": { name: "Void Symbiosis", maxXp: 100, heroxp: 253, effect: 0.0015, description: "Ability XP" },
+
+    //"Furious Heroes":
+    "Void Embodiment": { name: "Void Embodiment", maxXp: 100, heroxp: 258, effect: 0.0025, description: "Evil Gain" },
+    "Abyss Manipulation": { name: "Abyss Manipulation", maxXp: 100, heroxp: 266, effect: -0.01, description: "Reduced Expenses" },
+
+    //  *  "Gorgeous Heroes":
+    "Cosmic Longevity": { name: "Cosmic Longevity", maxXp: 100, heroxp: 266, effect: 0.0015, description: "Longer Lifespan" },
+    "Cosmic Recollection": { name: "Cosmic Recollection", maxXp: 100, heroxp: 272, effect: 0.00065, description: "Max Lvl Multiplier" },
+    "Essence Collector": { name: "Essence Collector", maxXp: 100, heroxp: 288, effect: 0.01, description: "Essence Gain" },
+    "Galactic Command": { name: "Galactic Command", maxXp: 100, heroxp: 290, effect: -0.01, description: "Reduced Expenses" },
+
+    //  "Superb Heroes": {
+    "Yin Yang": { name: "Yin Yang", maxXp: 100, heroxp: 290, effect: 0.020, description: "Essence + Evil Gain" },
+    "Parallel Universe": { name: "Parallel Universe", maxXp: 290, heroxp: 300, effect: 0.02, description: "All XP"},
+    "Higher Dimensions": { name: "Higher Dimensions", maxXp: 290, heroxp: 300, effect: 0.001, description: "Longer Lifespan" },
+    "Epiphany": { name: "Epiphany", maxXp: 100, heroxp: 280, effect: 0.012, description: "Galactic Council XP"},
 
 }
 
 const itemBaseData = {
-    "Homeless":     {name: "Homeless",          expense: 0, effect: 1, heromult: 2},
-    "Tent":         { name: "Tent",             expense: 15, effect: 1.4, heromult: 2 },
-    "Wooden Hut":   { name: "Wooden Hut",       expense: 100, effect: 2, heromult: 3 },
-    "Cottage":      { name: "Cottage",          expense: 750, effect: 3.5, heromult: 3 },
-    "House":        { name: "House",            expense: 3000, effect: 6, heromult: 4 },
-    "Large House":  { name: "Large House",      expense: 25000, effect: 12, heromult: 4 },
-    "Small Palace": { name: "Small Palace",     expense: 300000, effect: 25, heromult: 5 },
-    "Grand Palace": { name: "Grand Palace",     expense: 5000000, effect: 60, heromult: 5 },
-    "Town Ruler":   { name: "Town Ruler",       expense: 35000000, effect: 120, heromult: 6 },
-    "City Ruler":   { name: "City Ruler",       expense: 1100000000, effect: 500, heromult: 7 },
-    "Nation Ruler": { name: "Nation Ruler",     expense: 13000000000, effect: 1200, heromult: 8 },
-    "Pocket Dimension": { name: "Pocket Dimension", expense: 49000000000, effect: 5000, heromult: 9 },
-    "Void Realm":   { name: "Void Realm",       expense: 121000000000, effect: 15000,  heromult: 10 },
-    "Void Universe": { name: "Void Universe",   expense: 2000000000000, effect: 30000,  heromult: 11 },
-    "Astral Realm": { name: "Astral Realm",       expense: 160000000000000, effect: 150000, heromult: 12},
-    "Galactic Throne": { name: "Galactic Throne", expense: 5000000000000000, effect: 300000, heromult: 13 },
-    "Spaceship": { name: "Spaceship",             expense: 1000000000000000000, effect: 1500000, heromult: 15 },
+    "Homeless":     {name: "Homeless",          expense: 0, effect: 1, heromult: 2, heroeffect: 2e6},
+    "Tent": { name: "Tent", expense: 15, effect: 1.4, heromult: 2, heroeffect: 2e7 },
+    "Wooden Hut": { name: "Wooden Hut", expense: 100, effect: 2, heromult: 3, heroeffect: 2e8 },
+    "Cottage": { name: "Cottage", expense: 750, effect: 3.5, heromult: 3, heroeffect: 2e9 },
+    "House": { name: "House", expense: 3000, effect: 6, heromult: 4, heroeffect: 2e10 },
+    "Large House": { name: "Large House", expense: 25000, effect: 12, heromult: 4, heroeffect: 2e11 },
+    "Small Palace": { name: "Small Palace", expense: 300000, effect: 25, heromult: 5, heroeffect: 2e12 },
+    "Grand Palace": { name: "Grand Palace", expense: 5000000, effect: 60, heromult: 5, heroeffect: 2e13 },
+    "Town Ruler": { name: "Town Ruler", expense: 35000000, effect: 120, heromult: 6, heroeffect: 2e15 },
+    "City Ruler": { name: "City Ruler", expense: 1100000000, effect: 500, heromult: 7, heroeffect: 2e17 },
+    "Nation Ruler": { name: "Nation Ruler", expense: 13000000000, effect: 1200, heromult: 8, heroeffect: 2e19 },
+    "Pocket Dimension": { name: "Pocket Dimension", expense: 49000000000, effect: 5000, heromult: 9, heroeffect: 2e22 },
+    "Void Realm": { name: "Void Realm", expense: 121000000000, effect: 15000, heromult: 10, heroeffect: 2e25 },
+    "Void Universe": { name: "Void Universe", expense: 2000000000000, effect: 30000, heromult: 11, heroeffect: 2e28 },
+    "Astral Realm": { name: "Astral Realm", expense: 160000000000000, effect: 150000, heromult: 12, heroeffect: 2e31 },
+    "Galactic Throne": { name: "Galactic Throne", expense: 5000000000000000, effect: 300000, heromult: 13, heroeffect: 2e35 },
+    "Spaceship": { name: "Spaceship", expense: 1000000000000000000, effect: 1500000, heromult: 15, heroeffect: 5e42 },
                                                             
 
     "Book": { name: "Book", expense: 10, effect: 1.5, description: "Ability XP", heromult: 2 },
@@ -172,12 +180,12 @@ const itemBaseData = {
     "Study Desk": { name: "Study Desk", expense: 1000000, effect: 2, description: "Ability XP", heromult: 5 },
     "Library": { name: "Library", expense: 10000000, effect: 2, description: "Ability XP", heromult: 5 },
     "Observatory": { name: "Observatory", expense: 140000000, effect: 5, description: "Magic XP", heromult: 6 },
-    "Mind's Eye": { name: "Mind's Eye", expense: 3250000000, effect: 10, description: "Fundamentals XP", heromult: 6 },
-    "Void Necklace": { name: "Void Necklace", expense: 28050000000, effect: 3, description: "Void Manipulation XP", heromult: 7 },
-    "Void Armor": { name: "Void Armor", expense: 197050000000, effect: 3, description: "The Void XP", heromult: 8 },
-    "Void Blade": { name: "Void Blade", expense: 502050000000, effect: 3, description: "Ability XP", heromult: 9 },
-    "Void Orb": { name: "Void Orb", expense: 1202050000000, effect: 3, description: "Void Manipulation XP", heromult: 10 },
-    "Void Dust": { name: "Void Dust", expense: 25002050000000, effect: 3, description: "The Void XP", heromult: 11 },
+    "Mind's Eye": { name: "Mind's Eye", expense: 3250000000, effect: 10, description: "Fundamentals XP", heromult: 8 },
+    "Void Necklace": { name: "Void Necklace", expense: 28050000000, effect: 3, description: "Void Manipulation XP", heromult: 10 },
+    "Void Armor": { name: "Void Armor", expense: 197050000000, effect: 3, description: "The Void XP", heromult: 10 },
+    "Void Blade": { name: "Void Blade", expense: 502050000000, effect: 3, description: "Ability XP", heromult: 11 },
+    "Void Orb": { name: "Void Orb", expense: 1202050000000, effect: 3, description: "Void Manipulation XP", heromult: 11 },
+    "Void Dust": { name: "Void Dust", expense: 25002050000000, effect: 3, description: "The Void XP", heromult: 12 },
     "Celestial Robe": { name: "Celestial Robe", expense: 300002050000000, effect: 5, description: "Galactic Council XP", heromult: 12 },
     "Universe Fragment": { name: "Universe Fragment", expense: 18500002050000000, effect: 3, description: "Ability XP", heromult: 13 },
     "Multiverse Fragment": { name: "Multiverse Fragment", expense: 200500002050000000, effect: 5, description: "Happiness", heromult: 15 },
@@ -202,12 +210,11 @@ milestoneBaseData = {
     "Tired Heroes": { name: "Tired Heroes", expense: 100000000, tier: 15, description: "Hero XP" },
     "Scared Heroes": { name: "Scared Heroes", expense: 150000000, tier: 16, description: "Hero XP" },
     "Good Heroes": { name: "Good Heroes", expense: 200000000, tier: 17, description: "Hero XP" },
-    "Funny Heroes": { name: "Funny Heroes", expense: 250000000, tier: 18, description: "Hero XP" },
-    "Beautiful Heroes": { name: "Beautiful Heroes", expense: 300000000, tier: 19, description: "Hero XP" },
-    "Awesome Heroes": { name: "Awesome Heroes", expense: 400000000, tier: 20, description: "Hero XP" },
-    "Furious Heroes": { name: "Furious Heroes", expense: 500000000, tier: 21, description: "Hero XP" },
-    "Gorgeous Heroes": { name: "Gorgeous Heroes", expense: 1000000000000, tier: 22, description: "Hero XP" },
-    "Superb Heroes": { name: "Superb Heroes", expense: 10000000000000, tier: 23, description: "Hero XP" },
+    "Funny Heroes": { name: "Funny Heroes", expense: 300000000, tier: 18, description: "Hero XP" },
+    "Beautiful Heroes": { name: "Beautiful Heroes", expense: 400000000, tier: 19, description: "Hero XP" },
+    "Awesome Heroes": { name: "Awesome Heroes", expense: 500000000, tier: 20, description: "Hero XP" },
+    "Furious Heroes": { name: "Furious Heroes", expense:       750000000, tier: 21, description: "Hero XP" },
+    "Superb Heroes": { name: "Superb Heroes", expense: 10000000000,    tier: 22, description: "Hero XP" },
 }
 
 const jobCategories = {
@@ -236,7 +243,7 @@ const itemCategories = {
 
 const milestoneCategories = {
     "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcendent Master", "Eternal Time", "Hell Portal", "Inferno", "God's Blessings", "Faint Hope"],
-    "Heroic Milestones": ["New Beginning", "Rise of Great Heroes", "Lazy Heroes", "Dirty Heroes", "Angry Heroes", "Tired Heroes", "Scared Heroes", "Good Heroes", "Funny Heroes", "Beautiful Heroes", "Awesome Heroes", "Furious Heroes", "Gorgeous Heroes", "Superb Heroes"]
+    "Heroic Milestones": ["New Beginning", "Rise of Great Heroes", "Lazy Heroes", "Dirty Heroes", "Angry Heroes", "Tired Heroes", "Scared Heroes", "Good Heroes", "Funny Heroes", "Beautiful Heroes", "Awesome Heroes", "Furious Heroes", "Superb Heroes"]
 }
 
 function prevCategory(task)
@@ -444,7 +451,6 @@ const tooltips = {
     "Beautiful Heroes": "",
     "Awesome Heroes": "",
     "Furious Heroes": "",
-    "Gorgeous Heroes": "",
     "Superb Heroes": "",
 
 }
@@ -557,19 +563,19 @@ function getHeroXpGainMultipliers(job)
         baseMult *= 1e12
 
     if (gameData.requirements["Dirty Heroes"].isCompleted())
-        baseMult *= 1e20
+        baseMult *= 1e15
 
     if (gameData.requirements["Angry Heroes"].isCompleted())
-        baseMult *= 1e20
+        baseMult *= 1e15
 
     if (gameData.requirements["Tired Heroes"].isCompleted())
-        baseMult *= 1e20
+        baseMult *= 1e15
 
     if (gameData.requirements["Scared Heroes"].isCompleted())
-        baseMult *= 1e20
+        baseMult *= 1e15
 
     if (gameData.requirements["Good Heroes"].isCompleted())
-        baseMult *= 1e14 /// fixed mult
+        baseMult *= 1e15
 
     if (gameData.requirements["Funny Heroes"].isCompleted())
         baseMult *= 1e25
@@ -580,14 +586,14 @@ function getHeroXpGainMultipliers(job)
     if (gameData.requirements["Awesome Heroes"].isCompleted())
         baseMult *= 1e10
 
-    if (gameData.requirements["Furious Heroes"].isCompleted())
+    if (gameData.requirements["Furious Heroes"].isCompleted()) {
+        if (job instanceof Job)
+            baseMult *= 1000000
         baseMult *= 1e12
-
-    if (gameData.requirements["Gorgeous Heroes"].isCompleted())
-        baseMult *= 1e15
+    }
 
     if (gameData.requirements["Superb Heroes"].isCompleted())
-        baseMult *= 1e5
+        baseMult *= 1e3
 
     return baseMult
 }
@@ -675,7 +681,7 @@ function applyMultipliers(value, multipliers) {
         var multiplier = multiplierFunction()
         finalMultiplier *= multiplier
     })
-    var finalValue = Math.round(value * finalMultiplier)
+    var finalValue = value * finalMultiplier
     return finalValue
 }
 
@@ -708,11 +714,11 @@ function getEssenceGain() {
     if (gameData.requirements["Rise of Great Heroes"].isCompleted())
     {
         var countHeroes = 0
-        for (task in gameData.taskData) {
-            if (task.isHero)
+        for (taskName in gameData.taskData) {
+            if (gameData.taskData[taskName].isHero)
                 countHeroes++
         }
-        essence *= 1 + 4 * countHeroes / 74
+        essence *= 1 + 6 * countHeroes / 74
     }
 
     return essence	
@@ -903,14 +909,38 @@ function createAllRows(categoryType, tableId) {
 }
 
 function updateQuickTaskDisplay() {
-    var currentTask = gameData.currentJob
+    var task = gameData.currentJob
     var quickTaskDisplayElement = document.getElementById("quickTaskDisplay")
     var progressBar = quickTaskDisplayElement.getElementsByClassName("job")[0]
-    progressBar.getElementsByClassName("name")[0].textContent = (currentTask.isHero ? "Great " : "") + currentTask.name + " lvl " + currentTask.level
+    progressBar.getElementsByClassName("name")[0].textContent = (task.isHero ? "Great " : "") + task.name + " lvl " + task.level
     var progressFill = progressBar.getElementsByClassName("progressFill")[0]
-    progressFill.style.width = currentTask.xp / currentTask.getMaxXp() * 100 + "%"
-    currentTask.isHero ? progressFill.classList.add("current-hero") : progressFill.classList.remove("current-hero")
-    currentTask.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
+    
+
+
+    if (task.isFinished) {
+        progressFill.style.width = "100%"
+        progressFill.classList.add("progress-fill-finished")
+        progressBar.classList.add("progress-bar-finished")
+        var time = gameData.realtime / 3
+        var x = time - Math.floor(time)
+        x = (x < 0.5 ? x : 1 - x) * 2;
+        progressFill.style.opacity = x
+
+        progressFill.classList.add("current-hero")
+        progressBar.classList.remove("progress-bar-hero")
+
+    }
+    else {
+        progressFill.style.opacity = 1
+        progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
+        progressFill.classList.remove("progress-fill-finished")
+        progressBar.classList.remove("progress-bar-finished")
+
+        task.isHero ? progressFill.classList.add("current-hero") : progressFill.classList.remove("current-hero")
+        task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
+
+    }
+
 }
 
 function updateRequiredRows(data, categoryType) {
@@ -1010,12 +1040,18 @@ function updateTaskRows() {
         var task = gameData.taskData[key]
         var row = document.getElementById("row " + task.name)
         row.getElementsByClassName("level")[0].textContent = task.level
-        row.getElementsByClassName("xpGain")[0].textContent = format(task.getXpGain())
-        row.getElementsByClassName("xpLeft")[0].textContent = format(task.getXpLeft())
+        if (task.isFinished) {
+            row.getElementsByClassName("xpGain")[0].textContent = "Maximum"
+            row.getElementsByClassName("xpLeft")[0].textContent = "0"
+        }
+        else {
+            row.getElementsByClassName("xpGain")[0].textContent = format(task.getXpGain())
+            row.getElementsByClassName("xpLeft")[0].textContent = format(task.getXpLeft())
+        }
 
         var tooltip = tooltips[key]
 
-        if (IsHeroesUnlocked() && task instanceof Task && !task.isHero)
+        if (task instanceof Task && !task.isHero && IsHeroesUnlocked())
         {
             var requirementObject = gameData.requirements[key]
             var requirements = requirementObject.requirements
@@ -1041,15 +1077,18 @@ function updateTaskRows() {
             } else {
                 for (requirement of requirements) {
                     var task_check = gameData.taskData[requirement.task]
-                    if (task_check.isHero && task_check.level >= requirement.requirement) continue
+
+                    var reqvalue = (requirement.herequirement == null ? requirement.requirement : requirement.herequirement)
+
+                    if (task_check.isHero && task_check.level >= reqvalue) continue
                     if (prev != "" && task_check.name == prevTask.name) {
-                        if (requirement.requirement <= 20)
+                        if (reqvalue <= 20)
                             continue
                         else
-                            prevReq = " Great " + requirement.task + " " + (task_check.isHero ? task_check.level : 0) + "/" + requirement.requirement + "<br>"
+                            prevReq = " Great " + requirement.task + " " + (task_check.isHero ? task_check.level : 0) + "/" + reqvalue + "<br>"
                     }
                     else {
-                        reqlist += " Great " + requirement.task + " " + (task_check.isHero ? task_check.level : 0) + "/" + requirement.requirement + "<br>"
+                        reqlist += " Great " + requirement.task + " " + (task_check.isHero ? task_check.level : 0) + "/" + reqvalue + "<br>"
                     }
                 }                
             }
@@ -1073,8 +1112,24 @@ function updateTaskRows() {
         var progressFill = row.getElementsByClassName("progressFill")[0]
         progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
 
-        task.isHero ? progressFill.classList.add("progress-fill-hero") : progressFill.classList.remove("progress-fill-hero")
-        task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
+
+        if (task.isFinished) {
+            progressFill.style.width = "100%"
+            progressFill.classList.add("progress-fill-finished") 
+            progressBar.classList.add("progress-bar-finished")
+            var time = gameData.realtime / 3
+            var x = time - Math.floor(time)
+            x = (x < 0.5 ? x : 1 - x) * 2;
+            progressFill.style.opacity = x
+        }
+        else {
+            progressFill.style.opacity = 1
+            progressFill.classList.remove("progress-fill-finished")
+            progressBar.classList.remove("progress-bar-finished")
+
+            task.isHero ? progressFill.classList.add("progress-fill-hero") : progressFill.classList.remove("progress-fill-hero")
+            task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
+        }
 
 
         task == gameData.currentJob ? progressFill.classList.add(task.isHero ? "current-hero" : "current") : progressFill.classList.remove("current", "current-hero")
@@ -1221,7 +1276,7 @@ function updateText() {
     //document.getElementById("ageDisplay").textContent = daysToYears(gameData.days)
     //document.getElementById("dayDisplay").textContent = getDay(gameData.days)
     document.getElementById("ageDisplay").textContent = formatAge(gameData.days)
-    document.getElementById("lifespanDisplay").textContent = format(daysToYears(getLifespan()),0)
+    document.getElementById("lifespanDisplay").textContent = format(daysToYears(getLifespan()), 0)
     document.getElementById("realtimeDisplay").textContent = formatTime(gameData.realtime)
     document.getElementById("pauseButton").textContent = gameData.paused ? "Play" : "Pause"
 
@@ -1236,7 +1291,7 @@ function updateText() {
     document.getElementById("evilDisplay").textContent = format(gameData.evil)
     document.getElementById("evilGainDisplay").textContent = format(getEvilGain())
     document.getElementById("evilGainButtonDisplay").textContent = "+" + format(getEvilGain())
-	
+
     document.getElementById("essenceDisplay").textContent = format(gameData.essence)
     document.getElementById("essenceGainDisplay").textContent = format(getEssenceGain())
     document.getElementById("essenceGainButtonDisplay").textContent = "+" + format(getEssenceGain())
@@ -1247,7 +1302,13 @@ function updateText() {
             gameData.taskData["Time Loop"].getEffect() *
             ((gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1)
         ))
-	}
+
+    if (nextMilestoneInReach()) {
+        var d = document.getElementById("rebirthButton3")
+        var c = d.getElementsByClassName("button")[0]
+        c.style.background = "#065c21"
+    }
+}
 
 function setSignDisplay() {
     var signDisplay = document.getElementById("signDisplay")
@@ -1576,6 +1637,7 @@ function rebirthReset() {
         task.level = 0
         task.xp = 0
         task.isHero = false
+        task.isFinished =false
     }
 
     for (itemName in gameData.itemData) {
@@ -1616,7 +1678,7 @@ function isAlive() {
 }
 
 function IsHeroesUnlocked() {
-    return gameData.requirements["New Beginning"].isCompleted() && gameData.taskData["One Above All"].level >= 2000
+    return gameData.requirements["New Beginning"].isCompleted() && (gameData.taskData["One Above All"].level >= 2000 || gameData.taskData["One Above All"].isHero)
 }
 
 function makeHero(task)
@@ -1650,7 +1712,7 @@ function makeHeroes()
         var isNewHero = true
 
         if (req instanceof TaskRequirement) {
-            if (!req.isCompletedActual())
+            if (!req.isCompletedActual(true))
                 continue
             for (requirement of req.requirements)
                 if (!(gameData.taskData[requirement.task] && gameData.taskData[requirement.task].isHero)) {
@@ -1798,7 +1860,8 @@ function update(needUpdateUI = true) {
     increaseRealtime()
     increaseDays()
     autoPromote()
-    autoBuy()
+    autoBuy()  
+    applyExpenses()
     for (key in gameData.taskData) {
         var task = gameData.taskData[key]
         if ((task instanceof Skill || task instanceof Job) && gameData.requirements[key].completed) {
@@ -1809,11 +1872,23 @@ function update(needUpdateUI = true) {
                 doCurrentTask(task)
         }
             
-    }    
-    applyMilestones()
-    applyExpenses()    
+    }
+    
+    applyMilestones()    
     if (needUpdateUI)
         updateUI()
+}
+
+function res()
+{
+    for (var x in gameData.taskData) {
+        var t = gameData.taskData[x]
+        if (!t.isHero) {
+            //t.maxLevel = 0
+            t.level = 6200
+            t.xp=0
+        }
+    }
 }
 
 function restartGame()
@@ -1840,6 +1915,7 @@ function restartGame()
     gameData.rebirthTwoCount = 0
     gameData.rebirthThreeCount = 0
     gameData.realtime = 0
+    gameData.settings.selectedTab = 'jobs'
 
     gameData.completedTimes += 1
     saveGameData()
@@ -1940,6 +2016,24 @@ window.addEventListener('keydown', function (e) {
     if(e.key=="ArrowLeft") changeTab(-1)     
 });
 
+function nextMilestoneInReach() {
+    var totalEssence = gameData.essence + getEssenceGain()
+
+    for (key in gameData.milestoneData)
+    {
+        var milestone = gameData[key]
+        var requirementObject = gameData.requirements[key]
+
+        if (requirementObject instanceof EssenceRequirement) {
+            if (!requirementObject.isCompleted()) {
+                if (totalEssence > requirementObject.requirements[0].requirement)
+                    return true
+            }
+        }
+    }
+    return false
+}
+
 
 //Init
 createData(gameData.taskData, jobBaseData)
@@ -1973,8 +2067,8 @@ gameData.requirements = {
 	"Rebirth note 5": new AgeRequirement([document.getElementById("rebirthNote5")], [{requirement: 10000}]),
     "Rebirth note 6": new TaskRequirement([document.getElementById("rebirthNote6")], [{ task: "Cosmic Recollection", requirement: 1 }]),
 
-    "Rebirth note End": new EssenceRequirement([document.getElementById("rebirthNoteEnd")], [{ requirement: 10000000000000 }]),
-    "Rebirth button End": new EssenceRequirement([document.getElementById("rebirthButtonEnd")], [{ requirement: 10000000000000 }]),
+    "Rebirth note End": new TaskRequirement([document.getElementById("rebirthNoteEnd")], [{ task: "One Above All", requirement: 1000000000000, isHero: true }]),
+    "Rebirth button End": new TaskRequirement([document.getElementById("rebirthButtonEnd")], [{ task: "One Above All", requirement: 1000000000000, isHero: true }]),
 
     "Rebirth button 1": new AgeRequirement([document.getElementById("rebirthButton1")], [{ requirement: 65 }]),
     "Rebirth button 2": new AgeRequirement([document.getElementById("rebirthButton2")], [{ requirement: 200 }]),
@@ -2014,25 +2108,25 @@ gameData.requirements = {
     "Archmage": new TaskRequirement([getTaskElement("Archmage")], [{task: "Mana Control", requirement: 1200}, {task: "Master Wizard", requirement: 10}]),
 	"Chronomancer": new TaskRequirement([getTaskElement("Chronomancer")], [{task: "Mana Control", requirement: 1500}, {task: "Meditation", requirement: 1500}, {task: "Archmage", requirement: 25}]),
     "Chairman": new TaskRequirement([getTaskElement("Chairman")], [{task: "Mana Control", requirement: 2000}, {task: "Productivity", requirement: 2000}, {task: "Chronomancer", requirement: 50}]),
-	"Imperator": new TaskRequirement([getTaskElement("Imperator")], [{task: "All Seeing Eye", requirement: 3000}, {task: "Concentration", requirement: 3000},  {task: "Chairman", requirement: 666}]),
+    "Imperator": new TaskRequirement([getTaskElement("Imperator")], [{ task: "All Seeing Eye", requirement: 3000, herequirement:650}, {task: "Concentration", requirement: 3000},  {task: "Chairman", requirement: 666}]),
 	
 	//The Void
     "Corrupted": new AgeRequirement([getTaskElement("Corrupted")], [{requirement: 1000}]),
     "Void Slave": new TaskRequirement([getTaskElement("Void Slave")], [{task: "Corrupted", requirement: 30}]),
-    "Void Fiend": new TaskRequirement([getTaskElement("Void Fiend")], [{task: "Brainwashing", requirement: 3000}, {task: "Void Slave", requirement: 200}]),
-	"Abyss Anomaly": new TaskRequirement([getTaskElement("Abyss Anomaly")], [{task: "Mind Seize", requirement: 3000}, {task: "Void Fiend", requirement: 200}]),
-	"Void Wraith": new TaskRequirement([getTaskElement("Void Wraith")], [{task: "Temporal Dimension", requirement: 3400}, {task: "Abyss Anomaly", requirement: 300}]),
-	"Void Reaver": new TaskRequirement([getTaskElement("Void Reaver")], [{task: "Void Amplification", requirement: 3400}, {task: "Void Wraith", requirement: 250}]),
-	"Void Lord":  new TaskRequirement([getTaskElement("Void Lord")], [{task: "Void Symbiosis", requirement: 3800}, {task: "Void Reaver", requirement: 150}]),
-	"Abyss God": new TaskRequirement([getTaskElement("Abyss God")], [{task: "Void Embodiment", requirement: 4700}, {task: "Void Lord", requirement: 750}]),
+    "Void Fiend": new TaskRequirement([getTaskElement("Void Fiend")], [{ task: "Brainwashing", requirement: 3000 }, { task: "Void Slave", requirement: 200 }]),
+    "Abyss Anomaly": new TaskRequirement([getTaskElement("Abyss Anomaly")], [{ task: "Mind Seize", requirement: 3000, herequirement: 100 }, { task: "Void Fiend", requirement: 200, herequirement: 100 }]),
+    "Void Wraith": new TaskRequirement([getTaskElement("Void Wraith")], [{ task: "Temporal Dimension", requirement: 3400 }, { task: "Abyss Anomaly", requirement: 300, herequirement: 180 }]),
+    "Void Reaver": new TaskRequirement([getTaskElement("Void Reaver")], [{ task: "Void Amplification", requirement: 3400, herequirement: 180 }, { task: "Void Wraith", requirement: 250, herequirement: 125 }]),
+    "Void Lord": new TaskRequirement([getTaskElement("Void Lord")], [{ task: "Void Symbiosis", requirement: 3800, herequirement: 200 }, { task: "Void Reaver", requirement: 150 }]),
+    "Abyss God": new TaskRequirement([getTaskElement("Abyss God")], [{ task: "Void Embodiment", requirement: 4700, herequirement: 300 }, { task: "Void Lord", requirement: 750, herequirement : 125 }]),
 
 	
 	 //Galactic Council
-    "Eternal Wanderer": new AgeRequirement([getTaskElement("Eternal Wanderer")], [{requirement: 10000}]),
-    "Nova": new TaskRequirement([getTaskElement("Nova")], [{task: "Eternal Wanderer", requirement: 15}, {task: "Cosmic Longevity", requirement: 4000}]),
-	"Sigma Proioxis": new TaskRequirement([getTaskElement("Sigma Proioxis")], [{task: "Nova", requirement: 200}, {task: "Cosmic Recollection", requirement: 4500}]),
-	"Acallaris": new TaskRequirement([getTaskElement("Acallaris")], [{task: "Galactic Command", requirement: 5000}, {task: "Sigma Proioxis", requirement: 1000}]),
-	"One Above All": new TaskRequirement([getTaskElement("One Above All")], [{task: "Meditation", requirement: 6300}, {task: "Acallaris", requirement: 1400}]),	
+    "Eternal Wanderer": new AgeRequirement([getTaskElement("Eternal Wanderer")], [{ requirement: 10000 }]),
+    "Nova": new TaskRequirement([getTaskElement("Nova")], [{ task: "Eternal Wanderer", requirement: 15 }, { task: "Cosmic Longevity", requirement: 4000, herequirement: 180 }]),
+    "Sigma Proioxis": new TaskRequirement([getTaskElement("Sigma Proioxis")], [{ task: "Nova", requirement: 200 }, { task: "Cosmic Recollection", requirement: 4500, herequirement: 350 }]),
+    "Acallaris": new TaskRequirement([getTaskElement("Acallaris")], [{ task: "Galactic Command", requirement: 5000, herequirement: 250 }, { task: "Sigma Proioxis", requirement: 1000, herequirement: 480 }]),
+    "One Above All": new TaskRequirement([getTaskElement("One Above All")], [{ task: "Meditation", requirement: 6300 }, { task: "Acallaris", requirement: 1400, herequirement: 500 }]),	
 
     //Fundamentals
     "Concentration": new TaskRequirement([getTaskElement("Concentration")], []),
@@ -2051,7 +2145,7 @@ gameData.requirements = {
     "Time Warping": new TaskRequirement([getTaskElement("Time Warping")], [{task: "Adept Mage", requirement: 10}]),
     "Astral Body": new TaskRequirement([getTaskElement("Astral Body")], [{task: "Archmage", requirement: 10}]),
     "Temporal Dimension": new TaskRequirement([getTaskElement("Temporal Dimension")], [{task: "Chronomancer", requirement: 25}]),
-	"All Seeing Eye": new TaskRequirement([getTaskElement("All Seeing Eye")], [{task: "Mana Control", requirement: 2500}, {task: "Chairman", requirement: 100}]),
+	"All Seeing Eye": new TaskRequirement([getTaskElement("All Seeing Eye")], [{task: "Mana Control", requirement: 2350}, {task: "Chairman", requirement: 100}]),
 	"Brainwashing": new TaskRequirement([getTaskElement("Brainwashing")], [{task: "Imperator", requirement: 100}]),
 
     //Dark magic
@@ -2068,18 +2162,18 @@ gameData.requirements = {
 	
 	//Void Manipulation
 	"Absolute Wish": new TaskRequirement([getTaskElement("Absolute Wish")], [{task: "Void Slave", requirement: 25}, {task: "Chairman", requirement: 300}]),
-	"Void Amplification": new TaskRequirement([getTaskElement("Void Amplification")], [{task: "Void Slave", requirement: 100}, {task: "Absolute Wish", requirement: 3000}]),
-	"Mind Seize": new TaskRequirement([getTaskElement("Mind Seize")], [{task: "Void Amplification", requirement: 3000}]),
-	"Ceaseless Abyss": new TaskRequirement([getTaskElement("Ceaseless Abyss")], [{task: "Void Influence", requirement: 4000}, {task: "Abyss Anomaly", requirement: 50}]),
-	"Void Symbiosis": new TaskRequirement([getTaskElement("Void Symbiosis")], [{task: "Ceaseless Abyss", requirement: 3500}, {task: "Void Reaver", requirement: 50}]),
-	"Void Embodiment": new TaskRequirement([getTaskElement("Void Embodiment")], [{task: "Dark Influence", requirement: 4600}, {task: "Void Lord", requirement: 50}]),
-	"Abyss Manipulation": new TaskRequirement([getTaskElement("Abyss Manipulation")], [{task: "Abyss God", requirement: 350}, {task: "Dark Influence", requirement: 6000}, {task: "Void Influence", requirement: 6000}]),
+    "Void Amplification": new TaskRequirement([getTaskElement("Void Amplification")], [{ task: "Void Slave", requirement: 100 }, { task: "Absolute Wish", requirement: 3000, herequirement: 1700 }]),
+    "Mind Seize": new TaskRequirement([getTaskElement("Mind Seize")], [{ task: "Void Amplification", requirement: 3000, herequirement: 100 }]),
+    "Ceaseless Abyss": new TaskRequirement([getTaskElement("Ceaseless Abyss")], [{ task: "Void Influence", requirement: 4000, herequirement: 1950 }, { task: "Abyss Anomaly", requirement: 50 }]),
+    "Void Symbiosis": new TaskRequirement([getTaskElement("Void Symbiosis")], [{ task: "Ceaseless Abyss", requirement: 3500, herequirement: 220 }, { task: "Void Reaver", requirement: 50 }]),
+    "Void Embodiment": new TaskRequirement([getTaskElement("Void Embodiment")], [{ task: "Dark Influence", requirement: 4600, herequirement: 3700 }, { task: "Void Lord", requirement: 50 }]),
+    "Abyss Manipulation": new TaskRequirement([getTaskElement("Abyss Manipulation")], [{ task: "Abyss God", requirement: 350, herequirement: 200 }, { task: "Dark Influence", requirement: 6000, herequirement: 4100 }, { task: "Void Influence", requirement: 6000, herequirement: 2600 }]),
 	
 	//Celestial Powers
 	"Cosmic Longevity": new TaskRequirement([getTaskElement("Cosmic Longevity")], [{task: "Eternal Wanderer", requirement: 1}]),
-    "Cosmic Recollection": new TaskRequirement([getTaskElement("Cosmic Recollection")], [{task: "Nova", requirement: 50}, {task: "Meditation", requirement: 4200}, {task: "Mind Seize", requirement: 3000}]),
-	"Essence Collector": new TaskRequirement([getTaskElement("Essence Collector")], [{task: "Sigma Proioxis", requirement: 500}, {task: "Absolute Wish", requirement: 4900}, {task: "Dark Knowledge", requirement: 6300}]),
-	"Galactic Command": new TaskRequirement([getTaskElement("Galactic Command")], [{task: "Essence Collector", requirement: 5000}, {task: "Bargaining", requirement: 5000}]),
+    "Cosmic Recollection": new TaskRequirement([getTaskElement("Cosmic Recollection")], [{ task: "Nova", requirement: 50 }, { task: "Meditation", requirement: 4200 }, { task: "Mind Seize", requirement: 900 }]),
+    "Essence Collector": new TaskRequirement([getTaskElement("Essence Collector")], [{ task: "Sigma Proioxis", requirement: 500, herequirement: 360 }, { task: "Absolute Wish", requirement: 4900, herequirement: 2900 }, { task: "Dark Knowledge", requirement: 6300, herequirement: 3400 }]),
+    "Galactic Command": new TaskRequirement([getTaskElement("Galactic Command")], [{ task: "Essence Collector", requirement: 5000, herequirement: 210 }, { task: "Bargaining", requirement: 5000 }]),
 
     //Essence
 	"Yin Yang": new EssenceRequirement([getTaskElement("Yin Yang")], [{requirement: 1}]),
@@ -2143,6 +2237,10 @@ for (key in gameData.requirements) {
 }
 
 loadGameData()
+
+gameData.milestoneData = {}
+createData(gameData.milestoneData, milestoneBaseData)
+
 
 initUI()
 

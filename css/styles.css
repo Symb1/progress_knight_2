@@ -67,8 +67,7 @@ td {
 .progress-bar {
     margin-top: 0.05em;
     position: relative;
-    background-color: rgb(12, 101, 173);
-    /*cursor: pointer;*/
+    background-color: rgb(12, 101, 173);    
     width: 100%;
 }
 
@@ -77,16 +76,30 @@ td {
     background-color: rgb(46, 148, 231);
 }
 
+
+.progress-bar-hero {
+    margin-top: 0.05em;
+    position: relative;
+    background-color: rgb(108, 59, 59);
+    width: 100%;
+}
+
 .progress-fill-hero {
     height: 1.6em;
     background-color: rgb(165, 60, 21);
 }
 
-.progress-bar-hero {
+.progress-bar-finished {
+    margin-top: 0.05em;
     position: relative;
-    background-color: rgb(108, 59, 59);
-    cursor: pointer;
+    background-color: rgb(165, 60, 21);
+    
     width: 100%;
+}
+
+.progress-fill-finished {
+    height: 1.6em;
+    background-color: /*rgb(232, 102, 27);*/ rgb(212, 80, 30);
 }
 
 .hidden {
