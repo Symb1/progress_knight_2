@@ -1303,11 +1303,8 @@ function updateText() {
             ((gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1)
         ))
 
-    if (nextMilestoneInReach()) {
-        var d = document.getElementById("rebirthButton3")
-        var c = d.getElementsByClassName("button")[0]
-        c.style.background = "#065c21"
-    }
+    var button = document.getElementById("rebirthButton3").getElementsByClassName("button")[0]
+    button.style.background = nextMilestoneInReach() ? "#065c21" : "#1F1F1F"    
 }
 
 function setSignDisplay() {
