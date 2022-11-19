@@ -1600,21 +1600,23 @@ function applyMilestones() {
         }
     }
 
-    if (gameData.requirements["Deal with the Devil"].isCompleted() && gameData.requirements["Rebirth note 3"].isCompleted())
-    {
-        var evilGain = getEvilGain()
-        if (gameData.evil == 0)
-            gameData.evil = 1
-        if (gameData.evil < evilGain)
-            gameData.evil *= 1.001
-    }
-    
-    if (gameData.requirements["Hell Portal"].isCompleted()) {
-        var evilGain = getEvilGain()
-        if (gameData.evil == 0)
-            gameData.evil = 1
-        if (gameData.evil < evilGain)
-            gameData.evil *= 1.01
+    if (!gameData.paused) {
+
+        if (gameData.requirements["Deal with the Devil"].isCompleted() && gameData.requirements["Rebirth note 3"].isCompleted()) {
+            var evilGain = getEvilGain()
+            if (gameData.evil == 0)
+                gameData.evil = 1
+            if (gameData.evil < evilGain)
+                gameData.evil *= Math.pow(1.001, 1 + gameData.completedTimes)
+        }
+
+        if (gameData.requirements["Hell Portal"].isCompleted()) {
+            var evilGain = getEvilGain()
+            if (gameData.evil == 0)
+                gameData.evil = 1
+            if (gameData.evil < evilGain)
+                gameData.evil *= Math.pow(1.01, 1 + gameData.completedTimes)
+        }
     }
 }
 

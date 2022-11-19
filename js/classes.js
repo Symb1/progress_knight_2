@@ -47,9 +47,11 @@ class Task {
     }
 
     increaseXp() {
-        if (this.isFinished) {            
+        if (this.isFinished) {
+            for (var i = 0; i < gameData.completedTimes; i++) {
                 if (Math.random() < 0.001)
                     this.level += 1
+            }            
             return
         }
 
