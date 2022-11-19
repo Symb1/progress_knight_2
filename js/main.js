@@ -441,17 +441,17 @@ const tooltips = {
     "New Beginning": "Try to upgrade One Above All to level 2000",
 
     "Rise of Great Heroes": "Every active Great job or skill will increase Essence gain a bit.",
-    "Lazy Heroes": "",
-    "Dirty Heroes": "",
-    "Angry Heroes": "",
-    "Tired Heroes": "",
-    "Scared Heroes": "",
-    "Good Heroes": "",
-    "Funny Heroes": "",
-    "Beautiful Heroes": "",
-    "Awesome Heroes": "",
-    "Furious Heroes": "",
-    "Superb Heroes": "",
+    "Lazy Heroes": "Total Hero XP multiplier is 5e20",
+    "Dirty Heroes": "Total Hero XP multiplier is 5e35",
+    "Angry Heroes": "Total Hero XP multiplier is 5e50",
+    "Tired Heroes": "Total Hero XP multiplier is 5e65",
+    "Scared Heroes": "Total Hero XP multiplier is 5e80",
+    "Good Heroes": "Total Hero XP multiplier is 5e95",
+    "Funny Heroes": "Total Hero XP multiplier is 5e120",
+    "Beautiful Heroes": "Total Hero XP multiplier is 5e170",
+    "Awesome Heroes": "Total Hero XP multiplier is 5e180",
+    "Furious Heroes": "Total Hero XP multiplier is 5e198",
+    "Superb Heroes": "Total Hero XP multiplier is 5e201",
 
 }
 
