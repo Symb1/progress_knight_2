@@ -652,7 +652,7 @@ function setCustomEffects() {
 	var unholyRecall = gameData.taskData["Cosmic Recollection"];
     unholyRecall.getEffect = function()
     {
-        var multiplier = unholyRecall.level * 0.00065;
+        var multiplier = unholyRecall.level * (unholyRecall.isHero ? 0.065 : 0.00065);
         return multiplier;
     }
 }
