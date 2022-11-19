@@ -285,3 +285,23 @@ button:focus {
     text-align: center;
 }
 
+
+.outer-circle {
+    width: 1.7em;
+    height: 1.7em;
+    border-radius: 50%;
+    border: solid 0.12em #ccc;    
+}
+
+.center-g-inside {
+    display: grid;
+    place-items: center;    
+}
+
+
+.inner-circle {    
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+}
+
