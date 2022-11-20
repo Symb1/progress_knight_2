@@ -266,6 +266,7 @@ button:focus {
     width: 60em;
     height: auto;
     float: right;
+    margin-bottom: 4em;
 }
 
 .plain-tab-column {
@@ -277,6 +278,7 @@ button:focus {
     width: 164em;
     height: auto;
     float: right;
+    margin-bottom: 4em;
 }
 
 .baritem {

@@ -1110,8 +1110,6 @@ function updateTaskRows() {
 
 
         var progressFill = row.getElementsByClassName("progressFill")[0]
-        progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
-
 
         if (task.isFinished) {
             progressFill.style.width = "100%"
@@ -1123,6 +1121,7 @@ function updateTaskRows() {
             progressFill.style.opacity = x
         }
         else {
+            progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
             progressFill.style.opacity = 1
             progressFill.classList.remove("progress-fill-finished")
             progressBar.classList.remove("progress-bar-finished")
