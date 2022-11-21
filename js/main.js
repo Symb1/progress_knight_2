@@ -786,6 +786,7 @@ function goBankrupt() {
 function initUI() {
     setLayout(gameData.settings.layout)
     setFontSize(gameData.settings.fontSize)
+    setNotation(gameData.settings.numberNotation)
 
     setStickySidebar(gameData.settings.stickySidebar);
     if (!gameData.settings.darkTheme)
@@ -1188,6 +1189,15 @@ function setStickySidebar(sticky) {
 
 function setNotation(id) {
     gameData.settings.numberNotation = id
+    selectElementInGroup("Notation", id)
+}
+
+function selectElementInGroup(group, id) {
+    var elements = document.getElementsByClassName(group)
+    for (var el of elements) {
+        el.classList.remove("selected")
+    }
+    elements[id].classList.add("selected")
 }
 
 function setLayout(id) {
@@ -1235,6 +1245,8 @@ function setLayout(id) {
         document.getElementById("shop").appendChild(document.getElementById("itemPage"))
 
     }
+
+    selectElementInGroup("Layout", id == 0 ? 1 : 0)
 }
 
 function setFontSize(id) {
@@ -1338,7 +1350,7 @@ function updateText() {
         ))
 
     var button = document.getElementById("rebirthButton3").getElementsByClassName("button")[0]
-    button.style.background = nextMilestoneInReach() ? "#065c21" : "#1F1F1F"    
+    button.style.background = nextMilestoneInReach() ? "#065c21" : ""    
 }
 
 function setSignDisplay() {
