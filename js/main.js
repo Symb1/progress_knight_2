@@ -795,7 +795,7 @@ function initUI() {
     if (gameData.completedTimes > 0) {
         var elem = document.getElementById("completedTimes")
         elem.textContent = "You completed the game " + gameData.completedTimes + " " +
-            (gameData.completedTimes > 1 ? "times" : "time") + ". Time Boost is x" + Math.pow(2, gameData.completedTimes) +
+            (gameData.completedTimes > 1 ? "times" : "time") + ". Time Boost is x" + format(Math.pow(2, gameData.completedTimes)) +
             ". All progress will be lost if you click this button."
     }
 }
@@ -1407,8 +1407,11 @@ function getIncome() {
 }
 
 function increaseCoins() {
-    var coins = applySpeed(getIncome())
-    gameData.coins += coins
+    var coins = applySpeed(getIncome())    
+    if (coins == Infinity)
+        gameData.coins = Infinity
+    else
+        gameData.coins += coins
 }
 
 function getCategoryFromEntityName(categoryType, entityName) {
@@ -1710,7 +1713,7 @@ function getLifespan() {
 }
 
 function isAlive() {
-    var condition = gameData.days < getLifespan()
+    var condition = (gameData.days < getLifespan()) || (getLifespan()==Infinity)
     var deathText = document.getElementById("deathText")
     if (!condition) {
         gameData.days = getLifespan()
