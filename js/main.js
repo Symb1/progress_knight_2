@@ -216,7 +216,7 @@ milestoneBaseData = {
     "Funny Heroes": { name: "Funny Heroes", expense: 300000000, tier: 18, description: "Hero XP", effect : 1e25 },
     "Beautiful Heroes": { name: "Beautiful Heroes", expense: 400000000, tier: 19, description: "Hero XP", effect : 1e50 },
     "Awesome Heroes": { name: "Awesome Heroes", expense: 500000000, tier: 20, description: "Hero XP", effect : 1e10 },
-    "Furious Heroes": { name: "Furious Heroes", expense: 750000000, tier: 21, description: "Hero XP" },
+    "Furious Heroes": { name: "Furious Heroes", expense: 750000000, tier: 21, description: "Hero XP", effect : 1e18 },
     "Superb Heroes": { name: "Superb Heroes", expense: 10000000000, tier: 22, description: "Hero XP", effect : 1e3 },
 }
 
@@ -1869,6 +1869,18 @@ function loadGameData() {
             replaceSaveDict(gameData.itemData, gameDataSave.itemData)
             replaceSaveDict(gameData.settings, gameDataSave.settings)
             gameData = gameDataSave
+
+            if (gameData.coins == null)
+                gameData.coins = 0
+
+            if (gameData.essence == null)
+                gameData.essence = 0
+
+            if (gameData.days == null)
+                gameData.days = 365 * 14
+
+            if (gameData.evil == null)
+                gameData.evil = 0
         }
     }
     catch (error) {
