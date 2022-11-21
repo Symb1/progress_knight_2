@@ -31,6 +31,9 @@ var gameData = {
     completedTimes: 0,    
 }
 
+const units = ["", "k", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "O", "N", "D", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Od", "Nd", "V", "Uv", "Dv", "Tv",
+    "Qav", "Qiv", "Sxv", "Spv", "Ov", "Nv", "Tr", "Ut", "Dt", "Tt"]
+
 var tempData = {}
 
 var autoBuyEnabled = true
@@ -195,26 +198,26 @@ milestoneBaseData = {
     "Magic Eye": { name: "Magic Eye", expense: 5000, tier: 1, description: "Auto max level at age 65" },
     "Almighty Eye": { name: "Almighty Eye", expense: 15000, tier: 2, description: "Auto max level from born" },
     "Deal with the Devil": { name: "Deal with the Devil", expense: 30000, tier: 3, description: "Slow Auto Evil" },
-    "Transcendent Master": { name: "Transcendent Master", expense: 50000, tier: 4, description: "x1.5 Essence gain" },
+    "Transcendent Master": { name: "Transcendent Master", expense: 50000, tier: 4, description: "Essence gain" },
     "Eternal Time": { name: "Eternal Time", expense: 75000, tier: 5, description: "x2 Time Warping" },
     "Hell Portal": { name: "Hell Portal", expense: 120000, tier: 6, description: "Fast Auto Evil" },
     "Inferno": { name: "Inferno", expense: 170000, tier: 7, description: "x5 Evil gain" },
     "God's Blessings": { name: "God's Blessings", expense: 250000, tier: 8, description: "x10M Happiness" },
-    "Faint Hope": { name: "Faint Hope", expense: 400000, tier: 9, description: "Essence gain increases over time" },
+    "Faint Hope": { name: "Faint Hope", expense: 400000, tier: 9, description: "Essence gain (increases over time)" },
     "New Beginning": { name: "New Beginning", expense: 5000000, tier: 10, description: "Heroic jobs, skills and items are unlocked" },
 
-    "Rise of Great Heroes": { name: "Rise of Great Heroes", expense: 10000000, tier: 11, description: "Hero XP + Essence gain" },
-    "Lazy Heroes": { name: "Lazy Heroes", expense: 20000000, tier: 12, description: "Hero XP" },
-    "Dirty Heroes": { name: "Dirty Heroes", expense: 30000000, tier: 13, description: "Hero XP" },
-    "Angry Heroes": { name: "Angry Heroes", expense: 50000000, tier: 14, description: "Hero XP" },
-    "Tired Heroes": { name: "Tired Heroes", expense: 100000000, tier: 15, description: "Hero XP" },
-    "Scared Heroes": { name: "Scared Heroes", expense: 150000000, tier: 16, description: "Hero XP" },
-    "Good Heroes": { name: "Good Heroes", expense: 200000000, tier: 17, description: "Hero XP" },
-    "Funny Heroes": { name: "Funny Heroes", expense: 300000000, tier: 18, description: "Hero XP" },
-    "Beautiful Heroes": { name: "Beautiful Heroes", expense: 400000000, tier: 19, description: "Hero XP" },
-    "Awesome Heroes": { name: "Awesome Heroes", expense: 500000000, tier: 20, description: "Hero XP" },
-    "Furious Heroes": { name: "Furious Heroes", expense:       750000000, tier: 21, description: "Hero XP" },
-    "Superb Heroes": { name: "Superb Heroes", expense: 10000000000,    tier: 22, description: "Hero XP" },
+    "Rise of Great Heroes": { name: "Rise of Great Heroes", expense: 10000000, tier: 11, description: "Essence gain + x10000 Hero XP" },
+    "Lazy Heroes": { name: "Lazy Heroes", expense: 20000000, tier: 12, description: "Hero XP", effect : 1e12},
+    "Dirty Heroes": { name: "Dirty Heroes", expense: 30000000, tier: 13, description: "Hero XP", effect : 1e15 },
+    "Angry Heroes": { name: "Angry Heroes", expense: 50000000, tier: 14, description: "Hero XP", effect : 1e15 },
+    "Tired Heroes": { name: "Tired Heroes", expense: 100000000, tier: 15, description: "Hero XP", effect : 1e15 },
+    "Scared Heroes": { name: "Scared Heroes", expense: 150000000, tier: 16, description: "Hero XP", effect : 1e15 },
+    "Good Heroes": { name: "Good Heroes", expense: 200000000, tier: 17, description: "Hero XP", effect : 1e15 },
+    "Funny Heroes": { name: "Funny Heroes", expense: 300000000, tier: 18, description: "Hero XP", effect : 1e25 },
+    "Beautiful Heroes": { name: "Beautiful Heroes", expense: 400000000, tier: 19, description: "Hero XP", effect : 1e50 },
+    "Awesome Heroes": { name: "Awesome Heroes", expense: 500000000, tier: 20, description: "Hero XP", effect : 1e10 },
+    "Furious Heroes": { name: "Furious Heroes", expense: 750000000, tier: 21, description: "Hero XP" },
+    "Superb Heroes": { name: "Superb Heroes", expense: 10000000000, tier: 22, description: "Hero XP", effect : 1e3 },
 }
 
 const jobCategories = {
@@ -437,7 +440,7 @@ const tooltips = {
     "Hell Portal": "You've opened a portal to Hell.",
     "Inferno": "You are at the last level of Hell. What is next?",
     "God's Blessings": "God bless you!",
-    "Faint Hope": "Maybe there is hope?",
+    "Faint Hope": "Maybe there is a hope?",
     "New Beginning": "Try to upgrade One Above All to level 2000",
 
     "Rise of Great Heroes": "Every active Great job or skill will increase Essence gain a bit.",
@@ -455,9 +458,7 @@ const tooltips = {
 
 }
 
-const units = ["", "k", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "O", "N", "D", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Od", "Nd", "V", "Uv", "Dv", "Tv",
-    "Qav", "Qiv", "Sxv", "Spv", "Ov", "Nv", "Tr", "Ut", "Dt", "Tt"]
-                   
+                  
 
 function getBaseLog(x, y) {
     return Math.log(y) / Math.log(x);
@@ -635,8 +636,6 @@ function setCustomEffects() {
         return multiplier
     }
 
-
-
     var timeWarping = gameData.taskData["Time Warping"]
     timeWarping.getEffect = function() {
         var multiplier = 1 + getBaseLog(timeWarping.isHero ? 1.005 : 13, timeWarping.level + 1) 
@@ -654,6 +653,41 @@ function setCustomEffects() {
     {
         var multiplier = unholyRecall.level * (unholyRecall.isHero ? 0.065 : 0.00065);
         return multiplier;
+    }
+
+    var transcendentMaster = gameData.milestoneData["Transcendent Master"]
+    transcendentMaster.getEffect = function ()
+    {
+        var mult = 1
+
+        if (gameData.requirements["Transcendent Master"].isCompleted()) 
+            mult = 1.5
+
+        return mult
+    }
+
+    var faintHope = gameData.milestoneData["Faint Hope"]
+    faintHope.getEffect = function () {
+        var mult = 1
+        if (gameData.requirements["Faint Hope"].isCompleted()) 
+            mult = 1 + (gameData.realtime * Math.pow(2, gameData.completedTimes)) / 600    
+
+        return mult
+    }
+
+    var riseOfGreatHeroes = gameData.milestoneData["Rise of Great Heroes"]
+    riseOfGreatHeroes.getEffect = function () {
+        var mult = 1
+        if (gameData.requirements["Rise of Great Heroes"].isCompleted()) {
+            var countHeroes = 0
+            for (taskName in gameData.taskData) {
+                if (gameData.taskData[taskName].isHero)
+                    countHeroes++
+            }
+            mult = 1 + 6 * countHeroes / 74
+        }
+
+        return mult
     }
 }
 
@@ -703,23 +737,13 @@ function getEvilGain() {
 
 function getEssenceGain() {
     var essenceControl = gameData.taskData["Yin Yang"]
-	var essenceCollector = gameData.taskData["Essence Collector"]
-    var essence = essenceControl.getEffect() * essenceCollector.getEffect()
+    var essenceCollector = gameData.taskData["Essence Collector"]
+    var transcendentMaster = gameData.milestoneData["Transcendent Master"]
+    var faintHope = gameData.milestoneData["Faint Hope"]
+    var rise = gameData.milestoneData["Rise of Great Heroes"]
 
-    if (gameData.requirements["Transcendent Master"].isCompleted()) 
-        essence *= 1.5    
-    if (gameData.requirements["Faint Hope"].isCompleted())
-        essence *= 1 + (gameData.realtime * Math.pow(2, gameData.completedTimes)) / 600    
-
-    if (gameData.requirements["Rise of Great Heroes"].isCompleted())
-    {
-        var countHeroes = 0
-        for (taskName in gameData.taskData) {
-            if (gameData.taskData[taskName].isHero)
-                countHeroes++
-        }
-        essence *= 1 + 6 * countHeroes / 74
-    }
+    var essence = essenceControl.getEffect() * essenceCollector.getEffect() * transcendentMaster.getEffect()
+        * faintHope.getEffect() * rise.getEffect()
 
     return essence	
 }
@@ -1030,7 +1054,18 @@ function updateMilestoneRows()
         var milestone = gameData.milestoneData[key]
         var row = document.getElementById("row " + milestone.name)
         row.getElementsByClassName("essence")[0].textContent = format(milestone.expense)
-        row.getElementsByClassName("description")[0].textContent = milestone.description
+
+
+        var desc = milestone.description
+        if (milestone.getEffect != null)
+            desc = "x" + format(milestone.getEffect(), 1) + " " + desc
+
+        if (milestone.baseData.effect != null)
+            desc = "x" + format(milestone.baseData.effect, 0) + " " + desc
+
+
+
+        row.getElementsByClassName("description")[0].textContent = desc
     }
 }
 
