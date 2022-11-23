@@ -955,7 +955,7 @@ function updateRequiredRows(data, categoryType) {
         let nextEntity = null
         const category = categoryType[requiredRow.id] 
         if (category == null) {continue}
-        for (const i = 0; i < category.length; i++) {
+        for (let i = 0; i < category.length; i++) {
             const entityName = category[i]
             if (i >= category.length - 1) break
 
@@ -1728,7 +1728,7 @@ function makeHeroes() {
 
 function assignMethods() {
     for (const key in gameData.taskData) {
-        const task = gameData.taskData[key]
+        let task = gameData.taskData[key]
         if (task.baseData.income) {
             task.baseData = jobBaseData[task.name]
             task = Object.assign(new Job(jobBaseData[task.name]), task)
@@ -1741,14 +1741,14 @@ function assignMethods() {
     }
 
     for (const key in gameData.itemData) {
-        const item = gameData.itemData[key]
+        let item = gameData.itemData[key]
         item.baseData = itemBaseData[item.name]
         item = Object.assign(new Item(itemBaseData[item.name]), item)
         gameData.itemData[key] = item
     }
 
     for (const key in gameData.requirements) {
-        const requirement = gameData.requirements[key]
+        let requirement = gameData.requirements[key]
         if (requirement.type == "task") {
             requirement = Object.assign(new TaskRequirement(requirement.elements, requirement.requirements), requirement)
         } else if (requirement.type == "coins") {
