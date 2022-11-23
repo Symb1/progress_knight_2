@@ -146,6 +146,17 @@ td {
     border: 0.1em groove black !important;
 }
 
+.button-no-button {
+    color: white !important;
+    border: 0 !important;
+    width: 100%;
+    text-align: left;
+}
+
+.button-no-button:hover {
+    cursor: pointer; 
+}
+
 .item-button {
     background-color: white;
     text-align: center;
@@ -171,7 +182,7 @@ button:focus {
     overflow-y: auto;    
 }
 
-.tooltip {
+.tooltip, .tooltip-pointer {
     position: relative;
     display: inline-block;
 }
@@ -194,8 +205,30 @@ button:focus {
     opacity: 0;
     transition: opacity 0.5s;
 }
-  
+
 .tooltip:hover .tooltipText {
+    visibility: visible;
+    opacity: 0.8;
+}
+
+    .tooltip-pointer .tooltipText-pointer {
+        visibility: hidden;
+        width: 20em;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 0.5em;
+        padding: 0.5em 0.5em;
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 5%;       
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+
+.tooltip-pointer:hover .tooltipText-pointer {
     visibility: visible;
     opacity: 0.8;
 }

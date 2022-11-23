@@ -154,13 +154,18 @@
                             <td class="maxLevel">Max</td>
                         </tr>
                     </template>
-                    <template class="headerRowItemTemplate">
+                    <template class="headerRowItemTemplate">                        
                         <tr class="item-header-row" onclick="forceAutobuy()">
-                            <th class="category" style="width: 20em">Item</th>
+                            <th class="category" style="width: 20em">
+                                <button class="button-no-button tooltip" style="background-color:transparent;" onclick="forceAutobuy()">
+                                    <span class="name">Item</span>
+                                    <span class="tooltipText">Click to activate auto-buy</span>
+                                 </button>
+                            </th>
                             <th>Active</th>
                             <th style="width: 22em">Effect</th>
                             <th>Expense/day</th>
-                        </tr>
+                        </tr>                        
                     </template>
                     <template class="rowItemTemplate">
                         <tr>
@@ -189,7 +194,7 @@
                         <tr>
                             <th style="width: 6em">Goal</th>
                             <th style="width: 15em" class="category">Milestone Tier</th>
-                            <th  >Effect</th>
+                            <th>Effect</th>
                         </tr>
                     </template>
                     <template class="rowMilestoneTemplate">

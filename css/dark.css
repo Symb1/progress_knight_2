@@ -14,6 +14,18 @@
     color: white !important
 }
 
+.dark .button-no-button {    
+    border: 0 !important;
+    color: white !important;
+    width: 100%;
+    text-align: left;
+    
+}
+
+.dark .button-no-button:hover {
+    cursor: pointer;
+}
+
 .dark .w3-bordered tr, .w3-table-all tr {
     border-bottom: 1px solid rgb(73, 73, 73);
 }

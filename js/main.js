@@ -876,7 +876,18 @@ function createRequiredRow(categoryName) {
 
 function createHeaderRow(templates, categoryType, categoryName) {
     var headerRow = templates.headerRow.content.firstElementChild.cloneNode(true)
-    headerRow.getElementsByClassName("category")[0].textContent = categoryName
+    var categoryElement = headerRow.getElementsByClassName("category")[0]
+
+    if (categoryType == itemCategories) {
+        //   console.log(categoryElement)
+        categoryElement.getElementsByClassName("name")[0].textContent = categoryName
+    }
+    else
+    {
+        categoryElement.textContent = categoryName
+    }
+
+
     if (categoryType == jobCategories || categoryType == skillCategories) {
         headerRow.getElementsByClassName("valueType")[0].textContent = categoryType == jobCategories ? "Income/day" : "Effect"
     }
@@ -1322,7 +1333,7 @@ function updateText() {
     //document.getElementById("ageDisplay").textContent = daysToYears(gameData.days)
     //document.getElementById("dayDisplay").textContent = getDay(gameData.days)
     document.getElementById("ageDisplay").textContent = formatAge(gameData.days)
-    document.getElementById("lifespanDisplay").textContent = format(daysToYears(getLifespan()), 0)
+    document.getElementById("lifespanDisplay").textContent = format(daysToYears(getLifespan()))
     document.getElementById("realtimeDisplay").textContent = formatTime(gameData.realtime)
     document.getElementById("pauseButton").textContent = gameData.paused ? "Play" : "Pause"
 
