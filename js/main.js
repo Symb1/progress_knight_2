@@ -795,6 +795,30 @@ function setTab(selectedTab) {
     element.classList.add("w3-blue-gray")
 }
 
+async function downloadFile() {
+    let response = await fetch("/changelog.txt");
+
+    if (response.status != 200) {
+        throw new Error("Server Error");
+    }
+
+    // read response stream as text
+    let text_data = await response.text();
+
+    return text_data;
+}
+
+document.querySelector("#changelogTabTabButton").addEventListener('click', async function () {
+    try {
+        let text_data = await downloadFile();
+        document.querySelector("#changelog").textContent = text_data;
+    }
+    catch (e) {
+        alert(e.message);
+    }
+});
+
+
 function setTabSettings(tab) {
     const element = document.getElementById(tab + "TabButton")
 
