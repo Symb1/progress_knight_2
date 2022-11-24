@@ -232,10 +232,10 @@ const milestoneCategories = {
     "Heroic Milestones": ["New Beginning", "Rise of Great Heroes", "Lazy Heroes", "Dirty Heroes", "Angry Heroes", "Tired Heroes", "Scared Heroes", "Good Heroes", "Funny Heroes", "Beautiful Heroes", "Awesome Heroes", "Furious Heroes", "Superb Heroes"]
 }
 
-function prevCategory(task)
+function getPreviousTaskInCategory(task)
 {
     var prev = ""
-    for (category in jobCategories) {
+    for (const category in jobCategories) {
         for (job of jobCategories[category]) {
             if (job == task)
                 return prev
@@ -244,7 +244,7 @@ function prevCategory(task)
     }
 
     prev = ""
-    for (category in skillCategories) {
+    for (const category in skillCategories) {
         for (skill of skillCategories[category]) {
             if (skill == task)
                 return prev
@@ -439,11 +439,6 @@ const tooltips = {
     "Furious Heroes": "Total Hero XP multiplier is 5e198",
     "Superb Heroes": "Total Hero XP multiplier is 5e201",
 }
-
-
-function getBaseLog(x, y) {
-    return Math.log(y) / Math.log(x);
-}
   
 function getBindedTaskEffect(taskName) {
     const task = gameData.taskData[taskName]
@@ -630,7 +625,7 @@ function setCustomEffects() {
         return unholyRecall.level * (unholyRecall.isHero ? 0.065 : 0.00065);
     }
 
-    var transcendentMaster = gameData.milestoneData["Transcendent Master"]
+    const transcendentMaster = gameData.milestoneData["Transcendent Master"]
     transcendentMaster.getEffect = function () {
         if (gameData.requirements["Transcendent Master"].isCompleted()) 
             return 1.5
@@ -638,7 +633,7 @@ function setCustomEffects() {
         return 1
     }
 
-    var faintHope = gameData.milestoneData["Faint Hope"]
+    const faintHope = gameData.milestoneData["Faint Hope"]
     faintHope.getEffect = function () {
         var mult = 1
         if (gameData.requirements["Faint Hope"].isCompleted()) 
@@ -647,12 +642,12 @@ function setCustomEffects() {
         return mult
     }
 
-    var riseOfGreatHeroes = gameData.milestoneData["Rise of Great Heroes"]
+    const riseOfGreatHeroes = gameData.milestoneData["Rise of Great Heroes"]
     riseOfGreatHeroes.getEffect = function () {
         var mult = 1
         if (gameData.requirements["Rise of Great Heroes"].isCompleted()) {
             var countHeroes = 0
-            for (taskName in gameData.taskData) {
+            for (const taskName in gameData.taskData) {
                 if (gameData.taskData[taskName].isHero)
                     countHeroes++
             }
@@ -716,6 +711,9 @@ function getEssenceGain() {
         * faintHope.getEffect() * rise.getEffect()
 }
 
+function getCompletedGameSpeedBoost() {
+    return Math.pow(2, gameData.completedTimes)
+}
 
 function getGameSpeed() {
     const timeWarping = gameData.taskData["Time Warping"]
@@ -723,7 +721,7 @@ function getGameSpeed() {
     const timeLoop = gameData.taskData["Time Loop"]
     const warpDrive = (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
     const timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive
-    return baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * Math.pow(2, gameData.completedTimes)
+    return baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * getCompletedGameSpeedBoost()
 }
 
 function applyExpenses() {
@@ -736,15 +734,6 @@ function applyExpenses() {
         goBankrupt()
 }
 
-function getExpense() {
-    var expense = 0
-    expense += gameData.currentProperty.getExpense()
-    for (misc of gameData.currentMisc) {
-        expense += misc.getExpense()
-    }
-    return expense
-}
-
 function goBankrupt() {
     gameData.coins = 0
     gameData.currentProperty = gameData.itemData["Homeless"]
@@ -752,55 +741,15 @@ function goBankrupt() {
     autoBuyEnabled = true
 }
 
-function initUI() {
-    setLayout(gameData.settings.layout)
-    setFontSize(gameData.settings.fontSize)
-    setNotation(gameData.settings.numberNotation)
-
-    setStickySidebar(gameData.settings.stickySidebar);
-    if (!gameData.settings.darkTheme)
-        setLightDarkMode()
-
-    if (gameData.completedTimes > 0) {
-        var elem = document.getElementById("completedTimes")
-        elem.textContent = "You completed the game " + gameData.completedTimes + " " +
-            (gameData.completedTimes > 1 ? "times" : "time") + ". Time Boost is x" + format(Math.pow(2, gameData.completedTimes)) +
-            ". All progress will be lost if you click this button."
-    }
-}
-
-function setTab(selectedTab) {
-    const element = document.getElementById(selectedTab + "TabButton")
-    gameData.settings.selectedTab = selectedTab
-
-    const tabs = Array.prototype.slice.call(document.getElementsByClassName("tab"))
-    tabs.forEach(function(tab) {
-        tab.style.display = "none"
-    })
-    document.getElementById(selectedTab).style.display = "flex"
-
-    const tabButtons = document.getElementsByClassName("tabButton")
-    for (tabButton of tabButtons) {
-        tabButton.classList.remove("w3-blue-gray")
-    }
-    element.classList.add("w3-blue-gray")
-}
-
-function setPause() {
+function togglePause() {
     gameData.paused = !gameData.paused
-}
-
-function setTask(taskName) {    
-    const task = gameData.taskData[taskName]
-    if (task instanceof Job)
-        gameData.currentJob = task 
 }
 
 function forceAutobuy() {
     autoBuyEnabled = true
 }
 
-function setProperty(propertyName) {
+function setCurrentProperty(propertyName) {
     autoBuyEnabled = false
     gameData.currentProperty = gameData.itemData[propertyName]
 }
@@ -819,12 +768,12 @@ function setMisc(miscName) {
     }
 }
 
-function createData(data, baseData) {
+function createGameObjects(data, baseData) {
     for (const key in baseData)
-        createEntity(data, baseData[key])
+        createGameObject(data, baseData[key])
 }
 
-function createEntity(data, entity) {
+function createGameObject(data, entity) {
     if ("income" in entity) { data[entity.name] = new Job(entity) }
     else if ("maxXp" in entity) { data[entity.name] = new Skill(entity) }
     else if ("tier" in entity) { data[entity.name] = new Milestone(entity) }    
@@ -832,547 +781,37 @@ function createEntity(data, entity) {
     data[entity.name].id = "row " + entity.name
 }
 
-function createRequiredRow(categoryName) {
-    const requiredRow = document.getElementsByClassName("requiredRowTemplate")[0].content.firstElementChild.cloneNode(true)
-    requiredRow.classList.add("requiredRow")
-    requiredRow.classList.add(removeSpaces(categoryName))
-    requiredRow.id = categoryName
-    return requiredRow
+function setNotation(index) {
+    gameData.settings.numberNotation = index
+    selectElementInGroup("Notation", index)
 }
 
-function createHeaderRow(templates, categoryType, categoryName) {
-    const headerRow = templates.headerRow.content.firstElementChild.cloneNode(true)
-    const categoryElement = headerRow.getElementsByClassName("category")[0]
-
-    if (categoryType == itemCategories) {
-        categoryElement.getElementsByClassName("name")[0].textContent = categoryName
-    } else {
-        categoryElement.textContent = categoryName
-    }
-
-
-    if (categoryType == jobCategories || categoryType == skillCategories) {
-        headerRow.getElementsByClassName("valueType")[0].textContent = categoryType == jobCategories ? "Income/day" : "Effect"
-    }
-
-    headerRow.style.backgroundColor = headerRowColors[categoryName]
-    headerRow.style.color = "#ffffff"
-    headerRow.classList.add(removeSpaces(categoryName))
-    headerRow.classList.add("headerRow")
-    
-    return headerRow
-}
-
-function createRow(templates, name, categoryName, categoryType) {
-    const row = templates.row.content.firstElementChild.cloneNode(true)
-    row.getElementsByClassName("name")[0].textContent = name
-    row.getElementsByClassName("tooltipText")[0].textContent = tooltips[name]
-    row.id = "row " + name
-
-    if (categoryType == itemCategories) {
-        row.getElementsByClassName("button")[0].onclick = categoryName == "Properties" ? function () { setProperty(name) } : function () { setMisc(name) }
-    } 
-
-    return row
-}
-
-function createAllRows(categoryType, tableId) {
-    const templates = {
-        headerRow: document.getElementsByClassName(
-            categoryType == itemCategories
-                ? "headerRowItemTemplate"
-                : (categoryType == milestoneCategories ? "headerRowMilestoneTemplate" : "headerRowTaskTemplate")
-
-        )[0],
-        row: document.getElementsByClassName(
-            categoryType == itemCategories
-                ? "rowItemTemplate"
-                : (categoryType == milestoneCategories ? "rowMilestoneTemplate": "rowTaskTemplate"))[0],
-    }
-
-    const table = document.getElementById(tableId)
-
-    for (const categoryName in categoryType) {
-        const headerRow = createHeaderRow(templates, categoryType, categoryName)
-        table.appendChild(headerRow)
-        
-        const category = categoryType[categoryName]
-        category.forEach(function(name) {
-            const row = createRow(templates, name, categoryName, categoryType)
-            table.appendChild(row)       
-        })
-
-        const requiredRow = createRequiredRow(categoryName)
-        table.append(requiredRow)
-    }
-}
-
-function updateQuickTaskDisplay() {
-    const task = gameData.currentJob
-    const quickTaskDisplayElement = document.getElementById("quickTaskDisplay")
-    const progressBar = quickTaskDisplayElement.getElementsByClassName("job")[0]
-    progressBar.getElementsByClassName("name")[0].textContent = (task.isHero ? "Great " : "") + task.name + " lvl " + task.level
-    const progressFill = progressBar.getElementsByClassName("progressFill")[0]
-
-    if (task.isFinished) {
-        progressFill.style.width = "100%"
-        progressFill.classList.add("progress-fill-finished")
-        progressBar.classList.add("progress-bar-finished")
-        var time = gameData.realtime / 3
-        var x = time - Math.floor(time)
-        x = (x < 0.5 ? x : 1 - x) * 2;
-        progressFill.style.opacity = x
-
-        progressFill.classList.add("current-hero")
-        progressBar.classList.remove("progress-bar-hero")
-
-    } else {
-        progressFill.style.opacity = 1
-        progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
-        progressFill.classList.remove("progress-fill-finished")
-        progressBar.classList.remove("progress-bar-finished")
-
-        task.isHero ? progressFill.classList.add("current-hero") : progressFill.classList.remove("current-hero")
-        task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
-    }
-}
-
-function updateRequiredRows(data, categoryType) {
-    const requiredRows = document.getElementsByClassName("requiredRow")
-    for (const requiredRow of requiredRows) {
-        let nextEntity = null
-        const category = categoryType[requiredRow.id] 
-        if (category == null) {continue}
-        for (let i = 0; i < category.length; i++) {
-            const entityName = category[i]
-            if (i >= category.length - 1) break
-
-            const requirements = gameData.requirements[entityName]
-            if (requirements && i == 0) {
-                if (!requirements.isCompleted()) {
-                    nextEntity = data[entityName]
-                    break
-                }
-            }
-
-            const nextIndex = i + 1
-            if (nextIndex >= category.length) {break}
-            const nextEntityName = category[nextIndex]
-            nextEntityRequirements = gameData.requirements[nextEntityName]
-
-            if (!nextEntityRequirements.isCompleted()) {
-                nextEntity = data[nextEntityName]
-                break
-            }       
-        }
-
-        if (nextEntity == null) {
-            requiredRow.classList.add("hiddenTask")           
-        } else {
-            requiredRow.classList.remove("hiddenTask")
-            const requirementObject = gameData.requirements[nextEntity.name]
-            const requirements = requirementObject.requirements
-
-            const coinElement = requiredRow.getElementsByClassName("coins")[0]
-            const levelElement = requiredRow.getElementsByClassName("levels")[0]
-            const evilElement = requiredRow.getElementsByClassName("evil")[0]
-			const essenceElement = requiredRow.getElementsByClassName("essence")[0]
-
-            coinElement.classList.add("hiddenTask")
-            levelElement.classList.add("hiddenTask")
-            evilElement.classList.add("hiddenTask")
-			essenceElement.classList.add("hiddenTask")
-
-            let finalText = ""
-            if (data == gameData.taskData) {
-                if (requirementObject instanceof EvilRequirement) {
-                    evilElement.classList.remove("hiddenTask")
-                    evilElement.textContent = format(requirements[0].requirement) + " evil"
-                } else if (requirementObject instanceof EssenceRequirement) {
-                    essenceElement.classList.remove("hiddenTask")
-                    essenceElement.textContent = format(requirements[0].requirement) + " essence"
-                } else if (requirementObject instanceof AgeRequirement) {
-                    essenceElement.classList.remove("hiddenTask")
-                    essenceElement.textContent = format(requirements[0].requirement) + " age"
-                }
-                else {
-                    levelElement.classList.remove("hiddenTask")
-                    for (const requirement of requirements) {
-                        const task = gameData.taskData[requirement.task]
-                        if (task.level >= requirement.requirement) continue
-                        finalText += " " + requirement.task + " " + task.level + "/" + requirement.requirement + ","
-                    }
-                    finalText = finalText.substring(0, finalText.length - 1)
-                    levelElement.textContent = finalText
-                }
-            }
-            else if (data == gameData.itemData) {
-                coinElement.classList.remove("hiddenTask")
-                formatCoins(requirements[0].requirement, coinElement)
-            }
-            else if (data == gameData.milestoneData) {
-                essenceElement.classList.remove("hiddenTask")
-                essenceElement.textContent = format(requirements[0].requirement) + " essence"
-            }
-        }   
-    }
-}
-
-function updateMilestoneRows() {
-    for (const key in gameData.milestoneData) {
-        const milestone = gameData.milestoneData[key]
-        const row = document.getElementById("row " + milestone.name)
-        row.getElementsByClassName("essence")[0].textContent = format(milestone.expense)
-
-
-        let desc = milestone.description
-        if (milestone.getEffect != null)
-            desc = "x" + format(milestone.getEffect(), 1) + " " + desc
-
-        if (milestone.baseData.effect != null)
-            desc = "x" + format(milestone.baseData.effect, 0) + " " + desc
-
-        row.getElementsByClassName("description")[0].textContent = desc
-    }
-}
-
-
-function updateTaskRows() {
-    for (const key in gameData.taskData) {
-        let task = gameData.taskData[key]
-        const row = document.getElementById("row " + task.name)
-        row.getElementsByClassName("level")[0].textContent = task.level
-        if (task.isFinished) {
-            row.getElementsByClassName("xpGain")[0].textContent = "Maximum"
-            row.getElementsByClassName("xpLeft")[0].textContent = "0"
-        } else {
-            row.getElementsByClassName("xpGain")[0].textContent = format(task.getXpGain())
-            row.getElementsByClassName("xpLeft")[0].textContent = format(task.getXpLeft())
-        }
-
-        let tooltip = tooltips[key]
-
-        if (task instanceof Task && !task.isHero && IsHeroesUnlocked()) {
-            const requirementObject = gameData.requirements[key]
-            const requirements = requirementObject.requirements
-            const prev = prevCategory(key)
-
-            tooltip += "<br> <span style=\"color: red\">Required</span>: <span style=\"color: orange\">"
-            let reqlist = ""
-            let prevReq = ""
-
-            if (prev != "") {
-                var prevTask = gameData.taskData[prev]
-                var prevlvl = (prevTask.isHero ? prevTask.level : 0)
-                if (prevlvl < 20)
-                    prevReq = "Great " + prev + " " + prevlvl + "/20<br>"
-            }
-            
-            if (requirementObject instanceof EvilRequirement) {                
-                reqlist += format(requirements[0].requirement) + " evil<br>"
-            } else if (requirementObject instanceof EssenceRequirement) {
-                reqlist += format(requirements[0].requirement) + " essence<br>"
-            } else if (requirementObject instanceof AgeRequirement) {
-                reqlist += format(requirements[0].requirement) + " age<br>"
-            } else {
-                for (const requirement of requirements) {
-                    const task_check = gameData.taskData[requirement.task]
-
-                    const reqvalue = (requirement.herequirement == null ? requirement.requirement : requirement.herequirement)
-
-                    if (task_check.isHero && task_check.level >= reqvalue) continue
-                    if (prev != "" && task_check.name == prevTask.name) {
-                        if (reqvalue <= 20)
-                            continue
-                        else
-                            prevReq = " Great " + requirement.task + " " + (task_check.isHero ? task_check.level : 0) + "/" + reqvalue + "<br>"
-                    } else {
-                        reqlist += " Great " + requirement.task + " " + (task_check.isHero ? task_check.level : 0) + "/" + reqvalue + "<br>"
-                    }
-                }                
-            }
-
-            reqlist += prevReq
-            reqlist = reqlist.substring(0, reqlist.length - 4)                
-            tooltip += reqlist + "</span>"
-        }
-
-        row.getElementsByClassName("tooltipText")[0].innerHTML = tooltip
-
-        const maxLevel = row.getElementsByClassName("maxLevel")[0]
-        maxLevel.textContent = task.maxLevel
-        gameData.rebirthOneCount > 0 ? maxLevel.classList.remove("hidden") : maxLevel.classList.add("hidden")
-
-        const progressBar = row.getElementsByClassName("progressBar")[0]
-        progressBar.getElementsByClassName("name")[0].textContent = (task.isHero ? "Great " : "") + task.name
-
-        const progressFill = row.getElementsByClassName("progressFill")[0]
-
-        if (task.isFinished) {
-            progressFill.style.width = "100%"
-            progressFill.classList.add("progress-fill-finished") 
-            progressBar.classList.add("progress-bar-finished")
-            const time = gameData.realtime / 3
-            let x = time - Math.floor(time)
-            x = (x < 0.5 ? x : 1 - x) * 2;
-            progressFill.style.opacity = x
-        }
-        else {
-            progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
-            progressFill.style.opacity = 1
-            progressFill.classList.remove("progress-fill-finished")
-            progressBar.classList.remove("progress-bar-finished")
-
-            task.isHero ? progressFill.classList.add("progress-fill-hero") : progressFill.classList.remove("progress-fill-hero")
-            task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
-        }
-
-
-        task == gameData.currentJob ? progressFill.classList.add(task.isHero ? "current-hero" : "current") : progressFill.classList.remove("current", "current-hero")
-
-        const valueElement = row.getElementsByClassName("value")[0]
-        valueElement.getElementsByClassName("income")[0].style.display = task instanceof Job
-        valueElement.getElementsByClassName("effect")[0].style.display = task instanceof Skill
-
-        if (task instanceof Job) {
-            formatCoins(task.getIncome(), valueElement.getElementsByClassName("income")[0])
-        } else {
-            valueElement.getElementsByClassName("effect")[0].textContent = task.getEffectDescription()
-        }
-    }
-}
-
-function setStickySidebar(sticky) {
-    gameData.settings.stickySidebar = sticky;
-    settingsStickySidebar.checked = sticky;
-    info.style.position = sticky ? 'sticky' : 'initial';
-}
-
-function setNotation(id) {
-    gameData.settings.numberNotation = id
-    selectElementInGroup("Notation", id)
-}
-
-function selectElementInGroup(group, id) {
-    const elements = document.getElementsByClassName(group)
-    for (const el of elements) {
-        el.classList.remove("selected")
-    }
-    elements[id].classList.add("selected")
-}
-
-function setLayout(id) {
-    gameData.settings.layout = id
-    if (id == 0) {
-        document.getElementById("skillsTabButton").classList.add("hidden")
-        document.getElementById("shopTabButton").classList.add("hidden")
-
-        document.getElementById("dummyPage1").classList.remove("hidden")
-        document.getElementById("dummyPage2").classList.remove("hidden")
-        document.getElementById("dummyPage3").classList.remove("hidden")
-
-        document.getElementById("skills").classList.add("hidden")
-        document.getElementById("shop").classList.add("hidden")
-
-        document.getElementById("tabcolumn").classList.add("plain-tab-column")
-        document.getElementById("tabcolumn").classList.remove("tabs-tab-column")
-
-        document.getElementById("maincolumn").classList.add("plain-main-column")
-        document.getElementById("maincolumn").classList.remove("tabs-main-column")
-
-        document.getElementById("jobs").appendChild(document.getElementById("skillPage"))
-        document.getElementById("jobs").appendChild(document.getElementById("itemPage"))
-
-    } else {
-        document.getElementById("skillsTabButton").classList.remove("hidden")
-        document.getElementById("shopTabButton").classList.remove("hidden")
-
-        document.getElementById("dummyPage1").classList.add("hidden")
-        document.getElementById("dummyPage2").classList.add("hidden")
-        document.getElementById("dummyPage3").classList.add("hidden")
-
-        document.getElementById("skills").classList.remove("hidden")
-        document.getElementById("shop").classList.remove("hidden")
-
-        document.getElementById("tabcolumn").classList.add("tabs-tab-column")
-        document.getElementById("tabcolumn").classList.remove("plain-tab-column")
-
-        document.getElementById("maincolumn").classList.add("tabs-main-column")
-        document.getElementById("maincolumn").classList.remove("plain-main-column")
-
-        document.getElementById("skills").appendChild(document.getElementById("skillPage"))
-        document.getElementById("shop").appendChild(document.getElementById("itemPage"))
-    }
-
-    selectElementInGroup("Layout", id == 0 ? 1 : 0)
-}
-
-function setFontSize(id) {
-    const fontSizes = {
-        0: "xx-small",
-        1: "x-small",
-        2: "small",
-        3: "medium",
-        4: "large",
-        5: "x-large",
-        6: "xx-large",
-        7: "xxx-large",
-    }
-
-    if (id < 0) id = 0
-    if (id > 7) id = 7
-
-    gameData.settings.fontSize = id
-    document.getElementById("body").style.fontSize = fontSizes[id]    
-}
-
-
-function updateItemRows() {
-    for (const key in gameData.itemData) {
-        const item = gameData.itemData[key]
-        const row = document.getElementById("row " + item.name)
-        const button = row.getElementsByClassName("button")[0]
-        button.disabled = gameData.coins < item.getExpense()
-        const name = button.getElementsByClassName("name")[0]
-
-        if (IsHeroesUnlocked()) 
-            name.classList.add("legendary")        
-        else 
-            name.classList.remove("legendary")        
-
-        const active = row.getElementsByClassName("active")[0]
-        const color = autoBuyEnabled
-            ? itemCategories["Properties"].includes(item.name) ? headerRowColors["Properties_Auto"] : headerRowColors["Misc_Auto"]
-            : itemCategories["Properties"].includes(item.name) ? headerRowColors["Properties"] : headerRowColors["Misc"]
-
-        active.style.backgroundColor = gameData.currentMisc.includes(item) || item == gameData.currentProperty ? color : "white"
-        row.getElementsByClassName("effect")[0].textContent = item.getEffectDescription()
-        formatCoins(item.getExpense(), row.getElementsByClassName("expense")[0])
-    }
-}
-
-function updateHeaderRows(categories) {
-    for (const categoryName in categories) {
-        const className = removeSpaces(categoryName)
-        const headerRow = document.getElementsByClassName(className)[0]
-        const maxLevelElement = headerRow.getElementsByClassName("maxLevel")[0]
-        gameData.rebirthOneCount > 0 ? maxLevelElement.classList.remove("hidden") : maxLevelElement.classList.add("hidden")
-    }
-}
-
-function formatTime(sec_num) {    
-    let hours = Math.floor(sec_num / 3600)
-    let minutes = Math.floor((sec_num - (hours * 3600)) / 60)
-    let seconds = Math.floor(sec_num - (hours * 3600) - (minutes * 60))
-
-    if (hours < 10) hours = "0" + hours
-    if (minutes < 10) minutes = "0" + minutes
-    if (seconds < 10) seconds = "0" + seconds
-    return hours + ':' + minutes + ':' + seconds    
-}
-
-function updateText() {
-    //Sidebar
-    document.getElementById("ageDisplay").textContent = formatAge(gameData.days)
-    document.getElementById("lifespanDisplay").textContent = format(daysToYears(getLifespan()))
-    document.getElementById("realtimeDisplay").textContent = formatTime(gameData.realtime)
-    document.getElementById("pauseButton").textContent = gameData.paused ? "Play" : "Pause"
-
-    formatCoins(gameData.coins, document.getElementById("coinDisplay"))
-    setSignDisplay()
-    formatCoins(getNet(), document.getElementById("netDisplay"))
-    formatCoins(getIncome(), document.getElementById("incomeDisplay"))
-    formatCoins(getExpense(), document.getElementById("expenseDisplay"))
-
-    document.getElementById("happinessDisplay").textContent = format(getHappiness())
-
-    document.getElementById("evilDisplay").textContent = format(gameData.evil)
-    document.getElementById("evilGainDisplay").textContent = format(getEvilGain())
-    document.getElementById("evilGainButtonDisplay").textContent = "+" + format(getEvilGain())
-
-    document.getElementById("essenceDisplay").textContent = format(gameData.essence)
-    document.getElementById("essenceGainDisplay").textContent = format(getEssenceGain())
-    document.getElementById("essenceGainButtonDisplay").textContent = "+" + format(getEssenceGain())
-
-    document.getElementById("timeWarpingDisplay").textContent = "x" + format(
-        gameData.taskData["Time Warping"].getEffect() *
-            gameData.taskData["Temporal Dimension"].getEffect() *
-            gameData.taskData["Time Loop"].getEffect() *
-            (gameData.requirements["Eternal Time"].isCompleted() ? 2 : 1)
-        )
-
-    const button = document.getElementById("rebirthButton3").getElementsByClassName("button")[0]
-    button.style.background = nextMilestoneInReach() ? "#065c21" : ""    
-}
-
-function setSignDisplay() {
-    const signDisplay = document.getElementById("signDisplay")
-    if (getIncome() > getExpense()) {
-        signDisplay.textContent = "+"
-        signDisplay.style.color = "green"
-    } else if (getExpense() > getIncome()) {
-        signDisplay.textContent = "-"
-        signDisplay.style.color = "red"
-    } else {
-        signDisplay.textContent = ""
-        signDisplay.style.color = "gray"
-    }
-}
-
-function getNet() {
+function getNetIncome() {
     return Math.abs(getIncome() - getExpense())
-}
-
-function hideEntities() {
-    for (const key in gameData.requirements) {
-        const requirement = gameData.requirements[key]
-        for (const element of requirement.elements) {
-            if (requirement.isCompleted()) {
-                element.classList.remove("hidden")
-            } else {
-                element.classList.add("hidden")
-            }
-        }
-    }
-}
-
-function createItemData(baseData) {
-    for (const item of baseData) {
-        gameData.itemData[item.name] = "happiness" in item ? new Property(task) : new Misc(task)
-        gameData.itemData[item.name].id = "item " + item.name
-    }
-}
-
-function doCurrentTask(task) {
-    task.increaseXp()
-    if (task instanceof Job && task == gameData.currentJob) {
-        increaseCoins()
-    }
 }
 
 function getIncome() {
     return gameData.currentJob.getIncome()
 }
 
-function increaseCoins() {
-    gameData.coins += applySpeed(getIncome())
+function getExpense() {
+    var expense = 0
+    expense += gameData.currentProperty.getExpense()
+    for (misc of gameData.currentMisc) {
+        expense += misc.getExpense()
+    }
+    return expense
 }
 
-function getCategoryFromEntityName(categoryType, entityName) {
-    for (const categoryName in categoryType) {
-        const category = categoryType[categoryName]
-        if (category.includes(entityName)) {
-            return category
-        }
+function performTask(task) {
+    task.increaseXp()
+    if (task instanceof Job && task == gameData.currentJob) {
+        increaseCoins()
     }
 }
 
-function getNextEntity(data, categoryType, entityName) {
-    const category = getCategoryFromEntityName(categoryType, entityName)
-    const nextIndex = category.indexOf(entityName) + 1
-    if (nextIndex > category.length - 1) return null
-    const nextEntityName = category[nextIndex]
-    return data[nextEntityName]
+function increaseCoins() {
+    gameData.coins += applySpeed(getIncome())
 }
 
 function autoPromote() {
@@ -1429,27 +868,6 @@ function autoBuy() {
     }
 }
 
-function yearsToDays(years) {
-    return years * 365
-}
-
-function daysToYears(days) {
-    return Math.floor(days / 365)
-}
- 
-function getDay(days) {
-    return Math.floor(days - daysToYears(days) * 365)
-}
-
-function formatAge(days) {
-    const years = daysToYears(days)
-    const day = getDay(days)
-    if (years > 10000)    
-        return "Age " + format(years)    
-    else
-        return "Age " + years + " Day " + day
-}
-
 function increaseDays() {
     gameData.days += applySpeed(1)
 }
@@ -1459,80 +877,10 @@ function increaseRealtime() {
         gameData.realtime += 1.0 / updateSpeed;
 }
 
-function format(number,decimals= 1) {
-    // what tier? (determines SI symbol)
-    const tier = Math.log10(number) / 3 | 0;
-    if (tier == 0) return number.toFixed(decimals);
-
-    if ((gameData.settings.numberNotation == 0 || tier < 3) && (tier < units.length)) {
-        // get suffix and determine scale
-        const suffix = units[tier];
-        const scale = Math.pow(10, tier * 3);
-        // scale the number
-        const scaled = number / scale;
-        // format number and add suffix
-        return scaled.toFixed(decimals) + suffix;
-    } else {
-        if (gameData.settings.numberNotation == 1)
-            return number.toExponential(decimals).replace("e+", "e")
-        else
-            return math.format(number, { notation: 'engineering', precision: 3 }).replace("e+", "e")
-    }
-}
-
-function formatCoins(coins, element) {
-    const platina = Math.floor(coins / 1e6)
-    const gold = Math.floor((coins - platina * 1e6) / 1e4)
-    const silver = Math.floor((coins - platina * 1e6 - gold * 1e4) / 100)
-    const copper = Math.floor(coins - platina * 1e6 - gold * 1e4 - silver * 100)
-
-    const money = {
-        "p": { "color": "#79b9c7", "showbefore": null, "value": platina },
-        "g": { "color": "#E5C100", "showbefore": 1e8, "value": gold },
-        "s": { "color": "#a8a8a8", "showbefore": 1e6, "value": silver },
-        "c": { "color": "#a15c2f", "showbefore": 1e4, "value": copper },
-    }
-
-    let i = 0
-    for (const key in money) {
-        if ((money[key].showbefore == null || coins < money[key].showbefore) && (money[key].value > 0)) {
-            element.children[i].textContent = format(money[key].value, money[key].value < 1000000? 0: 1) + key
-            element.children[i].style.color = money[key].color
-        }
-        else {
-            element.children[i].textContent = ""            
-        }
-        i++
-    }    
-}
-
-function getTaskElement(taskName) {
-    const task = gameData.taskData[taskName]
-    return document.getElementById(task.id)
-}
-
-function getItemElement(itemName) {
-    const item = gameData.itemData[itemName]
-    return document.getElementById(item.id)
-}
-
-function getMilestoneElement(milestoneName) {
-    const milestone = gameData.milestoneData[milestoneName]
-    return document.getElementById(milestone.id)
-}
-
-function getElementsByClass(className) {
-    return document.getElementsByClassName(removeSpaces(className))
-}
-
 function setLightDarkMode() {
     const body = document.getElementById("body")
     body.classList.contains("dark") ? body.classList.remove("dark") : body.classList.add("dark")
     gameData.settings.darkTheme = body.classList.contains("dark")
-}
-
-function removeSpaces(string) {
-    return string.replace(/ /g, "")
 }
 
 function rebirthOne() {
@@ -1648,7 +996,7 @@ function isAlive() {
     return condition
 }
 
-function IsHeroesUnlocked() {
+function isHeroesUnlocked() {
     return gameData.requirements["New Beginning"].isCompleted() && (gameData.taskData["One Above All"].level >= 2000 || gameData.taskData["One Above All"].isHero)
 }
 
@@ -1662,15 +1010,15 @@ function makeHero(task) {
 }
 
 function makeHeroes() {
-    if (!IsHeroesUnlocked()) return
+    if (!isHeroesUnlocked()) return
 
     for (const taskname in gameData.taskData) {
-        const hero = gameData.taskData[taskname]
+        const task = gameData.taskData[taskname]
 
-        if (hero.isHero)
+        if (task.isHero)
             continue        
 
-            const prev = prevCategory(taskname)
+        const prev = getPreviousTaskInCategory(taskname)
 
         if (prev != "" && (!gameData.taskData[prev].isHero || gameData.taskData[prev].level < 20)) 
                 continue
@@ -1688,8 +1036,8 @@ function makeHeroes() {
                 }
         }
 
-        if (isNewHero)        
-            makeHero(hero)
+        if (isNewHero)
+            makeHero(task)
     }
 
     for (const key in gameData.itemData) {
@@ -1806,23 +1154,7 @@ function loadGameData() {
     assignMethods()
 }
 
-function updateUI() {
-    updateTaskRows()
-    updateItemRows()
-    updateMilestoneRows()
-    updateRequiredRows(gameData.taskData, jobCategories)
-    updateRequiredRows(gameData.taskData, skillCategories)
-    updateRequiredRows(gameData.itemData, itemCategories)
-    updateRequiredRows(gameData.milestoneData, milestoneCategories)
-
-    updateHeaderRows(jobCategories)
-    updateHeaderRows(skillCategories)
-
-    updateQuickTaskDisplay()
-    hideEntities()
-    updateText()  
-}
-
+// TODO Not used currently. I assume we want to use this to update the game when the tab is focussed
 function addMinutes(count = 1) {
     for (let i = 0; i < count * 60 * updateSpeed; i++) {
         update(false)
@@ -1841,11 +1173,7 @@ function update(needUpdateUI = true) {
     for (const key in gameData.taskData) {
         const task = gameData.taskData[key]
         if ((task instanceof Skill || task instanceof Job) && gameData.requirements[key].completed) {
-
-            if (task instanceof Skill)
-                doCurrentTask(task)
-            else
-                doCurrentTask(task)
+            performTask(task)
         }
     }
     
@@ -1911,34 +1239,6 @@ function exportGameData() {
     copyTextToClipboard(importExportBox.value)
 }
 
-
-// Keyboard shortcuts + Loadouts ( courtesy of Pseiko )
-function changeTab(direction){
-    const tabs = Array.prototype.slice.call(document.getElementsByClassName("tab"))
-    const tabButtons = Array.prototype.slice.call(document.getElementsByClassName("tabButton"))
-
-    const currentTab = 0
-    for (const i in tabs) {
-        if (!tabs[i].style.display.includes("none") && !tabs[i].classList.contains("hidden"))
-             currentTab = i*1
-    }
-    let targetTab = currentTab + direction
-    if (targetTab < 0) {
-        setTab("settings")
-        return
-    }
-    targetTab = Math.max(0,targetTab)
-    if (targetTab > tabs.length - 1) targetTab = 0
-    while (tabButtons[targetTab].style.display.includes("none") || tabButtons[targetTab].classList.contains("hidden")){
-        targetTab = targetTab + direction
-        targetTab = Math.max(0, targetTab) 
-        if (targetTab > tabs.length-1) targetTab = 0
-    }
-
-	setTab(tabs[targetTab].id)
-} 
-
-
 function copyTextToClipboard(text) {
     navigator.clipboard.writeText(text).then(() => {
         const tooltip = document.getElementById("exportTooltip");
@@ -1953,30 +1253,17 @@ function outExportButton() {
     tooltip.innerHTML = "";
 }
 
-
-function onFontButton() {
+function onFontButtonHover() {
     const tooltip = document.getElementById("fontSizeTooltip");
     tooltip.classList.remove("hidden")
 }
 
-function outFontButton() {
+function onFontButtonStopHover() {
     const tooltip = document.getElementById("fontSizeTooltip");
     tooltip.classList.add("hidden")
 }
 
-
-window.addEventListener('keydown', function(e) {
-	if (e.key == " " && !e.repeat ) {
-		setPause()
-		if (e.target == document.body) {
-			e.preventDefault();
-		}
-	}	
-    if (e.key=="ArrowRight") changeTab(1) 
-    if (e.key=="ArrowLeft") changeTab(-1)     
-});
-
-function nextMilestoneInReach() {
+function isNextMilestoneInReach() {
     const totalEssence = gameData.essence + getEssenceGain()
 
     for (const key in gameData.milestoneData) {
@@ -1994,10 +1281,10 @@ function nextMilestoneInReach() {
 
 
 //Init
-createData(gameData.taskData, jobBaseData)
-createData(gameData.taskData, skillBaseData)
-createData(gameData.itemData, itemBaseData)
-createData(gameData.milestoneData, milestoneBaseData)
+createGameObjects(gameData.taskData, jobBaseData)
+createGameObjects(gameData.taskData, skillBaseData)
+createGameObjects(gameData.itemData, itemBaseData)
+createGameObjects(gameData.milestoneData, milestoneBaseData)
 
 gameData.currentJob = gameData.taskData["Beggar"]
 gameData.currentProperty = gameData.itemData["Homeless"]
@@ -2196,7 +1483,7 @@ for (const key in gameData.requirements) {
 loadGameData()
 
 gameData.milestoneData = {}
-createData(gameData.milestoneData, milestoneBaseData)
+createGameObjects(gameData.milestoneData, milestoneBaseData)
 
 
 initUI()
