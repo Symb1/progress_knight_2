@@ -751,7 +751,7 @@ function goBankrupt() {
 }
 
 async function downloadFile() {
-    let response = await fetch("/changelog.txt");
+    let response = await fetch("./changelog.txt");
 
     if (response.status != 200) {
         throw new Error("Server Error");
