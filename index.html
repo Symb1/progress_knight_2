@@ -369,7 +369,8 @@
                         <div id="columnSettings" class="column">
                             <div id="tabcolumnSettings" class="panel w3-margin-left settings-tab-column">
                                 <div class="w3-button w3-bar-item tabButtonSettings baritem w3-blue-gray" id="settingsTabTabButton" onClick="setTabSettings('settingsTab')">Settings</div>
-                                <div class="w3-button w3-bar-item tabButtonSettings baritem" id="statsTabTabButton" onClick="setTabSettings('statsTab')">Stats</div>                                
+                                <div class="w3-button w3-bar-item tabButtonSettings baritem" id="statsTabTabButton" onClick="setTabSettings('statsTab')">Stats</div>
+                                <div class="w3-button w3-bar-item tabButtonSettings baritem" id="changelogTabTabButton" onClick="setTabSettings('changelogTab')">Changelog</div>
                             </div>
                             <div id="maincolumnSettings" class="panel w3-margin-left w3-margin-top w3-padding settings-main-column">
                                 <div id="settingsTab" class="tabSettings">
@@ -486,6 +487,13 @@
                                                 <li>Your fastest completion is <span id="completedFastestDisplay"></span>.</li>
                                             </ul>
                                         </div>
+                                    </div>
+                                </div>
+                                <div id="changelogTab" class="tabSettings">
+                                    <div id="changelogPage" style="flex: 1; margin-left: 0.5em;">
+                                        <pre id="changelog">
+
+                                        </pre>                                        
                                     </div>
                                 </div>
                             </div>
