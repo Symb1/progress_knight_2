@@ -347,7 +347,6 @@ function setLayout(id) {
 
         document.getElementById("dummyPage1").classList.remove("hidden")
         document.getElementById("dummyPage2").classList.remove("hidden")
-        document.getElementById("dummyPage3").classList.remove("hidden")
 
         document.getElementById("skills").classList.add("hidden")
         document.getElementById("shop").classList.add("hidden")
@@ -367,7 +366,6 @@ function setLayout(id) {
 
         document.getElementById("dummyPage1").classList.add("hidden")
         document.getElementById("dummyPage2").classList.add("hidden")
-        document.getElementById("dummyPage3").classList.add("hidden")
 
         document.getElementById("skills").classList.remove("hidden")
         document.getElementById("shop").classList.remove("hidden")
@@ -446,7 +444,7 @@ function updateText() {
 
     formatCoins(gameData.coins, document.getElementById("coinDisplay"))
     setSignDisplay()
-    formatCoins(getNetIncome(), document.getElementById("netDisplay"))
+    formatCoins(getNet(), document.getElementById("netDisplay"))
     formatCoins(getIncome(), document.getElementById("incomeDisplay"))
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
@@ -460,17 +458,57 @@ function updateText() {
     document.getElementById("essenceGainDisplay").textContent = format(getEssenceGain())
     document.getElementById("essenceGainButtonDisplay").textContent = "+" + format(getEssenceGain())
 
-    // TODO Why don't we use getGameSpeed()
     document.getElementById("timeWarpingDisplay").textContent = "x" + format(
         gameData.taskData["Time Warping"].getEffect() *
-            gameData.taskData["Temporal Dimension"].getEffect() *
-            gameData.taskData["Time Loop"].getEffect() *
-            (gameData.requirements["Eternal Time"].isCompleted() ? 2 : 1)
-        )
+        gameData.taskData["Temporal Dimension"].getEffect() *
+        gameData.taskData["Time Loop"].getEffect() *
+        (gameData.requirements["Eternal Time"].isCompleted() ? 2 : 1)
+    )
 
     const button = document.getElementById("rebirthButton3").getElementsByClassName("button")[0]
-    button.style.background = isNextMilestoneInReach() ? "#065c21" : ""    
-}
+    button.style.background = isNextMilestoneInReach() ? "#065c21" : ""
+
+    // Stats
+    const date = new Date(gameData.stats.startDate)
+    document.getElementById("startDateDisplay").textContent = date.toLocaleDateString()
+
+    const currentDate = new Date()
+    document.getElementById("playedDaysDisplay").textContent = format((currentDate.getTime() - date.getTime()) / (1000 * 3600 * 24))
+
+    if (gameData.rebirthOneCount > 0)
+        document.getElementById("statsRebirth1").classList.remove("hidden")
+    else
+        document.getElementById("statsRebirth1").classList.add("hidden")
+
+    if (gameData.rebirthTwoCount > 0)
+        document.getElementById("statsRebirth2").classList.remove("hidden")
+    else
+        document.getElementById("statsRebirth2").classList.add("hidden")
+
+    if (gameData.rebirthThreeCount > 0)
+        document.getElementById("statsRebirth3").classList.remove("hidden")
+    else
+        document.getElementById("statsRebirth3").classList.add("hidden")
+
+    if (gameData.completedTimes > 0)
+        document.getElementById("statsComplete").classList.remove("hidden")
+    else
+        document.getElementById("statsComplete").classList.add("hidden")
+
+    document.getElementById("rebirthOneCountDisplay").textContent = gameData.rebirthOneCount
+    document.getElementById("rebirthTwoCountDisplay").textContent = gameData.rebirthTwoCount
+    document.getElementById("rebirthThreeCountDisplay").textContent = gameData.rebirthThreeCount
+    document.getElementById("completedTimesDisplay").textContent = gameData.completedTimes
+    document.getElementById("completedBoostDisplay").textContent = format(Math.pow(2, gameData.completedTimes))
+
+
+    document.getElementById("rebirthOneFastestDisplay").textContent = formatTime(gameData.stats.fastest1, true)
+    document.getElementById("rebirthTwoFastestDisplay").textContent = formatTime(gameData.stats.fastest2, true)
+    document.getElementById("rebirthThreeFastestDisplay").textContent = formatTime(gameData.stats.fastest3, true)
+    document.getElementById("completedFastestDisplay").textContent = formatTime(gameData.stats.fastestGame, true)
+    document.getElementById("currentRunDisplay").textContent = formatTime(gameData.realtimeRun, true)
+} 
+
 
 function setSignDisplay() {
     const signDisplay = document.getElementById("signDisplay")
@@ -542,6 +580,22 @@ function setTab(selectedTab) {
     document.getElementById(selectedTab).style.display = "flex"
 
     const tabButtons = document.getElementsByClassName("tabButton")
+    for (tabButton of tabButtons) {
+        tabButton.classList.remove("w3-blue-gray")
+    }
+    element.classList.add("w3-blue-gray")
+}
+
+function setTabSettings(tab) {
+    const element = document.getElementById(tab + "TabButton")
+
+    const tabs = Array.prototype.slice.call(document.getElementsByClassName("tabSettings"))
+    tabs.forEach(function (tab) {
+        tab.style.display = "none"
+    })
+    document.getElementById(tab).style.display = "flex"
+
+    const tabButtons = document.getElementsByClassName("tabButtonSettings")
     for (tabButton of tabButtons) {
         tabButton.classList.remove("w3-blue-gray")
     }

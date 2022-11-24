@@ -45,15 +45,21 @@ function formatCoins(coins, element) {
     }    
 }
 
-function formatTime(sec_num) {    
+function formatTime(sec_num) {
+    if (sec_num == null) {
+        return "unknown"
+    }
+
     let hours = Math.floor(sec_num / 3600)
     let minutes = Math.floor((sec_num - (hours * 3600)) / 60)
     let seconds = Math.floor(sec_num - (hours * 3600) - (minutes * 60))
+    let ms = Math.floor((sec_num - Math.floor(sec_num)) * 1000)
+    let mss = (show_ms ? "." + ms.toString().padStart(3, "0") : "")
 
     if (hours < 10) hours = "0" + hours
     if (minutes < 10) minutes = "0" + minutes
     if (seconds < 10) seconds = "0" + seconds
-    return hours + ':' + minutes + ':' + seconds    
+    return hours + ':' + minutes + ':' + seconds + mss   
 }
 
 function formatAge(days) {
