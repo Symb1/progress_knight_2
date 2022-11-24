@@ -1295,11 +1295,11 @@ function updateText() {
     document.getElementById("essenceGainButtonDisplay").textContent = "+" + format(getEssenceGain())
 
     document.getElementById("timeWarpingDisplay").textContent = "x" + format(
-        (gameData.taskData["Time Warping"].getEffect() *
+        gameData.taskData["Time Warping"].getEffect() *
             gameData.taskData["Temporal Dimension"].getEffect() *
             gameData.taskData["Time Loop"].getEffect() *
-            (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
-        ))
+            (gameData.requirements["Eternal Time"].isCompleted() ? 2 : 1)
+        )
 
     const button = document.getElementById("rebirthButton3").getElementsByClassName("button")[0]
     button.style.background = nextMilestoneInReach() ? "#065c21" : ""    
