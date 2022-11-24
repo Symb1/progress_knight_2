@@ -720,6 +720,9 @@ function getEssenceGain() {
         * faintHope.getEffect() * rise.getEffect()
 }
 
+function getCompletedGameSpeedBoost() {
+    return Math.pow(2, gameData.completedTimes)
+}
 
 function getGameSpeed() {
     const timeWarping = gameData.taskData["Time Warping"]
@@ -727,7 +730,7 @@ function getGameSpeed() {
     const timeLoop = gameData.taskData["Time Loop"]
     const warpDrive = (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
     const timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive
-    return baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * Math.pow(2, gameData.completedTimes)
+    return baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * getCompletedGameSpeedBoost()
 }
 
 function applyExpenses() {
@@ -738,15 +741,6 @@ function applyExpenses() {
 
     if (gameData.coins < 0)
         goBankrupt()
-}
-
-function getExpense() {
-    var expense = 0
-    expense += gameData.currentProperty.getExpense()
-    for (misc of gameData.currentMisc) {
-        expense += misc.getExpense()
-    }
-    return expense
 }
 
 function goBankrupt() {
@@ -837,7 +831,7 @@ function forceAutobuy() {
     autoBuyEnabled = true
 }
 
-function setProperty(propertyName) {
+function setCurrentProperty(propertyName) {
     autoBuyEnabled = false
     gameData.currentProperty = gameData.itemData[propertyName]
 }
@@ -856,12 +850,12 @@ function setMisc(miscName) {
     }
 }
 
-function createData(data, baseData) {
+function createGameObjects(data, baseData) {
     for (const key in baseData)
-        createEntity(data, baseData[key])
+        createGameObject(data, baseData[key])
 }
 
-function createEntity(data, entity) {
+function createGameObject(data, entity) {
     if ("income" in entity) { data[entity.name] = new Job(entity) }
     else if ("maxXp" in entity) { data[entity.name] = new Skill(entity) }
     else if ("tier" in entity) { data[entity.name] = new Milestone(entity) }    
@@ -869,12 +863,9 @@ function createEntity(data, entity) {
     data[entity.name].id = "row " + entity.name
 }
 
-function createRequiredRow(categoryName) {
-    const requiredRow = document.getElementsByClassName("requiredRowTemplate")[0].content.firstElementChild.cloneNode(true)
-    requiredRow.classList.add("requiredRow")
-    requiredRow.classList.add(removeSpaces(categoryName))
-    requiredRow.id = categoryName
-    return requiredRow
+function setNotation(index) {
+    gameData.settings.numberNotation = index
+    selectElementInGroup("Notation", index)
 }
 
 function createHeaderRow(templates, categoryType, categoryName) {
@@ -1089,10 +1080,10 @@ function updateTaskRows() {
 
         let tooltip = tooltips[key]
 
-        if (task instanceof Task && !task.isHero && isHeroesUnlocked()) {
+        if (task instanceof Task && !task.isHero && IsHeroesUnlocked()) {
             const requirementObject = gameData.requirements[key]
             const requirements = requirementObject.requirements
-            const prev = getPreviousTaskInCategory(key)
+            const prev = prevCategory(key)
 
             tooltip += "<br> <span style=\"color: red\">Required</span>: <span style=\"color: orange\">"
             let reqlist = ""
@@ -1272,7 +1263,7 @@ function updateItemRows() {
         button.disabled = gameData.coins < item.getExpense()
         const name = button.getElementsByClassName("name")[0]
 
-        if (isHeroesUnlocked()) 
+        if (IsHeroesUnlocked()) 
             name.classList.add("legendary")        
         else 
             name.classList.remove("legendary")        
@@ -1295,6 +1286,24 @@ function updateHeaderRows(categories) {
         const maxLevelElement = headerRow.getElementsByClassName("maxLevel")[0]
         gameData.rebirthOneCount > 0 ? maxLevelElement.classList.remove("hidden") : maxLevelElement.classList.add("hidden")
     }
+}
+
+function formatTime(sec_num, show_ms=false) {   
+    if (sec_num == null) {
+        return "unknown"
+    }
+
+    let hours = Math.floor(sec_num / 3600)
+    let minutes = Math.floor((sec_num - (hours * 3600)) / 60)
+    let seconds = Math.floor(sec_num - (hours * 3600) - (minutes * 60))
+    let ms = Math.floor((sec_num - Math.floor(sec_num)) * 1000)
+
+    if (hours < 10) hours = "0" + hours
+    if (minutes < 10) minutes = "0" + minutes
+    if (seconds < 10) seconds = "0" + seconds
+
+
+    return hours + ':' + minutes + ':' + seconds + (show_ms ? "." + ms.toString().padStart(3, "0") : "")   
 }
 
 function updateText() {
@@ -1389,28 +1398,24 @@ function getNet() {
     return Math.abs(getIncome() - getExpense())
 }
 
-function hideCompletedRequirements() {
-    for (const key in gameData.requirements) {
-        const requirement = gameData.requirements[key]
-        for (const element of requirement.elements) {
-            if (requirement.isCompleted()) {
-                element.classList.remove("hidden")
-            } else {
-                element.classList.add("hidden")
-            }
-        }
-    }
+function getIncome() {
+    return gameData.currentJob.getIncome()
 }
 
-function doCurrentTask(task) {
+function getExpense() {
+    var expense = 0
+    expense += gameData.currentProperty.getExpense()
+    for (misc of gameData.currentMisc) {
+        expense += misc.getExpense()
+    }
+    return expense
+}
+
+function performTask(task) {
     task.increaseXp()
     if (task instanceof Job && task == gameData.currentJob) {
         increaseCoins()
     }
-}
-
-function getIncome() {
-    return gameData.currentJob.getIncome()
 }
 
 function increaseCoins() {
@@ -1479,21 +1484,6 @@ function increaseRealtime() {
     if (!gameData.paused && isAlive()) 
         gameData.realtime += 1.0 / updateSpeed;
     gameData.realtimeRun += 1.0 / updateSpeed;
-}
-
-function getTaskElement(taskName) {
-    const task = gameData.taskData[taskName]
-    return document.getElementById(task.id)
-}
-
-function getItemElement(itemName) {
-    const item = gameData.itemData[itemName]
-    return document.getElementById(item.id)
-}
-
-function getMilestoneElement(milestoneName) {
-    const milestone = gameData.milestoneData[milestoneName]
-    return document.getElementById(milestone.id)
 }
 
 function setLightDarkMode() {
@@ -1782,23 +1772,7 @@ function loadGameData() {
     assignMethods()
 }
 
-function updateUI() {
-    updateTaskRows()
-    updateItemRows()
-    updateMilestoneRows()
-    updateRequiredRows(gameData.taskData, jobCategories)
-    updateRequiredRows(gameData.taskData, skillCategories)
-    updateRequiredRows(gameData.itemData, itemCategories)
-    updateRequiredRows(gameData.milestoneData, milestoneCategories)
-
-    updateHeaderRows(jobCategories)
-    updateHeaderRows(skillCategories)
-
-    updateQuickTaskDisplay()
-    hideCompletedRequirements()
-    updateText()  
-}
-
+// TODO Not used currently. I assume we want to use this to update the game when the tab is focussed
 function addMinutes(count = 1) {
     for (let i = 0; i < count * 60 * updateSpeed; i++) {
         update(false)
@@ -1817,7 +1791,7 @@ function update(needUpdateUI = true) {
     for (const key in gameData.taskData) {
         const task = gameData.taskData[key]
         if ((task instanceof Skill || task instanceof Job) && gameData.requirements[key].completed) {
-            doCurrentTask(task)
+            performTask(task)
         }
     }
     
@@ -1884,34 +1858,6 @@ function exportGameData() {
     copyTextToClipboard(importExportBox.value)
 }
 
-
-// Keyboard shortcuts + Loadouts ( courtesy of Pseiko )
-function changeTab(direction){
-    const tabs = Array.prototype.slice.call(document.getElementsByClassName("tab"))
-    const tabButtons = Array.prototype.slice.call(document.getElementsByClassName("tabButton"))
-
-    const currentTab = 0
-    for (const i in tabs) {
-        if (!tabs[i].style.display.includes("none") && !tabs[i].classList.contains("hidden"))
-             currentTab = i*1
-    }
-    let targetTab = currentTab + direction
-    if (targetTab < 0) {
-        setTab("settings")
-        return
-    }
-    targetTab = Math.max(0,targetTab)
-    if (targetTab > tabs.length - 1) targetTab = 0
-    while (tabButtons[targetTab].style.display.includes("none") || tabButtons[targetTab].classList.contains("hidden")){
-        targetTab = targetTab + direction
-        targetTab = Math.max(0, targetTab) 
-        if (targetTab > tabs.length-1) targetTab = 0
-    }
-
-	setTab(tabs[targetTab].id)
-} 
-
-
 function copyTextToClipboard(text) {
     navigator.clipboard.writeText(text).then(() => {
         const tooltip = document.getElementById("exportTooltip");
@@ -1926,7 +1872,6 @@ function outExportButton() {
     tooltip.innerHTML = "";
 }
 
-
 function onFontButtonHover() {
     const tooltip = document.getElementById("fontSizeTooltip");
     tooltip.classList.remove("hidden")
@@ -1936,18 +1881,6 @@ function onFontButtonStopHover() {
     const tooltip = document.getElementById("fontSizeTooltip");
     tooltip.classList.add("hidden")
 }
-
-
-window.addEventListener('keydown', function(e) {
-	if (e.key == " " && !e.repeat ) {
-		togglePause()
-		if (e.target == document.body) {
-			e.preventDefault();
-		}
-	}	
-    if (e.key=="ArrowRight") changeTab(1) 
-    if (e.key=="ArrowLeft") changeTab(-1)     
-});
 
 function isNextMilestoneInReach() {
     const totalEssence = gameData.essence + getEssenceGain()
@@ -1967,10 +1900,10 @@ function isNextMilestoneInReach() {
 
 
 //Init
-createData(gameData.taskData, jobBaseData)
-createData(gameData.taskData, skillBaseData)
-createData(gameData.itemData, itemBaseData)
-createData(gameData.milestoneData, milestoneBaseData)
+createGameObjects(gameData.taskData, jobBaseData)
+createGameObjects(gameData.taskData, skillBaseData)
+createGameObjects(gameData.itemData, itemBaseData)
+createGameObjects(gameData.milestoneData, milestoneBaseData)
 
 gameData.currentJob = gameData.taskData["Beggar"]
 gameData.currentProperty = gameData.itemData["Homeless"]
@@ -2169,7 +2102,7 @@ for (const key in gameData.requirements) {
 loadGameData()
 
 gameData.milestoneData = {}
-createData(gameData.milestoneData, milestoneBaseData)
+createGameObjects(gameData.milestoneData, milestoneBaseData)
 
 
 initUI()
