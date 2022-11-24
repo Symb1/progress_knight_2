@@ -235,7 +235,7 @@ const milestoneCategories = {
 function prevCategory(task)
 {
     var prev = ""
-    for (category in jobCategories) {
+    for (const category in jobCategories) {
         for (job of jobCategories[category]) {
             if (job == task)
                 return prev
@@ -244,7 +244,7 @@ function prevCategory(task)
     }
 
     prev = ""
-    for (category in skillCategories) {
+    for (const category in skillCategories) {
         for (skill of skillCategories[category]) {
             if (skill == task)
                 return prev
@@ -630,7 +630,7 @@ function setCustomEffects() {
         return unholyRecall.level * (unholyRecall.isHero ? 0.065 : 0.00065);
     }
 
-    var transcendentMaster = gameData.milestoneData["Transcendent Master"]
+    const transcendentMaster = gameData.milestoneData["Transcendent Master"]
     transcendentMaster.getEffect = function () {
         if (gameData.requirements["Transcendent Master"].isCompleted()) 
             return 1.5
@@ -638,7 +638,7 @@ function setCustomEffects() {
         return 1
     }
 
-    var faintHope = gameData.milestoneData["Faint Hope"]
+    const faintHope = gameData.milestoneData["Faint Hope"]
     faintHope.getEffect = function () {
         var mult = 1
         if (gameData.requirements["Faint Hope"].isCompleted()) 
@@ -647,12 +647,12 @@ function setCustomEffects() {
         return mult
     }
 
-    var riseOfGreatHeroes = gameData.milestoneData["Rise of Great Heroes"]
+    const riseOfGreatHeroes = gameData.milestoneData["Rise of Great Heroes"]
     riseOfGreatHeroes.getEffect = function () {
         var mult = 1
         if (gameData.requirements["Rise of Great Heroes"].isCompleted()) {
             var countHeroes = 0
-            for (taskName in gameData.taskData) {
+            for (const taskName in gameData.taskData) {
                 if (gameData.taskData[taskName].isHero)
                     countHeroes++
             }
@@ -786,14 +786,8 @@ function setTab(selectedTab) {
     element.classList.add("w3-blue-gray")
 }
 
-function setPause() {
+function togglePause() {
     gameData.paused = !gameData.paused
-}
-
-function setTask(taskName) {    
-    const task = gameData.taskData[taskName]
-    if (task instanceof Job)
-        gameData.currentJob = task 
 }
 
 function forceAutobuy() {
@@ -1336,13 +1330,6 @@ function hideEntities() {
     }
 }
 
-function createItemData(baseData) {
-    for (const item of baseData) {
-        gameData.itemData[item.name] = "happiness" in item ? new Property(task) : new Misc(task)
-        gameData.itemData[item.name].id = "item " + item.name
-    }
-}
-
 function doCurrentTask(task) {
     task.increaseXp()
     if (task instanceof Job && task == gameData.currentJob) {
@@ -1356,23 +1343,6 @@ function getIncome() {
 
 function increaseCoins() {
     gameData.coins += applySpeed(getIncome())
-}
-
-function getCategoryFromEntityName(categoryType, entityName) {
-    for (const categoryName in categoryType) {
-        const category = categoryType[categoryName]
-        if (category.includes(entityName)) {
-            return category
-        }
-    }
-}
-
-function getNextEntity(data, categoryType, entityName) {
-    const category = getCategoryFromEntityName(categoryType, entityName)
-    const nextIndex = category.indexOf(entityName) + 1
-    if (nextIndex > category.length - 1) return null
-    const nextEntityName = category[nextIndex]
-    return data[nextEntityName]
 }
 
 function autoPromote() {
@@ -1967,7 +1937,7 @@ function outFontButton() {
 
 window.addEventListener('keydown', function(e) {
 	if (e.key == " " && !e.repeat ) {
-		setPause()
+		togglePause()
 		if (e.target == document.body) {
 			e.preventDefault();
 		}
