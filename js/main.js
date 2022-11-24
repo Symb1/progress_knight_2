@@ -6,13 +6,13 @@ var gameData = {
     coins: 0,
     days: 365 * 14,
     evil: 0,
-	essence: 0,
+    essence: 0,
     paused: false,
     timeWarpingEnabled: true,
 
     rebirthOneCount: 0,
     rebirthTwoCount: 0,
-	rebirthThreeCount: 0,
+    rebirthThreeCount: 0,
 
     currentJob: null,
     currentProperty: null,
@@ -26,8 +26,17 @@ var gameData = {
         fontSize: 3,
         selectedTab: 'jobs'
     },
+    stats: {
+        startDate: new Date(),
+        fastest1: null,
+        fastest2: null,
+        fastest3: null,
+        fastestGame: null,
+
+    },
 
     realtime: 0.0,
+    realtimeRun: 0.0,
     completedTimes: 0,    
 }
 
@@ -786,6 +795,23 @@ function setTab(selectedTab) {
     element.classList.add("w3-blue-gray")
 }
 
+function setTabSettings(tab) {
+    const element = document.getElementById(tab + "TabButton")
+
+    const tabs = Array.prototype.slice.call(document.getElementsByClassName("tabSettings"))
+    tabs.forEach(function (tab) {
+        tab.style.display = "none"
+    })
+    document.getElementById(tab).style.display = "flex"
+
+    const tabButtons = document.getElementsByClassName("tabButtonSettings")
+    for (tabButton of tabButtons) {
+        tabButton.classList.remove("w3-blue-gray")
+    }
+    element.classList.add("w3-blue-gray")
+
+}
+
 function setPause() {
     gameData.paused = !gameData.paused
 }
@@ -1169,7 +1195,7 @@ function setLayout(id) {
 
         document.getElementById("dummyPage1").classList.remove("hidden")
         document.getElementById("dummyPage2").classList.remove("hidden")
-        document.getElementById("dummyPage3").classList.remove("hidden")
+        //document.getElementById("dummyPage3").classList.remove("hidden")
 
         document.getElementById("skills").classList.add("hidden")
         document.getElementById("shop").classList.add("hidden")
@@ -1189,7 +1215,7 @@ function setLayout(id) {
 
         document.getElementById("dummyPage1").classList.add("hidden")
         document.getElementById("dummyPage2").classList.add("hidden")
-        document.getElementById("dummyPage3").classList.add("hidden")
+        //document.getElementById("dummyPage3").classList.add("hidden")
 
         document.getElementById("skills").classList.remove("hidden")
         document.getElementById("shop").classList.remove("hidden")
@@ -1260,15 +1286,22 @@ function updateHeaderRows(categories) {
     }
 }
 
-function formatTime(sec_num) {    
+function formatTime(sec_num, show_ms=false) {   
+    if (sec_num == null) {
+        return "unknown"
+    }
+
     let hours = Math.floor(sec_num / 3600)
     let minutes = Math.floor((sec_num - (hours * 3600)) / 60)
     let seconds = Math.floor(sec_num - (hours * 3600) - (minutes * 60))
+    let ms = Math.floor((sec_num - Math.floor(sec_num)) * 1000)
 
     if (hours < 10) hours = "0" + hours
     if (minutes < 10) minutes = "0" + minutes
     if (seconds < 10) seconds = "0" + seconds
-    return hours + ':' + minutes + ':' + seconds    
+
+
+    return hours + ':' + minutes + ':' + seconds + (show_ms ? "." + ms.toString().padStart(3, "0") : "")   
 }
 
 function updateText() {
@@ -1296,14 +1329,59 @@ function updateText() {
 
     document.getElementById("timeWarpingDisplay").textContent = "x" + format(
         gameData.taskData["Time Warping"].getEffect() *
-            gameData.taskData["Temporal Dimension"].getEffect() *
-            gameData.taskData["Time Loop"].getEffect() *
-            (gameData.requirements["Eternal Time"].isCompleted() ? 2 : 1)
-        )
+        gameData.taskData["Temporal Dimension"].getEffect() *
+        gameData.taskData["Time Loop"].getEffect() *
+        (gameData.requirements["Eternal Time"].isCompleted() ? 2 : 1)
+    )
 
     const button = document.getElementById("rebirthButton3").getElementsByClassName("button")[0]
-    button.style.background = nextMilestoneInReach() ? "#065c21" : ""    
-}
+    button.style.background = nextMilestoneInReach() ? "#065c21" : ""
+
+    // Stats
+    const date = new Date(gameData.stats.startDate)
+    document.getElementById("startDateDisplay").textContent = date.toLocaleDateString()
+
+
+    const currentDate = new Date()
+    document.getElementById("playedDaysDisplay").textContent = format((currentDate.getTime() - date.getTime()) / (1000 * 3600 * 24))
+ 
+
+    if (gameData.rebirthOneCount > 0)
+        document.getElementById("statsRebirth1").classList.remove("hidden")
+    else
+        document.getElementById("statsRebirth1").classList.add("hidden")
+
+    if (gameData.rebirthTwoCount > 0)
+        document.getElementById("statsRebirth2").classList.remove("hidden")
+    else
+        document.getElementById("statsRebirth2").classList.add("hidden")
+
+    if (gameData.rebirthThreeCount > 0)
+        document.getElementById("statsRebirth3").classList.remove("hidden")
+    else
+        document.getElementById("statsRebirth3").classList.add("hidden")
+
+    if (gameData.completedTimes > 0)
+        document.getElementById("statsComplete").classList.remove("hidden")
+    else
+        document.getElementById("statsComplete").classList.add("hidden")
+
+    document.getElementById("rebirthOneCountDisplay").textContent = gameData.rebirthOneCount
+    document.getElementById("rebirthTwoCountDisplay").textContent = gameData.rebirthTwoCount
+    document.getElementById("rebirthThreeCountDisplay").textContent = gameData.rebirthThreeCount
+    document.getElementById("completedTimesDisplay").textContent = gameData.completedTimes
+    document.getElementById("completedBoostDisplay").textContent = format(Math.pow(2, gameData.completedTimes))
+
+
+    document.getElementById("rebirthOneFastestDisplay").textContent = formatTime(gameData.stats.fastest1, true)
+    document.getElementById("rebirthTwoFastestDisplay").textContent = formatTime(gameData.stats.fastest2, true)
+    document.getElementById("rebirthThreeFastestDisplay").textContent = formatTime(gameData.stats.fastest3, true)
+    document.getElementById("completedFastestDisplay").textContent = formatTime(gameData.stats.fastestGame, true)
+    document.getElementById("currentRunDisplay").textContent = formatTime(gameData.realtimeRun, true)
+    
+
+    rebirthOneFastestDisplay
+} 
 
 function setSignDisplay() {
     const signDisplay = document.getElementById("signDisplay")
@@ -1455,8 +1533,9 @@ function increaseDays() {
 }
 
 function increaseRealtime() {
-    if (!gameData.paused && isAlive())
+    if (!gameData.paused && isAlive()) 
         gameData.realtime += 1.0 / updateSpeed;
+    gameData.realtimeRun += 1.0 / updateSpeed;
 }
 
 function format(number,decimals= 1) {
@@ -1537,6 +1616,8 @@ function removeSpaces(string) {
 
 function rebirthOne() {
     gameData.rebirthOneCount += 1
+    if (gameData.stats.fastest1 == null || gameData.realtime < gameData.stats.fastest1)
+        gameData.stats.fastest1 = gameData.realtime
 
     rebirthReset()
 }
@@ -1544,6 +1625,9 @@ function rebirthOne() {
 function rebirthTwo() {
     gameData.rebirthTwoCount += 1
     gameData.evil += getEvilGain()
+
+    if (gameData.stats.fastest2 == null || gameData.realtime < gameData.stats.fastest2)
+        gameData.stats.fastest2 = gameData.realtime
 	
     rebirthReset()
 
@@ -1556,7 +1640,10 @@ function rebirthTwo() {
 function rebirthThree() {
     gameData.rebirthThreeCount += 1	
 	gameData.essence += getEssenceGain()	
-	gameData.evil = 0
+    gameData.evil = 0
+
+    if (gameData.stats.fastest3 == null || gameData.realtime < gameData.stats.fastest3)
+        gameData.stats.fastest3 = gameData.realtime
 	
 	const recallEffect = gameData.taskData["Cosmic Recollection"].getEffect();
 
@@ -1785,6 +1872,7 @@ function loadGameData() {
             replaceSaveDict(gameData.taskData, gameDataSave.taskData)
             replaceSaveDict(gameData.itemData, gameDataSave.itemData)
             replaceSaveDict(gameData.settings, gameDataSave.settings)
+            replaceSaveDict(gameData.stats, gameDataSave.stats)
             gameData = gameDataSave
 
             if (gameData.coins == null)
@@ -1859,6 +1947,9 @@ function restartGame() {
     clearInterval(saveloop)
     clearInterval(gameloop)
 
+    if (gameData.stats.fastestGame == null || gameData.realtimeRun < gameData.stats.fastestGame)
+        gameData.stats.fastestGame = gameData.realtimeRun
+
     gameData.currentJob = gameData.taskData["Beggar"]
     gameData.currentProperty = gameData.itemData["Homeless"]
     gameData.currentMisc = []
@@ -1873,10 +1964,8 @@ function restartGame() {
     gameData.essence = 0
     gameData.paused = false
     gameData.timeWarpingEnabled = true
-    gameData.rebirthOneCount = 0
-    gameData.rebirthTwoCount = 0
-    gameData.rebirthThreeCount = 0
     gameData.realtime = 0
+    gameData.realtimeRun = 0
     gameData.settings.selectedTab = 'jobs'
 
     gameData.completedTimes += 1
@@ -2205,6 +2294,7 @@ setCustomEffects()
 addMultipliers()
 
 setTab(gameData.settings.selectedTab)
+setTabSettings("settingsTab")
 
 update()
 var gameloop = setInterval(update, 1000 / updateSpeed)
