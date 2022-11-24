@@ -44,7 +44,7 @@ const baseGameSpeed = 4
 const heroIncomeMult = 2500000000000000000
 
 
-const permanentUnlocks = ["Scheduling", "Automation", "Quick task display"]
+const permanentUnlocks = ["Quick task display"]
 
 const jobBaseData = {
     "Beggar": { name: "Beggar", maxXp: 50, income: 5, heroxp: 36 },
@@ -73,17 +73,13 @@ const jobBaseData = {
     "Imperator": { name: "Imperator", maxXp: 9000000000000000, income: 60000000, heroxp: 129 },
 	
     "Corrupted": { name: "Corrupted", maxXp: 100000000000000, income: 25000000, heroxp: 131 },
-    "Void Slave": { name: "Void Slave", maxXp: 650000000000000, income: 200000000, heroxp: 134 }, 
-
+    "Void Slave": { name: "Void Slave", maxXp: 650000000000000, income: 200000000, heroxp: 134 },
     "Void Fiend": { name: "Void Fiend", maxXp: 18000000000000000, income: 600000000, heroxp: 237 }, 
-    "Abyss Anomaly": { name: "Abyss Anomaly", maxXp: 18000000000000000, income: 1200000000, heroxp: 237 }, 
-
+    "Abyss Anomaly": { name: "Abyss Anomaly", maxXp: 18000000000000000, income: 1200000000, heroxp: 237 },
     "Void Wraith": { name: "Void Wraith", maxXp: 180000000000000000, income: 5000000000, heroxp: 238 }, 
-    "Void Reaver": { name: "Void Reaver", maxXp: 2600000000000000000, income: 25000000000, heroxp: 238 }, 
-
+    "Void Reaver": { name: "Void Reaver", maxXp: 2600000000000000000, income: 25000000000, heroxp: 238 },
     "Void Lord": { name: "Void Lord", maxXp: 28000000000000000000, income: 100000000000, heroxp: 238 },
     "Abyss God": { name: "Abyss God", maxXp: 400000000000000000000, income: 1000000000000, heroxp: 250 },
-
     "Eternal Wanderer": { name: "Eternal Wanderer", maxXp: 55000000000000000000, income: 1000000000000, heroxp: 250 },
 
     "Nova": { name: "Nova", maxXp: 51000000000000000000, income: 3000000000000, heroxp: 250 },
@@ -114,36 +110,27 @@ const skillBaseData = {
     "Dark Influence": { name: "Dark Influence", maxXp: 100, heroxp: 155, effect: 0.01, description: "All XP"},
     "Evil Control": { name: "Evil Control", maxXp: 100, heroxp: 156, effect: 0.01, description: "Evil Gain"},
     "Intimidation": { name: "Intimidation", maxXp: 100, heroxp: 157, effect: -0.01, description: "Reduced Expenses" },
-
-    // "Good Heroes":
     "Demon Training": { name: "Demon Training", maxXp: 100, heroxp: 174, effect: 0.01, description: "All XP"},
     "Blood Meditation": { name: "Blood Meditation", maxXp: 100, heroxp: 176, effect: 0.01, description: "Evil Gain"},
     "Demon's Wealth": { name: "Demon's Wealth", maxXp: 100, heroxp: 178, effect: 0.002, description: "Class Pay"},
     "Dark Knowledge": { name: "Dark Knowledge", maxXp: 100, heroxp: 180, effect: 0.003, description: "Class XP" },
 
-    // "Beautiful Heroes":
     "Void Influence": { name: "Void Influence", maxXp: 100, heroxp: 206, effect: 0.0028, description: "All XP"},
     "Time Loop": { name: "Time Loop", maxXp: 100, heroxp: 207, effect: 0.001, description: "Gamespeed"},
     "Evil Incarnate": { name: "Evil Incarnate", maxXp: 100, heroxp: 208, effect: 0.01, description: "Ability XP" },
     "Absolute Wish": { name: "Absolute Wish", maxXp: 100, heroxp: 198, effect: 0.005, description: "Evil Gain" },
-
-    //"Awesome Heroes": 
     "Void Amplification": { name: "Void Amplification", maxXp: 100, heroxp: 251, effect: 0.01, description: "The Void XP" },
     "Mind Seize": { name: "Mind Seize", maxXp: 100, heroxp: 251, effect: 0.0006, description: "Reduced Happiness" },
     "Ceaseless Abyss": { name: "Ceaseless Abyss", maxXp: 100, heroxp: 251, effect: 0.000585, description: "Longer Lifespan" },
     "Void Symbiosis": { name: "Void Symbiosis", maxXp: 100, heroxp: 253, effect: 0.0015, description: "Ability XP" },
-
-    //"Furious Heroes":
     "Void Embodiment": { name: "Void Embodiment", maxXp: 100, heroxp: 258, effect: 0.0025, description: "Evil Gain" },
     "Abyss Manipulation": { name: "Abyss Manipulation", maxXp: 100, heroxp: 266, effect: -0.01, description: "Reduced Expenses" },
 
-    //  *  "Gorgeous Heroes":
     "Cosmic Longevity": { name: "Cosmic Longevity", maxXp: 100, heroxp: 266, effect: 0.0015, description: "Longer Lifespan" },
     "Cosmic Recollection": { name: "Cosmic Recollection", maxXp: 100, heroxp: 272, effect: 0.00065, description: "Max Lvl Multiplier" },
     "Essence Collector": { name: "Essence Collector", maxXp: 100, heroxp: 288, effect: 0.01, description: "Essence Gain" },
     "Galactic Command": { name: "Galactic Command", maxXp: 100, heroxp: 290, effect: -0.01, description: "Reduced Expenses" },
 
-    //  "Superb Heroes":
     "Yin Yang": { name: "Yin Yang", maxXp: 100, heroxp: 290, effect: 0.020, description: "Essence + Evil Gain" },
     "Parallel Universe": { name: "Parallel Universe", maxXp: 290, heroxp: 300, effect: 0.02, description: "All XP"},
     "Higher Dimensions": { name: "Higher Dimensions", maxXp: 290, heroxp: 300, effect: 0.001, description: "Longer Lifespan" },
@@ -223,7 +210,6 @@ const jobCategories = {
     "The Arcane Association" : ["Student", "Apprentice Mage", "Adept Mage", "Master Wizard", "Archmage", "Chronomancer", "Chairman", "Imperator"],
 	"The Void"               : ["Corrupted", "Void Slave", "Void Fiend", "Abyss Anomaly", "Void Wraith", "Void Reaver", "Void Lord", "Abyss God"],
     "Galactic Council"       : ["Eternal Wanderer", "Nova", "Sigma Proioxis", "Acallaris", "One Above All"]
-
 }
 
 const skillCategories = {
@@ -333,8 +319,7 @@ const tooltips = {
     "Nova": "Extremely powerful being with tremedous telekinetic powers and the ability to rearrange the molecular structure of matter and energy, even up to cosmic scale.",
 	"Sigma Proioxis": "A nigh-omnipotent cosmological entity, with vast matter and energy manipulation abilities that help you push the boundaries of the Universe itself.",
     "Acallaris": "Primordial being that predate the universe, involved with the creation of life and powerful beyond mortal comprehension, existing as myths to the oldest species in the universe.",
-	"One Above All": "Creator of everything.",
-	
+	"One Above All": "Creator of everything.",	
 
     //Fundamentals
     "Concentration": "Improve your learning speed through practising intense concentration activities.",
@@ -428,7 +413,7 @@ const tooltips = {
 	"Universe Fragment": "From the time the universe was born. Can create another small universes.",
     "Multiverse Fragment": "Came into existance long before our universe was created, this strange looking object with no shape radiates unlimited energy.",
 
-    //Milestones
+    //Essence Milestones
     "Magic Eye": "The Eye in your Amulet starts to glow.",
     "Almighty Eye": "The Eye in your Amulet shines like a star.",
     "Deal with the Devil": "You made a deal with the Devil.",
@@ -440,6 +425,7 @@ const tooltips = {
     "Faint Hope": "Maybe there is a hope?",
     "New Beginning": "Try to upgrade One Above All to level 2000",
 
+    //Heroic Milestones
     "Rise of Great Heroes": "Every active Great job or skill will increase Essence gain a bit.",
     "Lazy Heroes": "Total Hero XP multiplier is 5e20",
     "Dirty Heroes": "Total Hero XP multiplier is 5e35",
@@ -452,10 +438,8 @@ const tooltips = {
     "Awesome Heroes": "Total Hero XP multiplier is 5e180",
     "Furious Heroes": "Total Hero XP multiplier is 5e198",
     "Superb Heroes": "Total Hero XP multiplier is 5e201",
-
 }
 
-                  
 
 function getBaseLog(x, y) {
     return Math.log(y) / Math.log(x);
@@ -544,8 +528,6 @@ function addMultipliers() {
 		item.expenseMultipliers.push(getBindedTaskEffect("Galactic Command"))
     }
 }
-
-//
 
 function getHeroXpGainMultipliers(job)
 {
@@ -707,6 +689,8 @@ function applyMultipliers(value, multipliers) {
 }
 
 function applySpeed(value) {
+    if (value == 0)
+        return 0
     return value * getGameSpeed() / updateSpeed
 }
 
@@ -743,7 +727,11 @@ function getGameSpeed() {
 }
 
 function applyExpenses() {
+    if (gameData.coins == Infinity)
+        return
+
     gameData.coins -= applySpeed(getExpense())
+
     if (gameData.coins < 0)
         goBankrupt()
 }
@@ -1247,14 +1235,10 @@ function updateItemRows() {
         button.disabled = gameData.coins < item.getExpense()
         const name = button.getElementsByClassName("name")[0]
 
-        if (IsHeroesUnlocked()) {
-            name.classList.add("legendary")
-           // name.textContent = "Great " + key
-        }
-        else {
-            name.classList.remove("legendary")
-          //  name.textContent = key
-        }
+        if (IsHeroesUnlocked()) 
+            name.classList.add("legendary")        
+        else 
+            name.classList.remove("legendary")        
 
         const active = row.getElementsByClassName("active")[0]
         const color = autoBuyEnabled
@@ -1289,8 +1273,6 @@ function formatTime(sec_num) {
 
 function updateText() {
     //Sidebar
-    //document.getElementById("ageDisplay").textContent = daysToYears(gameData.days)
-    //document.getElementById("dayDisplay").textContent = getDay(gameData.days)
     document.getElementById("ageDisplay").textContent = formatAge(gameData.days)
     document.getElementById("lifespanDisplay").textContent = format(daysToYears(getLifespan()))
     document.getElementById("realtimeDisplay").textContent = formatTime(gameData.realtime)
@@ -1373,12 +1355,7 @@ function getIncome() {
 }
 
 function increaseCoins() {
-    const coins = applySpeed(getIncome())    
-    // TODO Why? This is logically equivalent as just setting the variable.
-    if (coins == Infinity)
-        gameData.coins = Infinity
-    else
-        gameData.coins += coins
+    gameData.coins += applySpeed(getIncome())
 }
 
 function getCategoryFromEntityName(categoryType, entityName) {
@@ -1877,18 +1854,6 @@ function update(needUpdateUI = true) {
         updateUI()
 }
 
-// TODO Can be removed? I assume this is a test function.
-function res() {
-    for (const key in gameData.taskData) {
-        const task = gameData.taskData[key]
-        if (!task.isHero) {
-            //t.maxLevel = 0
-            task.level = 6200
-            task.xp=0
-        }
-    }
-}
-
 function restartGame() {
     gameData.paused = true
     clearInterval(saveloop)
@@ -2071,7 +2036,6 @@ gameData.requirements = {
 	"Essence info": new EssenceRequirement([document.getElementById("essenceInfo")], [{requirement: 1}]),
     "Time warping info": new TaskRequirement([document.getElementById("timeWarping")], [{task: "Adept Mage", requirement: 10}]),
 
-    //"Automation": new AgeRequirement([document.getElementById("automation")], [{requirement: 20}]),
     "Quick task display": new AgeRequirement([document.getElementById("quickTaskDisplay")], [{requirement: 20}]),
 
     //Common work
