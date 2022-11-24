@@ -8,15 +8,14 @@ class Task {
         this.isHero = false
         this.isFinished = false
 
-        this.xpMultipliers = [
-        ]
+        this.xpMultipliers = []
     }
 
     getMaxXp() {
         if (this.isFinished)
             return 1e305
 
-        var maxXp = (this.isHero ? Math.pow(10, this.baseData.heroxp) : 1) * this.baseData.maxXp * (this.level + 1) * Math.pow(this.isHero ? 1.08 : 1.01, this.level)
+        const maxXp = (this.isHero ? Math.pow(10, this.baseData.heroxp) : 1) * this.baseData.maxXp * (this.level + 1) * Math.pow(this.isHero ? 1.08 : 1.01, this.level)
 
         if (isNaN(maxXp) || maxXp == Infinity || maxXp > 1e305) {
             this.isFinished = true
@@ -34,21 +33,19 @@ class Task {
     }
 
     getMaxLevelMultiplier() {
-        var maxLevelMultiplier = 1 + this.maxLevel / 10
-        return maxLevelMultiplier
+        return 1 + this.maxLevel / 10
     }
 
     getXpGain() {
         if (this.isFinished)
             return 0
 
-        var xpGain = (this.isHero ? getHeroXpGainMultipliers(this) : 1) * applyMultipliers(10, this.xpMultipliers)
-        return xpGain
+        return (this.isHero ? getHeroXpGainMultipliers(this) : 1) * applyMultipliers(10, this.xpMultipliers)
     }
 
     increaseXp() {
         if (this.isFinished) {
-            for (var i = 0; i < gameData.completedTimes; i++) {
+            for (const i = 0; i < gameData.completedTimes; i++) {
                 if (Math.random() < 0.001)
                     this.level += 1
             }            
@@ -66,7 +63,7 @@ class Task {
         }
        
         if (this.xp >= this.getMaxXp()) {
-            var excess = this.xp - this.getMaxXp()
+            let excess = this.xp - this.getMaxXp()
             while (excess >= 0) {
                 this.level += 1
                 excess -= this.getMaxXp()
@@ -91,13 +88,11 @@ class Milestone {
 class Job extends Task {
     constructor(baseData) {
         super(baseData)   
-        this.incomeMultipliers = [
-        ]
+        this.incomeMultipliers = []
     }
 
     getLevelMultiplier() {
-        var levelMultiplier = 1 + Math.log10(this.level + 1)
-        return levelMultiplier
+        return 1 + Math.log10(this.level + 1)
     }
     
     getIncome() {
@@ -119,9 +114,7 @@ class Skill extends Task {
     }
 
     getEffectDescription() {
-        var description = this.baseData.description
-        var text = "x" + String(this.getEffect().toFixed(2)) + " " + description
-        return text
+        return "x" + String(this.getEffect().toFixed(2)) + " " + this.baseData.description
     }
 }
 
@@ -129,14 +122,12 @@ class Item {
     constructor(baseData) {  
         this.baseData = baseData
         this.name = baseData.name
-        this.expenseMultipliers = [
-         
-        ]
+        this.expenseMultipliers = []
         this.isHero = false
     }
 
     getEffect() {
-        var effect = this.baseData.effect        
+        let effect = this.baseData.effect        
 
         if (this.isHero) {
             if (itemCategories["Misc"].includes(this.name))
@@ -148,16 +139,13 @@ class Item {
                 }
             }
 
-            if (itemCategories["Properties"].includes(this.name))
-            {
+            if (itemCategories["Properties"].includes(this.name)) {
                 if (gameData.currentProperty == this)
                     effect = this.baseData.heroeffect
                 else
                     effect = 1
             }
-        }
-        else
-        {
+        } else {
             if (gameData.currentProperty != this && !gameData.currentMisc.includes(this)) return 1
         }
 
@@ -165,8 +153,8 @@ class Item {
     }
 
     getEffectDescription() {
-        var description = this.baseData.description
-        var effect = this.baseData.effect
+        let description = this.baseData.description
+        let effect = this.baseData.effect
 
         if (this.isHero) {
             if (itemCategories["Misc"].includes(this.name)) {
@@ -184,13 +172,12 @@ class Item {
             if (itemCategories["Properties"].includes(this.name)) description = "Happiness"
         }
 
-        var text = "x" + format(effect) + " " + description
-        return text
+        return "x" + format(effect) + " " + description
     }
 
     getExpense() {
-        var heromult = this.baseData.heromult
-        return (this.isHero ? 4 * Math.pow(10, heromult) * heroIncomeMult : 1) * applyMultipliers(this.baseData.expense, this.expenseMultipliers) 
+        return (this.isHero ? 4 * Math.pow(10, this.baseData.heromult) * heroIncomeMult : 1) 
+            * applyMultipliers(this.baseData.expense, this.expenseMultipliers) 
     }
 }
 
@@ -202,8 +189,8 @@ class Requirement {
     }
 
     isCompleted() {
-        if (this.completed) {return true}
-        for (var requirement of this.requirements) {
+        if (this.completed) return true
+        for (const requirement of this.requirements) {
             if (!this.getCondition(false, requirement)) {
                 return false
             }
@@ -213,7 +200,7 @@ class Requirement {
     }
 
     isCompletedActual(isHero = false) {
-        for (var requirement of this.requirements) {
+        for (const requirement of this.requirements) {
             if (!this.getCondition(isHero, requirement)) {
                 return false
             }
