@@ -45,7 +45,7 @@ function formatCoins(coins, element) {
     }    
 }
 
-function formatTime(sec_num) {
+function formatTime(sec_num, show_ms=false) {
     if (sec_num == null) {
         return "unknown"
     }
