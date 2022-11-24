@@ -1,1 +1,1 @@
-Progress Knight 2.0
+Progress Knight Quest
