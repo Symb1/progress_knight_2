@@ -232,7 +232,7 @@ const milestoneCategories = {
     "Heroic Milestones": ["New Beginning", "Rise of Great Heroes", "Lazy Heroes", "Dirty Heroes", "Angry Heroes", "Tired Heroes", "Scared Heroes", "Good Heroes", "Funny Heroes", "Beautiful Heroes", "Awesome Heroes", "Furious Heroes", "Superb Heroes"]
 }
 
-function prevCategory(task)
+function getPreviousTaskInCategory(task)
 {
     var prev = ""
     for (const category in jobCategories) {
@@ -438,11 +438,6 @@ const tooltips = {
     "Awesome Heroes": "Total Hero XP multiplier is 5e180",
     "Furious Heroes": "Total Hero XP multiplier is 5e198",
     "Superb Heroes": "Total Hero XP multiplier is 5e201",
-}
-
-
-function getBaseLog(x, y) {
-    return Math.log(y) / Math.log(x);
 }
   
 function getBindedTaskEffect(taskName) {
@@ -1046,10 +1041,10 @@ function updateTaskRows() {
 
         let tooltip = tooltips[key]
 
-        if (task instanceof Task && !task.isHero && IsHeroesUnlocked()) {
+        if (task instanceof Task && !task.isHero && isHeroesUnlocked()) {
             const requirementObject = gameData.requirements[key]
             const requirements = requirementObject.requirements
-            const prev = prevCategory(key)
+            const prev = getPreviousTaskInCategory(key)
 
             tooltip += "<br> <span style=\"color: red\">Required</span>: <span style=\"color: orange\">"
             let reqlist = ""
@@ -1229,7 +1224,7 @@ function updateItemRows() {
         button.disabled = gameData.coins < item.getExpense()
         const name = button.getElementsByClassName("name")[0]
 
-        if (IsHeroesUnlocked()) 
+        if (isHeroesUnlocked()) 
             name.classList.add("legendary")        
         else 
             name.classList.remove("legendary")        
@@ -1252,17 +1247,6 @@ function updateHeaderRows(categories) {
         const maxLevelElement = headerRow.getElementsByClassName("maxLevel")[0]
         gameData.rebirthOneCount > 0 ? maxLevelElement.classList.remove("hidden") : maxLevelElement.classList.add("hidden")
     }
-}
-
-function formatTime(sec_num) {    
-    let hours = Math.floor(sec_num / 3600)
-    let minutes = Math.floor((sec_num - (hours * 3600)) / 60)
-    let seconds = Math.floor(sec_num - (hours * 3600) - (minutes * 60))
-
-    if (hours < 10) hours = "0" + hours
-    if (minutes < 10) minutes = "0" + minutes
-    if (seconds < 10) seconds = "0" + seconds
-    return hours + ':' + minutes + ':' + seconds    
 }
 
 function updateText() {
@@ -1296,7 +1280,7 @@ function updateText() {
         )
 
     const button = document.getElementById("rebirthButton3").getElementsByClassName("button")[0]
-    button.style.background = nextMilestoneInReach() ? "#065c21" : ""    
+    button.style.background = isNextMilestoneInReach() ? "#065c21" : ""    
 }
 
 function setSignDisplay() {
@@ -1317,7 +1301,7 @@ function getNet() {
     return Math.abs(getIncome() - getExpense())
 }
 
-function hideEntities() {
+function hideCompletedRequirements() {
     for (const key in gameData.requirements) {
         const requirement = gameData.requirements[key]
         for (const element of requirement.elements) {
@@ -1399,27 +1383,6 @@ function autoBuy() {
     }
 }
 
-function yearsToDays(years) {
-    return years * 365
-}
-
-function daysToYears(days) {
-    return Math.floor(days / 365)
-}
- 
-function getDay(days) {
-    return Math.floor(days - daysToYears(days) * 365)
-}
-
-function formatAge(days) {
-    const years = daysToYears(days)
-    const day = getDay(days)
-    if (years > 10000)    
-        return "Age " + format(years)    
-    else
-        return "Age " + years + " Day " + day
-}
-
 function increaseDays() {
     gameData.days += applySpeed(1)
 }
@@ -1427,53 +1390,6 @@ function increaseDays() {
 function increaseRealtime() {
     if (!gameData.paused && isAlive())
         gameData.realtime += 1.0 / updateSpeed;
-}
-
-function format(number,decimals= 1) {
-    // what tier? (determines SI symbol)
-    const tier = Math.log10(number) / 3 | 0;
-    if (tier == 0) return number.toFixed(decimals);
-
-    if ((gameData.settings.numberNotation == 0 || tier < 3) && (tier < units.length)) {
-        // get suffix and determine scale
-        const suffix = units[tier];
-        const scale = Math.pow(10, tier * 3);
-        // scale the number
-        const scaled = number / scale;
-        // format number and add suffix
-        return scaled.toFixed(decimals) + suffix;
-    } else {
-        if (gameData.settings.numberNotation == 1)
-            return number.toExponential(decimals).replace("e+", "e")
-        else
-            return math.format(number, { notation: 'engineering', precision: 3 }).replace("e+", "e")
-    }
-}
-
-function formatCoins(coins, element) {
-    const platina = Math.floor(coins / 1e6)
-    const gold = Math.floor((coins - platina * 1e6) / 1e4)
-    const silver = Math.floor((coins - platina * 1e6 - gold * 1e4) / 100)
-    const copper = Math.floor(coins - platina * 1e6 - gold * 1e4 - silver * 100)
-
-    const money = {
-        "p": { "color": "#79b9c7", "showbefore": null, "value": platina },
-        "g": { "color": "#E5C100", "showbefore": 1e8, "value": gold },
-        "s": { "color": "#a8a8a8", "showbefore": 1e6, "value": silver },
-        "c": { "color": "#a15c2f", "showbefore": 1e4, "value": copper },
-    }
-
-    let i = 0
-    for (const key in money) {
-        if ((money[key].showbefore == null || coins < money[key].showbefore) && (money[key].value > 0)) {
-            element.children[i].textContent = format(money[key].value, money[key].value < 1000000? 0: 1) + key
-            element.children[i].style.color = money[key].color
-        }
-        else {
-            element.children[i].textContent = ""            
-        }
-        i++
-    }    
 }
 
 function getTaskElement(taskName) {
@@ -1491,18 +1407,10 @@ function getMilestoneElement(milestoneName) {
     return document.getElementById(milestone.id)
 }
 
-function getElementsByClass(className) {
-    return document.getElementsByClassName(removeSpaces(className))
-}
-
 function setLightDarkMode() {
     const body = document.getElementById("body")
     body.classList.contains("dark") ? body.classList.remove("dark") : body.classList.add("dark")
     gameData.settings.darkTheme = body.classList.contains("dark")
-}
-
-function removeSpaces(string) {
-    return string.replace(/ /g, "")
 }
 
 function rebirthOne() {
@@ -1618,7 +1526,7 @@ function isAlive() {
     return condition
 }
 
-function IsHeroesUnlocked() {
+function isHeroesUnlocked() {
     return gameData.requirements["New Beginning"].isCompleted() && (gameData.taskData["One Above All"].level >= 2000 || gameData.taskData["One Above All"].isHero)
 }
 
@@ -1632,15 +1540,15 @@ function makeHero(task) {
 }
 
 function makeHeroes() {
-    if (!IsHeroesUnlocked()) return
+    if (!isHeroesUnlocked()) return
 
     for (const taskname in gameData.taskData) {
-        const hero = gameData.taskData[taskname]
+        const task = gameData.taskData[taskname]
 
-        if (hero.isHero)
+        if (task.isHero)
             continue        
 
-            const prev = prevCategory(taskname)
+        const prev = getPreviousTaskInCategory(taskname)
 
         if (prev != "" && (!gameData.taskData[prev].isHero || gameData.taskData[prev].level < 20)) 
                 continue
@@ -1658,8 +1566,8 @@ function makeHeroes() {
                 }
         }
 
-        if (isNewHero)        
-            makeHero(hero)
+        if (isNewHero)
+            makeHero(task)
     }
 
     for (const key in gameData.itemData) {
@@ -1789,7 +1697,7 @@ function updateUI() {
     updateHeaderRows(skillCategories)
 
     updateQuickTaskDisplay()
-    hideEntities()
+    hideCompletedRequirements()
     updateText()  
 }
 
@@ -1811,11 +1719,7 @@ function update(needUpdateUI = true) {
     for (const key in gameData.taskData) {
         const task = gameData.taskData[key]
         if ((task instanceof Skill || task instanceof Job) && gameData.requirements[key].completed) {
-
-            if (task instanceof Skill)
-                doCurrentTask(task)
-            else
-                doCurrentTask(task)
+            doCurrentTask(task)
         }
     }
     
@@ -1924,12 +1828,12 @@ function outExportButton() {
 }
 
 
-function onFontButton() {
+function onFontButtonHover() {
     const tooltip = document.getElementById("fontSizeTooltip");
     tooltip.classList.remove("hidden")
 }
 
-function outFontButton() {
+function onFontButtonStopHover() {
     const tooltip = document.getElementById("fontSizeTooltip");
     tooltip.classList.add("hidden")
 }
@@ -1946,7 +1850,7 @@ window.addEventListener('keydown', function(e) {
     if (e.key=="ArrowLeft") changeTab(-1)     
 });
 
-function nextMilestoneInReach() {
+function isNextMilestoneInReach() {
     const totalEssence = gameData.essence + getEssenceGain()
 
     for (const key in gameData.milestoneData) {
