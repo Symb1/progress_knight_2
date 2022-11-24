@@ -499,7 +499,7 @@ function updateText() {
     document.getElementById("rebirthTwoCountDisplay").textContent = gameData.rebirthTwoCount
     document.getElementById("rebirthThreeCountDisplay").textContent = gameData.rebirthThreeCount
     document.getElementById("completedTimesDisplay").textContent = gameData.completedTimes
-    document.getElementById("completedBoostDisplay").textContent = format(Math.pow(2, gameData.completedTimes))
+    document.getElementById("completedBoostDisplay").textContent = format(getCompletedGameSpeedBoost())
 
 
     document.getElementById("rebirthOneFastestDisplay").textContent = formatTime(gameData.stats.fastest1, true)

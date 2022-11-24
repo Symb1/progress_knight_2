@@ -646,7 +646,7 @@ function setCustomEffects() {
     faintHope.getEffect = function () {
         var mult = 1
         if (gameData.requirements["Faint Hope"].isCompleted()) 
-            mult = 1 + (gameData.realtime * Math.pow(2, gameData.completedTimes)) / 600    
+            mult = 1 + (gameData.realtime * getCompletedGameSpeedBoost()) / 600    
 
         return mult
     }
@@ -1025,8 +1025,8 @@ function getLifespan() {
 	const higherDimensions = gameData.taskData["Higher Dimensions"]
 	const abyss = gameData.taskData["Ceaseless Abyss"]
     const cosmicLongevity = gameData.taskData["Cosmic Longevity"]
-    return baseLifespan * immortality.getEffect() * superImmortality.getEffect() * abyss.getEffect() 
-        * cosmicLongevity.getEffect() * higherDimensions.getEffect() * Math.pow(2, gameData.completedTimes)
+    return baseLifespan * immortality.getEffect() * superImmortality.getEffect() * abyss.getEffect()
+        * cosmicLongevity.getEffect() * higherDimensions.getEffect() * getCompletedGameSpeedBoost()
 }
 
 function isAlive() {
