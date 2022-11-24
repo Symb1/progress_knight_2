@@ -111,7 +111,7 @@
             </div>
 
             <div id="column" class="column">
-                <div id="tabcolumn" class="panel w3-margin-left tab-column">
+                <div id="tabcolumn" class="panel w3-margin-left tabs-tab-column">
                     <div class="w3-button w3-bar-item tabButton baritem" id="jobsTabButton" onClick="setTab('jobs')">Hero</div>
                     <div class="w3-button w3-bar-item tabButton baritem hidden" id="skillsTabButton" onClick="setTab('skills')">Skills</div>
                     <div class="w3-button w3-bar-item tabButton baritem hidden" id="shopTabButton" onClick="setTab('shop')">Shop</div>
@@ -119,7 +119,7 @@
                     <div class="w3-button w3-bar-item tabButton baritem" id="rebirthTabButton" onClick="setTab('rebirth')">Amulet</div>
                     <div class="w3-button w3-bar-item tabButton baritem" id="settingsTabButton" onClick="setTab('settings')">Settings</div>
                 </div>
-                <div id="maincolumn" class="panel w3-margin-left w3-margin-top w3-padding main-column">
+                <div id="maincolumn" class="panel w3-margin-left w3-margin-top w3-padding tabs-main-column">
                     <template class="headerRowTaskTemplate">
                         <tr>
                             <th class="category" style="width: 20em">Job</th>
@@ -366,84 +366,129 @@
                     </div>
 
                     <div class="tab" id="settings">
-                        <div id="settingsPage" style="flex: 1; margin-left: 0.5em;">
-                            <ul>
-                                <li>
-                                    <div class="text-caption">
-                                        <button class="w3-button button" onClick="importGameData()">Import save</button>
-                                        <button class="w3-button button" onClick="exportGameData()" onmouseout="outExportButton()">Export save</button><span class="tooltiptext" id="exportTooltip"></span>
-                                        <form style="margin-top: 0.8em">
-                                            <input id="importExportBox" type="text" style="width:20em">
-                                        </form>
+                        <div id="columnSettings" class="column">
+                            <div id="tabcolumnSettings" class="panel w3-margin-left settings-tab-column">
+                                <div class="w3-button w3-bar-item tabButtonSettings baritem w3-blue-gray" id="settingsTabTabButton" onClick="setTabSettings('settingsTab')">Settings</div>
+                                <div class="w3-button w3-bar-item tabButtonSettings baritem" id="statsTabTabButton" onClick="setTabSettings('statsTab')">Stats</div>                                
+                            </div>
+                            <div id="maincolumnSettings" class="panel w3-margin-left w3-margin-top w3-padding settings-main-column">
+                                <div id="settingsTab" class="tabSettings">
+                                    <div id="settingsPage" style="flex: 1; margin-left: 0.5em;">
+                                        <ul>
+                                            <li>
+                                                <div class="text-caption">
+                                                    <button class="w3-button button" onClick="importGameData()">Import save</button>
+                                                    <button class="w3-button button" onClick="exportGameData()" onmouseout="outExportButton()">Export save</button><span class="tooltiptext" id="exportTooltip"></span>
+                                                    <form style="margin-top: 0.8em">
+                                                        <input id="importExportBox" type="text" style="width:20em">
+                                                    </form>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="text-caption" style="margin-top: 0.4em;">Settings</div>
+                                                <table class="w3-table w3-bordered">
+                                                    <tr>
+                                                        <td style="padding: 0.4em; width:15em">Sticky sidebar</td>
+                                                        <td><input id="settingsStickySidebar" type="checkbox" style="width:1.6em;height:1.6em" onclick="setStickySidebar(this.checked)" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Numbers notation</td>
+                                                        <td style="padding: 0.4em">
+                                                            <button class="w3-button button Notation selected" onclick="setNotation(0)">Standard</button>
+                                                            <button class="w3-button button Notation" onclick="setNotation(1)">Scientific</button>
+                                                            <button class="w3-button button Notation" onclick="setNotation(2)">Engineering</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Layout</td>
+                                                        <td style="padding: 0.4em">
+                                                            <button class="w3-button button Layout" onclick="setLayout(1)">Standard</button>
+                                                            <button class="w3-button button Layout" onclick="setLayout(0)">W I D E</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Font-size</td>
+                                                        <td style="padding: 0.4em">
+                                                            <button class="w3-button button" onmouseover="onFontButton()" onmouseout="outFontButton()" onclick="setFontSize(gameData.settings.fontSize - 1)">Smaller</button>
+                                                            <button class="w3-button button" onmouseover="onFontButton()" onmouseout="outFontButton()" onclick="setFontSize(gameData.settings.fontSize + 1)">Larger</button>
+                                                            <span class="tooltiptext hidden" id="fontSizeTooltip" style="color: gray">keep pressing to change more</span>
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Toggle light/dark mode</td>
+                                                        <td style="padding: 0.4em">
+                                                            <button class="w3-button button" onClick="setLightDarkMode()">Toggle</button>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </li>
+                                            <li>
+                                                <div class="text-caption" style="margin-top: 0.4em;">Shortcuts</div>
+                                                <div style="margin-bottom: 8px;">
+                                                    Arrow Keys - Menu navigation
+                                                    <br>
+                                                    Spacebar - Pause
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="text-caption" style="margin-top: 0.4em;">
+                                                    <button class="w3-button button w3-red" onClick="resetGameData()">Hard reset game</button>
+                                                </div>
+                                                <div class="text-caption" style="margin-top: 0.4em;">
+                                                    <span id="completedTimes" style="padding-top: 0.4em; color: rgb(204, 0, 255)"></span>
+                                                </div>
+
+                                            </li>
+                                            <li>
+                                                <div class="text-caption" style="margin-top: 0.4em;">Links</div>
+                                                <div style="margin-bottom: 8px;">
+                                                    Based on <a href="https://symb1.github.io/progress_knight_2/">Progress Knight 2.0</a> mod
+                                                    <br>Original game: <a href="https://ihtasham42.github.io/progress-knight/">Progress Knight</a>
+                                                    <br><a href="https://discord.gg/fTRS4pHGka" target="_blank">Join the discord community! <img src="img/discord_icon.png" style="width:3em; height:3em;"></a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <span id="version" style="font-size:smaller; float:right" class="w3-text-gray">Version: 2.1.15</span>
                                     </div>
-                                </li>
-                                <li>
-                                    <div class="text-caption" style="margin-top: 0.4em;">Settings</div>
-                                    <table class="w3-table w3-bordered">
-                                        <tr>
-                                            <td style="padding: 0.4em; width:15em">Sticky sidebar</td>
-                                            <td><input id="settingsStickySidebar" type="checkbox" style="width:1.6em;height:1.6em" onclick="setStickySidebar(this.checked)" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Numbers notation</td>
-                                            <td style="padding: 0.4em">
-                                                <button class="w3-button button Notation selected" onclick="setNotation(0)">Standard</button>
-                                                <button class="w3-button button Notation" onclick="setNotation(1)">Scientific</button>
-                                                <button class="w3-button button Notation" onclick="setNotation(2)">Engineering</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Layout</td>
-                                            <td style="padding: 0.4em">
-                                                <button class="w3-button button Layout" onclick="setLayout(1)">Standard</button>
-                                                <button class="w3-button button Layout" onclick="setLayout(0)">W I D E</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Font-size</td>
-                                            <td style="padding: 0.4em">
-                                                <button class="w3-button button" onmouseover="onFontButtonHover()" onmouseout="onFontButtonStopHover()" onclick="setFontSize(gameData.settings.fontSize - 1)">Smaller</button>
-                                                <button class="w3-button button" onmouseover="onFontButtonHover()" onmouseout="onFontButtonStopHover()" onclick="setFontSize(gameData.settings.fontSize + 1)">Larger</button>
-                                                <span class="tooltiptext hidden" id="fontSizeTooltip" style="color: gray">keep pressing to change more</span>
-                                                
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td> Toggle light/dark mode</td>
-                                            <td style="padding: 0.4em">
-                                                <button class="w3-button button" onClick="setLightDarkMode()">Toggle</button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </li>
-                                <li>
-                                    <div class="text-caption" style="margin-top: 0.4em;">Shortcuts</div>
-                                    <div style="margin-bottom: 8px;">
-                                        Arrow Keys - Menu navigation
-                                        <br>
-                                        Spacebar - Pause
+                                </div>
+                                <div id="statsTab" class="tabSettings">
+                                    <div id="statsPage" style="flex: 1; margin-left: 0.5em;">
+                                        <div>
+                                            <ul>
+                                                <li>You started play the game: <span id="startDateDisplay"></span>.</li>
+                                                <li>You have played for <span id="playedDaysDisplay"></span> days.</li>
+                                            </ul>
+                                        </div>
+                                        <div id="statsRebirth1" class="hidden">
+                                            <ul>
+                                                <li>You have touched the eye <span id="rebirthOneCountDisplay"></span> times. </li>
+                                                <li>Your fastest touch is <span id="rebirthOneFastestDisplay"></span>.</li>
+                                            </ul>
+                                        </div>
+                                        <div id="statsRebirth2" class="hidden">
+                                            <ul>
+                                                <li>You have embraced evil <span id="rebirthTwoCountDisplay"></span> times.</li>
+                                                <li>Your fastest embrace is <span id="rebirthTwoFastestDisplay"></span>.</li>
+                                            </ul>
+                                        </div>
+                                        <div id="statsRebirth3" class="hidden">
+                                            <ul>
+                                                <li>You have transcended <span id="rebirthThreeCountDisplay"></span> times.</li>
+                                                <li>Your fastest transcend is <span id="rebirthThreeFastestDisplay"></span>.</li>
+                                            </ul>
+                                        </div>
+                                        <div id="statsComplete" class="hidden">
+                                            <ul>
+                                                <li>You have completed the game <span id="completedTimesDisplay"></span> times.</li>
+                                                <li>Time boost is x<span id="completedBoostDisplay"></span>.</li>
+                                                <li>Current game run time is <span id="currentRunDisplay"></span>.</li>
+                                                <li>Your fastest completion is <span id="completedFastestDisplay"></span>.</li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </li>
-                                <li>
-                                    <div class="text-caption" style="margin-top: 0.4em;">
-                                        <button class="w3-button button w3-red" onClick="resetGameData()">Hard reset game</button>
-                                    </div>
-                                    <div class="text-caption" style="margin-top: 0.4em;">
-                                        <span id="completedTimes" style="padding-top: 0.4em; color: rgb(204, 0, 255)"></span>
-                                    </div>
-                                    
-                                </li>
-                                <li>
-                                    <div class="text-caption" style="margin-top: 0.4em;">Links</div>
-                                    <div style="margin-bottom: 8px;">
-                                        Based on <a href="https://symb1.github.io/progress_knight_2/">Progress Knight 2.0</a> mod
-                                        <br>Original game: <a href="https://ihtasham42.github.io/progress-knight/">Progress Knight</a>
-                                        <br><a href="https://discord.gg/fTRS4pHGka" target="_blank">Join the discord community! <img src="img/discord_icon.png" style="width:3em; height:3em;"></a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div id="dummyPage3" style="flex: 2; margin-left: 0.5em;">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

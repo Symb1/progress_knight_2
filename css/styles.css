@@ -189,7 +189,7 @@ button:focus {
   
 .tooltip .tooltipText {
     visibility: hidden;
-    width: 20em;
+    width: 25em;
     background-color: black;
     color: #fff;
     text-align: center;
@@ -305,6 +305,18 @@ button:focus {
 
 .plain-main-column {
     width: 164em;
+    height: auto;
+    float: right;
+    margin-bottom: 4em;
+}
+
+.settings-tab-column {
+    width: 56em;
+    height: auto;
+}
+
+.settings-main-column {
+    width: 56em;
     height: auto;
     float: right;
     margin-bottom: 4em;
