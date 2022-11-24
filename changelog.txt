@@ -1,50 +1,87 @@
-version 2.1.15
+version 2.1.12 / 25.11.2022
 * added Stats Page
 * added Changelog
 
-version 2.1.14
-* test
-* test
-* test
+version 2.1.11 / 24.11.2022 
+* improved code quality
 
-version 2.1.14
-* test
-* test
-* test
+version 2.1.10 / 23.11.2022 
+* tooltip for auto-buy 
 
-version 2.1.14
-* test
-* test
-* test
+version 2.1.9 / 21.11.2022 
+* Heroic Milestones rebalanced completely
+* Show effect description for Milestones from game data
+* small UI update
+* fixes for infinity values
 
-version 2.1.14
-* test
-* test
-* test
+version 2.1.8a / 20.11.2022 
+* bugfix
 
-version 2.1.14
-* test
-* test
-* test
+version 2.1.8 / 19.11.2022 
+* Great Cosmic Recollection is really Great now!
+* fix for items circular icons
+* update for milestone tooltips
+* Transcend button will glow green when new milestone is in reach
+
+version 2.1.7 / 18.11.2022
+* New 13 Heroic Milestones
+* changed name to Progress Knight Quest
+* Milestones balancing
+
+version 2.1.6 / 17.11.2022
+* UI overhaul. Options for Standard or "W I D E"
+* default UI is Standard
+* You can change font-size now
+* added Greater jobs, skills and items 
+* Essence Milestones are completed
+* Engineering notation added
+* the game can be completed many times, each time will be added boost
+* Click on items table header to enable auto-buy
+
+version 2.1.5 / 16.11.2022
+* new format for Age display 
+* Milestone "Warp Drive" renamed to "Eternal Time"
+* 3 New Milestones
+
+version 2.1.4 / 15.11.2022
+* Time Warping display and caclulation errors are fixed
+* Milestones UI update
+* added new item: Spaceship
+* added Scientific notation
+* added new 2 Milestones
+* Milestones balancing
 
 
-version 2.1.14
-* test
-* test
-* test
+version 2.1.3 / 14.11.2022
+* Time Warping enable/disable button is removed
+* Time Warping enabled always
+* added confirmation dialog on hard reset
+* added first 5 Milesones
+* if game cannot load save data it will not hung now
+* fix some importing save issues
+* added transcend button to quick bar rebirth buttons
+* added discord icon to site server
 
-version 2.1.14
-* test
-* test
-* test
+version 2.1.2 / 13.11.2022
+* realtime stops on pause or death
+* save copied to clipboard
+* added Rebirth title for quick bar rebirth buttons
+* Time Warping value format changed
 
 
-version 2.1.14
-* test
-* test
-* test
+version 2.1.1 / 12.11.2022
+* added rebirth buttons in quick bar
+* combined jobs, skill and items on one page
+* autobuy/automation is always enabled
+* removed unused 2.0 code/UI
+* when autobuy for items are enabled, items circled icons has different color
+* update number formatting
+* added realtime timer
+* updated formatting for coins
+* small UI update
+* light/dark theme now saved
 
-version 2.1.14
-* test
-* test
-* test
+version 2.1.0 / 11.11.2022
+* jobs and skills progress simultaneously
+* auto select best job
+* auto-buy for items
