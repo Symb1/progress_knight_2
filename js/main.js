@@ -6,13 +6,13 @@ var gameData = {
     coins: 0,
     days: 365 * 14,
     evil: 0,
-	essence: 0,
+    essence: 0,
     paused: false,
     timeWarpingEnabled: true,
 
     rebirthOneCount: 0,
     rebirthTwoCount: 0,
-	rebirthThreeCount: 0,
+    rebirthThreeCount: 0,
 
     currentJob: null,
     currentProperty: null,
@@ -26,8 +26,17 @@ var gameData = {
         fontSize: 3,
         selectedTab: 'jobs'
     },
+    stats: {
+        startDate: new Date(),
+        fastest1: null,
+        fastest2: null,
+        fastest3: null,
+        fastestGame: null,
+
+    },
 
     realtime: 0.0,
+    realtimeRun: 0.0,
     completedTimes: 0,    
 }
 
@@ -873,8 +882,9 @@ function increaseDays() {
 }
 
 function increaseRealtime() {
-    if (!gameData.paused && isAlive())
+    if (!gameData.paused && isAlive()) 
         gameData.realtime += 1.0 / updateSpeed;
+    gameData.realtimeRun += 1.0 / updateSpeed;
 }
 
 function setLightDarkMode() {
@@ -885,6 +895,8 @@ function setLightDarkMode() {
 
 function rebirthOne() {
     gameData.rebirthOneCount += 1
+    if (gameData.stats.fastest1 == null || gameData.realtime < gameData.stats.fastest1)
+        gameData.stats.fastest1 = gameData.realtime
 
     rebirthReset()
 }
@@ -892,6 +904,9 @@ function rebirthOne() {
 function rebirthTwo() {
     gameData.rebirthTwoCount += 1
     gameData.evil += getEvilGain()
+
+    if (gameData.stats.fastest2 == null || gameData.realtime < gameData.stats.fastest2)
+        gameData.stats.fastest2 = gameData.realtime
 	
     rebirthReset()
 
@@ -904,7 +919,10 @@ function rebirthTwo() {
 function rebirthThree() {
     gameData.rebirthThreeCount += 1	
 	gameData.essence += getEssenceGain()	
-	gameData.evil = 0
+    gameData.evil = 0
+
+    if (gameData.stats.fastest3 == null || gameData.realtime < gameData.stats.fastest3)
+        gameData.stats.fastest3 = gameData.realtime
 	
 	const recallEffect = gameData.taskData["Cosmic Recollection"].getEffect();
 
@@ -1133,6 +1151,7 @@ function loadGameData() {
             replaceSaveDict(gameData.taskData, gameDataSave.taskData)
             replaceSaveDict(gameData.itemData, gameDataSave.itemData)
             replaceSaveDict(gameData.settings, gameDataSave.settings)
+            replaceSaveDict(gameData.stats, gameDataSave.stats)
             gameData = gameDataSave
 
             if (gameData.coins == null)
@@ -1187,6 +1206,9 @@ function restartGame() {
     clearInterval(saveloop)
     clearInterval(gameloop)
 
+    if (gameData.stats.fastestGame == null || gameData.realtimeRun < gameData.stats.fastestGame)
+        gameData.stats.fastestGame = gameData.realtimeRun
+
     gameData.currentJob = gameData.taskData["Beggar"]
     gameData.currentProperty = gameData.itemData["Homeless"]
     gameData.currentMisc = []
@@ -1201,10 +1223,8 @@ function restartGame() {
     gameData.essence = 0
     gameData.paused = false
     gameData.timeWarpingEnabled = true
-    gameData.rebirthOneCount = 0
-    gameData.rebirthTwoCount = 0
-    gameData.rebirthThreeCount = 0
     gameData.realtime = 0
+    gameData.realtimeRun = 0
     gameData.settings.selectedTab = 'jobs'
 
     gameData.completedTimes += 1
@@ -1492,6 +1512,7 @@ setCustomEffects()
 addMultipliers()
 
 setTab(gameData.settings.selectedTab)
+setTabSettings("settingsTab")
 
 update()
 var gameloop = setInterval(update, 1000 / updateSpeed)
