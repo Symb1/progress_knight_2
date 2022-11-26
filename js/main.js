@@ -1,3 +1,10 @@
+onerror = () => {
+    document.getElementById("errorInfo").hidden = false
+    setInterval(() => {
+        document.getElementById("errorInfo").hidden = true
+    }, 30 * 1000)
+}
+
 var gameData = {
     taskData: {},
     itemData: {},
@@ -39,9 +46,6 @@ var gameData = {
     realtimeRun: 0.0,
     completedTimes: 0,    
 }
-
-const units = ["", "k", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "O", "N", "D", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Od", "Nd", "V", "Uv", "Dv", "Tv",
-    "Qav", "Qiv", "Sxv", "Spv", "Ov", "Nv", "Tr", "Ut", "Dt", "Tt"]
 
 var tempData = {}
 
@@ -621,7 +625,7 @@ function setCustomEffects() {
 
     const timeWarping = gameData.taskData["Time Warping"]
     timeWarping.getEffect = function() {
-        return 1 + getBaseLog(timeWarping.isHero ? 1.005 : 13, timeWarping.level + 1)
+        return 1 + getBaseLog(timeWarping.isHero ? 1.005 : 10, timeWarping.level + 1)
     }
 
     const immortality = gameData.taskData["Life Essence"]
@@ -1196,6 +1200,8 @@ function loadGameData() {
         }
     } catch (error) {
         console.error(error)
+        console.log(localStorage.getItem("gameDataSave"))
+        alert("It looks like you tried to load a corrupted save... If this issue persists feel free to contact the developers!")
     }
 
     assignMethods()
@@ -1273,12 +1279,16 @@ function resetGameData() {
 }
 
 function importGameData() {
-    const importExportBox = document.getElementById("importExportBox")
-    const data = JSON.parse(window.atob(importExportBox.value))
-    clearInterval(gameloop)
-    gameData = data
-    saveGameData()
-    location.reload()
+    try {
+        const importExportBox = document.getElementById("importExportBox")
+        const data = JSON.parse(window.atob(importExportBox.value))
+        clearInterval(gameloop)
+        gameData = data
+        saveGameData()
+        location.reload()
+    } catch (error) {
+        alert("It looks like you tried to load a corrupted save... If this issue persists feel free to contact the developers!")
+    }
 }
 
 function exportGameData() {

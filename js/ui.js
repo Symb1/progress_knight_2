@@ -438,7 +438,7 @@ function updateHeaderRows(categories) {
 function updateText() {
     //Sidebar
     document.getElementById("ageDisplay").textContent = formatAge(gameData.days)
-    document.getElementById("lifespanDisplay").textContent = format(daysToYears(getLifespan()))
+    document.getElementById("lifespanDisplay").textContent = format(daysToYears(getLifespan()), 0)
     document.getElementById("realtimeDisplay").textContent = formatTime(gameData.realtime)
     document.getElementById("pauseButton").textContent = gameData.paused ? "Play" : "Pause"
 
@@ -473,7 +473,7 @@ function updateText() {
     document.getElementById("startDateDisplay").textContent = date.toLocaleDateString()
 
     const currentDate = new Date()
-    document.getElementById("playedDaysDisplay").textContent = format((currentDate.getTime() - date.getTime()) / (1000 * 3600 * 24))
+    document.getElementById("playedDaysDisplay").textContent = format((currentDate.getTime() - date.getTime()) / (1000 * 3600 * 24), 2)
 
     if (gameData.rebirthOneCount > 0)
         document.getElementById("statsRebirth1").classList.remove("hidden")
@@ -512,15 +512,16 @@ function updateText() {
 
 function setSignDisplay() {
     const signDisplay = document.getElementById("signDisplay")
-    if (getIncome() > getExpense()) {
-        signDisplay.textContent = "+"
-        signDisplay.style.color = "green"
-    } else if (getExpense() > getIncome()) {
-        signDisplay.textContent = "-"
-        signDisplay.style.color = "red"
-    } else {
+
+    if (getNet() > -1 && getNet() < 1) {
         signDisplay.textContent = ""
         signDisplay.style.color = "gray"
+    } else if (getIncome() > getExpense()) {
+        signDisplay.textContent = "+"
+        signDisplay.style.color = "green"
+    } else {
+        signDisplay.textContent = "-"
+        signDisplay.style.color = "red"
     }
 }
 
@@ -607,7 +608,7 @@ function changeTab(direction){
     const tabs = Array.prototype.slice.call(document.getElementsByClassName("tab"))
     const tabButtons = Array.prototype.slice.call(document.getElementsByClassName("tabButton"))
 
-    const currentTab = 0
+    let currentTab = 0
     for (const i in tabs) {
         if (!tabs[i].style.display.includes("none") && !tabs[i].classList.contains("hidden"))
              currentTab = i*1

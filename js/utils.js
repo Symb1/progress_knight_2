@@ -1,7 +1,10 @@
 function format(number, decimals = 1) {
+    const units = ["", "k", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "O", "N", "D", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Od", "Nd", "V", "Uv", "Dv", "Tv",
+    "Qav", "Qiv", "Sxv", "Spv", "Ov", "Nv", "Tr", "Ut", "Dt", "Tt"]
+
     // what tier? (determines SI symbol)
     const tier = Math.log10(number) / 3 | 0;
-    if (tier == 0) return number.toFixed(decimals);
+    if (tier <= 0) return number.toFixed(decimals);
 
     if ((gameData.settings.numberNotation == 0 || tier < 3) && (tier < units.length)) {
         // get suffix and determine scale
@@ -34,15 +37,15 @@ function formatCoins(coins, element) {
 
     let i = 0
     for (const key in money) {
-        if ((money[key].showbefore == null || coins < money[key].showbefore) && (money[key].value > 0)) {
-            element.children[i].textContent = format(money[key].value, money[key].value < 1000000? 0: 1) + key
+        if ((money[key].showbefore == null || coins < money[key].showbefore) && (money[key].value > 0 || money[key].value == 0 && key == "c" && coins >= 0)) {
+            element.children[i].textContent = format(money[key].value, money[key].value < 1000000 ? 0 : 1) + key
             element.children[i].style.color = money[key].color
         }
         else {
             element.children[i].textContent = ""            
         }
         i++
-    }    
+    }
 }
 
 function formatTime(sec_num, show_ms=false) {
