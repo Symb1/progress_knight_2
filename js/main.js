@@ -133,7 +133,7 @@ const skillBaseData = {
     "Evil Incarnate": { name: "Evil Incarnate", maxXp: 100, heroxp: 208, effect: 0.01, description: "Ability XP" },
     "Absolute Wish": { name: "Absolute Wish", maxXp: 100, heroxp: 198, effect: 0.005, description: "Evil Gain" },
     "Void Amplification": { name: "Void Amplification", maxXp: 100, heroxp: 251, effect: 0.01, description: "The Void XP" },
-    "Mind Release": { name: "Mind Release", maxXp: 100, heroxp: 251, effect: 0.0006, description: "Increase Happiness" },
+    "Mind Release": { name: "Mind Release", maxXp: 100, heroxp: 251, effect: 0.0006, description: "Increased Happiness" },
     "Ceaseless Abyss": { name: "Ceaseless Abyss", maxXp: 100, heroxp: 251, effect: 0.000585, description: "Longer Lifespan" },
     "Void Symbiosis": { name: "Void Symbiosis", maxXp: 100, heroxp: 253, effect: 0.0015, description: "Ability XP" },
     "Void Embodiment": { name: "Void Embodiment", maxXp: 100, heroxp: 258, effect: 0.0025, description: "Evil Gain" },
