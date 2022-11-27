@@ -507,6 +507,14 @@ function updateText() {
     document.getElementById("rebirthThreeFastestDisplay").textContent = formatTime(gameData.stats.fastest3, true)
     document.getElementById("completedFastestDisplay").textContent = formatTime(gameData.stats.fastestGame, true)
     document.getElementById("currentRunDisplay").textContent = formatTime(gameData.realtimeRun, true)
+
+    document.getElementById("evilPerSecondDisplay").textContent = format(gameData.stats.EvilPerSecond,3)
+    document.getElementById("maxEvilPerSecondDisplay").textContent = format(gameData.stats.maxEvilPerSecond,3)
+    document.getElementById("maxEvilPerSecondRtDisplay").textContent = formatTime(gameData.stats.maxEvilPerSecondRt)
+
+    document.getElementById("essencePerSecondDisplay").textContent = format(gameData.stats.EssencePerSecond,3)
+    document.getElementById("maxEssencePerSecondDisplay").textContent = format(gameData.stats.maxEssencePerSecond,3)
+    document.getElementById("maxEssencePerSecondRtDisplay").textContent = formatTime(gameData.stats.maxEssencePerSecondRt)
 } 
 
 

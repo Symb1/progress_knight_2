@@ -39,6 +39,13 @@ var gameData = {
         fastest2: null,
         fastest3: null,
         fastestGame: null,
+        EvilPerSecond: 0,
+        maxEvilPerSecond: 0,
+        maxEvilPerSecondRt: 0,
+        EssencePerSecond: 0,
+        maxEssencePerSecond: 0,
+        maxEssencePerSecondRt: 0,
+
 
     },
 
@@ -649,8 +656,12 @@ function setCustomEffects() {
     const faintHope = gameData.milestoneData["Faint Hope"]
     faintHope.getEffect = function () {
         var mult = 1
-        if (gameData.requirements["Faint Hope"].isCompleted()) 
-            mult = 1 + (gameData.realtime * getCompletedGameSpeedBoost()) / 600    
+        if (gameData.requirements["Faint Hope"].isCompleted()) {
+            let kickin = 1.1754 - 0.082 * Math.log(gameData.realtime)
+            if (kickin < 0.15)
+                kickin = 0.15
+            mult = 1 + (gameData.realtime * getCompletedGameSpeedBoost()) / (600 * kickin)
+        }
 
         return mult
     }
@@ -1001,6 +1012,12 @@ function rebirthReset() {
     gameData.currentJob = gameData.taskData["Beggar"]
     gameData.currentProperty = gameData.itemData["Homeless"]
     gameData.currentMisc = []
+    gameData.stats.EssencePerSecond = 0
+    gameData.stats.maxEssencePerSecond = 0
+    gameData.stats.maxEssencePerSecondRt = 0
+    gameData.stats.EvilPerSecond = 0
+    gameData.stats.maxEvilPerSecond = 0
+    gameData.stats.maxEvilPerSecondRt = 0
 
     for (const taskName in gameData.taskData) {
         const task = gameData.taskData[taskName]
@@ -1230,9 +1247,32 @@ function update(needUpdateUI = true) {
         }
     }
     
-    applyMilestones()    
+    applyMilestones() 
+    updateStats()
     if (needUpdateUI)
         updateUI()
+}
+
+function updateStats() {
+    if (gameData.requirements["Rebirth stats evil"].isCompleted()) {
+        gameData.stats.EvilPerSecond = getEvilGain() / gameData.realtime
+        if (gameData.stats.EvilPerSecond > gameData.stats.maxEvilPerSecond) {
+            gameData.stats.maxEvilPerSecond = gameData.stats.EvilPerSecond
+            gameData.stats.maxEvilPerSecondRt = gameData.realtime
+        }
+    }
+
+    if (gameData.requirements["Rebirth stats essence"].isCompleted()) {
+        gameData.stats.EssencePerSecond = getEssenceGain() / gameData.realtime
+        if (gameData.stats.EssencePerSecond > gameData.stats.maxEssencePerSecond) {
+            gameData.stats.maxEssencePerSecond = gameData.stats.EssencePerSecond
+            gameData.stats.maxEssencePerSecondRt = gameData.realtime
+        }
+    }
+
+    
+       
+
 }
 
 function restartGame() {
@@ -1376,6 +1416,10 @@ gameData.requirements = {
     "Rebirth button 1": new AgeRequirement([document.getElementById("rebirthButton1")], [{ requirement: 65 }]),
     "Rebirth button 2": new AgeRequirement([document.getElementById("rebirthButton2")], [{ requirement: 200 }]),
     "Rebirth button 3": new TaskRequirement([document.getElementById("rebirthButton3")], [{ task: "Cosmic Recollection", requirement: 1 }]),
+
+    "Rebirth stats evil": new AgeRequirement([document.getElementById("statsEvilGain")], [{ requirement: 200 }]),
+    "Rebirth stats essence": new TaskRequirement([document.getElementById("statsEssenceGain")], [{ task: "Cosmic Recollection", requirement: 1 }]),
+
 
     "Evil info": new EvilRequirement([document.getElementById("evilInfo")], [{requirement: 1}]),
 	"Essence info": new EssenceRequirement([document.getElementById("essenceInfo")], [{requirement: 1}]),
