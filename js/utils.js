@@ -7,7 +7,7 @@ function softcap(value, cap, power = 0.5) {
 function format(number, decimals = 1) {
     // what tier? (determines SI symbol)
     const tier = Math.log10(number) / 3 | 0;
-    if (tier == 0) return number.toFixed(decimals);
+    if (tier <= 0) return number.toFixed(decimals);
 
     if ((gameData.settings.numberNotation == 0 || tier < 3) && (tier < units.length)) {
         // get suffix and determine scale

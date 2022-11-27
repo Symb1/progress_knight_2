@@ -28,6 +28,9 @@ function setChallengeProgress() {
     if (gameData.active_challenge == "time_does_not_fly") {
         gameData.challenges.time_does_not_fly = Math.max(gameData.challenges.time_does_not_fly, getGameSpeed())
     }
+    if (gameData.active_challenge == "dance_with_the_devil") {
+        gameData.challenges.dance_with_the_devil = Math.max(gameData.challenges.dance_with_the_devil, Math.max(0, getEvilGain() - 10))
+    }
 }
 
 function getChallengeHappinessBonus() {
@@ -40,4 +43,8 @@ function getChallengeIncomeBonus() {
 
 function getChallengeTimeWarpingBonus() {
     return softcap(Math.pow(gameData.challenges.time_does_not_fly + 1, 0.05), 2)
+}
+
+function getChallengeEssenceGainBonus() {
+    return softcap(Math.pow(gameData.challenges.dance_with_the_devil + 1, 0.1), 2, 0.15)
 }

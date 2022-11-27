@@ -39,6 +39,7 @@ var gameData = {
         an_unhappy_life: 0,
         rich_and_the_poor: 0,
         time_does_not_fly: 0,
+        dance_with_the_devil: 0,
     },
     realtime: 0.0,
     realtimeRun: 0.0,
@@ -519,9 +520,9 @@ function addMultipliers() {
 			task.xpMultipliers.push(getBindedItemEffect("Celestial Robe"))
 			task.xpMultipliers.push(getBindedTaskEffect("Epiphany"))
         } else if (skillCategories["Dark Magic"].includes(task.name)) {
-            task.xpMultipliers.push(getEvil)
+            task.xpMultipliers.push(getEvilXpGain)
         } else if (skillCategories["Almightiness"].includes(task.name)) {
-			task.xpMultipliers.push(getEssence)
+			task.xpMultipliers.push(getEssenceXpGain)
         } else if (skillCategories["Fundamentals"].includes(task.name)) {
 			task.xpMultipliers.push(getBindedItemEffect("Mind's Eye"))
 		}	
@@ -673,6 +674,7 @@ function setCustomEffects() {
 }
 
 function getHappiness() {
+
     const meditationEffect = getBindedTaskEffect("Meditation")
     const butlerEffect = getBindedItemEffect("Butler")
 	const mindseizeEffect = getBindedTaskEffect("Mind Seize")
@@ -681,15 +683,36 @@ function getHappiness() {
     const happiness = godsBlessings * meditationEffect() * butlerEffect() / mindseizeEffect() 
     * multiverseFragment() * gameData.currentProperty.getEffect() * getChallengeHappinessBonus()
 
-    return gameData.active_challenge == "an_unhappy_life" ? Math.pow(happiness, 0.5) : happiness
+    if (gameData.active_challenge == "dance_with_the_devil") return Math.pow(happiness, 0.075)
+    if (gameData.active_challenge == "an_unhappy_life") return Math.pow(happiness, 0.5)
+
+    return happiness
 }
 
 function getEvil() {
     return gameData.evil
 }
 
+function getEvilXpGain() {
+    if (gameData.active_challenge == "dance_with_the_devil") {
+        const evilEffect = Math.pow(getEvil(), 0.0075) - 1
+        return evilEffect < 0 ? 0 : evilEffect
+    }
+
+    return getEvil()
+}
+
 function getEssence() {
     return gameData.essence
+}
+
+function getEssenceXpGain() {
+    if (gameData.active_challenge == "dance_with_the_devil") {
+        const essenceEffect = Math.pow(getEssence(), 0.0075) - 1
+        return essenceEffect <= 0.01 ? 0 : essenceEffect
+    }
+
+    return getEssence()
 }
 
 function applyMultipliers(value, multipliers) {
@@ -725,7 +748,7 @@ function getEssenceGain() {
     const rise = gameData.milestoneData["Rise of Great Heroes"]
 
     return essenceControl.getEffect() * essenceCollector.getEffect() * transcendentMaster.getEffect()
-        * faintHope.getEffect() * rise.getEffect()
+        * faintHope.getEffect() * rise.getEffect() * getChallengeEssenceGainBonus()
 }
 
 function getCompletedGameSpeedBoost() {
@@ -1534,6 +1557,7 @@ gameData.requirements = {
     "Challenge_an_unhappy_life": new EvilRequirement([document.getElementById("anUnhappyLifeChallenge")], [{ requirement: 10000 }]),
     "Challenge_the_rich_and_the_poor": new EvilRequirement([document.getElementById("theRichAndThePoorChallenge")], [{ requirement: 1000000 }]),
     "Challenge_time_does_not_fly": new EssenceRequirement([document.getElementById("timeDoesNotFlyChallenge")], [{ requirement: 10000 }]),
+    "Challenge_dance_with_the_devil": new EssenceRequirement([document.getElementById("danceWithTheDevilChallenge")], [{ requirement: 1e6 }]),
 }
 
 for (const key in milestoneBaseData) {

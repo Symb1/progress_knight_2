@@ -518,6 +518,7 @@ function updateText() {
     document.getElementById("challengeHappinessBuff").textContent = format(getChallengeHappinessBonus(), 2)
     document.getElementById("challengeIncomeBuff").textContent = format(getChallengeIncomeBonus(), 2)
     document.getElementById("challengeTimewarpingBuff").textContent = format(getChallengeTimeWarpingBonus(), 2)
+    document.getElementById("challengeEssenceGainBuff").textContent = format(getChallengeEssenceGainBonus(), 2)
 } 
 
 
