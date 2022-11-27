@@ -4,6 +4,8 @@ version 2.1.13 / 27.11.2022
 * Time Warping skill slightly buffed
 * Mind Release skill added
 * Mind Sieze removed
+* Added evil/s, essence/s stats
+* Buffed Faint Hope milestone
 
 version 2.1.12a / 26.11.2022
 * bugfix: Great jobs and skills must do level ups even after maximum
