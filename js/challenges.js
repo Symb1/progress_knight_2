@@ -31,13 +31,13 @@ function setChallengeProgress() {
 }
 
 function getChallengeHappinessBonus() {
-    return softcap(Math.pow(gameData.challenges.an_unhappy_life + 1, 0.2), 100)
+    return softcap(Math.pow(gameData.challenges.an_unhappy_life + 1, 0.22), 100)
 }
 
 function getChallengeIncomeBonus() {
-    return softcap(Math.pow(gameData.challenges.rich_and_the_poor + 1, 0.15), 10)
+    return softcap(Math.pow(gameData.challenges.rich_and_the_poor + 1, 0.18), 10)
 }
 
 function getChallengeTimeWarpingBonus() {
-    return softcap(Math.pow(gameData.challenges.time_does_not_fly + 1, 0.045), 2)
+    return softcap(Math.pow(gameData.challenges.time_does_not_fly + 1, 0.05), 2)
 }
