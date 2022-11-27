@@ -34,7 +34,12 @@ var gameData = {
         fastestGame: null,
 
     },
-
+    active_challenge: "",
+    challenges: {
+        an_unhappy_life: 0,
+        rich_and_the_poor: 0,
+        time_does_not_fly: 0,
+    },
     realtime: 0.0,
     realtimeRun: 0.0,
     completedTimes: 0,    
@@ -673,7 +678,10 @@ function getHappiness() {
 	const mindseizeEffect = getBindedTaskEffect("Mind Seize")
     const multiverseFragment = getBindedItemEffect("Multiverse Fragment")
     const godsBlessings = gameData.requirements["God's Blessings"].isCompleted() ? 10000000 : 1
-    return godsBlessings * meditationEffect() * butlerEffect() / mindseizeEffect() * multiverseFragment() * gameData.currentProperty.getEffect()
+    const happiness = godsBlessings * meditationEffect() * butlerEffect() / mindseizeEffect() 
+    * multiverseFragment() * gameData.currentProperty.getEffect() * getChallengeHappinessBonus()
+
+    return gameData.active_challenge == "an_unhappy_life" ? Math.pow(happiness, 0.5) : happiness
 }
 
 function getEvil() {
@@ -730,7 +738,9 @@ function getGameSpeed() {
     const timeLoop = gameData.taskData["Time Loop"]
     const warpDrive = (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
     const timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive
-    return baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * getCompletedGameSpeedBoost()
+    const gameSpeed = baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * getCompletedGameSpeedBoost() * getChallengeTimeWarpingBonus()
+
+    return gameData.active_challenge == "time_does_not_fly" ? Math.pow(gameSpeed, 0.7) : gameSpeed
 }
 
 function applyExpenses() {
@@ -937,6 +947,7 @@ function rebirthTwo() {
         gameData.stats.fastest2 = gameData.realtime
 	
     rebirthReset()
+    gameData.active_challenge = ""
 
     for (const taskName in gameData.taskData) {
         const task = gameData.taskData[taskName]
@@ -960,6 +971,7 @@ function rebirthThree() {
     }
 
     rebirthReset()
+    gameData.active_challenge = ""
 }
 
 function applyMilestones() {
@@ -1180,6 +1192,7 @@ function loadGameData() {
             replaceSaveDict(gameData.itemData, gameDataSave.itemData)
             replaceSaveDict(gameData.settings, gameDataSave.settings)
             replaceSaveDict(gameData.stats, gameDataSave.stats)
+            replaceSaveDict(gameData.challenges, gameDataSave.challenges)
             gameData = gameDataSave
 
             if (gameData.coins == null)
@@ -1214,6 +1227,7 @@ function update(needUpdateUI = true) {
     makeHeroes()
     increaseRealtime()
     increaseDays()
+    setChallengeProgress()
     autoPromote()
     autoBuy()  
     applyExpenses()
@@ -1514,6 +1528,12 @@ gameData.requirements = {
 
     // Milestones
     "Milestones": new EssenceRequirement([document.getElementById("milestonesTabButton")], [{ requirement: 1 }]),
+
+    // Challenges
+    "Challenges": new EvilRequirement([document.getElementById("challengesTabButton")], [{ requirement: 10000 }]),
+    "Challenge_an_unhappy_life": new EvilRequirement([document.getElementById("anUnhappyLifeChallenge")], [{ requirement: 10000 }]),
+    "Challenge_the_rich_and_the_poor": new EvilRequirement([document.getElementById("theRichAndThePoorChallenge")], [{ requirement: 1000000 }]),
+    "Challenge_time_does_not_fly": new EssenceRequirement([document.getElementById("timeDoesNotFlyChallenge")], [{ requirement: 10000 }]),
 }
 
 for (const key in milestoneBaseData) {

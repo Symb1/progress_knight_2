@@ -96,10 +96,12 @@ class Job extends Task {
     }
     
     getIncome() {
-        return (this.isHero ? heroIncomeMult
+        const income = (this.isHero ? heroIncomeMult
             * (this.baseData.heroxp > 78 ? 1e6 : 1)
             * (this.baseData.heroxp > 130 ? 1e5 : 1)
-            : 1) * applyMultipliers(this.baseData.income, this.incomeMultipliers) 
+            : 1) * applyMultipliers(this.baseData.income, this.incomeMultipliers) * getChallengeIncomeBonus()
+
+        return gameData.active_challenge == "rich_and_the_poor" ? Math.pow(income, 0.35) : income
     }
 }
 

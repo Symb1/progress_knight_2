@@ -1,3 +1,9 @@
+function softcap(value, cap, power = 0.5) {
+	if (value <= cap) return value
+    
+    return Math.pow(value, power) * Math.pow(cap, 1 - power)
+}
+
 function format(number, decimals = 1) {
     // what tier? (determines SI symbol)
     const tier = Math.log10(number) / 3 | 0;

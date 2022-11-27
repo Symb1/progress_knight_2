@@ -458,11 +458,14 @@ function updateText() {
     document.getElementById("essenceGainDisplay").textContent = format(getEssenceGain())
     document.getElementById("essenceGainButtonDisplay").textContent = "+" + format(getEssenceGain())
 
-    document.getElementById("timeWarpingDisplay").textContent = "x" + format(
-        gameData.taskData["Time Warping"].getEffect() *
+    const timeWarping = gameData.taskData["Time Warping"].getEffect() *
         gameData.taskData["Temporal Dimension"].getEffect() *
         gameData.taskData["Time Loop"].getEffect() *
-        (gameData.requirements["Eternal Time"].isCompleted() ? 2 : 1)
+        (gameData.requirements["Eternal Time"].isCompleted() ? 2 : 1) *
+        getChallengeTimeWarpingBonus()
+
+    document.getElementById("timeWarpingDisplay").textContent = "x" + format(
+        gameData.active_challenge == "time_does_not_fly" ? Math.pow(timeWarping, 0.7) : timeWarping
     )
 
     const button = document.getElementById("rebirthButton3").getElementsByClassName("button")[0]
@@ -507,6 +510,14 @@ function updateText() {
     document.getElementById("rebirthThreeFastestDisplay").textContent = formatTime(gameData.stats.fastest3, true)
     document.getElementById("completedFastestDisplay").textContent = formatTime(gameData.stats.fastestGame, true)
     document.getElementById("currentRunDisplay").textContent = formatTime(gameData.realtimeRun, true)
+
+    // Challenges
+    document.getElementById("exitChallengeDiv").hidden = gameData.active_challenge == ""
+    document.getElementById("activeChallengeName").textContent = gameData.active_challenge.replaceAll("_", " ")
+
+    document.getElementById("challengeHappinessBuff").textContent = format(getChallengeHappinessBonus(), 2)
+    document.getElementById("challengeIncomeBuff").textContent = format(getChallengeIncomeBonus(), 2)
+    document.getElementById("challengeTimewarpingBuff").textContent = format(getChallengeTimeWarpingBonus(), 2)
 } 
 
 
