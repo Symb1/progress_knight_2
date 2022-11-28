@@ -1,3 +1,9 @@
+function softcap(value, cap, power = 0.5) {
+	if (value <= cap) return value
+    
+    return Math.pow(value, power) * Math.pow(cap, 1 - power)
+}
+
 function format(number, decimals = 1) {
     const units = ["", "k", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "O", "N", "D", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Od", "Nd", "V", "Uv", "Dv", "Tv",
     "Qav", "Qiv", "Sxv", "Spv", "Ov", "Nv", "Tr", "Ut", "Dt", "Tt"]

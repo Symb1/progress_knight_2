@@ -33,7 +33,7 @@ class Task {
     }
 
     getMaxLevelMultiplier() {
-        return 1 + this.maxLevel / 10
+        return gameData.active_challenge == "dance_with_the_devil" ? (10 / (this.maxLevel + 1))  : 1 + this.maxLevel / 10
     }
 
     getXpGain() {
@@ -96,10 +96,12 @@ class Job extends Task {
     }
     
     getIncome() {
-        return (this.isHero ? heroIncomeMult
+        const income = (this.isHero ? heroIncomeMult
             * (this.baseData.heroxp > 78 ? 1e6 : 1)
             * (this.baseData.heroxp > 130 ? 1e5 : 1)
-            : 1) * applyMultipliers(this.baseData.income, this.incomeMultipliers) 
+            : 1) * applyMultipliers(this.baseData.income, this.incomeMultipliers) * getChallengeIncomeBonus()
+
+        return gameData.active_challenge == "rich_and_the_poor" ? Math.pow(income, 0.35) : income
     }
 }
 

@@ -48,7 +48,13 @@ var gameData = {
 
 
     },
-
+    active_challenge: "",
+    challenges: {
+        an_unhappy_life: 0,
+        rich_and_the_poor: 0,
+        time_does_not_fly: 0,
+        dance_with_the_devil: 0,
+    },
     realtime: 0.0,
     realtimeRun: 0.0,
     completedTimes: 0,    
@@ -525,9 +531,9 @@ function addMultipliers() {
 			task.xpMultipliers.push(getBindedItemEffect("Celestial Robe"))
 			task.xpMultipliers.push(getBindedTaskEffect("Epiphany"))
         } else if (skillCategories["Dark Magic"].includes(task.name)) {
-            task.xpMultipliers.push(getEvil)
+            task.xpMultipliers.push(getEvilXpGain)
         } else if (skillCategories["Almightiness"].includes(task.name)) {
-			task.xpMultipliers.push(getEssence)
+			task.xpMultipliers.push(getEssenceXpGain)
         } else if (skillCategories["Fundamentals"].includes(task.name)) {
 			task.xpMultipliers.push(getBindedItemEffect("Mind's Eye"))
 		}	
@@ -683,20 +689,45 @@ function setCustomEffects() {
 }
 
 function getHappiness() {
+
     const meditationEffect = getBindedTaskEffect("Meditation")
     const butlerEffect = getBindedItemEffect("Butler")
 	const mindreleaseEffect = getBindedTaskEffect("Mind Release")
     const multiverseFragment = getBindedItemEffect("Multiverse Fragment")
     const godsBlessings = gameData.requirements["God's Blessings"].isCompleted() ? 10000000 : 1
-    return godsBlessings * meditationEffect() * butlerEffect() * mindreleaseEffect() * multiverseFragment() * gameData.currentProperty.getEffect()
+    const happiness = godsBlessings * meditationEffect() * butlerEffect() * mindreleaseEffect() 
+    * multiverseFragment() * gameData.currentProperty.getEffect() * getChallengeHappinessBonus()
+
+    if (gameData.active_challenge == "dance_with_the_devil") return Math.pow(happiness, 0.075)
+    if (gameData.active_challenge == "an_unhappy_life") return Math.pow(happiness, 0.5)
+
+    return happiness
 }
 
 function getEvil() {
     return gameData.evil
 }
 
+function getEvilXpGain() {
+    if (gameData.active_challenge == "dance_with_the_devil") {
+        const evilEffect = Math.pow(getEvil(), 0.0075) - 1
+        return evilEffect < 0 ? 0 : evilEffect
+    }
+
+    return getEvil()
+}
+
 function getEssence() {
     return gameData.essence
+}
+
+function getEssenceXpGain() {
+    if (gameData.active_challenge == "dance_with_the_devil") {
+        const essenceEffect = Math.pow(getEssence(), 0.0075) - 1
+        return essenceEffect <= 0.01 ? 0 : essenceEffect
+    }
+
+    return getEssence()
 }
 
 function applyMultipliers(value, multipliers) {
@@ -732,7 +763,7 @@ function getEssenceGain() {
     const rise = gameData.milestoneData["Rise of Great Heroes"]
 
     return essenceControl.getEffect() * essenceCollector.getEffect() * transcendentMaster.getEffect()
-        * faintHope.getEffect() * rise.getEffect()
+        * faintHope.getEffect() * rise.getEffect() * getChallengeEssenceGainBonus()
 }
 
 function getCompletedGameSpeedBoost() {
@@ -745,7 +776,9 @@ function getGameSpeed() {
     const timeLoop = gameData.taskData["Time Loop"]
     const warpDrive = (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
     const timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive
-    return baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * getCompletedGameSpeedBoost()
+    const gameSpeed = baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * getCompletedGameSpeedBoost() * getChallengeTimeWarpingBonus()
+
+    return gameData.active_challenge == "time_does_not_fly" ? Math.pow(gameSpeed, 0.7) : gameSpeed
 }
 
 function applyExpenses() {
@@ -952,6 +985,7 @@ function rebirthTwo() {
         gameData.stats.fastest2 = gameData.realtime
 	
     rebirthReset()
+    gameData.active_challenge = ""
 
     for (const taskName in gameData.taskData) {
         const task = gameData.taskData[taskName]
@@ -975,6 +1009,7 @@ function rebirthThree() {
     }
 
     rebirthReset()
+    gameData.active_challenge = ""
 }
 
 function applyMilestones() {
@@ -1201,6 +1236,7 @@ function loadGameData() {
             replaceSaveDict(gameData.itemData, gameDataSave.itemData)
             replaceSaveDict(gameData.settings, gameDataSave.settings)
             replaceSaveDict(gameData.stats, gameDataSave.stats)
+            replaceSaveDict(gameData.challenges, gameDataSave.challenges)
             gameData = gameDataSave
 
             if (gameData.coins == null)
@@ -1237,6 +1273,7 @@ function update(needUpdateUI = true) {
     makeHeroes()
     increaseRealtime()
     increaseDays()
+    setChallengeProgress()
     autoPromote()
     autoBuy()  
     applyExpenses()
@@ -1568,6 +1605,13 @@ gameData.requirements = {
 
     // Milestones
     "Milestones": new EssenceRequirement([document.getElementById("milestonesTabButton")], [{ requirement: 1 }]),
+
+    // Challenges
+    "Challenges": new EvilRequirement([document.getElementById("challengesTabButton")], [{ requirement: 10000 }]),
+    "Challenge_an_unhappy_life": new EvilRequirement([document.getElementById("anUnhappyLifeChallenge")], [{ requirement: 10000 }]),
+    "Challenge_the_rich_and_the_poor": new EvilRequirement([document.getElementById("theRichAndThePoorChallenge")], [{ requirement: 1000000 }]),
+    "Challenge_time_does_not_fly": new EssenceRequirement([document.getElementById("timeDoesNotFlyChallenge")], [{ requirement: 10000 }]),
+    "Challenge_dance_with_the_devil": new EssenceRequirement([document.getElementById("danceWithTheDevilChallenge")], [{ requirement: 1e6 }]),
 }
 
 for (const key in milestoneBaseData) {
