@@ -191,6 +191,7 @@ button:focus {
     color: red;
     border-bottom: 0.1em solid red;
     padding-bottom: 0.4em;
+    margin-bottom: 0.4em;
 }
 
 .challenge {
@@ -333,7 +334,7 @@ button:focus {
 }
 
 .baritem {
-    width: 9em;
+    width: 8em;
     height: auto;
     text-align: center;
 }

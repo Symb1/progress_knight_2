@@ -262,6 +262,10 @@
                             <div>
                                 <p style="color:rgb(240, 0, 0)">Starting a challenge will <b>reset</b> your coins, levels and max levels.</p>
                             </div>
+                            <div id="exitChallengeDiv">
+                                <p>Current challenge: <b><span id="activeChallengeName"></span></b></p>
+                                <button class="w3-button button" onclick="exitChallenge()">Exit challenge</button>
+                            </div>
                             <hr>
                             <div id="anUnhappyLifeChallenge">
                                 <h2>1. An unhappy life</h2>
@@ -289,12 +293,6 @@
                                 <p>Reduces dark magic and almightiness XP effect enormously, max level reduces XP gain and happiness is reduced by ^0.075</p>
                                 <p>Reward: Increases essence gain by x<span id="challengeEssenceGainBuff">1</span></p>
                                 <button class="w3-button button" onclick="enterChallenge('dance_with_the_devil')">Enter challenge</button>
-                            </div>
-
-                            <div id="exitChallengeDiv">
-                                <hr>
-                                <p>Current challenge: <b><span id="activeChallengeName"></span></b></p>
-                                <button class="w3-button button" onclick="exitChallenge()">Exit challenge</button>
                             </div>
                         </div>
                     </div>
