@@ -260,39 +260,41 @@
                     <div class="tab" id="challenges">
                         <div class="panel w3-margin-left w3-margin-top w3-padding">
                             <div>
-                                <p style="color:rgb(240, 0, 0)">Starting a challenge will <b>reset</b> your coins, levels and max levels.</p>
+                                <div style="color:rgb(240, 0, 0)">Starting a challenge will <b>reset</b> your coins, levels and max levels.</div>
+                                <div>The more you advance in the challenge, the higher the reward.</div>
+                                <div>Challenge rewards are always active, even in challenges.</div>
                             </div>
                             <div id="exitChallengeDiv">
                                 <p>Current challenge: <b><span id="activeChallengeName"></span></b></p>
                                 <button class="w3-button button" onclick="exitChallenge()">Exit challenge</button>
+                                <div id="currentChallenge1Reward" class="an_unhappy_life reward hidden" style="display: inline; padding-left:1em">Reward: Increases happiness by x<span id="currentChallengeHappinessBuff"></span></div>
+                                <div id="currentChallenge2Reward" class="rich_and_the_poor reward hidden" style="display: inline; padding-left:1em">Reward: Increases income by x<span id="currentChallengeIncomeBuff"></span></div>
+                                <div id="currentChallenge3Reward" class="time_does_not_fly reward hidden" style="display: inline; padding-left:1em">Reward: Increases time warping by x<span id="currentChallengeTimewarpingBuff"></span></div>
+                                <div id="currentChallenge4Reward" class="dance_with_the_devil reward hidden" style="display: inline; padding-left:1em">Reward: Increases essence gain by x<span id="currentChallengeEssenceGainBuff"></span></div>
                             </div>
-                            <hr>
-                            <div id="anUnhappyLifeChallenge">
-                                <h2>1. An unhappy life</h2>
-                                <p>Reduces happiness by ^0.5</p>
-                                <p>Reward: Increases happiness by x<span id="challengeHappinessBuff">1</span></p>
-                                <button class="w3-button button" onclick="enterChallenge('an_unhappy_life')">Enter challenge</button>
+                            <div id="anUnhappyLifeChallenge" style="padding-top:2em">
+                                <div class="text-caption challenge-title">1. An unhappy life</div>
+                                <div style="color:gray">Reduces happiness by ^0.5</div>
+                                <div class="reward">Reward: Increases happiness by x<span id="challengeHappinessBuff">1</span></div>
+                                <button id="challengeButton1" class="w3-button button" onclick="enterChallenge('an_unhappy_life')">Enter challenge</button>
                             </div>
-                            <div id="theRichAndThePoorChallenge">
-                                <hr>
-                                <h2>2. The rich and the poor</h2>
-                                <p>Reduces income by ^0.35</p>
-                                <p>Reward: Increases income by x<span id="challengeIncomeBuff">1</span></p>
-                                <button class="w3-button button" onclick="enterChallenge('rich_and_the_poor')">Enter challenge</button>
+                            <div id="theRichAndThePoorChallenge" style="padding-top:2em">
+                                <div class="text-caption challenge-title">2. The rich and the poor</div>
+                                <div style="color:gray">Reduces income by ^0.35</div>
+                                <div class="reward">Reward: Increases income by x<span id="challengeIncomeBuff">1</span></div>
+                                <button id="challengeButton2" class="w3-button button" onclick="enterChallenge('rich_and_the_poor')">Enter challenge</button>
                             </div>
-                            <div id="timeDoesNotFlyChallenge">
-                                <hr>
-                                <h2>3. Time does not fly</h2>
-                                <p>Reduces time warping by ^0.7</p>
-                                <p>Reward: Increases time warping by x<span id="challengeTimewarpingBuff">1</span></p>
-                                <button class="w3-button button" onclick="enterChallenge('time_does_not_fly')">Enter challenge</button>
+                            <div id="timeDoesNotFlyChallenge" style="padding-top:2em">
+                                <div class="text-caption challenge-title">3. Time does not fly</div>
+                                <div style="color:gray">Reduces time warping by ^0.7</div>
+                                <div class="reward">Reward: Increases time warping by x<span id="challengeTimewarpingBuff">1</span></div>
+                                <button id="challengeButton3" class="w3-button button" onclick="enterChallenge('time_does_not_fly')">Enter challenge</button>
                             </div>
-                            <div id="danceWithTheDevilChallenge">
-                                <hr>
-                                <h2>4. Dance with the devil</h2>
-                                <p>Reduces dark magic and almightiness XP effect enormously, max level reduces XP gain and happiness is reduced by ^0.075</p>
-                                <p>Reward: Increases essence gain by x<span id="challengeEssenceGainBuff">1</span></p>
-                                <button class="w3-button button" onclick="enterChallenge('dance_with_the_devil')">Enter challenge</button>
+                            <div id="danceWithTheDevilChallenge" style="padding-top:2em">
+                                <div class="text-caption challenge-title">4. Dance with the devil</div>
+                                <div style="color:gray">Reduces dark magic and almightiness XP effect enormously, max level reduces XP gain and happiness is reduced by ^0.075</div>
+                                <div class="reward">Reward: Increases essence gain by x<span id="challengeEssenceGainBuff">1</span></div>
+                                <button id="challengeButton4" class="w3-button button" onclick="enterChallenge('dance_with_the_devil')">Enter challenge</button>
                             </div>
                         </div>
                     </div>

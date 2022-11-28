@@ -1,5 +1,5 @@
 function enterChallenge(challengeName) {
-    rebirthReset()
+    rebirthReset(false)
     gameData.active_challenge = challengeName
 
     for (const taskName in gameData.taskData) {
@@ -9,7 +9,7 @@ function enterChallenge(challengeName) {
 }
 
 function exitChallenge() {
-    rebirthReset()
+    rebirthReset(false)
     gameData.active_challenge = ""
 
     for (const taskName in gameData.taskData) {

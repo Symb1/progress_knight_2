@@ -515,23 +515,54 @@ function updateText() {
     // Challenges
     let challengeTitle = gameData.active_challenge.replaceAll("_", " ")
     challengeTitle = challengeTitle.charAt(0).toUpperCase() + challengeTitle.slice(1)
-    document.getElementById("exitChallengeDiv").hidden = gameData.active_challenge == ""
     document.getElementById("activeChallengeName").textContent = challengeTitle
     document.getElementById("challengeName").textContent = challengeTitle
+
+
     if (gameData.active_challenge == "") {
+        document.getElementById("exitChallengeDiv").hidden = true
+        document.getElementById("challengeTitle").hidden = true
         document.getElementById("info").classList.remove("challenge")
-        document.getElementById("challengeTitle").classList.add("hidden")
+
+        for (let i = 1; i <= Object.keys(gameData.challenges).length; i++) {
+            const element = document.getElementById("challengeButton" + i)
+            if (element != null)
+                element.classList.remove("hidden")        
+            
+        }
     }
     else {
+        document.getElementById("exitChallengeDiv").hidden = false
+        document.getElementById("challengeTitle").hidden = false
         document.getElementById("info").classList.add("challenge")
-        document.getElementById("challengeTitle").classList.remove("hidden")
+
+        for (let i = 1; i <= Object.keys(gameData.challenges).length; i++) {
+            const element = document.getElementById("challengeButton" + i)
+            if (element != null)
+                element.classList.add("hidden")
+
+            const elementReward = document.getElementById("currentChallenge" + i + "Reward")
+            if (elementReward != null) {
+                if (elementReward.classList.contains(gameData.active_challenge))
+                    elementReward.classList.remove("hidden")
+                else
+                    elementReward.classList.add("hidden")
+            }
+        }
     }
+
+    document.getElementById("currentChallengeHappinessBuff").textContent = format(getChallengeHappinessBonus(), 2)
+    document.getElementById("currentChallengeIncomeBuff").textContent = format(getChallengeIncomeBonus(), 2)
+    document.getElementById("currentChallengeTimewarpingBuff").textContent = format(getChallengeTimeWarpingBonus(), 2)
+    document.getElementById("currentChallengeEssenceGainBuff").textContent = format(getChallengeEssenceGainBonus(), 2)
+
 
     document.getElementById("challengeHappinessBuff").textContent = format(getChallengeHappinessBonus(), 2)
     document.getElementById("challengeIncomeBuff").textContent = format(getChallengeIncomeBonus(), 2)
     document.getElementById("challengeTimewarpingBuff").textContent = format(getChallengeTimeWarpingBonus(), 2)
     document.getElementById("challengeEssenceGainBuff").textContent = format(getChallengeEssenceGainBonus(), 2)
 
+    // Gain stats
     document.getElementById("evilPerSecondDisplay").textContent = format(gameData.stats.EvilPerSecond,3)
     document.getElementById("maxEvilPerSecondDisplay").textContent = format(gameData.stats.maxEvilPerSecond,3)
     document.getElementById("maxEvilPerSecondRtDisplay").textContent = formatTime(gameData.stats.maxEvilPerSecondRt)

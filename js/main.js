@@ -1038,8 +1038,9 @@ function applyMilestones() {
     }
 }
 
-function rebirthReset() {
-    setTab("jobs")
+function rebirthReset(set_tab_to_jobs = true) {
+    if (set_tab_to_jobs)
+        setTab("jobs")
 
     gameData.coins = 0
     gameData.days = 365 * 14
