@@ -186,6 +186,16 @@ button:focus {
     position: relative;
     display: inline-block;
 }
+
+.challenge-title {
+    color: red;
+    border-bottom: 0.1em solid red;
+    padding-bottom: 0.4em;
+}
+
+.challenge {
+    border: 0.1em solid red;
+}
   
 .tooltip .tooltipText {
     visibility: hidden;

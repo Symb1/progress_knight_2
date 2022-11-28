@@ -513,8 +513,19 @@ function updateText() {
 
 
     // Challenges
+    let challengeTitle = gameData.active_challenge.replaceAll("_", " ")
+    challengeTitle = challengeTitle.charAt(0).toUpperCase() + challengeTitle.slice(1)
     document.getElementById("exitChallengeDiv").hidden = gameData.active_challenge == ""
-    document.getElementById("activeChallengeName").textContent = gameData.active_challenge.replaceAll("_", " ")
+    document.getElementById("activeChallengeName").textContent = challengeTitle
+    document.getElementById("challengeName").textContent = challengeTitle
+    if (gameData.active_challenge == "") {
+        document.getElementById("info").classList.remove("challenge")
+        document.getElementById("challengeTitle").classList.add("hidden")
+    }
+    else {
+        document.getElementById("info").classList.add("challenge")
+        document.getElementById("challengeTitle").classList.remove("hidden")
+    }
 
     document.getElementById("challengeHappinessBuff").textContent = format(getChallengeHappinessBonus(), 2)
     document.getElementById("challengeIncomeBuff").textContent = format(getChallengeIncomeBonus(), 2)
