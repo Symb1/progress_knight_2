@@ -1,3 +1,7 @@
+version 2.1.14 / 28.11.2022
+* Challenges added
+* Fix spelling and grammar in various tooltips
+
 version 2.1.13 / 27.11.2022
 * Minor bugfixes
 * Error display added for easier bugs submission
