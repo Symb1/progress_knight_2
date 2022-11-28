@@ -267,33 +267,33 @@
                             <div id="exitChallengeDiv">
                                 <p>Current challenge: <b><span id="activeChallengeName"></span></b></p>
                                 <button class="w3-button button" onclick="exitChallenge()">Exit challenge</button>
-                                <div id="currentChallenge1Reward" class="an_unhappy_life reward hidden" style="display: inline; padding-left:1em">Reward: Increases happiness by x<span id="currentChallengeHappinessBuff"></span></div>
-                                <div id="currentChallenge2Reward" class="rich_and_the_poor reward hidden" style="display: inline; padding-left:1em">Reward: Increases income by x<span id="currentChallengeIncomeBuff"></span></div>
-                                <div id="currentChallenge3Reward" class="time_does_not_fly reward hidden" style="display: inline; padding-left:1em">Reward: Increases time warping by x<span id="currentChallengeTimewarpingBuff"></span></div>
-                                <div id="currentChallenge4Reward" class="dance_with_the_devil reward hidden" style="display: inline; padding-left:1em">Reward: Increases essence gain by x<span id="currentChallengeEssenceGainBuff"></span></div>
+                                <div id="currentChallengeReward1" class="an_unhappy_life reward hidden" style="display: inline; padding-left:1em">Reward: Increases happiness by x<span id="currentChallengeHappinessBuff"></span></div>
+                                <div id="currentChallengeReward2" class="rich_and_the_poor reward hidden" style="display: inline; padding-left:1em">Reward: Increases income by x<span id="currentChallengeIncomeBuff"></span></div>
+                                <div id="currentChallengeReward3" class="time_does_not_fly reward hidden" style="display: inline; padding-left:1em">Reward: Increases time warping by x<span id="currentChallengeTimewarpingBuff"></span></div>
+                                <div id="currentChallengeReward4" class="dance_with_the_devil reward hidden" style="display: inline; padding-left:1em">Reward: Increases essence gain by x<span id="currentChallengeEssenceGainBuff"></span></div>
                             </div>
                             <div id="anUnhappyLifeChallenge" style="padding-top:2em">
                                 <div class="text-caption challenge-title">1. An unhappy life</div>
-                                <div style="color:gray">Reduces happiness by ^0.5</div>
-                                <div class="reward">Reward: Increases happiness by x<span id="challengeHappinessBuff">1</span></div>
+                                <div style="color:gray; padding-bottom:0.3em">Reduces happiness by ^0.5</div>
+                                <div id="challengeReward1" class="reward">Reward: Increases happiness by x<span id="challengeHappinessBuff">1</span></div>
                                 <button id="challengeButton1" class="w3-button button" onclick="enterChallenge('an_unhappy_life')">Enter challenge</button>
                             </div>
                             <div id="theRichAndThePoorChallenge" style="padding-top:2em">
                                 <div class="text-caption challenge-title">2. The rich and the poor</div>
-                                <div style="color:gray">Reduces income by ^0.35</div>
-                                <div class="reward">Reward: Increases income by x<span id="challengeIncomeBuff">1</span></div>
+                                <div style="color:gray; padding-bottom:0.3em">Reduces income by ^0.35</div>
+                                <div id="challengeReward2" class="reward">Reward: Increases income by x<span id="challengeIncomeBuff">1</span></div>
                                 <button id="challengeButton2" class="w3-button button" onclick="enterChallenge('rich_and_the_poor')">Enter challenge</button>
                             </div>
                             <div id="timeDoesNotFlyChallenge" style="padding-top:2em">
                                 <div class="text-caption challenge-title">3. Time does not fly</div>
-                                <div style="color:gray">Reduces time warping by ^0.7</div>
-                                <div class="reward">Reward: Increases time warping by x<span id="challengeTimewarpingBuff">1</span></div>
+                                <div style="color: gray; padding-bottom: 0.3em">Reduces time warping by ^0.7</div>
+                                <div id="challengeReward3" class="reward">Reward: Increases time warping by x<span id="challengeTimewarpingBuff">1</span></div>
                                 <button id="challengeButton3" class="w3-button button" onclick="enterChallenge('time_does_not_fly')">Enter challenge</button>
                             </div>
                             <div id="danceWithTheDevilChallenge" style="padding-top:2em">
                                 <div class="text-caption challenge-title">4. Dance with the devil</div>
-                                <div style="color:gray">Reduces dark magic and almightiness XP effect enormously, max level reduces XP gain and happiness is reduced by ^0.075</div>
-                                <div class="reward">Reward: Increases essence gain by x<span id="challengeEssenceGainBuff">1</span></div>
+                                <div style="color: gray; padding-bottom: 0.3em">Reduces dark magic and almightiness XP effect enormously, max level reduces XP gain and happiness is reduced by ^0.075</div>
+                                <div id="challengeReward4" class="reward">Reward: Increases essence gain by x<span id="challengeEssenceGainBuff">1</span></div>
                                 <button id="challengeButton4" class="w3-button button" onclick="enterChallenge('dance_with_the_devil')">Enter challenge</button>
                             </div>
                         </div>
@@ -463,7 +463,6 @@
                                                             <button class="w3-button button" onmouseover="onFontButtonHover()" onmouseout="onFontButtonStopHover()" onclick="setFontSize(gameData.settings.fontSize - 1)">Smaller</button>
                                                             <button class="w3-button button" onmouseover="onFontButtonHover()" onmouseout="onFontButtonStopHover()" onclick="setFontSize(gameData.settings.fontSize + 1)">Larger</button>
                                                             <span class="tooltiptext hidden" id="fontSizeTooltip" style="color: gray">keep pressing to change more</span>
-
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -530,6 +529,14 @@
                                                 <li>You have transcended <span id="rebirthThreeCountDisplay"></span> times.</li>
                                                 <li>Your fastest transcend is <span id="rebirthThreeFastestDisplay"></span>.</li>
                                                 <li id="statsEssenceGain" class="hidden">You gain <span id="essencePerSecondDisplay"></span> essence/s. Maximum <span id="maxEssencePerSecondDisplay"></span> essence/s was at <span id="maxEssencePerSecondRtDisplay"></span>.</li>
+                                            </ul>
+                                        </div>
+                                        <div id="statsChallenges">
+                                            <ul>
+                                                <li id="challengeStat1">Challenge 1 Reward: Increases happiness by x<span id="challengeHappinessBuffDisplay"></span>.</li>
+                                                <li id="challengeStat2">Challenge 2 Reward: Increases income by x<span id="challengeIncomeBuffDisplay"></span>.</li>
+                                                <li id="challengeStat3">Challenge 3 Reward: Increases time warping by x<span id="challengeTimewarpingBuffDisplay"></span>.</li>
+                                                <li id="challengeStat4">Challenge 4 Reward: Increases essence gain by x<span id="challengeEssenceGainBuffDisplay"></span>.</li>
                                             </ul>
                                         </div>
                                         <div id="statsComplete" class="hidden">

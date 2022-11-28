@@ -511,6 +511,14 @@ function updateText() {
     document.getElementById("completedFastestDisplay").textContent = formatTime(gameData.stats.fastestGame, true)
     document.getElementById("currentRunDisplay").textContent = formatTime(gameData.realtimeRun, true)
 
+    // Gain stats
+    document.getElementById("evilPerSecondDisplay").textContent = format(gameData.stats.EvilPerSecond, 3)
+    document.getElementById("maxEvilPerSecondDisplay").textContent = format(gameData.stats.maxEvilPerSecond, 3)
+    document.getElementById("maxEvilPerSecondRtDisplay").textContent = formatTime(gameData.stats.maxEvilPerSecondRt)
+
+    document.getElementById("essencePerSecondDisplay").textContent = format(gameData.stats.EssencePerSecond, 3)
+    document.getElementById("maxEssencePerSecondDisplay").textContent = format(gameData.stats.maxEssencePerSecond, 3)
+    document.getElementById("maxEssencePerSecondRtDisplay").textContent = formatTime(gameData.stats.maxEssencePerSecondRt)
 
     // Challenges
     let challengeTitle = gameData.active_challenge.replaceAll("_", " ")
@@ -541,7 +549,7 @@ function updateText() {
             if (element != null)
                 element.classList.add("hidden")
 
-            const elementReward = document.getElementById("currentChallenge" + i + "Reward")
+            const elementReward = document.getElementById("currentChallengeReward" + i)
             if (elementReward != null) {
                 if (elementReward.classList.contains(gameData.active_challenge))
                     elementReward.classList.remove("hidden")
@@ -551,25 +559,33 @@ function updateText() {
         }
     }
 
+    document.getElementById("challengeReward1").hidden = gameData.challenges.an_unhappy_life == 0
+    document.getElementById("challengeReward2").hidden = gameData.challenges.rich_and_the_poor == 0
+    document.getElementById("challengeReward3").hidden = gameData.challenges.time_does_not_fly == 0
+    document.getElementById("challengeReward4").hidden = gameData.challenges.dance_with_the_devil == 0
+
     document.getElementById("currentChallengeHappinessBuff").textContent = format(getChallengeHappinessBonus(), 2)
     document.getElementById("currentChallengeIncomeBuff").textContent = format(getChallengeIncomeBonus(), 2)
     document.getElementById("currentChallengeTimewarpingBuff").textContent = format(getChallengeTimeWarpingBonus(), 2)
     document.getElementById("currentChallengeEssenceGainBuff").textContent = format(getChallengeEssenceGainBonus(), 2)
-
 
     document.getElementById("challengeHappinessBuff").textContent = format(getChallengeHappinessBonus(), 2)
     document.getElementById("challengeIncomeBuff").textContent = format(getChallengeIncomeBonus(), 2)
     document.getElementById("challengeTimewarpingBuff").textContent = format(getChallengeTimeWarpingBonus(), 2)
     document.getElementById("challengeEssenceGainBuff").textContent = format(getChallengeEssenceGainBonus(), 2)
 
-    // Gain stats
-    document.getElementById("evilPerSecondDisplay").textContent = format(gameData.stats.EvilPerSecond,3)
-    document.getElementById("maxEvilPerSecondDisplay").textContent = format(gameData.stats.maxEvilPerSecond,3)
-    document.getElementById("maxEvilPerSecondRtDisplay").textContent = formatTime(gameData.stats.maxEvilPerSecondRt)
+    // challenge stats
 
-    document.getElementById("essencePerSecondDisplay").textContent = format(gameData.stats.EssencePerSecond,3)
-    document.getElementById("maxEssencePerSecondDisplay").textContent = format(gameData.stats.maxEssencePerSecond,3)
-    document.getElementById("maxEssencePerSecondRtDisplay").textContent = formatTime(gameData.stats.maxEssencePerSecondRt)
+    document.getElementById("challengeStat1").hidden = gameData.challenges.an_unhappy_life == 0
+    document.getElementById("challengeStat2").hidden = gameData.challenges.rich_and_the_poor == 0
+    document.getElementById("challengeStat3").hidden = gameData.challenges.time_does_not_fly == 0
+    document.getElementById("challengeStat4").hidden = gameData.challenges.dance_with_the_devil == 0
+
+    document.getElementById("challengeHappinessBuffDisplay").textContent = format(getChallengeHappinessBonus(), 2)
+    document.getElementById("challengeIncomeBuffDisplay").textContent = format(getChallengeIncomeBonus(), 2)
+    document.getElementById("challengeTimewarpingBuffDisplay").textContent = format(getChallengeTimeWarpingBonus(), 2)
+    document.getElementById("challengeEssenceGainBuffDisplay").textContent = format(getChallengeEssenceGainBonus(), 2)
+
 } 
 
 
