@@ -438,7 +438,7 @@ function updateHeaderRows(categories) {
 function updateText() {
     //Sidebar
     document.getElementById("ageDisplay").textContent = formatAge(gameData.days)
-    document.getElementById("lifespanDisplay").textContent = format(daysToYears(getLifespan()))
+    document.getElementById("lifespanDisplay").textContent = format(daysToYears(getLifespan()), 0)
     document.getElementById("realtimeDisplay").textContent = formatTime(gameData.realtime)
     document.getElementById("pauseButton").textContent = gameData.paused ? "Play" : "Pause"
 
@@ -476,7 +476,7 @@ function updateText() {
     document.getElementById("startDateDisplay").textContent = date.toLocaleDateString()
 
     const currentDate = new Date()
-    document.getElementById("playedDaysDisplay").textContent = format((currentDate.getTime() - date.getTime()) / (1000 * 3600 * 24))
+    document.getElementById("playedDaysDisplay").textContent = format((currentDate.getTime() - date.getTime()) / (1000 * 3600 * 24), 2)
 
     if (gameData.rebirthOneCount > 0)
         document.getElementById("statsRebirth1").classList.remove("hidden")
@@ -511,6 +511,7 @@ function updateText() {
     document.getElementById("completedFastestDisplay").textContent = formatTime(gameData.stats.fastestGame, true)
     document.getElementById("currentRunDisplay").textContent = formatTime(gameData.realtimeRun, true)
 
+
     // Challenges
     document.getElementById("exitChallengeDiv").hidden = gameData.active_challenge == ""
     document.getElementById("activeChallengeName").textContent = gameData.active_challenge.replaceAll("_", " ")
@@ -519,20 +520,29 @@ function updateText() {
     document.getElementById("challengeIncomeBuff").textContent = format(getChallengeIncomeBonus(), 2)
     document.getElementById("challengeTimewarpingBuff").textContent = format(getChallengeTimeWarpingBonus(), 2)
     document.getElementById("challengeEssenceGainBuff").textContent = format(getChallengeEssenceGainBonus(), 2)
+
+    document.getElementById("evilPerSecondDisplay").textContent = format(gameData.stats.EvilPerSecond,3)
+    document.getElementById("maxEvilPerSecondDisplay").textContent = format(gameData.stats.maxEvilPerSecond,3)
+    document.getElementById("maxEvilPerSecondRtDisplay").textContent = formatTime(gameData.stats.maxEvilPerSecondRt)
+
+    document.getElementById("essencePerSecondDisplay").textContent = format(gameData.stats.EssencePerSecond,3)
+    document.getElementById("maxEssencePerSecondDisplay").textContent = format(gameData.stats.maxEssencePerSecond,3)
+    document.getElementById("maxEssencePerSecondRtDisplay").textContent = formatTime(gameData.stats.maxEssencePerSecondRt)
 } 
 
 
 function setSignDisplay() {
     const signDisplay = document.getElementById("signDisplay")
-    if (getIncome() > getExpense()) {
-        signDisplay.textContent = "+"
-        signDisplay.style.color = "green"
-    } else if (getExpense() > getIncome()) {
-        signDisplay.textContent = "-"
-        signDisplay.style.color = "red"
-    } else {
+
+    if (getNet() > -1 && getNet() < 1) {
         signDisplay.textContent = ""
         signDisplay.style.color = "gray"
+    } else if (getIncome() > getExpense()) {
+        signDisplay.textContent = "+"
+        signDisplay.style.color = "green"
+    } else {
+        signDisplay.textContent = "-"
+        signDisplay.style.color = "red"
     }
 }
 
@@ -619,7 +629,7 @@ function changeTab(direction){
     const tabs = Array.prototype.slice.call(document.getElementsByClassName("tab"))
     const tabButtons = Array.prototype.slice.call(document.getElementsByClassName("tabButton"))
 
-    const currentTab = 0
+    let currentTab = 0
     for (const i in tabs) {
         if (!tabs[i].style.display.includes("none") && !tabs[i].classList.contains("hidden"))
              currentTab = i*1

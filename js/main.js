@@ -1,3 +1,10 @@
+onerror = () => {
+    document.getElementById("errorInfo").hidden = false
+    setInterval(() => {
+        document.getElementById("errorInfo").hidden = true
+    }, 30 * 1000)
+}
+
 var gameData = {
     taskData: {},
     itemData: {},
@@ -32,6 +39,13 @@ var gameData = {
         fastest2: null,
         fastest3: null,
         fastestGame: null,
+        EvilPerSecond: 0,
+        maxEvilPerSecond: 0,
+        maxEvilPerSecondRt: 0,
+        EssencePerSecond: 0,
+        maxEssencePerSecond: 0,
+        maxEssencePerSecondRt: 0,
+
 
     },
     active_challenge: "",
@@ -45,9 +59,6 @@ var gameData = {
     realtimeRun: 0.0,
     completedTimes: 0,    
 }
-
-const units = ["", "k", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "O", "N", "D", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Od", "Nd", "V", "Uv", "Dv", "Tv",
-    "Qav", "Qiv", "Sxv", "Spv", "Ov", "Nv", "Tr", "Ut", "Dt", "Tt"]
 
 var tempData = {}
 
@@ -135,7 +146,7 @@ const skillBaseData = {
     "Evil Incarnate": { name: "Evil Incarnate", maxXp: 100, heroxp: 208, effect: 0.01, description: "Ability XP" },
     "Absolute Wish": { name: "Absolute Wish", maxXp: 100, heroxp: 198, effect: 0.005, description: "Evil Gain" },
     "Void Amplification": { name: "Void Amplification", maxXp: 100, heroxp: 251, effect: 0.01, description: "The Void XP" },
-    "Mind Seize": { name: "Mind Seize", maxXp: 100, heroxp: 251, effect: 0.0006, description: "Reduced Happiness" },
+    "Mind Release": { name: "Mind Release", maxXp: 100, heroxp: 251, effect: 0.0006, description: "Increased Happiness" },
     "Ceaseless Abyss": { name: "Ceaseless Abyss", maxXp: 100, heroxp: 251, effect: 0.000585, description: "Longer Lifespan" },
     "Void Symbiosis": { name: "Void Symbiosis", maxXp: 100, heroxp: 253, effect: 0.0015, description: "Ability XP" },
     "Void Embodiment": { name: "Void Embodiment", maxXp: 100, heroxp: 258, effect: 0.0025, description: "Evil Gain" },
@@ -232,7 +243,7 @@ const skillCategories = {
     "Combat"                 : ["Strength", "Battle Tactics", "Muscle Memory"],
     "Magic"                  : ["Mana Control", "Life Essence", "Time Warping", "Astral Body", "Temporal Dimension", "All Seeing Eye", "Brainwashing"],
     "Dark Magic"             : ["Dark Influence", "Evil Control", "Intimidation", "Demon Training", "Blood Meditation", "Demon's Wealth", "Dark Knowledge", "Void Influence", "Time Loop", "Evil Incarnate"],
-	"Void Manipulation"      : ["Absolute Wish", "Void Amplification", "Mind Seize", "Ceaseless Abyss", "Void Symbiosis", "Void Embodiment", "Abyss Manipulation"],
+	"Void Manipulation"      : ["Absolute Wish", "Void Amplification", "Mind Release", "Ceaseless Abyss", "Void Symbiosis", "Void Embodiment", "Abyss Manipulation"],
 	"Celestial Powers"       : ["Cosmic Longevity", "Cosmic Recollection", "Essence Collector", "Galactic Command"],
 	"Almightiness"           : ["Yin Yang", "Parallel Universe", "Higher Dimensions", "Epiphany"]
 }
@@ -371,7 +382,7 @@ const tooltips = {
 	//Void Manipulation
 	"Absolute Wish": "The power to fulfill absolutely any and all wishes without any limitations.",
     "Void Amplification": "You surrender yourself to the Void, making it easier to take control of you.",
-    "Mind Seize": "In a trance like state, you feel the Void controlling your thoughts, perception, memories, emotions and personality.",
+    "Mind Release": "In a trance like state, you feel the Void amplifying your thoughts, perception, memories, emotions and personality.",
 	"Ceaseless Abyss": "Never ending torture, you swore to serve the Void for the rest of your existence.",
 	"Void Symbiosis": "A symbiotic relationship that helps you become one with the Void.",
 	"Void Embodiment": "If thou gaze long into an abyss, the abyss will also gaze into thee.",
@@ -627,7 +638,7 @@ function setCustomEffects() {
 
     const timeWarping = gameData.taskData["Time Warping"]
     timeWarping.getEffect = function() {
-        return 1 + getBaseLog(timeWarping.isHero ? 1.005 : 13, timeWarping.level + 1)
+        return 1 + getBaseLog(timeWarping.isHero ? 1.005 : 10, timeWarping.level + 1)
     }
 
     const immortality = gameData.taskData["Life Essence"]
@@ -651,8 +662,12 @@ function setCustomEffects() {
     const faintHope = gameData.milestoneData["Faint Hope"]
     faintHope.getEffect = function () {
         var mult = 1
-        if (gameData.requirements["Faint Hope"].isCompleted()) 
-            mult = 1 + (gameData.realtime * getCompletedGameSpeedBoost()) / 600    
+        if (gameData.requirements["Faint Hope"].isCompleted()) {
+            let kickin = 1.1754 - 0.082 * Math.log(gameData.realtime)
+            if (kickin < 0.15)
+                kickin = 0.15
+            mult = 1 + (gameData.realtime * getCompletedGameSpeedBoost()) / (600 * kickin)
+        }
 
         return mult
     }
@@ -677,10 +692,10 @@ function getHappiness() {
 
     const meditationEffect = getBindedTaskEffect("Meditation")
     const butlerEffect = getBindedItemEffect("Butler")
-	const mindseizeEffect = getBindedTaskEffect("Mind Seize")
+	const mindreleaseEffect = getBindedTaskEffect("Mind Release")
     const multiverseFragment = getBindedItemEffect("Multiverse Fragment")
     const godsBlessings = gameData.requirements["God's Blessings"].isCompleted() ? 10000000 : 1
-    const happiness = godsBlessings * meditationEffect() * butlerEffect() / mindseizeEffect() 
+    const happiness = godsBlessings * meditationEffect() * butlerEffect() * mindreleaseEffect() 
     * multiverseFragment() * gameData.currentProperty.getEffect() * getChallengeHappinessBonus()
 
     if (gameData.active_challenge == "dance_with_the_devil") return Math.pow(happiness, 0.075)
@@ -1032,6 +1047,12 @@ function rebirthReset() {
     gameData.currentJob = gameData.taskData["Beggar"]
     gameData.currentProperty = gameData.itemData["Homeless"]
     gameData.currentMisc = []
+    gameData.stats.EssencePerSecond = 0
+    gameData.stats.maxEssencePerSecond = 0
+    gameData.stats.maxEssencePerSecondRt = 0
+    gameData.stats.EvilPerSecond = 0
+    gameData.stats.maxEvilPerSecond = 0
+    gameData.stats.maxEvilPerSecondRt = 0
 
     for (const taskName in gameData.taskData) {
         const task = gameData.taskData[taskName]
@@ -1232,6 +1253,8 @@ function loadGameData() {
         }
     } catch (error) {
         console.error(error)
+        console.log(localStorage.getItem("gameDataSave"))
+        alert("It looks like you tried to load a corrupted save... If this issue persists feel free to contact the developers!")
     }
 
     assignMethods()
@@ -1261,9 +1284,32 @@ function update(needUpdateUI = true) {
         }
     }
     
-    applyMilestones()    
+    applyMilestones() 
+    updateStats()
     if (needUpdateUI)
         updateUI()
+}
+
+function updateStats() {
+    if (gameData.requirements["Rebirth stats evil"].isCompleted()) {
+        gameData.stats.EvilPerSecond = getEvilGain() / gameData.realtime
+        if (gameData.stats.EvilPerSecond > gameData.stats.maxEvilPerSecond) {
+            gameData.stats.maxEvilPerSecond = gameData.stats.EvilPerSecond
+            gameData.stats.maxEvilPerSecondRt = gameData.realtime
+        }
+    }
+
+    if (gameData.requirements["Rebirth stats essence"].isCompleted()) {
+        gameData.stats.EssencePerSecond = getEssenceGain() / gameData.realtime
+        if (gameData.stats.EssencePerSecond > gameData.stats.maxEssencePerSecond) {
+            gameData.stats.maxEssencePerSecond = gameData.stats.EssencePerSecond
+            gameData.stats.maxEssencePerSecondRt = gameData.realtime
+        }
+    }
+
+    
+       
+
 }
 
 function restartGame() {
@@ -1310,12 +1356,16 @@ function resetGameData() {
 }
 
 function importGameData() {
-    const importExportBox = document.getElementById("importExportBox")
-    const data = JSON.parse(window.atob(importExportBox.value))
-    clearInterval(gameloop)
-    gameData = data
-    saveGameData()
-    location.reload()
+    try {
+        const importExportBox = document.getElementById("importExportBox")
+        const data = JSON.parse(window.atob(importExportBox.value))
+        clearInterval(gameloop)
+        gameData = data
+        saveGameData()
+        location.reload()
+    } catch (error) {
+        alert("It looks like you tried to load a corrupted save... If this issue persists feel free to contact the developers!")
+    }
 }
 
 function exportGameData() {
@@ -1404,6 +1454,10 @@ gameData.requirements = {
     "Rebirth button 2": new AgeRequirement([document.getElementById("rebirthButton2")], [{ requirement: 200 }]),
     "Rebirth button 3": new TaskRequirement([document.getElementById("rebirthButton3")], [{ task: "Cosmic Recollection", requirement: 1 }]),
 
+    "Rebirth stats evil": new AgeRequirement([document.getElementById("statsEvilGain")], [{ requirement: 200 }]),
+    "Rebirth stats essence": new TaskRequirement([document.getElementById("statsEssenceGain")], [{ task: "Cosmic Recollection", requirement: 1 }]),
+
+
     "Evil info": new EvilRequirement([document.getElementById("evilInfo")], [{requirement: 1}]),
 	"Essence info": new EssenceRequirement([document.getElementById("essenceInfo")], [{requirement: 1}]),
     "Time warping info": new TaskRequirement([document.getElementById("timeWarping")], [{task: "Adept Mage", requirement: 10}]),
@@ -1443,7 +1497,7 @@ gameData.requirements = {
     "Corrupted": new AgeRequirement([getTaskElement("Corrupted")], [{requirement: 1000}]),
     "Void Slave": new TaskRequirement([getTaskElement("Void Slave")], [{task: "Corrupted", requirement: 30}]),
     "Void Fiend": new TaskRequirement([getTaskElement("Void Fiend")], [{ task: "Brainwashing", requirement: 3000 }, { task: "Void Slave", requirement: 200 }]),
-    "Abyss Anomaly": new TaskRequirement([getTaskElement("Abyss Anomaly")], [{ task: "Mind Seize", requirement: 3000, herequirement: 100 }, { task: "Void Fiend", requirement: 200, herequirement: 100 }]),
+    "Abyss Anomaly": new TaskRequirement([getTaskElement("Abyss Anomaly")], [{ task: "Mind Release", requirement: 3000, herequirement: 100 }, { task: "Void Fiend", requirement: 200, herequirement: 100 }]),
     "Void Wraith": new TaskRequirement([getTaskElement("Void Wraith")], [{ task: "Temporal Dimension", requirement: 3400 }, { task: "Abyss Anomaly", requirement: 300, herequirement: 180 }]),
     "Void Reaver": new TaskRequirement([getTaskElement("Void Reaver")], [{ task: "Void Amplification", requirement: 3400, herequirement: 180 }, { task: "Void Wraith", requirement: 250, herequirement: 125 }]),
     "Void Lord": new TaskRequirement([getTaskElement("Void Lord")], [{ task: "Void Symbiosis", requirement: 3800, herequirement: 200 }, { task: "Void Reaver", requirement: 150 }]),
@@ -1492,7 +1546,7 @@ gameData.requirements = {
 	//Void Manipulation
 	"Absolute Wish": new TaskRequirement([getTaskElement("Absolute Wish")], [{task: "Void Slave", requirement: 25}, {task: "Chairman", requirement: 300}]),
     "Void Amplification": new TaskRequirement([getTaskElement("Void Amplification")], [{ task: "Void Slave", requirement: 100 }, { task: "Absolute Wish", requirement: 3000, herequirement: 1700 }]),
-    "Mind Seize": new TaskRequirement([getTaskElement("Mind Seize")], [{ task: "Void Amplification", requirement: 3000, herequirement: 100 }]),
+    "Mind Release": new TaskRequirement([getTaskElement("Mind Release")], [{ task: "Void Amplification", requirement: 3000, herequirement: 100 }]),
     "Ceaseless Abyss": new TaskRequirement([getTaskElement("Ceaseless Abyss")], [{ task: "Void Influence", requirement: 4000, herequirement: 1950 }, { task: "Abyss Anomaly", requirement: 50 }]),
     "Void Symbiosis": new TaskRequirement([getTaskElement("Void Symbiosis")], [{ task: "Ceaseless Abyss", requirement: 3500, herequirement: 220 }, { task: "Void Reaver", requirement: 50 }]),
     "Void Embodiment": new TaskRequirement([getTaskElement("Void Embodiment")], [{ task: "Dark Influence", requirement: 4600, herequirement: 3700 }, { task: "Void Lord", requirement: 50 }]),
@@ -1500,7 +1554,7 @@ gameData.requirements = {
 	
 	//Celestial Powers
 	"Cosmic Longevity": new TaskRequirement([getTaskElement("Cosmic Longevity")], [{task: "Eternal Wanderer", requirement: 1}]),
-    "Cosmic Recollection": new TaskRequirement([getTaskElement("Cosmic Recollection")], [{ task: "Nova", requirement: 50 }, { task: "Meditation", requirement: 4200 }, { task: "Mind Seize", requirement: 900 }]),
+    "Cosmic Recollection": new TaskRequirement([getTaskElement("Cosmic Recollection")], [{ task: "Nova", requirement: 50 }, { task: "Meditation", requirement: 4200 }, { task: "Mind Release", requirement: 900 }]),
     "Essence Collector": new TaskRequirement([getTaskElement("Essence Collector")], [{ task: "Sigma Proioxis", requirement: 500, herequirement: 360 }, { task: "Absolute Wish", requirement: 4900, herequirement: 2900 }, { task: "Dark Knowledge", requirement: 6300, herequirement: 3400 }]),
     "Galactic Command": new TaskRequirement([getTaskElement("Galactic Command")], [{ task: "Essence Collector", requirement: 5000, herequirement: 210 }, { task: "Bargaining", requirement: 5000 }]),
 
