@@ -30,10 +30,10 @@
                     <div class="sidebar-element" style="color: gray">Your age has met your lifespan, use the amulet to rebirth before you pass away</div>
                 </div>
 
-                <div class="text-caption"><span id="ageDisplay">14</span></div>
+                <div class="text-caption"><span id="ageDisplay">Age 14 Day 0</span></div>
                 <div class="sidebar-element" style="color: gray">
                     Lifespan: <span id="lifespanDisplay">70</span> years
-                    <br>RealTime: <span id="realtimeDisplay">0</span>
+                    <br>Real Time: <span id="realtimeDisplay">00:00:00</span>
                 </div>
 
                 <button id="pauseButton" class="w3-button button sidebar-element" onClick="togglePause()">Pause</button>
@@ -45,7 +45,7 @@
                     <span></span>
                     <span></span>
                 </div>
-                <div style="color: gray">Balance / day</div>
+                <div style="color: gray">Balance</div>
 
                 <ul class="sidebar-element" style="padding-left: 1em;">
                     <li>
@@ -89,7 +89,7 @@
 
                 <div id="evilInfo" class="hidden">
                     <div class="text-caption"><span style="color: rgb(200, 0, 0)">Evil: </span><span id="evilDisplay"></span></div>
-                    <div style="color: gray" class="sidebar-element">Affects dark magic XP gain</div>
+                    <div style="color: gray" class="sidebar-element">Affects Dark Magic XP gain</div>
                 </div>
 
                 <div id="essenceInfo" class="hidden">
@@ -135,7 +135,7 @@
                             <th>Level</th>
                             <th class="valueType" style="width: 18em">Value type</th>
                             <th>Xp/day</th>
-                            <th>Xp/left</th>
+                            <th>Xp left</th>
                             <th class="maxLevel">Max</th>
                         </tr>
                     </template>
@@ -159,7 +159,7 @@
                                 </div>
                             </td>
                             <td class="xpGain">Xp/day</td>
-                            <td class="xpLeft">xp left</td>
+                            <td class="xpLeft">Xp left</td>
                             <td class="maxLevel">Max</td>
                         </tr>
                     </template>
@@ -293,7 +293,7 @@
                             </div>
                             <div id="danceWithTheDevilChallenge" style="padding-top:2em">
                                 <div class="text-caption challenge-title">4. Dance with the devil</div>
-                                <div style="color: gray; padding-bottom: 0.3em">Reduces dark magic and almightiness XP effect enormously, max level reduces XP gain and happiness is reduced by ^0.075</div>
+                                <div style="color: gray; padding-bottom: 0.3em">Reduces Dark Magic and Almightiness XP effect enormously, max level reduces XP gain and happiness is reduced by ^0.075</div>
                                 <div id="challengeReward4" class="reward">Reward: Increases essence gain by x<span id="challengeEssenceGainBuff">1</span></div>
                                 <button id="challengeButton4" class="w3-button button" onclick="enterChallenge('dance_with_the_devil')">Enter challenge</button>
                             </div>
@@ -314,15 +314,14 @@
                             <ul>
                                 <li style="margin: 0.4em;" id="rebirthNoteEnd" class="hidden">
                                     <div class="text-caption" style="margin-bottom: 0.4em; color: rgb(102, 229, 71); ">
-                                        Congratulations! You have completed the game. You can Restart it and get permanent x2 boost, which will apply again each time you finish the game. You also can continue to grind but there is no more content for now.<br>
-                                        <button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em; " onClick="restartGame()"><span style="color: rgb(204, 0, 255) ">Restart the game and get permanent x2 boost</span></button>
+                                        Congratulations! You have completed the game. You can restart it and get a permanent x2 speed boost, which will apply again each time you finish the game. You can also continue to grind but there is no more content for now.<br>
+                                        <button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em; " onClick="restartGame()"><span style="color: rgb(204, 0, 255) ">Restart the game and get a permanent x2 speed boost</span></button>
                                     </div>
                                 </li>
                                 <li style="margin: 0.4em;">
                                     You stumble across a strange looking amulet on your 25th birthday. It does not look like
                                     it has any worth on the market given that it's made from cheap-looking copper. However, you
                                     feel a weird urge to keep the amulet, so you slip it into your pocket for safekeeping.
-
                                 </li>
                                 <li style="margin: 0.4em;" id="rebirthNote1" class="hidden">
                                     On your 45th birthday, you feel the amulet shiver uncontrollably in your pocket. You take it
@@ -380,9 +379,8 @@
                                 <li style="margin: 0.4em;" id="rebirthNote5" class="hidden">
                                     <div style="margin-bottom: 0.4em;">
                                         Ten millenia have passed... most of them spent serving the Void, yet there is still a glimpse of humanity inside of you. All of the sudden your amulet starts to glow in the distance,
-                                        illuminating darkness around you with the brightness of thousand suns. With the very last remnant of your free will you run to your amulet and touch it... <b>
-                                            "You are now part of something
-                                            bigger than yourself..."
+                                        illuminating darkness around you with the brightness of a thousand suns. With the very last remnant of your free will, you run to your amulet and touch it... <b>
+                                            "You are now part of something bigger than yourself..."
                                         </b>
                                     </div>
                                     <i style="color: rgb(255, 204, 102)">
@@ -394,12 +392,11 @@
                                             <i style="color: rgb(24, 210, 217)">
                                                 <b><span id="essenceGainDisplay"></span> essence</b>,
                                             </i>
-                                            new ability that will boost you even further in your journey.
+                                            along with new abilities that will boost you even further in your journey.
 
                                             <br>
                                             <i style="color: rgb(200, 0, 0)">
-                                                Transcend will only show up if you have <b>Cosmic Recollection</b> ability unlocked!
-
+                                                Transcend will only show up if you have the <b>Cosmic Recollection</b> ability unlocked!
                                             </i>
                                         </i>
                                         <br>
@@ -459,11 +456,11 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Font-size</td>
+                                                        <td>Font size</td>
                                                         <td style="padding: 0.4em">
                                                             <button class="w3-button button" onmouseover="onFontButtonHover()" onmouseout="onFontButtonStopHover()" onclick="setFontSize(gameData.settings.fontSize - 1)">Smaller</button>
                                                             <button class="w3-button button" onmouseover="onFontButtonHover()" onmouseout="onFontButtonStopHover()" onclick="setFontSize(gameData.settings.fontSize + 1)">Larger</button>
-                                                            <span class="tooltiptext hidden" id="fontSizeTooltip" style="color: gray">keep pressing to change more</span>
+                                                            <span class="tooltiptext hidden" id="fontSizeTooltip" style="color: gray">Keep pressing to change more</span>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -496,7 +493,7 @@
                                             <li>
                                                 <div class="text-caption" style="margin-top: 0.4em;">Links</div>
                                                 <div style="margin-bottom: 8px;">
-                                                    Based on <a href="https://symb1.github.io/progress_knight_2/" target="_blank">Progress Knight 2.0</a> mod
+                                                    Based on a <a href="https://symb1.github.io/progress_knight_2/" target="_blank">Progress Knight 2.0</a> mod
                                                     <br>Original game: <a href="https://ihtasham42.github.io/progress-knight/" target="_blank">Progress Knight</a>
                                                     <br><a href="https://discord.gg/fTRS4pHGka" target="_blank">Join the discord community! <img src="img/discord_icon.png" style="width:3em; height:3em;"></a>
                                                     <br><a href="https://github.com/indomit/progress_knight_2" target="_blank">Github page</a>
@@ -510,27 +507,27 @@
                                     <div id="statsPage" style="flex: 1; margin-left: 0.5em;">
                                         <div>
                                             <ul>
-                                                <li>You started play the game: <span id="startDateDisplay"></span>.</li>
+                                                <li>You started playing the game on <span id="startDateDisplay"></span>.</li>
                                                 <li>You have played for <span id="playedDaysDisplay"></span> days.</li>
                                             </ul>
                                         </div>
                                         <div id="statsRebirth1" class="hidden">
                                             <ul>
-                                                <li>You have touched the eye <span id="rebirthOneCountDisplay"></span> times. </li>
-                                                <li>Your fastest touch is <span id="rebirthOneFastestDisplay"></span>.</li>
+                                                <li>You have touched the eye <span id="rebirthOneCountDisplay"></span> times.</li>
+                                                <li>Your fastest touch is in <span id="rebirthOneFastestDisplay"></span>.</li>
                                             </ul>
                                         </div>
                                         <div id="statsRebirth2" class="hidden">
                                             <ul>
                                                 <li>You have embraced evil <span id="rebirthTwoCountDisplay"></span> times.</li>
-                                                <li>Your fastest embrace is <span id="rebirthTwoFastestDisplay"></span>.</li>
+                                                <li>Your fastest embrace is in <span id="rebirthTwoFastestDisplay"></span>.</li>
                                                 <li id="statsEvilGain" class="hidden">You gain <span id="evilPerSecondDisplay"></span> evil/s. Maximum <span id="maxEvilPerSecondDisplay"></span> evil/s was at <span id="maxEvilPerSecondRtDisplay"></span>.</li>
                                             </ul>
                                         </div>
                                         <div id="statsRebirth3" class="hidden">
                                             <ul>
                                                 <li>You have transcended <span id="rebirthThreeCountDisplay"></span> times.</li>
-                                                <li>Your fastest transcend is <span id="rebirthThreeFastestDisplay"></span>.</li>
+                                                <li>Your fastest transcend is in <span id="rebirthThreeFastestDisplay"></span>.</li>
                                                 <li id="statsEssenceGain" class="hidden">You gain <span id="essencePerSecondDisplay"></span> essence/s. Maximum <span id="maxEssencePerSecondDisplay"></span> essence/s was at <span id="maxEssencePerSecondRtDisplay"></span>.</li>
                                             </ul>
                                         </div>
@@ -547,7 +544,7 @@
                                                 <li>You have completed the game <span id="completedTimesDisplay"></span> times.</li>
                                                 <li>Time boost is x<span id="completedBoostDisplay"></span>.</li>
                                                 <li>Current game run time is <span id="currentRunDisplay"></span>.</li>
-                                                <li>Your fastest completion is <span id="completedFastestDisplay"></span>.</li>
+                                                <li>Your fastest completion is in <span id="completedFastestDisplay"></span>.</li>
                                             </ul>
                                         </div>
                                     </div>
