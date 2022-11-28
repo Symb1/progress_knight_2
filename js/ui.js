@@ -634,6 +634,13 @@ function updateUI() {
 }
 
 function setTab(selectedTab) {
+    const tabElement = document.getElementById(selectedTab)
+
+    if (tabElement == null) {
+        setTab("jobs")
+        return
+    }
+
     const element = document.getElementById(selectedTab + "TabButton")
     gameData.settings.selectedTab = selectedTab
 
@@ -641,7 +648,8 @@ function setTab(selectedTab) {
     tabs.forEach(function(tab) {
         tab.style.display = "none"
     })
-    document.getElementById(selectedTab).style.display = "flex"
+    console.log(tabElement)
+    tabElement.style.display = "flex"
 
     const tabButtons = document.getElementsByClassName("tabButton")
     for (tabButton of tabButtons) {
