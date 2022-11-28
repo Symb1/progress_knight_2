@@ -1638,9 +1638,10 @@ initUI()
 setCustomEffects()
 addMultipliers()
 
+update()
+
 setTab(gameData.settings.selectedTab)
 setTabSettings("settingsTab")
 
-update()
 var gameloop = setInterval(update, 1000 / updateSpeed)
 var saveloop = setInterval(saveGameData, 3000)
