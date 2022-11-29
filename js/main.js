@@ -717,7 +717,7 @@ function getHappiness() {
     const multiverseFragment = getBindedItemEffect("Multiverse Fragment")
     const godsBlessings = gameData.requirements["God's Blessings"].isCompleted() ? 10000000 : 1
     const happiness = godsBlessings * meditationEffect() * butlerEffect() * mindreleaseEffect() 
-    * multiverseFragment() * gameData.currentProperty.getEffect() * getChallengeHappinessBonus()
+        * multiverseFragment() * gameData.currentProperty.getEffect() * getChallengeBonus("an_unhappy_life")
 
     if (gameData.active_challenge == "dance_with_the_devil") return Math.pow(happiness, 0.075)
     if (gameData.active_challenge == "an_unhappy_life") return Math.pow(happiness, 0.5)
@@ -784,7 +784,7 @@ function getEssenceGain() {
     const rise = gameData.milestoneData["Rise of Great Heroes"]
 
     return essenceControl.getEffect() * essenceCollector.getEffect() * transcendentMaster.getEffect()
-        * faintHope.getEffect() * rise.getEffect() * getChallengeEssenceGainBonus()
+        * faintHope.getEffect() * rise.getEffect() * getChallengeBonus("dance_with_the_devil")
 }
 
 function getCompletedGameSpeedBoost() {
@@ -797,7 +797,7 @@ function getGameSpeed() {
     const timeLoop = gameData.taskData["Time Loop"]
     const warpDrive = (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
     const timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive
-    const gameSpeed = baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * getCompletedGameSpeedBoost() * getChallengeTimeWarpingBonus()
+    const gameSpeed = baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * getCompletedGameSpeedBoost() * getChallengeBonus("time_does_not_fly")
 
     return gameData.active_challenge == "time_does_not_fly" ? Math.pow(gameSpeed, 0.7) : gameSpeed
 }
@@ -1330,7 +1330,7 @@ function update(needUpdateUI = true) {
     makeHeroes()
     increaseRealtime()
     increaseDays()
-    setChallengeProgress()
+    //setChallengeProgress()
     autoPromote()
     autoBuy()  
     applyExpenses()

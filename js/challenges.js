@@ -9,7 +9,8 @@ function enterChallenge(challengeName) {
 }
 
 function exitChallenge() {
-    rebirthReset(false)
+    setChallengeProgress()
+    rebirthReset(false)    
     gameData.active_challenge = ""
 
     for (const taskName in gameData.taskData) {
@@ -33,18 +34,18 @@ function setChallengeProgress() {
     }
 }
 
-function getChallengeHappinessBonus() {
-    return softcap(Math.pow(gameData.challenges.an_unhappy_life + 1, 0.22), 100)
+function getChallengeBonus(challenge_name, current = false) {
+    if (challenge_name == "an_unhappy_life") {
+        return softcap(Math.pow((current ? getHappiness() : gameData.challenges.an_unhappy_life) + 1, 0.22), 100)
+    }
+    if (challenge_name == "rich_and_the_poor") {
+        return softcap(Math.pow((current ? getIncome() : gameData.challenges.rich_and_the_poor) + 1, 0.18), 10)
+    }
+    if (challenge_name == "time_does_not_fly") {
+        return softcap(Math.pow((current ? getGameSpeed() : gameData.challenges.time_does_not_fly) + 1, 0.05), 2)
+    }
+    if (challenge_name == "dance_with_the_devil") {
+        return softcap(Math.pow((current ? Math.max(0, getEvilGain() - 10) : gameData.challenges.dance_with_the_devil) + 1, 0.1), 2, 0.15)
+    }
 }
 
-function getChallengeIncomeBonus() {
-    return softcap(Math.pow(gameData.challenges.rich_and_the_poor + 1, 0.18), 10)
-}
-
-function getChallengeTimeWarpingBonus() {
-    return softcap(Math.pow(gameData.challenges.time_does_not_fly + 1, 0.05), 2)
-}
-
-function getChallengeEssenceGainBonus() {
-    return softcap(Math.pow(gameData.challenges.dance_with_the_devil + 1, 0.1), 2, 0.15)
-}

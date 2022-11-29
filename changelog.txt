@@ -1,3 +1,7 @@
+version 2.1.15 / 30.11.2022
+* challenges now give rewards only on exit
+* show current challenge reward correctly
+
 version 2.1.14a / 29.11.2022
 * bugfix: reset challenge rewards on game completion
 

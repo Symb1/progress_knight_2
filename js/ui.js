@@ -461,7 +461,7 @@ function updateText() {
         gameData.taskData["Temporal Dimension"].getEffect() *
         gameData.taskData["Time Loop"].getEffect() *
         (gameData.requirements["Eternal Time"].isCompleted() ? 2 : 1) *
-        getChallengeTimeWarpingBonus()
+        getChallengeBonus("time_does_not_fly")
 
     document.getElementById("timeWarpingDisplay").textContent = "x" + format(
         gameData.active_challenge == "time_does_not_fly" ? Math.pow(timeWarping, 0.7) : timeWarping
@@ -550,8 +550,14 @@ function updateText() {
 
             const elementReward = document.getElementById("currentChallengeReward" + i)
             if (elementReward != null) {
-                if (elementReward.classList.contains(gameData.active_challenge))
+                if (elementReward.classList.contains(gameData.active_challenge)) {
                     elementReward.classList.remove("hidden")
+
+                    if (getChallengeBonus(gameData.active_challenge, true) > getChallengeBonus(gameData.active_challenge))
+                        elementReward.classList.add("reward")
+                    else
+                        elementReward.classList.remove("reward")
+                }
                 else
                     elementReward.classList.add("hidden")
             }
@@ -563,15 +569,15 @@ function updateText() {
     document.getElementById("challengeReward3").hidden = gameData.challenges.time_does_not_fly == 0
     document.getElementById("challengeReward4").hidden = gameData.challenges.dance_with_the_devil == 0
 
-    document.getElementById("currentChallengeHappinessBuff").textContent = format(getChallengeHappinessBonus(), 2)
-    document.getElementById("currentChallengeIncomeBuff").textContent = format(getChallengeIncomeBonus(), 2)
-    document.getElementById("currentChallengeTimewarpingBuff").textContent = format(getChallengeTimeWarpingBonus(), 2)
-    document.getElementById("currentChallengeEssenceGainBuff").textContent = format(getChallengeEssenceGainBonus(), 2)
+    document.getElementById("currentChallengeHappinessBuff").textContent = format(getChallengeBonus("an_unhappy_life", true), 2)
+    document.getElementById("currentChallengeIncomeBuff").textContent = format(getChallengeBonus("rich_and_the_poor", true), 2)
+    document.getElementById("currentChallengeTimewarpingBuff").textContent = format(getChallengeBonus("time_does_not_fly", true), 2)
+    document.getElementById("currentChallengeEssenceGainBuff").textContent = format(getChallengeBonus("dance_with_the_devil", true), 2)
 
-    document.getElementById("challengeHappinessBuff").textContent = format(getChallengeHappinessBonus(), 2)
-    document.getElementById("challengeIncomeBuff").textContent = format(getChallengeIncomeBonus(), 2)
-    document.getElementById("challengeTimewarpingBuff").textContent = format(getChallengeTimeWarpingBonus(), 2)
-    document.getElementById("challengeEssenceGainBuff").textContent = format(getChallengeEssenceGainBonus(), 2)
+    document.getElementById("challengeHappinessBuff").textContent = format(getChallengeBonus("an_unhappy_life"), 2)
+    document.getElementById("challengeIncomeBuff").textContent = format(getChallengeBonus("rich_and_the_poor"), 2)
+    document.getElementById("challengeTimewarpingBuff").textContent = format(getChallengeBonus("time_does_not_fly"), 2)
+    document.getElementById("challengeEssenceGainBuff").textContent = format(getChallengeBonus("dance_with_the_devil"), 2)
 
     // challenge stats
 
@@ -580,10 +586,10 @@ function updateText() {
     document.getElementById("challengeStat3").hidden = gameData.challenges.time_does_not_fly == 0
     document.getElementById("challengeStat4").hidden = gameData.challenges.dance_with_the_devil == 0
 
-    document.getElementById("challengeHappinessBuffDisplay").textContent = format(getChallengeHappinessBonus(), 2)
-    document.getElementById("challengeIncomeBuffDisplay").textContent = format(getChallengeIncomeBonus(), 2)
-    document.getElementById("challengeTimewarpingBuffDisplay").textContent = format(getChallengeTimeWarpingBonus(), 2)
-    document.getElementById("challengeEssenceGainBuffDisplay").textContent = format(getChallengeEssenceGainBonus(), 2)
+    document.getElementById("challengeHappinessBuffDisplay").textContent = format(getChallengeBonus("an_unhappy_life"), 2)
+    document.getElementById("challengeIncomeBuffDisplay").textContent = format(getChallengeBonus("rich_and_the_poor"), 2)
+    document.getElementById("challengeTimewarpingBuffDisplay").textContent = format(getChallengeBonus("time_does_not_fly"), 2)
+    document.getElementById("challengeEssenceGainBuffDisplay").textContent = format(getChallengeBonus("dance_with_the_devil"), 2)
 
 } 
 
