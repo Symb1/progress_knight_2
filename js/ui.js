@@ -4,8 +4,7 @@ function initUI() {
     setNotation(gameData.settings.numberNotation)
     setStickySidebar(gameData.settings.stickySidebar)
 
-    if (!gameData.settings.darkTheme)
-        setLightDarkMode()
+    setTheme(gameData.settings.theme)
 
     if (gameData.completedTimes > 0) {
         var elem = document.getElementById("completedTimes")
@@ -39,7 +38,7 @@ function createHeaderRow(templates, categoryType, categoryName) {
     }
 
     headerRow.style.backgroundColor = headerRowColors[categoryName]
-    headerRow.style.color = "#ffffff"
+    headerRow.style.color = (gameData.settings.theme == 2) ? headerRowTextColors[categoryName] : "#ffffff"
     headerRow.classList.add(removeSpaces(categoryName))
     headerRow.classList.add("headerRow")
     
@@ -664,7 +663,6 @@ function setTab(selectedTab) {
     tabs.forEach(function(tab) {
         tab.style.display = "none"
     })
-    console.log(tabElement)
     tabElement.style.display = "flex"
 
     const tabButtons = document.getElementsByClassName("tabButton")

@@ -27,7 +27,7 @@ var gameData = {
 
     settings: {
         stickySidebar: true,
-        darkTheme: true,
+        theme: 1,
         numberNotation: 0,
         layout: 1,
         fontSize: 3,
@@ -299,6 +299,27 @@ const headerRowColors = {
     "Misc": "#b56576",
     "Essence Milestones": "#0066ff",
     "Heroic Milestones": "#ff6600",
+}
+
+const headerRowTextColors = {
+    "Common work": "darkblue",
+    "Military": "purple",
+    "The Arcane Association": "magenta",
+    "The Void": "white",
+    "Galactic Council": "purple",
+    "Fundamentals": "purple",
+    "Combat": "pink",
+    "Magic": "purple",
+    "Dark Magic": "pink",
+    "Almightiness": "purple",
+    "Void Manipulation": "white",
+    "Celestial Powers": "purple",
+    "Properties_Auto": "purple",
+    "Misc_Auto": "purple",
+    "Properties": "purple",
+    "Misc": "purple",
+    "Essence Milestones": "purple",
+    "Heroic Milestones": "purple",
 }
 
 const tooltips = {
@@ -866,11 +887,6 @@ function setNotation(index) {
     selectElementInGroup("Notation", index)
 }
 
-function setNotation(id) {
-    gameData.settings.numberNotation = id
-    selectElementInGroup("Notation", id)
-}
-
 function getNet() {
     return Math.abs(getIncome() - getExpense())
 }
@@ -963,10 +979,29 @@ function increaseRealtime() {
     gameData.realtimeRun += 1.0 / updateSpeed;
 }
 
-function setLightDarkMode() {
+function setTheme(index, reload=false) {
     const body = document.getElementById("body")
-    body.classList.contains("dark") ? body.classList.remove("dark") : body.classList.add("dark")
-    gameData.settings.darkTheme = body.classList.contains("dark")
+
+    if (index == 0) {
+        // lignt
+        body.classList.remove("dark")
+    }
+    else if (index == 1) {
+        // dark
+        body.classList.add("dark")
+    }
+    else if (index == 2){
+        // colorblind Tritanopia 
+        body.classList.add("dark")
+    }   
+
+    gameData.settings.theme = index
+    selectElementInGroup("Theme", index)
+
+    if (reload) {
+        saveGameData()
+        location.reload()
+    }
 }
 
 function rebirthOne() {
@@ -1226,6 +1261,17 @@ function saveGameData() {
     localStorage.setItem("gameDataSave", JSON.stringify(gameData))
 }
 
+function peekThemeFromSave() {
+    try {
+        const gameDataSave = JSON.parse(localStorage.getItem("gameDataSave"))
+        return gameDataSave.settings.theme
+    } catch (error) {
+        console.error(error)
+        console.log(localStorage.getItem("gameDataSave"))
+        alert("It looks like you tried to load a corrupted save... If this issue persists feel free to contact the developers!")
+    }
+}
+
 function loadGameData() {
     try {
         const gameDataSave = JSON.parse(localStorage.getItem("gameDataSave"))
@@ -1422,14 +1468,16 @@ createGameObjects(gameData.taskData, skillBaseData)
 createGameObjects(gameData.itemData, itemBaseData)
 createGameObjects(gameData.milestoneData, milestoneBaseData)
 
-gameData.currentJob = gameData.taskData["Beggar"]
-gameData.currentProperty = gameData.itemData["Homeless"]
-gameData.currentMisc = []
+gameData.settings.theme = peekThemeFromSave()
 
 createAllRows(jobCategories, "jobTable")
 createAllRows(skillCategories, "skillTable")
 createAllRows(itemCategories, "itemTable")
 createAllRows(milestoneCategories, "milestoneTable")
+
+gameData.currentJob = gameData.taskData["Beggar"]
+gameData.currentProperty = gameData.itemData["Homeless"]
+gameData.currentMisc = []
 
 gameData.requirements = {
     //Other
@@ -1631,7 +1679,6 @@ loadGameData()
 
 gameData.milestoneData = {}
 createGameObjects(gameData.milestoneData, milestoneBaseData)
-
 
 initUI()
 
