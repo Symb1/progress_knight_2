@@ -1266,7 +1266,10 @@ function saveGameData() {
 
 function peekThemeFromSave() {
     try {
-        const gameDataSave = JSON.parse(localStorage.getItem("gameDataSave"))
+        const save = localStorage.getItem("gameDataSave")
+        if (save == null)
+            return 1
+        const gameDataSave = JSON.parse(save)
         return gameDataSave.settings.theme
     } catch (error) {
         console.error(error)
