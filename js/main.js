@@ -1392,6 +1392,12 @@ function restartGame() {
     gameData.realtimeRun = 0
     gameData.settings.selectedTab = 'jobs'
 
+    gameData.active_challenge = ""
+    gameData.challenges.an_unhappy_life = 0
+    gameData.challenges.rich_and_the_poor = 0
+    gameData.challenges.time_does_not_fly = 0
+    gameData.challenges.dance_with_the_devil = 0
+
     gameData.completedTimes += 1
     saveGameData()
     location.reload()
