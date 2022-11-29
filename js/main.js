@@ -1297,6 +1297,10 @@ function loadGameData() {
 
             if (gameData.evil == null)
                 gameData.evil = 0
+
+            if (gameData.settings.theme == null) {
+                gameData.settings.theme = 1
+            }
         }
     } catch (error) {
         console.error(error)
