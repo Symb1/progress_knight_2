@@ -982,9 +982,12 @@ function increaseRealtime() {
 function setTheme(index, reload=false) {
     const body = document.getElementById("body")
 
+    body.classList.remove("dark")
+    body.classList.remove("colorblind")
+
+
     if (index == 0) {
         // lignt
-        body.classList.remove("dark")
     }
     else if (index == 1) {
         // dark
@@ -992,7 +995,7 @@ function setTheme(index, reload=false) {
     }
     else if (index == 2){
         // colorblind Tritanopia 
-        body.classList.add("dark")
+        body.classList.add("colorblind")
     }   
 
     gameData.settings.theme = index
