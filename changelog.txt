@@ -1,6 +1,7 @@
-version 2.1.14 / 28.11.2022
-* Challenges added
+version 2.1.14 / 29.11.2022
+* 4 challenges are added
 * Fix spelling and grammar in various tooltips
+* New color scheme for colorblind people (Blue-yellow color blindness)
 
 version 2.1.13 / 27.11.2022
 * Minor bugfixes
