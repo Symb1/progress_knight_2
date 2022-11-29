@@ -10,21 +10,26 @@ function format(number, decimals = 1) {
 
     // what tier? (determines SI symbol)
     const tier = Math.log10(number) / 3 | 0;
-    if (tier <= 0) return number.toFixed(decimals);
+    if (tier <= 0) return math.floor(number, decimals).toFixed(decimals);
 
     if ((gameData.settings.numberNotation == 0 || tier < 3) && (tier < units.length)) {
-        // get suffix and determine scale
         const suffix = units[tier];
         const scale = Math.pow(10, tier * 3);
-        // scale the number
         const scaled = number / scale;
-        // format number and add suffix
-        return scaled.toFixed(decimals) + suffix;
+        return math.floor(scaled, decimals).toFixed(decimals) + suffix;
     } else {
-        if (gameData.settings.numberNotation == 1)
-            return number.toExponential(decimals).replace("e+", "e")
-        else
-            return math.format(number, { notation: 'engineering', precision: 3 }).replace("e+", "e")
+        if (gameData.settings.numberNotation == 1) {
+            const exp = Math.log10(number) | 0;
+            const scale = Math.pow(10, exp);
+            const scaled = number / scale;
+            return math.floor(scaled, decimals).toFixed(decimals) + "e" + exp;
+        }
+        else {
+            const exp = Math.log10(number) / 3 | 0;
+            const scale = Math.pow(10, exp * 3);
+            const scaled = number / scale;
+            return math.floor(scaled, decimals).toFixed(decimals) + "e" + exp * 3;
+        }
     }
 }
 
@@ -44,7 +49,7 @@ function formatCoins(coins, element) {
     let i = 0
     for (const key in money) {
         if ((money[key].showbefore == null || coins < money[key].showbefore) && (money[key].value > 0 || money[key].value == 0 && key == "c" && coins >= 0)) {
-            element.children[i].textContent = format(money[key].value, money[key].value < 1000000 ? 0 : 1) + key
+            element.children[i].textContent = format(money[key].value, money[key].value < 1000 ? 0 : 1) + key
             element.children[i].style.color = money[key].color
         }
         else {
