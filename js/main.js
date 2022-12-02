@@ -1270,7 +1270,7 @@ function peekThemeFromSave() {
         if (save == null)
             return 1
         const gameDataSave = JSON.parse(save)
-        if (gameData.settings == null || gameDataSave.settings.theme == null)
+        if (gameDataSave.settings == undefined || gameDataSave.settings.theme == undefined)
             return 1
         return gameDataSave.settings.theme
     } catch (error) {
