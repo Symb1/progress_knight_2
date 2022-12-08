@@ -568,16 +568,19 @@ function updateText() {
     document.getElementById("challengeReward2").hidden = gameData.challenges.rich_and_the_poor == 0
     document.getElementById("challengeReward3").hidden = gameData.challenges.time_does_not_fly == 0
     document.getElementById("challengeReward4").hidden = gameData.challenges.dance_with_the_devil == 0
+    document.getElementById("challengeReward5").hidden = gameData.challenges.legends_never_die == 0
 
     document.getElementById("currentChallengeHappinessBuff").textContent = format(getChallengeBonus("an_unhappy_life", true), 2)
     document.getElementById("currentChallengeIncomeBuff").textContent = format(getChallengeBonus("rich_and_the_poor", true), 2)
     document.getElementById("currentChallengeTimewarpingBuff").textContent = format(getChallengeBonus("time_does_not_fly", true), 2)
     document.getElementById("currentChallengeEssenceGainBuff").textContent = format(getChallengeBonus("dance_with_the_devil", true), 2)
+    document.getElementById("currentChallengeEvilGainBuff").textContent = format(getChallengeBonus("legends_never_die", true), 2)
 
     document.getElementById("challengeHappinessBuff").textContent = format(getChallengeBonus("an_unhappy_life"), 2)
     document.getElementById("challengeIncomeBuff").textContent = format(getChallengeBonus("rich_and_the_poor"), 2)
     document.getElementById("challengeTimewarpingBuff").textContent = format(getChallengeBonus("time_does_not_fly"), 2)
     document.getElementById("challengeEssenceGainBuff").textContent = format(getChallengeBonus("dance_with_the_devil"), 2)
+    document.getElementById("challengeEvilGainBuff").textContent = format(getChallengeBonus("legends_never_die"), 2)
 
     // challenge stats
 
@@ -585,13 +588,14 @@ function updateText() {
     document.getElementById("challengeStat2").hidden = gameData.challenges.rich_and_the_poor == 0
     document.getElementById("challengeStat3").hidden = gameData.challenges.time_does_not_fly == 0
     document.getElementById("challengeStat4").hidden = gameData.challenges.dance_with_the_devil == 0
+    document.getElementById("challengeStat5").hidden = gameData.challenges.legends_never_die == 0
 
     document.getElementById("challengeHappinessBuffDisplay").textContent = format(getChallengeBonus("an_unhappy_life"), 2)
     document.getElementById("challengeIncomeBuffDisplay").textContent = format(getChallengeBonus("rich_and_the_poor"), 2)
     document.getElementById("challengeTimewarpingBuffDisplay").textContent = format(getChallengeBonus("time_does_not_fly"), 2)
     document.getElementById("challengeEssenceGainBuffDisplay").textContent = format(getChallengeBonus("dance_with_the_devil"), 2)
-
-} 
+    document.getElementById("challengeEvilGainBuffDisplay").textContent = format(getChallengeBonus("legends_never_die"), 2)
+}
 
 
 function setSignDisplay() {

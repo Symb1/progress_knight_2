@@ -272,6 +272,7 @@
                                 <div id="currentChallengeReward2" class="rich_and_the_poor hidden" style="display: inline; padding-left:1em">Current reward: Increases income by x<span id="currentChallengeIncomeBuff"></span></div>
                                 <div id="currentChallengeReward3" class="time_does_not_fly hidden" style="display: inline; padding-left:1em">Current reward: Increases time warping by x<span id="currentChallengeTimewarpingBuff"></span></div>
                                 <div id="currentChallengeReward4" class="dance_with_the_devil hidden" style="display: inline; padding-left:1em">Current reward: Increases essence gain by x<span id="currentChallengeEssenceGainBuff"></span></div>
+                                <div id="currentChallengeReward5" class="legends_never_die hidden" style="display: inline; padding-left:1em">Current reward: Increases evil gain by x<span id="currentChallengeEvilGainBuff"></span></div>
                             </div>
                             <div id="anUnhappyLifeChallenge" style="padding-top:2em">
                                 <div class="text-caption challenge-title">1. An unhappy life</div>
@@ -296,6 +297,12 @@
                                 <div style="color: gray; padding-bottom: 0.3em">Reduces dark magic and almightiness XP effect enormously, max level reduces XP gain and happiness is reduced by ^0.075</div>
                                 <div id="challengeReward4" class="reward">Reward: Increases essence gain by x<span id="challengeEssenceGainBuff">1</span></div>
                                 <button id="challengeButton4" class="w3-button button" onclick="enterChallenge('dance_with_the_devil')">Enter challenge</button>
+                            </div>
+                            <div id="legendsNeverDieChallenge" style="padding-top:2em">
+                                <div class="text-caption challenge-title">5. Legends never die</div>
+                                <div style="color: gray; padding-bottom: 0.3em">Reduces your lifespan by ^0.72, happiness does nothing and dark magic XP effect is always 1x</div>
+                                <div id="challengeReward5" class="reward">Reward: Increases evil gain by x<span id="challengeEvilGainBuff">1</span></div>
+                                <button id="challengeButton5" class="w3-button button" onclick="enterChallenge('legends_never_die')">Enter challenge</button>
                             </div>
                         </div>
                     </div>
@@ -540,6 +547,8 @@
                                                 <li id="challengeStat2">Challenge 2 Reward: Increases income by x<span id="challengeIncomeBuffDisplay"></span>.</li>
                                                 <li id="challengeStat3">Challenge 3 Reward: Increases time warping by x<span id="challengeTimewarpingBuffDisplay"></span>.</li>
                                                 <li id="challengeStat4">Challenge 4 Reward: Increases essence gain by x<span id="challengeEssenceGainBuffDisplay"></span>.</li>
+                                                <li id="challengeStat5">Challenge 4 Reward: Increases evil gain by x<span id="challengeEvilGainBuffDisplay"></span>.</li>
+
                                             </ul>
                                         </div>
                                         <div id="statsComplete" class="hidden">
