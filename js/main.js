@@ -1423,6 +1423,10 @@ function resetGameData() {
 function importGameData() {
     try {
         const importExportBox = document.getElementById("importExportBox")
+        if (importExportBox.value == "") {
+            alert("It looks like you tried to load an empty save... Paste save data into the box, then click \"Import Save\" again.")
+            return
+        }
         const data = JSON.parse(window.atob(importExportBox.value))
         clearInterval(gameloop)
         gameData = data
