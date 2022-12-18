@@ -461,7 +461,8 @@ function updateText() {
         gameData.taskData["Temporal Dimension"].getEffect() *
         gameData.taskData["Time Loop"].getEffect() *
         (gameData.requirements["Eternal Time"].isCompleted() ? 2 : 1) *
-        getChallengeBonus("time_does_not_fly")
+        getChallengeBonus("time_does_not_fly") * 
+        getCompletedGameSpeedBoost()
 
     document.getElementById("timeWarpingDisplay").textContent = "x" + format(
         gameData.active_challenge == "time_does_not_fly" ? Math.pow(timeWarping, 0.7) : timeWarping
