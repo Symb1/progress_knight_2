@@ -54,6 +54,7 @@ var gameData = {
         rich_and_the_poor: 0,
         time_does_not_fly: 0,
         dance_with_the_devil: 0,
+        legends_never_die: 0,
     },
     realtime: 0.0,
     realtimeRun: 0.0,
@@ -721,6 +722,7 @@ function getHappiness() {
 
     if (gameData.active_challenge == "dance_with_the_devil") return Math.pow(happiness, 0.075)
     if (gameData.active_challenge == "an_unhappy_life") return Math.pow(happiness, 0.5)
+    if (gameData.active_challenge == "legends_never_die") return 1
 
     return happiness
 }
@@ -731,9 +733,11 @@ function getEvil() {
 
 function getEvilXpGain() {
     if (gameData.active_challenge == "dance_with_the_devil") {
-        const evilEffect = Math.pow(getEvil(), 0.0075) - 1
+        const evilEffect = (Math.pow(getEvil(), 0.35) / 1e3) - 1
         return evilEffect < 0 ? 0 : evilEffect
     }
+
+    if (gameData.active_challenge == "legends_never_die") return 1
 
     return getEvil()
 }
@@ -744,7 +748,7 @@ function getEssence() {
 
 function getEssenceXpGain() {
     if (gameData.active_challenge == "dance_with_the_devil") {
-        const essenceEffect = Math.pow(getEssence(), 0.0075) - 1
+        const essenceEffect = (Math.pow(getEssence(), 0.35) / 1e2) - 1
         return essenceEffect <= 0.01 ? 0 : essenceEffect
     }
 
@@ -773,7 +777,7 @@ function getEvilGain() {
     const yingYang = gameData.taskData["Yin Yang"]
     const inferno = gameData.requirements["Inferno"].isCompleted() ? 5 : 1
     return evilControl.getEffect() * bloodMeditation.getEffect() * absoluteWish.getEffect() 
-        * oblivionEmbodiment.getEffect() * yingYang.getEffect() * inferno
+        * oblivionEmbodiment.getEffect() * yingYang.getEffect() * inferno * getChallengeBonus("legends_never_die")
 }
 
 function getEssenceGain() {
@@ -1120,8 +1124,12 @@ function getLifespan() {
 	const higherDimensions = gameData.taskData["Higher Dimensions"]
 	const abyss = gameData.taskData["Ceaseless Abyss"]
     const cosmicLongevity = gameData.taskData["Cosmic Longevity"]
-    return baseLifespan * immortality.getEffect() * superImmortality.getEffect() * abyss.getEffect()
+    const lifespan = baseLifespan * immortality.getEffect() * superImmortality.getEffect() * abyss.getEffect()
         * cosmicLongevity.getEffect() * higherDimensions.getEffect() * getCompletedGameSpeedBoost()
+
+    if (gameData.active_challenge == "legends_never_die") return Math.pow(lifespan, 0.72) + 365 * 20
+
+    return lifespan
 }
 
 function isAlive() {
@@ -1683,6 +1691,7 @@ gameData.requirements = {
     "Challenge_the_rich_and_the_poor": new EvilRequirement([document.getElementById("theRichAndThePoorChallenge")], [{ requirement: 1000000 }]),
     "Challenge_time_does_not_fly": new EssenceRequirement([document.getElementById("timeDoesNotFlyChallenge")], [{ requirement: 10000 }]),
     "Challenge_dance_with_the_devil": new EssenceRequirement([document.getElementById("danceWithTheDevilChallenge")], [{ requirement: 1e6 }]),
+    "Challenge_legends_never_die": new EssenceRequirement([document.getElementById("legendsNeverDieChallenge")], [{ requirement: 2.5e7 }]),
 }
 
 for (const key in milestoneBaseData) {
