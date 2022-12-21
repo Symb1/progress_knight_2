@@ -491,9 +491,7 @@ function updateText() {
         getChallengeBonus("time_does_not_fly")
         * (gameData.dark_matter_shop.speed_is_life == 1 ? 3 : (gameData.dark_matter_shop.speed_is_life == 2 ? 7 : 1))
 
-    document.getElementById("timeWarpingDisplay").textContent = "x" + format(
-        gameData.active_challenge == "time_does_not_fly" ? Math.pow(timeWarping, 0.7) : timeWarping
-    )
+    document.getElementById("timeWarpingDisplay").textContent = "x" + format(getUnpausedGameSpeed() / baseGameSpeed)
 
     // Transcend for Next Milestone indicator
     const button = document.getElementById("rebirthButton3").getElementsByClassName("button")[0]
@@ -590,6 +588,12 @@ function updateText() {
             }
         }
     }
+    
+    document.getElementById("challengeGoal1").textContent = format(getChallengeGoal("an_unhappy_life"))
+    formatCoins(getChallengeGoal("rich_and_the_poor"), document.getElementById("challengeGoal2"))
+    document.getElementById("challengeGoal3").textContent = format(getChallengeGoal("time_does_not_fly"))
+    document.getElementById("challengeGoal4").textContent = format(getChallengeGoal("dance_with_the_devil"))
+    document.getElementById("challengeGoal5").textContent = Math.floor(getChallengeGoal("legends_never_die"))
 
     document.getElementById("challengeReward1").hidden = gameData.challenges.an_unhappy_life == 0
     document.getElementById("challengeReward2").hidden = gameData.challenges.rich_and_the_poor == 0
