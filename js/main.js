@@ -28,6 +28,7 @@ var gameData = {
     settings: {
         stickySidebar: true,
         theme: 1,
+        currencyNotation: 0,
         numberNotation: 0,
         layout: 1,
         fontSize: 3,
@@ -884,6 +885,11 @@ function createGameObject(data, entity) {
     else if ("tier" in entity) { data[entity.name] = new Milestone(entity) }    
     else {data[entity.name] = new Item(entity)}
     data[entity.name].id = "row " + entity.name
+}
+
+function setCurrency(index) {
+    gameData.settings.currencyNotation = index
+    selectElementInGroup("CurrencyNotation", index)
 }
 
 function setNotation(index) {

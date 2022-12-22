@@ -1,0 +1,32 @@
+@keyframes currency-rainbow{
+    0% {
+        color: red;
+    }
+    25% {
+        color: yellow;
+    }
+    50% {
+        color: lime;
+    }
+    75% {
+        color: #0080ff;
+    }
+    100% {
+        color: magenta;
+    }
+}
+
+.currency-bold{
+    font-weight: bold;
+}
+
+.currency-shadow{
+    font-weight: bold;
+    text-shadow: 0 0 5px currentColor;
+}
+
+.currency-shadow-rainbow{
+    font-weight: bold;
+    text-shadow: 0 0 5px currentColor;
+    animation: currency-rainbow 6s infinite;
+}
