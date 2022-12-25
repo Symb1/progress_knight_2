@@ -439,7 +439,7 @@ function updateHeaderRows(categories) {
 function updateText() {
     //Sidebar
     document.getElementById("ageDisplay").textContent = formatAge(gameData.days)
-    document.getElementById("lifespanDisplay").textContent = format(daysToYears(getLifespan()), 0)
+    document.getElementById("lifespanDisplay").textContent = formatWhole(daysToYears(getLifespan()))
     document.getElementById("realtimeDisplay").textContent = formatTime(gameData.realtime)
     document.getElementById("pauseButton").textContent = gameData.paused ? "Play" : "Pause"
 

@@ -69,6 +69,13 @@ function getCoinsData() {
     }
 }
 
+function formatWhole(number, decimals = 1) {
+    if (number >= 1e3 || (number <= 0.99 && number != 0)) {
+        return format(number, decimals)
+    }
+    return format(number, 0);
+}
+
 function formatCoins(coins, element) {
     for (const c of element.children) {
         c.textContent = "";
@@ -105,9 +112,24 @@ function formatCoins(coins, element) {
     }
 }
 
-function formatTime(sec_num, show_ms=false) {
+function formatTime(sec_num, show_ms = false) {
     if (sec_num == null) {
         return "unknown"
+    }
+    if (sec_num < 0) {
+        return '-' + formatTime(-sec_num, show_ms)
+    }
+    
+    if (sec_num >= 31536000) {
+        let years = Math.floor(sec_num / 31536000)
+        if (years >= 1000) {
+            return formatWhole(years) + ' years'
+        }
+        return years + 'y ' + formatTime(sec_num % 31536000, show_ms)
+    }
+    if (sec_num >= 86400) {
+        let days = Math.floor(sec_num / 86400)
+        return days + 'd ' + formatTime(sec_num % 86400, show_ms)
     }
 
     let hours = Math.floor(sec_num / 3600)
