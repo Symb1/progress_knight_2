@@ -45,10 +45,8 @@ class Task {
 
     increaseXp() {
         if (this.isFinished) {
-            for (var i = 0; i < gameData.completedTimes + 1; i++) {
-                if (Math.random() < 0.001)
-                    this.level += 1
-            }            
+            if (Math.random() < 0.001)
+                this.level += 1
             return
         }
 
@@ -268,5 +266,27 @@ class EssenceRequirement extends Requirement {
 
     getCondition(isHero, requirement) {
         return gameData.essence >= requirement.requirement
+    }    
+}
+
+class DarkMatterRequirement extends Requirement {
+    constructor(elements, requirements) {
+        super(elements, requirements)
+        this.type = "darkMatter"
+    }
+
+    getCondition(isHero, requirement) {
+        return gameData.dark_matter >= requirement.requirement
+    }    
+}
+
+class DarkOrbsRequirement extends Requirement {
+    constructor(elements, requirements) {
+        super(elements, requirements)
+        this.type = "darkOrb"
+    }
+
+    getCondition(isHero, requirement) {
+        return gameData.dark_orbs >= requirement.requirement
     }    
 }
