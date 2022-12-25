@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="css/dark.css">
     <link rel="stylesheet" type="text/css" href="css/colorblind.css">
+    <link rel="stylesheet" type="text/css" href="css/currencies.css">
     <title>Progress Knight Quest</title>
     <link rel="shortcut icon" href="img/logo.ico" />
 </head>
@@ -182,7 +183,7 @@
                                  </button>
                             </th>
                             <th>Active</th>
-                            <th style="width: 22em">Effect</th>
+                            <th style="width: 20em">Effect</th>
                             <th>Expense/day</th>
                         </tr>                        
                     </template>
@@ -492,7 +493,16 @@
                                                         <td><input id="settingsStickySidebar" type="checkbox" style="width:1.6em;height:1.6em" onclick="setStickySidebar(this.checked)" /></td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Numbers notation</td>
+                                                        <td>Currency notation</td>
+                                                        <td style="padding: 0.4em">
+                                                            <button class="w3-button button CurrencyNotation selected" onclick="setCurrency(0)">Medieval</button>
+                                                            <button class="w3-button button CurrencyNotation" onclick="setCurrency(1)">Extended</button>
+                                                            <button class="w3-button button CurrencyNotation" onclick="setCurrency(2)">British £sd</button>
+                                                            <button class="w3-button button CurrencyNotation" onclick="setCurrency(3)">Modern $</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Number notation</td>
                                                         <td style="padding: 0.4em">
                                                             <button class="w3-button button Notation selected" onclick="setNotation(0)">Standard</button>
                                                             <button class="w3-button button Notation" onclick="setNotation(1)">Scientific</button>

@@ -33,6 +33,42 @@ function format(number, decimals = 1) {
     }
 }
 
+function getCoinsData() {
+    switch (gameData.settings.currencyNotation) {
+        case 0: return [
+            { "name": "p", "color": "#79b9c7", "value": 1e6 },
+            { "name": "g", "color": "#E5C100", "value": 10000 },
+            { "name": "s", "color": "#a8a8a8", "value": 100 },
+            { "name": "c", "color": "#a15c2f", "value": 1 },
+        ];
+        case 1: return [
+            { "name": " 𒀱", "color": "#ffffff", "value": 1e62, "class": "currency-shadow-rainbow" },
+            { "name": " 𒀱", "color": "#ffffff", "value": 1e47, "class": "currency-shadow" },
+            { "name": " 𒇫", "color": "#66ccff", "value": 1e41, "class": "currency-shadow" },
+            { "name": "🜊", "color": "#00ff00", "value": 1e35, "class": "currency-bold" },
+            { "name": "✹", "color": "#ffffcc", "value": 1e30 },
+            { "name": "∰", "color": "#ff0083", "value": 1e26 },
+            { "name": "Φ", "color": "#27b897", "value": 1e23 },
+            { "name": "Ξ", "color": "#cd72ff", "value": 1e20 },
+            { "name": "Δ", "color": "#f5c211", "value": 1e17 },
+            { "name": "d", "color": "#ffffff", "value": 1e14 },
+            { "name": "r", "color": "#ed333b", "value": 1e12 },
+            { "name": "S", "color": "#6666ff", "value": 1e10 },
+            { "name": "e", "color": "#2ec27e", "value": 1e8 },
+            { "name": "p", "color": "#79b9c7", "value": 1e6 },
+            { "name": "g", "color": "#E5C100", "value": 10000 },
+            { "name": "s", "color": "#a8a8a8", "value": 100 },
+            { "name": "c", "color": "#a15c2f", "value": 1 },
+        ];
+        case 2: return [
+            { "name": "", "color": "#E5C100", "value": 240, "prefix": "£" },
+            { "name": "s", "color": "#a8a8a8", "value": 12 },
+            { "name": "d", "color": "#a15c2f", "value": 1 },
+        ];
+        default: throw new Error("Invalid currency notation set");
+    }
+}
+
 function formatWhole(number, decimals = 1) {
     if (number >= 1e3 || (number <= 0.99 && number != 0)) {
         return format(number, decimals)
@@ -41,28 +77,38 @@ function formatWhole(number, decimals = 1) {
 }
 
 function formatCoins(coins, element) {
-    const platina = Math.floor(coins / 1e6)
-    const gold = Math.floor((coins - platina * 1e6) / 1e4)
-    const silver = Math.floor((coins - platina * 1e6 - gold * 1e4) / 100)
-    const copper = Math.floor(coins - platina * 1e6 - gold * 1e4 - silver * 100)
-
-    const money = {
-        "p": { "color": "#79b9c7", "showbefore": null, "value": platina },
-        "g": { "color": "#E5C100", "showbefore": 1e8, "value": gold },
-        "s": { "color": "#a8a8a8", "showbefore": 1e6, "value": silver },
-        "c": { "color": "#a15c2f", "showbefore": 1e4, "value": copper },
+    for (const c of element.children) {
+        c.textContent = "";
     }
-
-    let i = 0
-    for (const key in money) {
-        if ((money[key].showbefore == null || coins < money[key].showbefore) && (money[key].value > 0 || money[key].value == 0 && key == "c" && coins >= 0)) {
-            element.children[i].textContent = format(money[key].value, money[key].value < 1000 ? 0 : 1) + key
-            element.children[i].style.color = money[key].color
-        }
-        else {
-            element.children[i].textContent = ""            
-        }
-        i++
+    
+    switch (gameData.settings.currencyNotation) {
+        case 0:
+        case 1:
+        case 2:
+            const money2 = getCoinsData()
+            
+            let coinsUsed = 0
+            for (let i = 0; i < money2.length; i++) {
+                const m = money2[i];
+                const prev = money2[i - 1];
+                const diff = prev ? prev.value / m.value : Infinity;
+                const amount = Math.floor(coins / m.value) % diff;
+                if ((amount > 0 || (coins < 1 && m.value == 1))) {
+                    element.children[coinsUsed].textContent = (m.prefix ?? "") + format(amount, amount < 1000 ? 0 : 2) + m.name
+                    element.children[coinsUsed].style.color = m.color
+                    element.children[coinsUsed].className = m.class ? m.class : ""
+                    coinsUsed++
+                }
+                if (coinsUsed >= 2 || amount >= 100) break;
+            }
+            break;
+        case 3:
+            element.children[0].textContent = "$" + format(coins / 100, 2)
+            element.children[0].style.color = "#E5C100"
+            element.children[0].className = ""
+            break;
+        default:
+            throw new Error("Invalid currency notation set");
     }
 }
 

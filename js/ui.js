@@ -2,6 +2,7 @@ function initUI() {
     setLayout(gameData.settings.layout)
     setFontSize(gameData.settings.fontSize)
     setNotation(gameData.settings.numberNotation)
+    setCurrency(gameData.settings.currencyNotation)
     setStickySidebar(gameData.settings.stickySidebar)
 
     setTheme(gameData.settings.theme)
