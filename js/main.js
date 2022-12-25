@@ -14,12 +14,16 @@ var gameData = {
     days: 365 * 14,
     evil: 0,
     essence: 0,
+    dark_matter: 0,
+    dark_orbs: 0,
+
     paused: false,
     timeWarpingEnabled: true,
 
     rebirthOneCount: 0,
     rebirthTwoCount: 0,
     rebirthThreeCount: 0,
+    rebirthFourCount: 0,
 
     currentJob: null,
     currentProperty: null,
@@ -29,7 +33,7 @@ var gameData = {
         stickySidebar: true,
         theme: 1,
         currencyNotation: 0,
-        numberNotation: 0,
+        numberNotation: 1,
         layout: 1,
         fontSize: 3,
         selectedTab: 'jobs'
@@ -39,6 +43,7 @@ var gameData = {
         fastest1: null,
         fastest2: null,
         fastest3: null,
+        fastest4: null,
         fastestGame: null,
         EvilPerSecond: 0,
         maxEvilPerSecond: 0,
@@ -46,8 +51,6 @@ var gameData = {
         EssencePerSecond: 0,
         maxEssencePerSecond: 0,
         maxEssencePerSecondRt: 0,
-
-
     },
     active_challenge: "",
     challenges: {
@@ -57,9 +60,14 @@ var gameData = {
         dance_with_the_devil: 0,
         legends_never_die: 0,
     },
+    dark_matter_shop: {
+        dark_orb_generator: 0,
+        a_deal_with_the_chairman: 0,
+        a_gift_from_god: 0,
+        life_coach: 0
+    },
     realtime: 0.0,
-    realtimeRun: 0.0,
-    completedTimes: 0,    
+    realtimeRun: 0.0 
 }
 
 var tempData = {}
@@ -72,7 +80,7 @@ const baseGameSpeed = 4
 const heroIncomeMult = 2500000000000000000
 
 
-const permanentUnlocks = ["Quick task display"]
+const permanentUnlocks = ["Quick task display", "Dark Matter", "Challenges"]
 
 const jobBaseData = {
     "Beggar": { name: "Beggar", maxXp: 50, income: 5, heroxp: 36 },
@@ -163,7 +171,7 @@ const skillBaseData = {
     "Parallel Universe": { name: "Parallel Universe", maxXp: 290, heroxp: 300, effect: 0.02, description: "All XP"},
     "Higher Dimensions": { name: "Higher Dimensions", maxXp: 290, heroxp: 300, effect: 0.001, description: "Longer Lifespan" },
     "Epiphany": { name: "Epiphany", maxXp: 100, heroxp: 280, effect: 0.012, description: "Galactic Council XP"},
-
+    "Dark Ruler": { name: "Dark Ruler", maxXp: 100, heroxp: 250, effect: 0.000001, description: "Dark Matter Gain"},
 }
 
 const itemBaseData = {
@@ -230,6 +238,8 @@ milestoneBaseData = {
     "Awesome Heroes": { name: "Awesome Heroes", expense: 500000000, tier: 20, description: "Hero XP", effect : 1e10 },
     "Furious Heroes": { name: "Furious Heroes", expense: 750000000, tier: 21, description: "Hero XP", effect : 1e18 },
     "Superb Heroes": { name: "Superb Heroes", expense: 10000000000, tier: 22, description: "Hero XP", effect : 1e3 },
+
+    "A new beginning": { name: "A new beginning", expense: 5e10, tier: 23, description: "Unlocks Dark Matter" },
 }
 
 const jobCategories = {
@@ -247,7 +257,7 @@ const skillCategories = {
     "Dark Magic"             : ["Dark Influence", "Evil Control", "Intimidation", "Demon Training", "Blood Meditation", "Demon's Wealth", "Dark Knowledge", "Void Influence", "Time Loop", "Evil Incarnate"],
 	"Void Manipulation"      : ["Absolute Wish", "Void Amplification", "Mind Release", "Ceaseless Abyss", "Void Symbiosis", "Void Embodiment", "Abyss Manipulation"],
 	"Celestial Powers"       : ["Cosmic Longevity", "Cosmic Recollection", "Essence Collector", "Galactic Command"],
-	"Almightiness"           : ["Yin Yang", "Parallel Universe", "Higher Dimensions", "Epiphany"]
+	"Almightiness"           : ["Yin Yang", "Parallel Universe", "Higher Dimensions", "Epiphany", "Dark Ruler"]
 }
 
 const itemCategories = {
@@ -257,7 +267,7 @@ const itemCategories = {
 
 const milestoneCategories = {
     "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcendent Master", "Eternal Time", "Hell Portal", "Inferno", "God's Blessings", "Faint Hope"],
-    "Heroic Milestones": ["New Beginning", "Rise of Great Heroes", "Lazy Heroes", "Dirty Heroes", "Angry Heroes", "Tired Heroes", "Scared Heroes", "Good Heroes", "Funny Heroes", "Beautiful Heroes", "Awesome Heroes", "Furious Heroes", "Superb Heroes"]
+    "Heroic Milestones": ["New Beginning", "Rise of Great Heroes", "Lazy Heroes", "Dirty Heroes", "Angry Heroes", "Tired Heroes", "Scared Heroes", "Good Heroes", "Funny Heroes", "Beautiful Heroes", "Awesome Heroes", "Furious Heroes", "Superb Heroes", "A new beginning"]
 }
 
 function getPreviousTaskInCategory(task)
@@ -422,6 +432,7 @@ const tooltips = {
 	"Parallel Universe": "Self-contained plane of existence, co-existing with one's own, helping you restore fragments of your forgotten power.",
 	"Higher Dimensions": "By possesing the power to partially alter the laws of physics and transceding lower dimensional spaces, your existence becomes never-ending.",
 	"Epiphany": "You become one with everything.",
+    "Dark Ruler": "Ruling the universe allows you to collect more Dark Matter from your subordinates.",
 	
     //Properties
     "Homeless": "Sleep on the uncomfortable, filthy streets while almost freezing to death every night. It cannot get any worse than this.",
@@ -487,8 +498,10 @@ const tooltips = {
     "Awesome Heroes": "Total Hero XP multiplier is 5e180",
     "Furious Heroes": "Total Hero XP multiplier is 5e198",
     "Superb Heroes": "Total Hero XP multiplier is 5e201",
+
+    "A new beginning": "Unlocks the ability to reset for Dark Matter",
 }
-  
+
 function getBindedTaskEffect(taskName) {
     const task = gameData.taskData[taskName]
     return task.getEffect.bind(task)
@@ -508,6 +521,7 @@ function addMultipliers() {
 
         task.xpMultipliers.push(task.getMaxLevelMultiplier.bind(task))
         task.xpMultipliers.push(getHappiness)
+        task.xpMultipliers.push(getDarkMatterXpGain)
         task.xpMultipliers.push(getBindedTaskEffect("Dark Influence"))
         task.xpMultipliers.push(getBindedTaskEffect("Demon Training"))
 		task.xpMultipliers.push(getBindedTaskEffect("Void Influence"))
@@ -516,6 +530,7 @@ function addMultipliers() {
         if (task instanceof Job) {
             task.incomeMultipliers.push(task.getLevelMultiplier.bind(task))
             task.incomeMultipliers.push(getBindedTaskEffect("Demon's Wealth"))
+            task.incomeMultipliers.push(getLifeCoachIncomeGain)
             task.xpMultipliers.push(getBindedTaskEffect("Productivity"))
 			task.xpMultipliers.push(getBindedTaskEffect("Dark Knowledge"))
             task.xpMultipliers.push(getBindedItemEffect("Personal Squire"))
@@ -540,11 +555,13 @@ function addMultipliers() {
         } else if (skillCategories["Magic"].includes(task.name)) {
             task.xpMultipliers.push(getBindedItemEffect("Sapphire Charm"))
 			task.xpMultipliers.push(getBindedItemEffect("Observatory"))
+            task.xpMultipliers.push(getTaaAndMagicXpGain)
 	    } else if (skillCategories["Void Manipulation"].includes(task.name)) {
             task.xpMultipliers.push(getBindedItemEffect("Void Necklace"))
 			task.xpMultipliers.push(getBindedItemEffect("Void Orb"))
         } else if (jobCategories["The Arcane Association"].includes(task.name)) {
             task.xpMultipliers.push(getBindedTaskEffect("Mana Control"))
+            task.xpMultipliers.push(getTaaAndMagicXpGain)
 			task.incomeMultipliers.push(getBindedTaskEffect("All Seeing Eye"))	
 	    } else if (jobCategories["The Void"].includes(task.name)) {
             task.xpMultipliers.push(getBindedTaskEffect("Void Amplification"))
@@ -689,7 +706,7 @@ function setCustomEffects() {
             let kickin = 1.1754 - 0.082 * Math.log(gameData.realtime)
             if (kickin < 0.15)
                 kickin = 0.15
-            mult = 1 + (gameData.realtime * getCompletedGameSpeedBoost()) / (600 * kickin)
+            mult = 1 + (gameData.realtime) / (600 * kickin)
         }
 
         return mult
@@ -712,7 +729,6 @@ function setCustomEffects() {
 }
 
 function getHappiness() {
-
     const meditationEffect = getBindedTaskEffect("Meditation")
     const butlerEffect = getBindedItemEffect("Butler")
 	const mindreleaseEffect = getBindedTaskEffect("Mind Release")
@@ -789,11 +805,27 @@ function getEssenceGain() {
     const rise = gameData.milestoneData["Rise of Great Heroes"]
 
     return essenceControl.getEffect() * essenceCollector.getEffect() * transcendentMaster.getEffect()
-        * faintHope.getEffect() * rise.getEffect() * getChallengeBonus("dance_with_the_devil")
+        * faintHope.getEffect() * rise.getEffect() * getChallengeBonus("dance_with_the_devil") * getAGiftFromGodEssenceGain()
 }
 
-function getCompletedGameSpeedBoost() {
-    return Math.pow(2, gameData.completedTimes)
+function getDarkMatterGain() {
+    const darkRuler = gameData.taskData["Dark Ruler"]
+
+    return 1 * darkRuler.getEffect();
+}
+
+function getDarkMatter() {
+    return gameData.dark_matter;
+}
+
+function getDarkMatterXpGain() {
+    if (getDarkMatter() == 0) return 1;
+
+    return getDarkMatter();
+}
+
+function getDarkOrbs() {
+    return gameData.dark_orbs
 }
 
 function getGameSpeed() {
@@ -802,7 +834,7 @@ function getGameSpeed() {
     const timeLoop = gameData.taskData["Time Loop"]
     const warpDrive = (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
     const timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive
-    const gameSpeed = baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * getCompletedGameSpeedBoost() * getChallengeBonus("time_does_not_fly")
+    const gameSpeed = baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * getChallengeBonus("time_does_not_fly")
 
     return gameData.active_challenge == "time_does_not_fly" ? Math.pow(gameSpeed, 0.7) : gameSpeed
 }
@@ -1060,6 +1092,29 @@ function rebirthThree() {
     gameData.active_challenge = ""
 }
 
+function rebirthFour() {
+    gameData.rebirthFourCount += 1	
+	gameData.essence = 0
+    gameData.evil = 0
+    gameData.dark_matter += getDarkMatterGain()
+
+    for (const challenge in gameData.challenges) {
+        gameData.challenges[challenge] = 0
+    }
+
+    if (gameData.stats.fastest4 == null || gameData.realtime < gameData.stats.fastest4)
+        gameData.stats.fastest4 = gameData.realtime
+
+    rebirthReset()
+
+    for (const taskName in gameData.taskData) {
+        const task = gameData.taskData[taskName]
+        task.maxLevel = 0
+    }
+
+    gameData.active_challenge = ""
+}
+
 function applyMilestones() {
     if (((gameData.requirements["Magic Eye"].isCompleted()) && (gameData.requirements["Rebirth note 2"].isCompleted())) ||
         (gameData.requirements["Almighty Eye"].isCompleted())){
@@ -1074,14 +1129,14 @@ function applyMilestones() {
             if (gameData.evil == 0)
                 gameData.evil = 1
             if (gameData.evil < getEvilGain())
-                gameData.evil *= Math.pow(1.001, 1 + gameData.completedTimes)
+                gameData.evil *= Math.pow(1.001, 1)
         }
 
         if (gameData.requirements["Hell Portal"].isCompleted()) {
             if (gameData.evil == 0)
                 gameData.evil = 1
             if (gameData.evil < getEvilGain())
-                gameData.evil *= Math.pow(1.01, 1 + gameData.completedTimes)
+                gameData.evil *= Math.pow(1.01, 1)
         }
     }
 }
@@ -1131,9 +1186,9 @@ function getLifespan() {
 	const abyss = gameData.taskData["Ceaseless Abyss"]
     const cosmicLongevity = gameData.taskData["Cosmic Longevity"]
     const lifespan = baseLifespan * immortality.getEffect() * superImmortality.getEffect() * abyss.getEffect()
-        * cosmicLongevity.getEffect() * higherDimensions.getEffect() * getCompletedGameSpeedBoost()
+        * cosmicLongevity.getEffect() * higherDimensions.getEffect()
 
-    if (gameData.active_challenge == "legends_never_die") return Math.pow(lifespan, 0.72) + 365 * 20
+    if (gameData.active_challenge == "legends_never_die") return Math.pow(lifespan, 0.72) + 365 * 25
 
     return lifespan
 }
@@ -1239,6 +1294,10 @@ function assignMethods() {
             requirement = Object.assign(new EvilRequirement(requirement.elements, requirement.requirements), requirement)
         } else if (requirement.type == "essence") {
             requirement = Object.assign(new EssenceRequirement(requirement.elements, requirement.requirements), requirement)
+        } else if (requirement.type == "darkMatter") {
+            requirement = Object.assign(new DarkMatterRequirement(requirement.elements, requirement.requirements), requirement)
+        } else if (requirement.type == "darkOrb") {
+            requirement = Object.assign(new DarkOrbsRequirement(requirement.elements, requirement.requirements), requirement)
         }
 
         const tempRequirement = tempData["requirements"][key]
@@ -1306,6 +1365,7 @@ function loadGameData() {
             replaceSaveDict(gameData.settings, gameDataSave.settings)
             replaceSaveDict(gameData.stats, gameDataSave.stats)
             replaceSaveDict(gameData.challenges, gameDataSave.challenges)
+            replaceSaveDict(gameData.dark_matter_shop, gameDataSave.dark_matter_shop)
             gameData = gameDataSave
 
             if (gameData.coins == null)
@@ -1346,7 +1406,6 @@ function update(needUpdateUI = true) {
     makeHeroes()
     increaseRealtime()
     increaseDays()
-    //setChallengeProgress()
     autoPromote()
     autoBuy()  
     applyExpenses()
@@ -1356,6 +1415,8 @@ function update(needUpdateUI = true) {
             performTask(task)
         }
     }
+
+    gameData.dark_orbs += applySpeed(getDarkOrbGeneration())
     
     applyMilestones() 
     updateStats()
@@ -1416,8 +1477,8 @@ function restartGame() {
     gameData.challenges.rich_and_the_poor = 0
     gameData.challenges.time_does_not_fly = 0
     gameData.challenges.dance_with_the_devil = 0
+    gameData.challenges.legends_never_die = 0
 
-    gameData.completedTimes += 1
     saveGameData()
     location.reload()
 }
@@ -1531,13 +1592,12 @@ gameData.requirements = {
 	"Rebirth note 4": new AgeRequirement([document.getElementById("rebirthNote4")], [{requirement: 1000}]),
 	"Rebirth note 5": new AgeRequirement([document.getElementById("rebirthNote5")], [{requirement: 10000}]),
     "Rebirth note 6": new TaskRequirement([document.getElementById("rebirthNote6")], [{ task: "Cosmic Recollection", requirement: 1 }]),
-
-    "Rebirth note End": new TaskRequirement([document.getElementById("rebirthNoteEnd")], [{ task: "One Above All", requirement: 1000000000000, isHero: true }]),
-    "Rebirth button End": new TaskRequirement([document.getElementById("rebirthButtonEnd")], [{ task: "One Above All", requirement: 1000000000000, isHero: true }]),
+    "Rebirth note 7": new EssenceRequirement([document.getElementById("rebirthNote7")], [{ requirement: 2e10 }]),
 
     "Rebirth button 1": new AgeRequirement([document.getElementById("rebirthButton1")], [{ requirement: 65 }]),
     "Rebirth button 2": new AgeRequirement([document.getElementById("rebirthButton2")], [{ requirement: 200 }]),
     "Rebirth button 3": new TaskRequirement([document.getElementById("rebirthButton3")], [{ task: "Cosmic Recollection", requirement: 1 }]),
+    "Rebirth button 4": new EssenceRequirement([document.getElementById("rebirthButton4")], [{ requirement: 5e10 }]),
 
     "Rebirth stats evil": new AgeRequirement([document.getElementById("statsEvilGain")], [{ requirement: 200 }]),
     "Rebirth stats essence": new TaskRequirement([document.getElementById("statsEssenceGain")], [{ task: "Cosmic Recollection", requirement: 1 }]),
@@ -1545,6 +1605,9 @@ gameData.requirements = {
 
     "Evil info": new EvilRequirement([document.getElementById("evilInfo")], [{requirement: 1}]),
 	"Essence info": new EssenceRequirement([document.getElementById("essenceInfo")], [{requirement: 1}]),
+    "Dark Matter info": new DarkMatterRequirement([document.getElementById("darkMatterInfo")], [{requirement: 1}]),
+    "Dark Orbs info": new DarkOrbsRequirement([document.getElementById("darkOrbsInfo")], [{requirement: 1}]),
+
     "Time warping info": new TaskRequirement([document.getElementById("timeWarping")], [{task: "Adept Mage", requirement: 10}]),
 
     "Quick task display": new AgeRequirement([document.getElementById("quickTaskDisplay")], [{requirement: 20}]),
@@ -1648,6 +1711,7 @@ gameData.requirements = {
 	"Parallel Universe": new EssenceRequirement([getTaskElement("Parallel Universe")], [{requirement: 1}]),
 	"Higher Dimensions": new EssenceRequirement([getTaskElement("Higher Dimensions")], [{requirement: 10000}]),
 	"Epiphany": new EssenceRequirement([getTaskElement("Epiphany")], [{requirement: 30000}]),
+    "Dark Ruler": new DarkMatterRequirement([getTaskElement("Dark Ruler")], [{requirement: 10}]),
 
     //Properties
     "Homeless": new CoinRequirement([getItemElement("Homeless")], [{requirement: 0}]),
@@ -1690,6 +1754,9 @@ gameData.requirements = {
 
     // Milestones
     "Milestones": new EssenceRequirement([document.getElementById("milestonesTabButton")], [{ requirement: 1 }]),
+
+    // Dark Matter
+    "Dark Matter": new DarkMatterRequirement([document.getElementById("darkMatterTabButton")], [{ requirement: 1 }]),
 
     // Challenges
     "Challenges": new EvilRequirement([document.getElementById("challengesTabButton")], [{ requirement: 10000 }]),

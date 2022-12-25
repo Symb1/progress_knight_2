@@ -98,6 +98,15 @@
                     <div style="color: gray" class="sidebar-element">Affects Almightiness XP gain</div>
                 </div>
 
+                <div id="darkMatterInfo" class="hidden">
+                    <div class="text-caption"><span style="color: rgb(114, 83, 182)">Dark Matter: </span><span id="darkMatterDisplay"></span></div>
+                    <div style="color: gray" class="sidebar-element">Affects all XP gain</div>
+                </div>
+                <div id="darkOrbsInfo" class="hidden">
+                    <div class="text-caption"><span style="color: rgb(143, 114, 207)">Dark Orbs: </span><span id="darkOrbsDisplay"></span></div>
+                    <div style="color: gray" class="sidebar-element">Used to buy items in the Dark Matter shop</div>
+                </div>
+
                 <div id="timeWarping" class="hidden">
                     <div class="text-caption"><span style="color: rgb(204, 34, 219)">Time Warping: </span><span id="timeWarpingDisplay"></span></div>
                     <div style="color: gray" class="sidebar-element">Affects game speed</div>
@@ -114,8 +123,8 @@
                     <button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100% " onClick="rebirthThree()">Transcend: <span style="color: rgb(24, 210, 217)" id="essenceGainButtonDisplay"></span></button>
                 </div>
 
-                <div id="rebirthButtonEnd" class="hidden">
-                    <button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100% " onClick="setTab('rebirth')"><span style="color: rgb(102, 229, 71)">Check The Amulet</span></button>
+                <div id="rebirthButton4" class="hidden">
+                    <button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100% " onClick="rebirthFour()">Collapse the universe: <span style="color: rgb(102, 229, 71)" id="darkMatterGainButtonDisplay"></span></button>
                 </div>
             </div>
 
@@ -127,6 +136,7 @@
                     <div class="w3-button w3-bar-item tabButton baritem" id="challengesTabButton" onClick="setTab('challenges')">Challenges</div>
                     <div class="w3-button w3-bar-item tabButton baritem" id="milestonesTabButton" onClick="setTab('milestones')">Milestones</div>
                     <div class="w3-button w3-bar-item tabButton baritem" id="rebirthTabButton" onClick="setTab('rebirth')">Amulet</div>
+                    <div class="w3-button w3-bar-item tabButton baritem" id="darkMatterTabButton" onClick="setTab('darkMatter')">Dark Matter</div>
                     <div class="w3-button w3-bar-item tabButton baritem" id="settingsTabButton" onClick="setTab('settings')">Settings</div>
                 </div>
                 <div id="maincolumn" class="panel w3-margin-left w3-margin-top w3-padding tabs-main-column">
@@ -136,7 +146,7 @@
                             <th>Level</th>
                             <th class="valueType" style="width: 18em">Value type</th>
                             <th>Xp/day</th>
-                            <th>Xp left</th>
+                            <th>Xp&nbsp;left</th>
                             <th class="maxLevel">Max</th>
                         </tr>
                     </template>
@@ -234,6 +244,7 @@
                                 </div>
                                 <span style="color: rgb(200, 0, 0)" class="evil"></span>
                                 <span style="color: rgb(24, 210, 217)" class="essence"></span>
+                                <span style="color: rgb(114, 83, 182)" class="darkMatter"></span>
                             </div>
                         </td>
                     </template>
@@ -301,7 +312,8 @@
                             </div>
                             <div id="legendsNeverDieChallenge" style="padding-top:2em">
                                 <div class="text-caption challenge-title">5. Legends never die</div>
-                                <div style="color: gray; padding-bottom: 0.3em">Reduces your lifespan by ^0.72, happiness does nothing and dark magic XP effect is always 1x</div>
+                                <div style="color: gray; padding-bottom: 0.3em">Reduces your lifespan by ^0.72, happiness does nothing and Dark Magic XP effect is always 1x</div>
+                                <div style="color: gray; padding-bottom: 0.3em">Goal: Reach the Chairman</div>
                                 <div id="challengeReward5" class="reward">Reward: Increases evil gain by x<span id="challengeEvilGainBuff">1</span></div>
                                 <button id="challengeButton5" class="w3-button button" onclick="enterChallenge('legends_never_die')">Enter challenge</button>
                             </div>
@@ -320,12 +332,6 @@
                     <div class="tab" id="rebirth">
                         <div id="rebirthPage" style="flex: 1; margin-left: 0.5em;" >
                             <ul>
-                                <li style="margin: 0.4em;" id="rebirthNoteEnd" class="hidden">
-                                    <div class="text-caption" style="margin-bottom: 0.4em; color: rgb(102, 229, 71); ">
-                                        Congratulations! You have completed the game. You can restart it and get a permanent x2 speed boost, which will apply again each time you finish the game. You can also continue to grind but there is no more content for now.<br>
-                                        <button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em; " onClick="restartGame()"><span style="color: rgb(204, 0, 255) ">Restart the game and get a permanent x2 speed boost</span></button>
-                                    </div>
-                                </li>
                                 <li style="margin: 0.4em;">
                                     You stumble across a strange looking amulet on your 25th birthday. It does not look like
                                     it has any worth on the market given that it's made from cheap-looking copper. However, you
@@ -415,9 +421,47 @@
                                         <button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em" onClick="rebirthThree()">Transcend</button>
                                     </div>
                                 </li>
+                                <li style="margin: 0.4em;" id="rebirthNote7" class="hidden">
+                                    <i style="color: grey">
+                                        You are starting to become way too powerful. The end of the universe may be near..
+                                    </i>
+                                    <br>
+                                </li>
                             </ul>
                         </div>
                         <div id="dummyPage2" style="flex: 2; margin-left: 0.5em;">
+                        </div>
+                    </div>
+
+                    <div class="tab" id="darkMatter">
+                        <div class="panel w3-margin-left w3-margin-top w3-padding">
+                            <div style="padding-top:2em">
+                                <div class="text-caption dark-matter-title">Dark Orb Generator</div>
+                                <div style="color:gray; padding-bottom:0.3em">Generates <b id="darkOrbGenerator"></b> <span style="color: rgb(143, 114, 207)">Dark Orb</span> per day</div>
+                                <div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="darkOrbGeneratorCost"></b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
+                                <button class="w3-button button" onclick="buyDarkOrbGenerator()">Upgrade</button>
+                            </div>
+    
+                            <div style="padding-top:2em">
+                                <div class="text-caption dark-matter-title">A deal with the Chairman</div>
+                                <div style="color:gray; padding-bottom: 0.5em;">Reward: Improves <span style="color: rgb(199, 21, 133);">T.A.A and Magic</span> XP gain by x<span id="aDealWithTheChairmanEffect"></span></div>
+                                <div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="aDealWithTheChairmanCost"></b> <span style="color: rgb(143, 114, 207)">Dark Orbs</span></div>
+                                <button class="w3-button button" onclick="buyADealWithTheChairman()">Upgrade</button>
+                            </div>
+
+                            <div style="padding-top:2em">
+                                <div class="text-caption dark-matter-title">A gift from god</div>
+                                <div style="color:gray; padding-bottom: 0.5em;">Reward: Increases <span style="color: rgb(24, 210, 217)">Essence</span> gain by x<span id="aGiftFromGodEffect"></span></div>
+                                <div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="aGiftFromGodCost"></b> <span style="color: rgb(143, 114, 207)">Dark Orbs</span></div>
+                                <button class="w3-button button" onclick="buyAGiftFromGod()">Upgrade</button>
+                            </div>
+
+                            <div style="padding-top:2em">
+                                <div class="text-caption dark-matter-title">Life coach</div>
+                                <div style="color:gray; padding-bottom: 0.5em;">Reward: Increases <span style="color: lightgreen;">Income</span> by x<span id="lifeCoachEffect"></span></div>
+                                <div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="lifeCoachCost"></b> <span style="color: rgb(143, 114, 207)">Dark Orbs</span></div>
+                                <button class="w3-button button" onclick="buyLifeCoach()">Upgrade</button>
+                            </div>
                         </div>
                     </div>
 
@@ -502,10 +546,6 @@
                                                 <div class="text-caption" style="margin-top: 0.4em;">
                                                     <button class="w3-button button w3-red" onClick="resetGameData()">Hard reset game</button>
                                                 </div>
-                                                <div class="text-caption" style="margin-top: 0.4em;">
-                                                    <span id="completedTimes" style="padding-top: 0.4em; color: rgb(204, 0, 255)"></span>
-                                                </div>
-
                                             </li>
                                             <li>
                                                 <div class="text-caption" style="margin-top: 0.4em;">Links</div>
@@ -517,7 +557,7 @@
                                                 </div>
                                             </li>
                                         </ul>
-                                        <span id="version" style="font-size:smaller; float:right" class="w3-text-gray">Version: 2.1.17</span>
+                                        <span id="version" style="font-size:smaller; float:right" class="w3-text-gray">Version: 2.2</span>
                                     </div>
                                 </div>
                                 <div id="statsTab" class="tabSettings">
@@ -548,6 +588,12 @@
                                                 <li id="statsEssenceGain" class="hidden">You gain <span id="essencePerSecondDisplay"></span> essence/s. Maximum <span id="maxEssencePerSecondDisplay"></span> essence/s was at <span id="maxEssencePerSecondRtDisplay"></span>.</li>
                                             </ul>
                                         </div>
+                                        <div id="statsRebirth4" class="hidden">
+                                            <ul>
+                                                <li>You have collapsed the universe <span id="rebirthFourCountDisplay"></span> times.</li>
+                                                <li>Your fastest collapse is in <span id="rebirthFourFastestDisplay"></span>.</li>
+                                            </ul>
+                                        </div>
                                         <div id="statsChallenges">
                                             <ul>
                                                 <li id="challengeStat1">Challenge 1 Reward: Increases happiness by x<span id="challengeHappinessBuffDisplay"></span>.</li>
@@ -557,14 +603,6 @@
                                                 <li id="challengeStat5">Challenge 5 Reward: Increases evil gain by x<span id="challengeEvilGainBuffDisplay"></span>.</li>
 
 
-                                            </ul>
-                                        </div>
-                                        <div id="statsComplete" class="hidden">
-                                            <ul>
-                                                <li>You have completed the game <span id="completedTimesDisplay"></span> times.</li>
-                                                <li>Time boost is x<span id="completedBoostDisplay"></span>.</li>
-                                                <li>Current game run time is <span id="currentRunDisplay"></span>.</li>
-                                                <li>Your fastest completion is in <span id="completedFastestDisplay"></span>.</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -589,6 +627,7 @@
     <script type="text/javascript" src="js/HackTimer.js"></script>
     <script type="text/javascript" src="js/classes.js"></script>
     <script type="text/javascript" src="js/challenges.js"></script>
+    <script type="text/javascript" src="js/dark_matter.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>

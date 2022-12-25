@@ -6,13 +6,6 @@ function initUI() {
     setStickySidebar(gameData.settings.stickySidebar)
 
     setTheme(gameData.settings.theme)
-
-    if (gameData.completedTimes > 0) {
-        var elem = document.getElementById("completedTimes")
-        elem.textContent = "You completed the game " + gameData.completedTimes + " " +
-            (gameData.completedTimes > 1 ? "times" : "time") + ". Time Boost is x" + format(getCompletedGameSpeedBoost()) +
-            ". All progress will be lost if you click this button."
-    }
 }
 
 function createRequiredRow(categoryName) {
@@ -160,11 +153,13 @@ function updateRequiredRows(data, categoryType) {
             const levelElement = requiredRow.getElementsByClassName("levels")[0]
             const evilElement = requiredRow.getElementsByClassName("evil")[0]
 			const essenceElement = requiredRow.getElementsByClassName("essence")[0]
+            const darkMatterElement = requiredRow.getElementsByClassName("darkMatter")[0]
 
             coinElement.classList.add("hiddenTask")
             levelElement.classList.add("hiddenTask")
             evilElement.classList.add("hiddenTask")
 			essenceElement.classList.add("hiddenTask")
+            darkMatterElement.classList.add("hiddenTask")
 
             let finalText = ""
             if (data == gameData.taskData) {
@@ -174,6 +169,9 @@ function updateRequiredRows(data, categoryType) {
                 } else if (requirementObject instanceof EssenceRequirement) {
                     essenceElement.classList.remove("hiddenTask")
                     essenceElement.textContent = format(requirements[0].requirement) + " essence"
+                } else if (requirementObject instanceof DarkMatterRequirement) {
+                    darkMatterElement.classList.remove("hiddenTask")
+                    darkMatterElement.textContent = format(requirements[0].requirement) + " Dark Matter"
                 } else if (requirementObject instanceof AgeRequirement) {
                     essenceElement.classList.remove("hiddenTask")
                     essenceElement.textContent = format(requirements[0].requirement) + " age"
@@ -257,6 +255,9 @@ function updateTaskRows() {
                 reqlist += format(requirements[0].requirement) + " essence<br>"
             } else if (requirementObject instanceof AgeRequirement) {
                 reqlist += format(requirements[0].requirement) + " age<br>"
+                
+            } else if (requirementObject instanceof DarkMatterRequirement) {
+                reqlist += format(requirements[0].requirement) + " Dark Matter<br>"
             } else {
                 for (const requirement of requirements) {
                     const task_check = gameData.taskData[requirement.task]
@@ -458,12 +459,29 @@ function updateText() {
     document.getElementById("essenceGainDisplay").textContent = format(getEssenceGain())
     document.getElementById("essenceGainButtonDisplay").textContent = "+" + format(getEssenceGain())
 
+    document.getElementById("darkMatterDisplay").textContent = format(gameData.dark_matter)
+    document.getElementById("darkMatterGainButtonDisplay").textContent = "+" + format(getDarkMatterGain())
+
+    document.getElementById("darkOrbsDisplay").textContent = format(gameData.dark_orbs)
+
+    // Dark matter shop
+    document.getElementById("darkOrbGeneratorCost").textContent = format(getDarkOrbGeneratorCost())
+    document.getElementById("darkOrbGenerator").textContent = format(getDarkOrbGeneration())
+
+    document.getElementById("aDealWithTheChairmanCost").textContent = format(getADealWithTheChairmanCost())
+    document.getElementById("aDealWithTheChairmanEffect").textContent = format(getTaaAndMagicXpGain())
+
+    document.getElementById("aGiftFromGodEffect").textContent = format(getAGiftFromGodEssenceGain())
+    document.getElementById("aGiftFromGodCost").textContent = format(getAGiftFromGodCost())
+
+    document.getElementById("lifeCoachEffect").textContent = format(getLifeCoachIncomeGain())
+    document.getElementById("lifeCoachCost").textContent = format(getLifeCoachCost())
+
     const timeWarping = gameData.taskData["Time Warping"].getEffect() *
         gameData.taskData["Temporal Dimension"].getEffect() *
         gameData.taskData["Time Loop"].getEffect() *
         (gameData.requirements["Eternal Time"].isCompleted() ? 2 : 1) *
-        getChallengeBonus("time_does_not_fly") * 
-        getCompletedGameSpeedBoost()
+        getChallengeBonus("time_does_not_fly")
 
     document.getElementById("timeWarpingDisplay").textContent = "x" + format(
         gameData.active_challenge == "time_does_not_fly" ? Math.pow(timeWarping, 0.7) : timeWarping
@@ -494,23 +512,21 @@ function updateText() {
     else
         document.getElementById("statsRebirth3").classList.add("hidden")
 
-    if (gameData.completedTimes > 0)
-        document.getElementById("statsComplete").classList.remove("hidden")
+    if (gameData.rebirthFourCount > 0)
+        document.getElementById("statsRebirth4").classList.remove("hidden")
     else
-        document.getElementById("statsComplete").classList.add("hidden")
+        document.getElementById("statsRebirth4").classList.add("hidden")
 
     document.getElementById("rebirthOneCountDisplay").textContent = gameData.rebirthOneCount
     document.getElementById("rebirthTwoCountDisplay").textContent = gameData.rebirthTwoCount
     document.getElementById("rebirthThreeCountDisplay").textContent = gameData.rebirthThreeCount
-    document.getElementById("completedTimesDisplay").textContent = gameData.completedTimes
-    document.getElementById("completedBoostDisplay").textContent = format(getCompletedGameSpeedBoost())
+    document.getElementById("rebirthFourCountDisplay").textContent = gameData.rebirthFourCount
 
 
     document.getElementById("rebirthOneFastestDisplay").textContent = formatTime(gameData.stats.fastest1, true)
     document.getElementById("rebirthTwoFastestDisplay").textContent = formatTime(gameData.stats.fastest2, true)
     document.getElementById("rebirthThreeFastestDisplay").textContent = formatTime(gameData.stats.fastest3, true)
-    document.getElementById("completedFastestDisplay").textContent = formatTime(gameData.stats.fastestGame, true)
-    document.getElementById("currentRunDisplay").textContent = formatTime(gameData.realtimeRun, true)
+    document.getElementById("rebirthFourFastestDisplay").textContent = formatTime(gameData.stats.fastest4, true)
 
     // Gain stats
     document.getElementById("evilPerSecondDisplay").textContent = format(gameData.stats.EvilPerSecond, 3)

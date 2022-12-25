@@ -197,6 +197,13 @@ button:focus {
 .challenge {
     border: 0.1em solid red;
 }
+
+.dark-matter-title {
+    color:gold;
+    border-bottom: 0.1em solid goldenrod;
+    padding-bottom: 0.4em;
+    margin-bottom: 0.4em;
+}
   
 .tooltip .tooltipText {
     visibility: hidden;
@@ -298,12 +305,12 @@ button:focus {
 }
 
 .tabs-tab-column {
-    width: 60em;
+    width: 65em;
     height: auto;
 }
 
 .tabs-main-column {
-    width: 60em;
+    width: 65em;
     height: auto;
     float: right;
     margin-bottom: 4em;
@@ -334,7 +341,7 @@ button:focus {
 }
 
 .baritem {
-    width: 8em;
+    width: 8.1rem;
     height: auto;
     text-align: center;
 }
@@ -366,5 +373,4 @@ button:focus {
 .reward {
     color: rgb(64, 237, 23);
     padding-bottom: 0.5em;
-    
 }
