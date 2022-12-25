@@ -1471,6 +1471,7 @@ function restartGame() {
     gameData.challenges.rich_and_the_poor = 0
     gameData.challenges.time_does_not_fly = 0
     gameData.challenges.dance_with_the_devil = 0
+    gameData.challenges.legends_never_die = 0
 
     saveGameData()
     location.reload()
