@@ -1,3 +1,8 @@
+version 2.2 / 25.12.2022
+* Added Dark Matter and Dark Orbs
+* Removed the games completed boosts
+* Made challenges even stronger!
+
 version 2.1.17 / 18.12.2022
 * Add a fifth challenge and rework the previous ones
 * Fix a few spelling mistakes

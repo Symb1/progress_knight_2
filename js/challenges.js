@@ -39,10 +39,10 @@ function setChallengeProgress() {
 
 function getChallengeBonus(challenge_name, current = false) {
     if (challenge_name == "an_unhappy_life") {
-        return softcap(Math.pow((current ? getHappiness() : gameData.challenges.an_unhappy_life) + 1, 0.3), 500, 0.45)
+        return softcap(Math.pow((current ? getHappiness() : gameData.challenges.an_unhappy_life) + 1, 0.31), 500, 0.45)
     }
     if (challenge_name == "rich_and_the_poor") {
-        return softcap(Math.pow((current ? getIncome() : gameData.challenges.rich_and_the_poor) + 1, 0.2), 10, 0.75)
+        return softcap(Math.pow((current ? getIncome() : gameData.challenges.rich_and_the_poor) + 1, 0.25), 25, 0.55)
     }
     if (challenge_name == "time_does_not_fly") {
         return softcap(Math.pow((current ? getGameSpeed() : gameData.challenges.time_does_not_fly) + 1, 0.05), 2)
@@ -51,7 +51,7 @@ function getChallengeBonus(challenge_name, current = false) {
         return softcap(Math.pow((current ? Math.max(0, getEvilGain() - 10) : gameData.challenges.dance_with_the_devil) + 1, 0.08), 2, 0.7)
     }
     if (challenge_name == "legends_never_die") {
-        return softcap(Math.pow((current ? gameData.taskData["Chairman"].level : gameData.challenges.legends_never_die) + 1, 0.55), 50, 0.7)
+        return softcap(Math.pow((current ? gameData.taskData["Chairman"].level : gameData.challenges.legends_never_die) + 1, 0.85), 25, 0.6)
     }
 }
 
