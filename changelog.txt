@@ -1,3 +1,7 @@
+version 2.2.1 / 25.12.2022
+* Added Medieval, Extended, British and Modern coin display options
+* Fix a few small bugs
+
 version 2.2 / 25.12.2022
 * Added Dark Matter and Dark Orbs
 * Removed the games completed boosts
