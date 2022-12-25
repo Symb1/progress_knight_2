@@ -819,7 +819,7 @@ function getDarkMatter() {
 }
 
 function getDarkMatterXpGain() {
-    if (getDarkMatter() == 0) return 1;
+    if (getDarkMatter() < 1) return 1;
 
     return getDarkMatter();
 }
