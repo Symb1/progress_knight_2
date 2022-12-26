@@ -49,7 +49,7 @@ class Task {
     }
 
     getMaxLevelMultiplier() {
-        return gameData.active_challenge == "dance_with_the_devil" ? (10 / (this.maxLevel + 1))  : 1 + this.maxLevel / 10
+        return gameData.active_challenge == "dance_with_the_devil" ? (10 / (this.maxLevel + 1)) : 1 + this.maxLevel / 10
     }
 
     getXpGain() {
