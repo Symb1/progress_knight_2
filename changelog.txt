@@ -1,3 +1,6 @@
+version 2.2.2 / 26.12.2022
+* Jobs and skills can now continue past infinity (1e305)
+
 version 2.2.1 / 25.12.2022
 * Added Medieval, Extended, British and Modern coin display options
 * Fix a few small bugs
