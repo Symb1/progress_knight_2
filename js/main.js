@@ -786,6 +786,12 @@ function applySpeed(value) {
     return value * getGameSpeed() / updateSpeed
 }
 
+function applySpeedOnBigInt(value) {
+    if (value == 0n)
+        return 0n
+    return value * BigInt(Math.floor(getGameSpeed())) / BigInt(Math.floor(updateSpeed))
+}
+
 function getEvilGain() {
     const evilControl = gameData.taskData["Evil Control"]
     const bloodMeditation = gameData.taskData["Blood Meditation"]
@@ -1272,6 +1278,9 @@ function assignMethods() {
             task.baseData = skillBaseData[task.name]
             task = Object.assign(new Skill(skillBaseData[task.name]), task)
         } 
+
+        task.xpBigInt = BigInt(task.xpBigInt)
+
         gameData.taskData[key] = task
     }
 
@@ -1440,47 +1449,6 @@ function updateStats() {
             gameData.stats.maxEssencePerSecondRt = gameData.realtime
         }
     }
-
-    
-       
-
-}
-
-function restartGame() {
-    gameData.paused = true
-    clearInterval(saveloop)
-    clearInterval(gameloop)
-
-    if (gameData.stats.fastestGame == null || gameData.realtimeRun < gameData.stats.fastestGame)
-        gameData.stats.fastestGame = gameData.realtimeRun
-
-    gameData.currentJob = gameData.taskData["Beggar"]
-    gameData.currentProperty = gameData.itemData["Homeless"]
-    gameData.currentMisc = []
-
-    gameData.itemData = {}
-    gameData.taskData = {}
-    gameData.milestoneData = {}
-    gameData.requirements = {}
-    gameData.coins = 0
-    gameData.days = 365 * 14
-    gameData.evil = 0
-    gameData.essence = 0
-    gameData.paused = false
-    gameData.timeWarpingEnabled = true
-    gameData.realtime = 0
-    gameData.realtimeRun = 0
-    gameData.settings.selectedTab = 'jobs'
-
-    gameData.active_challenge = ""
-    gameData.challenges.an_unhappy_life = 0
-    gameData.challenges.rich_and_the_poor = 0
-    gameData.challenges.time_does_not_fly = 0
-    gameData.challenges.dance_with_the_devil = 0
-    gameData.challenges.legends_never_die = 0
-
-    saveGameData()
-    location.reload()
 }
 
 function resetGameData() {

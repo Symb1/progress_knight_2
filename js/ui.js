@@ -223,13 +223,8 @@ function updateTaskRows() {
         let task = gameData.taskData[key]
         const row = document.getElementById("row " + task.name)
         row.getElementsByClassName("level")[0].textContent = task.level
-        if (task.isFinished) {
-            row.getElementsByClassName("xpGain")[0].textContent = "Maximum"
-            row.getElementsByClassName("xpLeft")[0].textContent = "0"
-        } else {
-            row.getElementsByClassName("xpGain")[0].textContent = format(task.getXpGain())
-            row.getElementsByClassName("xpLeft")[0].textContent = format(task.getXpLeft())
-        }
+        row.getElementsByClassName("xpGain")[0].textContent = task.getXpGainFormatted()
+        row.getElementsByClassName("xpLeft")[0].textContent = task.getXpLeftFormatted()
 
         let tooltip = tooltips[key]
 
@@ -673,7 +668,10 @@ function updateUI() {
 
     updateQuickTaskDisplay()
     hideCompletedRequirements()
-    updateText()  
+    updateText()
+
+    if (getDarkMatter() == 0)
+        gameData.requirements["Dark Matter info"].completed = false
 }
 
 function setTab(selectedTab) {
