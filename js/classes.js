@@ -5,30 +5,48 @@ class Task {
         this.level = 0
         this.maxLevel = 0 
         this.xp = 0
+        this.xpBigInt = BigInt(0)
         this.isHero = false
         this.isFinished = false
 
         this.xpMultipliers = []
     }
 
-    getMaxXp() {
-        if (this.isFinished)
-            return 1e305
+    toJSON() {
+        return {
+            baseData: this.baseData,
+            name: this.name,
+            level: this.level,
+            maxLevel: this.maxLevel,
+            xp: this.xp,
+            xpBigInt: this.xpBigInt.toString(),
+            isHero: this.isHero,
+            isFinished: this.isFinished
+        }
+    }
 
+    getMaxXp() {
         const maxXp = (this.isHero ? Math.pow(10, this.baseData.heroxp) : 1) * this.baseData.maxXp * (this.level + 1) * Math.pow(this.isHero ? 1.08 : 1.01, this.level)
 
         if (isNaN(maxXp) || maxXp == Infinity || maxXp > 1e305) {
             this.isFinished = true
-            return 1e305
         }
 
         return maxXp
     }
 
-    getXpLeft() {
-        if (this.isFinished)
-            return 0
+    getMaxBigIntXp() {
 
+
+        const maxXp = this.getMaxXp() == Infinity ? BigInt(1e305) : BigInt(Math.floor(this.getMaxXp()));
+
+        if (maxXp < 1e305)
+            return maxXp
+
+        return maxXp * 2n ** (BigInt(this.level) / 75n)
+    }
+
+    getXpLeft() {
         return this.getMaxXp() - this.xp
     }
 
@@ -37,36 +55,63 @@ class Task {
     }
 
     getXpGain() {
-        if (this.isFinished)
-            return 0
-
         return (this.isHero ? getHeroXpGainMultipliers(this) : 1) * applyMultipliers(10, this.xpMultipliers)
+    }
+
+    getXpGainBigInt() {
+        let xpGain = BigInt(Math.floor(this.isHero ? getHeroXpGainMultipliers(this) : 1))
+        
+        this.xpMultipliers.forEach(multiplier => {
+            xpGain *= BigInt(Math.floor(multiplier()))
+        })
+
+        return xpGain
+    }
+
+    getXpGainFormatted() {
+        if (this.isFinished)
+            return bigIntToExponential(this.getXpGainBigInt())
+        return format(this.getXpGain())
+    }
+
+    getXpLeftFormatted() {
+        if (this.isFinished)
+            return bigIntToExponential(this.getMaxBigIntXp() - this.xpBigInt)
+        return format(this.getXpLeft())
     }
 
     increaseXp() {
         if (this.isFinished) {
-            if (Math.random() < 0.001)
-                this.level += 1
-            return
-        }
+            this.xpBigInt += applySpeedOnBigInt(this.getXpGainBigInt())
 
-        this.xp += applySpeed(this.getXpGain())
+            if (this.xpBigInt >= this.getMaxBigIntXp()) {
+                let excess = this.xpBigInt - this.getMaxBigIntXp()
+                while (excess >= 0n) {
+                    this.level += 1
+                    excess -= this.getMaxBigIntXp()
+                }
+                this.xpBigInt = this.getMaxBigIntXp() + excess
 
-        if (this.xp > 1e305)        
-            this.xp = 1e305        
-        else if (isNaN(this.xp))
-        {
-            this.isFinished = true
-            return
-        }
-       
-        if (this.xp >= this.getMaxXp()) {
-            let excess = this.xp - this.getMaxXp()
-            while (excess >= 0) {
-                this.level += 1
-                excess -= this.getMaxXp()
+                // this.xpBigInt = 0n
+                // this.level += 1
             }
-            this.xp = this.getMaxXp() + excess
+        } else {
+            this.xp += applySpeed(this.getXpGain())
+
+            if (this.xp > 1e275 || isNaN(this.xp) || this.xp == Infinity || this.getXpGain() == Infinity 
+                || this.getMaxXp() == Infinity || this.getXpLeft() == Infinity) {
+                this.isFinished = true
+                return
+            }
+           
+            if (this.xp >= this.getMaxXp()) {
+                let excess = this.xp - this.getMaxXp()
+                while (excess >= 0) {
+                    this.level += 1
+                    excess -= this.getMaxXp()
+                }
+                this.xp = this.getMaxXp() + excess
+            }
         }
     }
 }
