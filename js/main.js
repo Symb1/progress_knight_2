@@ -1367,6 +1367,13 @@ function loadGameData() {
         const gameDataSave = JSON.parse(localStorage.getItem("gameDataSave"))
 
         if (gameDataSave !== null) {
+            // When the game contains completedTimes, add 1 Dark Matter and remove the instance.
+            if ("completedTimes" in gameDataSave && gameDataSave["completedTimes"] > 0) {
+                delete gameDataSave["completedTimes"]
+                gameDataSave.dark_matter += 1
+                console.log("Gave 1 free Dark Matter")
+            }
+
             replaceSaveDict(gameData, gameDataSave)
             replaceSaveDict(gameData.requirements, gameDataSave.requirements)
             replaceSaveDict(gameData.taskData, gameDataSave.taskData)
