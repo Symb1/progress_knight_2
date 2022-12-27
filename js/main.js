@@ -1442,7 +1442,7 @@ function update(needUpdateUI = true) {
     
     applyMilestones() 
     updateStats()
-    if (needUpdateUI)
+    if (needUpdateUI && !document.hidden)
         updateUI()
 }
 
