@@ -967,7 +967,7 @@ function autoPromote() {
     let maxIncome = 0;
     for (const key in gameData.taskData) {
         const task = gameData.taskData[key]
-        if (task instanceof Job && gameData.requirements[key].completed) {
+        if (task instanceof Job && gameData.requirements[key].isCompleted()) {
             const income = task.getIncome();
             if (income > maxIncome) {
                 maxIncome = income
@@ -984,7 +984,7 @@ function autoBuy() {
     const income = getIncome()
 
     for (const key in gameData.itemData) {
-        if (gameData.requirements[key].completed) {
+        if (gameData.requirements[key].isCompleted()) {
             const item = gameData.itemData[key]
             const expense = item.getExpense()
 
@@ -1002,7 +1002,7 @@ function autoBuy() {
     }
 
     for (const key in gameData.itemData) {
-        if (gameData.requirements[key].completed) {
+        if (gameData.requirements[key].isCompleted()) {
             const item = gameData.itemData[key]
             const expense = item.getExpense()
             if (itemCategories['Misc'].indexOf(key) != -1) {
@@ -1433,7 +1433,7 @@ function update(needUpdateUI = true) {
     applyExpenses()
     for (const key in gameData.taskData) {
         const task = gameData.taskData[key]
-        if ((task instanceof Skill || task instanceof Job) && gameData.requirements[key].completed) {
+        if ((task instanceof Skill || task instanceof Job) && gameData.requirements[key].isCompleted()) {
             performTask(task)
         }
     }
