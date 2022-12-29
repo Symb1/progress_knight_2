@@ -1,3 +1,10 @@
+version 2.2.3 / 29.12.2022
+* Added 6 new skills
+* Added 2 new shop items
+* Added 4 new milestones
+* Added a new Dark Matter mechanic
+* Rebalance the items from the Dark Matter shop
+
 version 2.2.2 / 26.12.2022
 * Jobs and skills can now continue past infinity (1e305)
 
