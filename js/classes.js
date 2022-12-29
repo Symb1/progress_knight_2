@@ -36,14 +36,12 @@ class Task {
     }
 
     getMaxBigIntXp() {
-
-
         const maxXp = this.getMaxXp() == Infinity ? BigInt(1e305) : BigInt(Math.floor(this.getMaxXp()));
 
         if (maxXp < 1e305)
             return maxXp
 
-        return maxXp * 2n ** (BigInt(this.level) / 75n)
+        return maxXp * 2n ** (BigInt(this.level) / 125n) * (2n ** (BigInt(this.baseData.heroxp) / 10n))
     }
 
     getXpLeft() {
@@ -91,9 +89,6 @@ class Task {
                     excess -= this.getMaxBigIntXp()
                 }
                 this.xpBigInt = this.getMaxBigIntXp() + excess
-
-                // this.xpBigInt = 0n
-                // this.level += 1
             }
         } else {
             this.xp += applySpeed(this.getXpGain())
