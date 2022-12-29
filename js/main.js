@@ -847,7 +847,7 @@ function getEvilGain() {
     const inferno = gameData.requirements["Inferno"].isCompleted() ? 5 : 1
     const speedIsLife = gameData.dark_matter_shop.speed_is_life == 1 ? 0.5 : 1
     const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 2 ? 100 : 1
-    const essenceCollector = gameData.dark_matter_shop.essence_collector == 1 ? 0.25 : 1
+    const essenceCollector = gameData.dark_matter_shop.essence_collector == 1 ? 0.5 : 1
 
     return evilControl.getEffect() * bloodMeditation.getEffect() * absoluteWish.getEffect() 
         * oblivionEmbodiment.getEffect() * yingYang.getEffect() * inferno * getChallengeBonus("legends_never_die") 
@@ -862,8 +862,8 @@ function getEssenceGain() {
     const rise = gameData.milestoneData["Rise of Great Heroes"]
     const darkMagician = gameData.taskData["Dark Magician"]
     const speedIsLife = gameData.dark_matter_shop.speed_is_life == 2 ? 0.5 : 1
-    const essenceCollectorSkillTree = gameData.dark_matter_shop.essence_collector == 1 ? 100
-        : (gameData.dark_matter_shop.essence_collector == 2 ? 200 : 1)
+    const essenceCollectorSkillTree = gameData.dark_matter_shop.essence_collector == 1 ? 500
+        : (gameData.dark_matter_shop.essence_collector == 2 ? 1000 : 1)
 
     return essenceControl.getEffect() * essenceCollector.getEffect() * transcendentMaster.getEffect()
         * faintHope.getEffect() * rise.getEffect() * getChallengeBonus("dance_with_the_devil") 
@@ -997,9 +997,9 @@ function getNet() {
 }
 
 function getIncome() {
-    const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 1 ? (1 / 25000) 
-        : (gameData.dark_matter_shop.your_greatest_debt == 2 ? (1 / 5000) : 1)
-    const essenceCollector = gameData.dark_matter_shop.essence_collector == 2 ? (1 / 500) : 1
+    const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 1 ? (1 / 1000) 
+        : (gameData.dark_matter_shop.your_greatest_debt == 2 ? (1 / 250) : 1)
+    const essenceCollector = gameData.dark_matter_shop.essence_collector == 2 ? (1 / 50) : 1
 
     return gameData.currentJob.getIncome() * yourGreatestDebt * essenceCollector
 }
