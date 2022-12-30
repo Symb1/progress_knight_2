@@ -472,11 +472,25 @@ function updateText() {
     document.getElementById("lifeCoachEffect").textContent = format(getLifeCoachIncomeGain())
     document.getElementById("lifeCoachCost").textContent = format(getLifeCoachCost())
 
+    if (gameData.dark_matter_shop.a_miracle)
+        document.getElementById("aMiracleBuyButton").classList.add("hidden")
+
+    // Dark Matter Skill tree
+    renderSkillTreeButton(document.getElementById("speedIsLife1"), gameData.dark_matter_shop.speed_is_life != 0, gameData.dark_matter_shop.speed_is_life == 1)
+    renderSkillTreeButton(document.getElementById("speedIsLife2"), gameData.dark_matter_shop.speed_is_life != 0, gameData.dark_matter_shop.speed_is_life == 2)
+
+    renderSkillTreeButton(document.getElementById("yourGreatestDebt1"), gameData.dark_matter_shop.your_greatest_debt != 0, gameData.dark_matter_shop.your_greatest_debt == 1)
+    renderSkillTreeButton(document.getElementById("yourGreatestDebt2"), gameData.dark_matter_shop.your_greatest_debt != 0, gameData.dark_matter_shop.your_greatest_debt == 2)
+
+    renderSkillTreeButton(document.getElementById("essenceCollector1"), gameData.dark_matter_shop.essence_collector != 0, gameData.dark_matter_shop.essence_collector == 1)
+    renderSkillTreeButton(document.getElementById("essenceCollector2"), gameData.dark_matter_shop.essence_collector != 0, gameData.dark_matter_shop.essence_collector == 2)
+
     const timeWarping = gameData.taskData["Time Warping"].getEffect() *
         gameData.taskData["Temporal Dimension"].getEffect() *
         gameData.taskData["Time Loop"].getEffect() *
         (gameData.requirements["Eternal Time"].isCompleted() ? 2 : 1) *
         getChallengeBonus("time_does_not_fly")
+        * (gameData.dark_matter_shop.speed_is_life == 1 ? 3 : (gameData.dark_matter_shop.speed_is_life == 2 ? 7 : 1))
 
     document.getElementById("timeWarpingDisplay").textContent = "x" + format(
         gameData.active_challenge == "time_does_not_fly" ? Math.pow(timeWarping, 0.7) : timeWarping
@@ -610,6 +624,14 @@ function updateText() {
     document.getElementById("challengeEvilGainBuffDisplay").textContent = format(getChallengeBonus("legends_never_die"), 2)
 }
 
+function renderSkillTreeButton(element, categoryBought, elementBought) {
+    element.disabled = categoryBought
+
+    if (elementBought)
+        element.classList.add("w3-blue-gray")
+    else
+        element.classList.remove("w3-blue-gray")
+}
 
 function setSignDisplay() {
     const signDisplay = document.getElementById("signDisplay")
@@ -708,7 +730,23 @@ function setTabSettings(tab) {
     document.getElementById(tab).style.display = "flex"
 
     const tabButtons = document.getElementsByClassName("tabButtonSettings")
-    for (tabButton of tabButtons) {
+    for (const tabButton of tabButtons) {
+        tabButton.classList.remove("w3-blue-gray")
+    }
+    element.classList.add("w3-blue-gray")
+}
+
+function setTabDarkMatter(tab) {
+    const element = document.getElementById(tab + "TabButton")
+
+    const tabs = Array.prototype.slice.call(document.getElementsByClassName("tabDarkMatter"))
+    tabs.forEach(function (tab) {
+        tab.style.display = "none"
+    })
+    document.getElementById(tab).style.display = "flex"
+
+    const tabButtons = document.getElementsByClassName("tabButtonDarkMatter")
+    for (const tabButton of tabButtons) {
         tabButton.classList.remove("w3-blue-gray")
     }
     element.classList.add("w3-blue-gray")
