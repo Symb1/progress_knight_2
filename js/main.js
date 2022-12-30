@@ -463,10 +463,10 @@ const tooltips = {
     // Darkness
     "Dark Prince": "You can increase your intelligence at an alarming rate due to your access to all libraries in the universe.",
     "Dark Ruler": "Ruling the universe allows you to collect more Dark Matter from your subordinates.",
-    "Immortal Ruler": "You have only one goal. Ruling this universe till infinity.",
+    "Immortal Ruler": "You have only one goal: ruling this universe till infinity.",
     "Dark Magician": "By performing forbidden magic on your subordinates, you can extract every last drop of Essence from them.",
     "Universal Ruler": "No one dares to challenge your rule when ruling with an iron fist.",
-    "Blinded By Darkness": "Blinded by darkness you can no longer control yourself. You start to destroy everything in existance to calm yourself.",
+    "Blinded By Darkness": "Blinded by darkness, you can no longer control yourself. You start to destroy everything in existance to calm yourself.",
 	
     //Properties
     "Homeless": "Sleep on the uncomfortable, filthy streets while almost freezing to death every night. It cannot get any worse than this.",
