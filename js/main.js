@@ -61,10 +61,19 @@ var gameData = {
         legends_never_die: 0,
     },
     dark_matter_shop: {
+        // Upgradables.
         dark_orb_generator: 0,
         a_deal_with_the_chairman: 0,
         a_gift_from_god: 0,
-        life_coach: 0
+        life_coach: 0,
+
+        // Permanent unlocks
+        a_miracle: false,
+
+        // SKill tree
+        speed_is_life: 0,
+        your_greatest_debt: 0,
+        essence_collector: 0,
     },
     realtime: 0.0,
     realtimeRun: 0.0 
@@ -80,7 +89,7 @@ const baseGameSpeed = 4
 const heroIncomeMult = 2500000000000000000
 
 
-const permanentUnlocks = ["Quick task display", "Dark Matter", "Challenges"]
+const permanentUnlocks = ["Quick task display", "Dark Matter", "Dark Matter Skills", "Challenges"]
 
 const jobBaseData = {
     "Beggar": { name: "Beggar", maxXp: 50, income: 5, heroxp: 36 },
@@ -126,7 +135,7 @@ const jobBaseData = {
 }
 
 const skillBaseData = {
-    "Concentration": { name: "Concentration", maxXp: 100, heroxp: 36, effect: 0.01, description: "Ability XP"},
+    "Concentration": { name: "Concentration", maxXp: 100, heroxp: 36, effect: 0.01, description: "Skill XP"},
     "Productivity": { name: "Productivity", maxXp: 100, heroxp: 37, effect: 0.01, description: "Class XP"},
     "Bargaining": { name: "Bargaining", maxXp: 100, heroxp: 38, effect: -0.01, description: "Reduced Expenses"},
     "Meditation": { name: "Meditation", maxXp: 100, heroxp: 39, effect: 0.01, description: "Happiness"},
@@ -153,12 +162,12 @@ const skillBaseData = {
 
     "Void Influence": { name: "Void Influence", maxXp: 100, heroxp: 206, effect: 0.0028, description: "All XP"},
     "Time Loop": { name: "Time Loop", maxXp: 100, heroxp: 207, effect: 0.001, description: "Gamespeed"},
-    "Evil Incarnate": { name: "Evil Incarnate", maxXp: 100, heroxp: 208, effect: 0.01, description: "Ability XP" },
+    "Evil Incarnate": { name: "Evil Incarnate", maxXp: 100, heroxp: 208, effect: 0.01, description: "Skill XP" },
     "Absolute Wish": { name: "Absolute Wish", maxXp: 100, heroxp: 198, effect: 0.005, description: "Evil Gain" },
     "Void Amplification": { name: "Void Amplification", maxXp: 100, heroxp: 251, effect: 0.01, description: "The Void XP" },
     "Mind Release": { name: "Mind Release", maxXp: 100, heroxp: 251, effect: 0.0006, description: "Increased Happiness" },
     "Ceaseless Abyss": { name: "Ceaseless Abyss", maxXp: 100, heroxp: 251, effect: 0.000585, description: "Longer Lifespan" },
-    "Void Symbiosis": { name: "Void Symbiosis", maxXp: 100, heroxp: 253, effect: 0.0015, description: "Ability XP" },
+    "Void Symbiosis": { name: "Void Symbiosis", maxXp: 100, heroxp: 253, effect: 0.0015, description: "Skill XP" },
     "Void Embodiment": { name: "Void Embodiment", maxXp: 100, heroxp: 258, effect: 0.0025, description: "Evil Gain" },
     "Abyss Manipulation": { name: "Abyss Manipulation", maxXp: 100, heroxp: 266, effect: -0.01, description: "Reduced Expenses" },
 
@@ -171,7 +180,13 @@ const skillBaseData = {
     "Parallel Universe": { name: "Parallel Universe", maxXp: 290, heroxp: 300, effect: 0.02, description: "All XP"},
     "Higher Dimensions": { name: "Higher Dimensions", maxXp: 290, heroxp: 300, effect: 0.001, description: "Longer Lifespan" },
     "Epiphany": { name: "Epiphany", maxXp: 100, heroxp: 280, effect: 0.012, description: "Galactic Council XP"},
-    "Dark Ruler": { name: "Dark Ruler", maxXp: 100, heroxp: 250, effect: 0.000001, description: "Dark Matter Gain"},
+
+    "Dark Prince": { name: "Dark Prince", maxXp: 100, heroxp: 350, effect: 0.01, description: "Skill XP"},
+    "Dark Ruler": { name: "Dark Ruler", maxXp: 100, heroxp: 375, effect: 0.0000015, description: "Dark Matter Gain"},
+    "Immortal Ruler": { name: "Immortal Ruler", maxXp: 100, heroxp: 425, effect: 0.01, description: "All XP"},
+    "Dark Magician": { name: "Dark Magician", maxXp: 100, heroxp: 475, effect: 0.0000025, description: "Essence Gain"},
+    "Universal Ruler": { name: "Universal Ruler", maxXp: 100, heroxp: 500, effect: 1, description: "Magic XP"},
+    "Blinded By Darkness": { name: "Blinded By Darkness", maxXp: 100, heroxp: 550, effect: 0.1, description: "All XP"},
 }
 
 const itemBaseData = {
@@ -192,7 +207,9 @@ const itemBaseData = {
     "Astral Realm": { name: "Astral Realm", expense: 160000000000000, effect: 150000, heromult: 12, heroeffect: 2e31 },
     "Galactic Throne": { name: "Galactic Throne", expense: 5000000000000000, effect: 300000, heromult: 13, heroeffect: 2e35 },
     "Spaceship": { name: "Spaceship", expense: 1000000000000000000, effect: 1500000, heromult: 15, heroeffect: 5e42 },
-                                                            
+    "Planet": { name: "Planet", expense: 1e22, effect: 5000000, heromult: 16, heroeffect: 5e46 },
+    "The Universe": { name: "The Universe", expense: 1e24, effect: 50000000, heromult: 17, heroeffect: 5e49 },        
+
 
     "Book": { name: "Book", expense: 10, effect: 1.5, description: "Ability XP", heromult: 2 },
     "Dumbbells": { name: "Dumbbells", expense: 50, effect: 1.5, description: "Strength XP", heromult: 2 },
@@ -238,8 +255,12 @@ milestoneBaseData = {
     "Awesome Heroes": { name: "Awesome Heroes", expense: 500000000, tier: 20, description: "Hero XP", effect : 1e10 },
     "Furious Heroes": { name: "Furious Heroes", expense: 750000000, tier: 21, description: "Hero XP", effect : 1e18 },
     "Superb Heroes": { name: "Superb Heroes", expense: 10000000000, tier: 22, description: "Hero XP", effect : 1e3 },
-
     "A new beginning": { name: "A new beginning", expense: 5e10, tier: 23, description: "Unlocks Dark Matter" },
+
+    "Mind Control": { name: "Mind Control", expense: 1e13, tier: 24, description: "Makes Hell Portal even stronger" },
+    "Galactic Emperor": { name: "Galactic Emperor", expense: 1e15, tier: 25, description: "Passively gain a small amount of Essence" },
+    "Dark Matter Harvester": { name: "Dark Matter Harvester", expense: 1e17, tier: 26, description: "Increase Dark Matter gain by 10x" },
+    "A Dark Era": { name: "A Dark Era", expense: 1e20, tier: 27, description: "Unlocks Dark Matter Skills" },
 }
 
 const jobCategories = {
@@ -257,17 +278,19 @@ const skillCategories = {
     "Dark Magic"             : ["Dark Influence", "Evil Control", "Intimidation", "Demon Training", "Blood Meditation", "Demon's Wealth", "Dark Knowledge", "Void Influence", "Time Loop", "Evil Incarnate"],
 	"Void Manipulation"      : ["Absolute Wish", "Void Amplification", "Mind Release", "Ceaseless Abyss", "Void Symbiosis", "Void Embodiment", "Abyss Manipulation"],
 	"Celestial Powers"       : ["Cosmic Longevity", "Cosmic Recollection", "Essence Collector", "Galactic Command"],
-	"Almightiness"           : ["Yin Yang", "Parallel Universe", "Higher Dimensions", "Epiphany", "Dark Ruler"]
+	"Almightiness"           : ["Yin Yang", "Parallel Universe", "Higher Dimensions", "Epiphany"],
+    "Darkness"               : ["Dark Prince", "Dark Ruler", "Immortal Ruler", "Dark Magician", "Universal Ruler", "Blinded By Darkness"]
 }
 
 const itemCategories = {
-    "Properties": ["Homeless", "Tent", "Wooden Hut", "Cottage", "House", "Large House", "Small Palace", "Grand Palace", "Town Ruler", "City Ruler", "Nation Ruler", "Pocket Dimension", "Void Realm", "Void Universe", "Astral Realm", "Galactic Throne", "Spaceship"],
+    "Properties": ["Homeless", "Tent", "Wooden Hut", "Cottage", "House", "Large House", "Small Palace", "Grand Palace", "Town Ruler", "City Ruler", "Nation Ruler", "Pocket Dimension", "Void Realm", "Void Universe", "Astral Realm", "Galactic Throne", "Spaceship", "Planet", "The Universe"],
     "Misc": ["Book", "Dumbbells", "Personal Squire", "Steel Longsword", "Butler", "Sapphire Charm", "Study Desk", "Library", "Observatory", "Mind's Eye", "Void Necklace", "Void Armor", "Void Blade", "Void Orb", "Void Dust", "Celestial Robe", "Universe Fragment", "Multiverse Fragment"]
 }
 
 const milestoneCategories = {
     "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcendent Master", "Eternal Time", "Hell Portal", "Inferno", "God's Blessings", "Faint Hope"],
-    "Heroic Milestones": ["New Beginning", "Rise of Great Heroes", "Lazy Heroes", "Dirty Heroes", "Angry Heroes", "Tired Heroes", "Scared Heroes", "Good Heroes", "Funny Heroes", "Beautiful Heroes", "Awesome Heroes", "Furious Heroes", "Superb Heroes", "A new beginning"]
+    "Heroic Milestones": ["New Beginning", "Rise of Great Heroes", "Lazy Heroes", "Dirty Heroes", "Angry Heroes", "Tired Heroes", "Scared Heroes", "Good Heroes", "Funny Heroes", "Beautiful Heroes", "Awesome Heroes", "Furious Heroes", "Superb Heroes", "A new beginning"],
+    "Dark Milestones": ["Mind Control", "Galactic Emperor", "Dark Matter Harvester", "A Dark Era"]
 }
 
 function getPreviousTaskInCategory(task)
@@ -303,6 +326,7 @@ const headerRowColors = {
     "Magic": "#C71585",
     "Dark Magic": "#73000f",
 	"Almightiness": "#18d2d9",
+    "Darkness": "#8c6a0b",
 	"Void Manipulation": "#762B91",
 	"Celestial Powers": "#D5C010",
     "Properties_Auto": "#21cc5e",
@@ -311,6 +335,7 @@ const headerRowColors = {
     "Misc": "#b56576",
     "Essence Milestones": "#0066ff",
     "Heroic Milestones": "#ff6600",
+    "Dark Milestones": "#873160",
 }
 
 const headerRowTextColors = {
@@ -324,6 +349,7 @@ const headerRowTextColors = {
     "Magic": "purple",
     "Dark Magic": "pink",
     "Almightiness": "purple",
+    "Darkness": "gold",
     "Void Manipulation": "white",
     "Celestial Powers": "purple",
     "Properties_Auto": "purple",
@@ -332,6 +358,7 @@ const headerRowTextColors = {
     "Misc": "purple",
     "Essence Milestones": "purple",
     "Heroic Milestones": "purple",
+    "Dark Milestones": "purple",
 }
 
 const tooltips = {
@@ -432,7 +459,14 @@ const tooltips = {
 	"Parallel Universe": "Self-contained plane of existence, co-existing with one's own, helping you restore fragments of your forgotten power.",
 	"Higher Dimensions": "By possesing the power to partially alter the laws of physics and transceding lower dimensional spaces, your existence becomes never-ending.",
 	"Epiphany": "You become one with everything.",
+
+    // Darkness
+    "Dark Prince": "You can increase your intelligence at an alarming rate due to your access to all libraries in the universe.",
     "Dark Ruler": "Ruling the universe allows you to collect more Dark Matter from your subordinates.",
+    "Immortal Ruler": "You have only one goal. Ruling this universe till infinity.",
+    "Dark Magician": "By performing forbidden magic on your subordinates, you can extract every last drop of Essence from them.",
+    "Universal Ruler": "No one dares to challenge your rule when ruling with an iron fist.",
+    "Blinded By Darkness": "Blinded by darkness you can no longer control yourself. You start to destroy everything in existance to calm yourself.",
 	
     //Properties
     "Homeless": "Sleep on the uncomfortable, filthy streets while almost freezing to death every night. It cannot get any worse than this.",
@@ -452,6 +486,8 @@ const tooltips = {
 	"Astral Realm": "Beneath personality and ego lays the source of our deep character, our personhood. Here are the psychic senses, our deep mind and emotions, symbols and inner reality.",
     "Galactic Throne": "You sit on your throne, overseeing the existence itself.", 
     "Spaceship": "Your own personal cosmic house.",
+    "Planet": "A planet with the sole purpose of housing you and your family.",
+    "The Universe": "The universe is now yours.",
 
     //Misc
     "Book": "A place to write down all your thoughts and discoveries, allowing you to learn a lot more quickly.",
@@ -498,8 +534,13 @@ const tooltips = {
     "Awesome Heroes": "Total Hero XP multiplier is 5e180",
     "Furious Heroes": "Total Hero XP multiplier is 5e198",
     "Superb Heroes": "Total Hero XP multiplier is 5e201",
-
     "A new beginning": "Unlocks the ability to reset for Dark Matter",
+
+    // Dark Milestones
+    "Mind Control": "Control the Devil by making him give you even more Evil per second",
+    "Galactic Emperor": "Commander of the Galactic Council grants you the privilege to automatically collect Essence from the nearby planets",
+    "Dark Matter Harvester": "Harvest the universe to extract even more Dark Matter from it.",
+    "A Dark Era": "Start a new era of Dark Matter.",
 }
 
 function getBindedTaskEffect(taskName) {
@@ -519,6 +560,7 @@ function addMultipliers() {
         task.xpMultipliers = []
         if (task instanceof Job) task.incomeMultipliers = []
 
+        task.xpMultipliers.push(getGlobalXpBuff)
         task.xpMultipliers.push(task.getMaxLevelMultiplier.bind(task))
         task.xpMultipliers.push(getHappiness)
         task.xpMultipliers.push(getDarkMatterXpGain)
@@ -526,6 +568,8 @@ function addMultipliers() {
         task.xpMultipliers.push(getBindedTaskEffect("Demon Training"))
 		task.xpMultipliers.push(getBindedTaskEffect("Void Influence"))
 		task.xpMultipliers.push(getBindedTaskEffect("Parallel Universe"))
+        task.xpMultipliers.push(getBindedTaskEffect("Immortal Ruler"))
+        task.xpMultipliers.push(getBindedTaskEffect("Blinded By Darkness"))
 
         if (task instanceof Job) {
             task.incomeMultipliers.push(task.getLevelMultiplier.bind(task))
@@ -543,6 +587,7 @@ function addMultipliers() {
 			task.xpMultipliers.push(getBindedTaskEffect("Void Symbiosis"))
 			task.xpMultipliers.push(getBindedItemEffect("Universe Fragment"))
 			task.xpMultipliers.push(getBindedTaskEffect("Evil Incarnate"))
+            task.xpMultipliers.push(getBindedTaskEffect("Dark Prince"))
         }
 
         if (jobCategories["Military"].includes(task.name)) {
@@ -555,6 +600,7 @@ function addMultipliers() {
         } else if (skillCategories["Magic"].includes(task.name)) {
             task.xpMultipliers.push(getBindedItemEffect("Sapphire Charm"))
 			task.xpMultipliers.push(getBindedItemEffect("Observatory"))
+            task.xpMultipliers.push(getBindedTaskEffect("Universal Ruler"))
             task.xpMultipliers.push(getTaaAndMagicXpGain)
 	    } else if (skillCategories["Void Manipulation"].includes(task.name)) {
             task.xpMultipliers.push(getBindedItemEffect("Void Necklace"))
@@ -799,8 +845,13 @@ function getEvilGain() {
 	const oblivionEmbodiment = gameData.taskData ["Void Embodiment"]
     const yingYang = gameData.taskData["Yin Yang"]
     const inferno = gameData.requirements["Inferno"].isCompleted() ? 5 : 1
+    const speedIsLife = gameData.dark_matter_shop.speed_is_life == 1 ? 0.5 : 1
+    const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 2 ? 100 : 1
+    const essenceCollector = gameData.dark_matter_shop.essence_collector == 1 ? 0.5 : 1
+
     return evilControl.getEffect() * bloodMeditation.getEffect() * absoluteWish.getEffect() 
-        * oblivionEmbodiment.getEffect() * yingYang.getEffect() * inferno * getChallengeBonus("legends_never_die")
+        * oblivionEmbodiment.getEffect() * yingYang.getEffect() * inferno * getChallengeBonus("legends_never_die") 
+        * speedIsLife * yourGreatestDebt * essenceCollector
 }
 
 function getEssenceGain() {
@@ -809,15 +860,21 @@ function getEssenceGain() {
     const transcendentMaster = gameData.milestoneData["Transcendent Master"]
     const faintHope = gameData.milestoneData["Faint Hope"]
     const rise = gameData.milestoneData["Rise of Great Heroes"]
+    const darkMagician = gameData.taskData["Dark Magician"]
+    const speedIsLife = gameData.dark_matter_shop.speed_is_life == 2 ? 0.5 : 1
+    const essenceCollectorSkillTree = gameData.dark_matter_shop.essence_collector == 1 ? 500
+        : (gameData.dark_matter_shop.essence_collector == 2 ? 1000 : 1)
 
     return essenceControl.getEffect() * essenceCollector.getEffect() * transcendentMaster.getEffect()
-        * faintHope.getEffect() * rise.getEffect() * getChallengeBonus("dance_with_the_devil") * getAGiftFromGodEssenceGain()
+        * faintHope.getEffect() * rise.getEffect() * getChallengeBonus("dance_with_the_devil") 
+        * getAGiftFromGodEssenceGain() * darkMagician.getEffect() * speedIsLife * essenceCollectorSkillTree
 }
 
 function getDarkMatterGain() {
     const darkRuler = gameData.taskData["Dark Ruler"]
+    const darkMatterHarvester = gameData.requirements["Dark Matter Harvester"].isCompleted() ? 10 : 1
 
-    return 1 * darkRuler.getEffect();
+    return 1 * darkRuler.getEffect() * darkMatterHarvester
 }
 
 function getDarkMatter() {
@@ -840,8 +897,8 @@ function getGameSpeed() {
     const timeLoop = gameData.taskData["Time Loop"]
     const warpDrive = (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
     const timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive
-    const gameSpeed = baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * getChallengeBonus("time_does_not_fly")
-
+    const speedIsLife = gameData.dark_matter_shop.speed_is_life == 1 ? 3 : (gameData.dark_matter_shop.speed_is_life == 2 ? 7 : 1)
+    const gameSpeed = baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * getChallengeBonus("time_does_not_fly") * speedIsLife
     return gameData.active_challenge == "time_does_not_fly" ? Math.pow(gameSpeed, 0.7) : gameSpeed
 }
 
@@ -940,7 +997,11 @@ function getNet() {
 }
 
 function getIncome() {
-    return gameData.currentJob.getIncome()
+    const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 1 ? (1 / 1000) 
+        : (gameData.dark_matter_shop.your_greatest_debt == 2 ? (1 / 250) : 1)
+    const essenceCollector = gameData.dark_matter_shop.essence_collector == 2 ? (1 / 50) : 1
+
+    return gameData.currentJob.getIncome() * yourGreatestDebt * essenceCollector
 }
 
 function getExpense() {
@@ -954,6 +1015,12 @@ function getExpense() {
 
 function increaseCoins() {
     gameData.coins += applySpeed(getIncome())
+}
+
+function getGlobalXpBuff() {
+    const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 1 ? 500 : 1
+
+    return yourGreatestDebt
 }
 
 function autoPromote() {
@@ -1112,6 +1179,9 @@ function rebirthFour() {
     }
 
     gameData.active_challenge = ""
+
+    if (gameData.dark_matter_shop.a_miracle)
+        gameData.requirements["Magic Eye"].completed = true
 }
 
 function applyMilestones() {
@@ -1134,8 +1204,17 @@ function applyMilestones() {
         if (gameData.requirements["Hell Portal"].isCompleted()) {
             if (gameData.evil == 0)
                 gameData.evil = 1
-            if (gameData.evil < getEvilGain())
-                gameData.evil *= Math.pow(1.01, 1)
+            if (gameData.evil < getEvilGain()) {
+                const exponent = gameData.requirements["Mind Control"].isCompleted() ? 1.07 : 1.01
+                gameData.evil *= Math.pow(exponent, 1)
+            }
+        }
+
+        if (gameData.requirements["Galactic Emperor"].isCompleted()) {
+            if (gameData.essence == 0)
+                gameData.essence = 1
+            if (gameData.essence < getEssenceGain() * 10)
+                gameData.essence *= Math.pow(1.002, 1)
         }
     }
 }
@@ -1560,6 +1639,8 @@ gameData.requirements = {
 	"Celestial Powers": new AgeRequirement(getElementsByClass("Celestial Powers"), [{requirement: 10000}]),
     "Dark Magic": new EvilRequirement(getElementsByClass("Dark Magic"), [{requirement: 1}]),
 	"Almightiness": new EssenceRequirement(getElementsByClass("Almightiness"), [{requirement: 1}]),
+	"Darkness": new DarkMatterRequirement(getElementsByClass("Darkness"), [{requirement: 1}]),
+
     "Rebirth tab": new AgeRequirement([document.getElementById("rebirthTabButton")], [{requirement: 25}]),
     "Rebirth note 1": new AgeRequirement([document.getElementById("rebirthNote1")], [{requirement: 45}]),
     "Rebirth note 2": new AgeRequirement([document.getElementById("rebirthNote2")], [{requirement: 65}]),
@@ -1686,7 +1767,14 @@ gameData.requirements = {
 	"Parallel Universe": new EssenceRequirement([getTaskElement("Parallel Universe")], [{requirement: 1}]),
 	"Higher Dimensions": new EssenceRequirement([getTaskElement("Higher Dimensions")], [{requirement: 10000}]),
 	"Epiphany": new EssenceRequirement([getTaskElement("Epiphany")], [{requirement: 30000}]),
+
+    // Darkness
+    "Dark Prince": new DarkMatterRequirement([getTaskElement("Dark Prince")], [{requirement: 3}]),
     "Dark Ruler": new DarkMatterRequirement([getTaskElement("Dark Ruler")], [{requirement: 10}]),
+    "Immortal Ruler": new DarkMatterRequirement([getTaskElement("Immortal Ruler")], [{requirement: 25}]),
+    "Dark Magician": new DarkMatterRequirement([getTaskElement("Dark Magician")], [{requirement: 100}]),
+    "Universal Ruler": new DarkMatterRequirement([getTaskElement("Universal Ruler")], [{requirement: 1e3}]),
+    "Blinded By Darkness": new DarkMatterRequirement([getTaskElement("Blinded By Darkness")], [{requirement: 1e4}]),
 
     //Properties
     "Homeless": new CoinRequirement([getItemElement("Homeless")], [{requirement: 0}]),
@@ -1706,6 +1794,8 @@ gameData.requirements = {
 	"Astral Realm": new CoinRequirement([getItemElement("Astral Realm")], [{requirement: gameData.itemData["Astral Realm"].getExpense() * 100}]),
     "Galactic Throne": new CoinRequirement([getItemElement("Galactic Throne")], [{ requirement: gameData.itemData["Galactic Throne"].getExpense() * 100 }]),
     "Spaceship": new CoinRequirement([getItemElement("Spaceship")], [{ requirement: gameData.itemData["Spaceship"].getExpense() * 100 }]),
+    "Planet": new CoinRequirement([getItemElement("Planet")], [{ requirement: gameData.itemData["Planet"].getExpense() * 100 }]),
+    "The Universe": new CoinRequirement([getItemElement("The Universe")], [{ requirement: gameData.itemData["The Universe"].getExpense() * 100 }]),
 
     //Misc
     "Book": new CoinRequirement([getItemElement("Book")], [{requirement: 0}]),
@@ -1732,6 +1822,7 @@ gameData.requirements = {
 
     // Dark Matter
     "Dark Matter": new DarkMatterRequirement([document.getElementById("darkMatterTabButton")], [{ requirement: 1 }]),
+    "Dark Matter Skills": new EssenceRequirement([document.getElementById("skillTreeTabTabButton")], [{ requirement: 1e20 }]),
 
     // Challenges
     "Challenges": new EvilRequirement([document.getElementById("challengesTabButton")], [{ requirement: 10000 }]),
@@ -1768,6 +1859,7 @@ update()
 
 setTab(gameData.settings.selectedTab)
 setTabSettings("settingsTab")
+setTabDarkMatter("shopTab")
 
 var gameloop = setInterval(update, 1000 / updateSpeed)
 var saveloop = setInterval(saveGameData, 3000)
