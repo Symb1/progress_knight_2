@@ -1506,10 +1506,10 @@ function update(needUpdateUI = true) {
     for (const key in gameData.taskData) {
         const task = gameData.taskData[key]
         if ((task instanceof Skill || task instanceof Job) && gameData.requirements[key].isCompleted()) {
-						task.increaseXp()
+            task.increaseXp()
         }
     }
-		increaseCoins()
+    increaseCoins()
 
     gameData.dark_orbs += applySpeed(getDarkOrbGeneration())
     
