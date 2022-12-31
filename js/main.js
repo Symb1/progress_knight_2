@@ -894,13 +894,21 @@ function getDarkOrbs() {
 }
 
 function getGameSpeed() {
+    if (!canSimulate())
+        return 0
+    
+    return getUnpausedGameSpeed()
+}
+
+function getUnpausedGameSpeed() {
     const timeWarping = gameData.taskData["Time Warping"]
-	const temporalDimension = gameData.taskData["Temporal Dimension"]
+    const temporalDimension = gameData.taskData["Temporal Dimension"]
     const timeLoop = gameData.taskData["Time Loop"]
     const warpDrive = (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
     const timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive
     const speedIsLife = gameData.dark_matter_shop.speed_is_life == 1 ? 3 : (gameData.dark_matter_shop.speed_is_life == 2 ? 7 : 1)
-    const gameSpeed = baseGameSpeed * +!gameData.paused * +isAlive() * timeWarpingSpeed * getChallengeBonus("time_does_not_fly") * speedIsLife
+    const gameSpeed = baseGameSpeed * timeWarpingSpeed * getChallengeBonus("time_does_not_fly") * speedIsLife
+    
     return gameData.active_challenge == "time_does_not_fly" ? Math.pow(gameSpeed, 0.7) : gameSpeed
 }
 

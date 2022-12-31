@@ -27,7 +27,7 @@ function setChallengeProgress() {
         gameData.challenges.rich_and_the_poor = Math.max(gameData.challenges.rich_and_the_poor, getIncome())
     }
     if (gameData.active_challenge == "time_does_not_fly") {
-        gameData.challenges.time_does_not_fly = Math.max(gameData.challenges.time_does_not_fly, getGameSpeed())
+        gameData.challenges.time_does_not_fly = Math.max(gameData.challenges.time_does_not_fly, getUnpausedGameSpeed() / baseGameSpeed)
     }
     if (gameData.active_challenge == "dance_with_the_devil") {
         gameData.challenges.dance_with_the_devil = Math.max(gameData.challenges.dance_with_the_devil, Math.max(0, getEvilGain() - 10))
@@ -45,7 +45,7 @@ function getChallengeBonus(challenge_name, current = false) {
         return softcap(Math.pow((current ? getIncome() : gameData.challenges.rich_and_the_poor) + 1, 0.25), 25, 0.55)
     }
     if (challenge_name == "time_does_not_fly") {
-        return softcap(Math.pow((current ? getGameSpeed() : gameData.challenges.time_does_not_fly) + 1, 0.05), 2)
+        return softcap(Math.pow((current ? getUnpausedGameSpeed() / baseGameSpeed : gameData.challenges.time_does_not_fly) + 1, 0.05), 2)
     }
     if (challenge_name == "dance_with_the_devil") {
         return softcap(Math.pow((current ? Math.max(0, getEvilGain() - 10) : gameData.challenges.dance_with_the_devil) + 1, 0.09), 2, 0.75)
@@ -55,3 +55,20 @@ function getChallengeBonus(challenge_name, current = false) {
     }
 }
 
+function getChallengeGoal(challenge_name) {
+    if (challenge_name == "an_unhappy_life") {
+        return gameData.challenges.an_unhappy_life + 1
+    }
+    if (challenge_name == "rich_and_the_poor") {
+        return gameData.challenges.rich_and_the_poor + 1
+    }
+    if (challenge_name == "time_does_not_fly") {
+        return Math.max(1, gameData.challenges.time_does_not_fly + 0.1)
+    }
+    if (challenge_name == "dance_with_the_devil") {
+        return gameData.challenges.dance_with_the_devil + 10.1
+    }
+    if (challenge_name == "legends_never_die") {
+        return gameData.challenges.legends_never_die + 1
+    }
+}
