@@ -1,3 +1,8 @@
+version 2.2.4 / 31.12.2022
+* Do not render when the game is not visible (still gain progress)
+* Fix minor spelling mistakes
+* Clean up the code
+
 version 2.2.3 / 29.12.2022
 * Added 6 new skills
 * Added 2 new shop items
