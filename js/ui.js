@@ -174,7 +174,7 @@ function updateRequiredRows(data, categoryType) {
                     darkMatterElement.textContent = format(requirements[0].requirement) + " Dark Matter"
                 } else if (requirementObject instanceof AgeRequirement) {
                     essenceElement.classList.remove("hiddenTask")
-                    essenceElement.textContent = format(requirements[0].requirement) + " age"
+                    essenceElement.textContent = "Age " + format(requirements[0].requirement)
                 }
                 else {
                     levelElement.classList.remove("hiddenTask")
@@ -249,8 +249,7 @@ function updateTaskRows() {
             } else if (requirementObject instanceof EssenceRequirement) {
                 reqlist += format(requirements[0].requirement) + " essence<br>"
             } else if (requirementObject instanceof AgeRequirement) {
-                reqlist += format(requirements[0].requirement) + " age<br>"
-                
+                reqlist += "Age " + format(requirements[0].requirement) + "<br>"
             } else if (requirementObject instanceof DarkMatterRequirement) {
                 reqlist += format(requirements[0].requirement) + " Dark Matter<br>"
             } else {
@@ -355,7 +354,6 @@ function setLayout(id) {
 
         document.getElementById("jobs").appendChild(document.getElementById("skillPage"))
         document.getElementById("jobs").appendChild(document.getElementById("itemPage"))
-
     } else {
         document.getElementById("skillsTabButton").classList.remove("hidden")
         document.getElementById("shopTabButton").classList.remove("hidden")
@@ -432,7 +430,7 @@ function updateHeaderRows(categories) {
 }
 
 function updateText() {
-    //Sidebar
+    // Sidebar
     document.getElementById("ageDisplay").textContent = formatAge(gameData.days)
     document.getElementById("lifespanDisplay").textContent = formatWhole(daysToYears(getLifespan()))
     document.getElementById("realtimeDisplay").textContent = formatTime(gameData.realtime)
@@ -459,7 +457,7 @@ function updateText() {
 
     document.getElementById("darkOrbsDisplay").textContent = format(gameData.dark_orbs)
 
-    // Dark matter shop
+    // Dark Matter Shop
     document.getElementById("darkOrbGeneratorCost").textContent = format(getDarkOrbGeneratorCost())
     document.getElementById("darkOrbGenerator").textContent = format(getDarkOrbGeneration())
 
@@ -485,6 +483,7 @@ function updateText() {
     renderSkillTreeButton(document.getElementById("essenceCollector1"), gameData.dark_matter_shop.essence_collector != 0, gameData.dark_matter_shop.essence_collector == 1)
     renderSkillTreeButton(document.getElementById("essenceCollector2"), gameData.dark_matter_shop.essence_collector != 0, gameData.dark_matter_shop.essence_collector == 2)
 
+    // Time Warping
     const timeWarping = gameData.taskData["Time Warping"].getEffect() *
         gameData.taskData["Temporal Dimension"].getEffect() *
         gameData.taskData["Time Loop"].getEffect() *
@@ -496,6 +495,7 @@ function updateText() {
         gameData.active_challenge == "time_does_not_fly" ? Math.pow(timeWarping, 0.7) : timeWarping
     )
 
+    // Transcend for Next Milestone indicator
     const button = document.getElementById("rebirthButton3").getElementsByClassName("button")[0]
     button.style.background = isNextMilestoneInReach() ? "#065c21" : ""
 
@@ -505,6 +505,8 @@ function updateText() {
 
     const currentDate = new Date()
     document.getElementById("playedDaysDisplay").textContent = format((currentDate.getTime() - date.getTime()) / (1000 * 3600 * 24), 2)
+
+    document.getElementById("playedGameTimeDisplay").textContent = format(gameData.totalDays, 2)
 
     if (gameData.rebirthOneCount > 0)
         document.getElementById("statsRebirth1").classList.remove("hidden")
@@ -531,13 +533,12 @@ function updateText() {
     document.getElementById("rebirthThreeCountDisplay").textContent = gameData.rebirthThreeCount
     document.getElementById("rebirthFourCountDisplay").textContent = gameData.rebirthFourCount
 
-
     document.getElementById("rebirthOneFastestDisplay").textContent = formatTime(gameData.stats.fastest1, true)
     document.getElementById("rebirthTwoFastestDisplay").textContent = formatTime(gameData.stats.fastest2, true)
     document.getElementById("rebirthThreeFastestDisplay").textContent = formatTime(gameData.stats.fastest3, true)
     document.getElementById("rebirthFourFastestDisplay").textContent = formatTime(gameData.stats.fastest4, true)
 
-    // Gain stats
+    // Gain Stats
     document.getElementById("evilPerSecondDisplay").textContent = format(gameData.stats.EvilPerSecond, 3)
     document.getElementById("maxEvilPerSecondDisplay").textContent = format(gameData.stats.maxEvilPerSecond, 3)
     document.getElementById("maxEvilPerSecondRtDisplay").textContent = formatTime(gameData.stats.maxEvilPerSecondRt)
@@ -551,7 +552,6 @@ function updateText() {
     challengeTitle = challengeTitle.charAt(0).toUpperCase() + challengeTitle.slice(1)
     document.getElementById("activeChallengeName").textContent = challengeTitle
     document.getElementById("challengeName").textContent = challengeTitle
-
 
     if (gameData.active_challenge == "") {
         document.getElementById("exitChallengeDiv").hidden = true
@@ -609,8 +609,7 @@ function updateText() {
     document.getElementById("challengeEssenceGainBuff").textContent = format(getChallengeBonus("dance_with_the_devil"), 2)
     document.getElementById("challengeEvilGainBuff").textContent = format(getChallengeBonus("legends_never_die"), 2)
 
-    // challenge stats
-
+    // Challenge Stats
     document.getElementById("challengeStat1").hidden = gameData.challenges.an_unhappy_life == 0
     document.getElementById("challengeStat2").hidden = gameData.challenges.rich_and_the_poor == 0
     document.getElementById("challengeStat3").hidden = gameData.challenges.time_does_not_fly == 0
