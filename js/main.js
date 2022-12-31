@@ -78,7 +78,7 @@ var gameData = {
         essence_collector: 0,
     },
     realtime: 0.0,
-    realtimeRun: 0.0 
+    realtimeRun: 0.0
 }
 
 var tempData = {}
@@ -117,12 +117,12 @@ const jobBaseData = {
     "Chronomancer": { name: "Chronomancer", maxXp: 2000000000000, income: 1000000, heroxp: 95 },
     "Chairman": { name: "Chairman", maxXp: 20000000000000, income: 10000000, heroxp: 106 },
     "Imperator": { name: "Imperator", maxXp: 9000000000000000, income: 60000000, heroxp: 129 },
-	
+
     "Corrupted": { name: "Corrupted", maxXp: 100000000000000, income: 25000000, heroxp: 131 },
     "Void Slave": { name: "Void Slave", maxXp: 650000000000000, income: 200000000, heroxp: 134 },
-    "Void Fiend": { name: "Void Fiend", maxXp: 18000000000000000, income: 600000000, heroxp: 237 }, 
+    "Void Fiend": { name: "Void Fiend", maxXp: 18000000000000000, income: 600000000, heroxp: 237 },
     "Abyss Anomaly": { name: "Abyss Anomaly", maxXp: 18000000000000000, income: 1200000000, heroxp: 237 },
-    "Void Wraith": { name: "Void Wraith", maxXp: 180000000000000000, income: 5000000000, heroxp: 238 }, 
+    "Void Wraith": { name: "Void Wraith", maxXp: 180000000000000000, income: 5000000000, heroxp: 238 },
     "Void Reaver": { name: "Void Reaver", maxXp: 2600000000000000000, income: 25000000000, heroxp: 238 },
     "Void Lord": { name: "Void Lord", maxXp: 28000000000000000000, income: 100000000000, heroxp: 238 },
     "Abyss God": { name: "Abyss God", maxXp: 400000000000000000000, income: 1000000000000, heroxp: 250 },
@@ -132,7 +132,7 @@ const jobBaseData = {
     "Sigma Proioxis": { name: "Sigma Proioxis", maxXp: 500000000000000000000, income: 25000000000000, heroxp: 260 },
     "Acallaris": { name: "Acallaris", maxXp: 50000000000000000000000, income: 215000000000000, heroxp: 263 },
     "One Above All": { name: "One Above All", maxXp: 5000000000000000000000000000, income: 25000000000000000, heroxp: 265 },
-	
+
 }
 
 const skillBaseData = {
@@ -152,7 +152,7 @@ const skillBaseData = {
     "Temporal Dimension": { name: "Temporal Dimension", maxXp: 100, heroxp: 115, effect: 0.006, description: "Gamespeed"},
     "All Seeing Eye": { name: "All Seeing Eye", maxXp: 100, heroxp: 120, effect: 0.0027, description: "T.A.A Pay"},
     "Brainwashing": { name: "Brainwashing", maxXp: 100, heroxp: 145, effect: -0.01, description: "Reduced Expenses"},
-	
+
     "Dark Influence": { name: "Dark Influence", maxXp: 100, heroxp: 155, effect: 0.01, description: "All XP"},
     "Evil Control": { name: "Evil Control", maxXp: 100, heroxp: 156, effect: 0.01, description: "Evil Gain"},
     "Intimidation": { name: "Intimidation", maxXp: 100, heroxp: 157, effect: -0.01, description: "Reduced Expenses" },
@@ -209,7 +209,7 @@ const itemBaseData = {
     "Galactic Throne": { name: "Galactic Throne", expense: 5000000000000000, effect: 300000, heromult: 13, heroeffect: 2e35 },
     "Spaceship": { name: "Spaceship", expense: 1000000000000000000, effect: 1500000, heromult: 15, heroeffect: 5e42 },
     "Planet": { name: "Planet", expense: 1e22, effect: 5000000, heromult: 16, heroeffect: 5e46 },
-    "The Universe": { name: "The Universe", expense: 1e24, effect: 50000000, heromult: 17, heroeffect: 5e49 },        
+    "The Universe": { name: "The Universe", expense: 1e24, effect: 50000000, heromult: 17, heroeffect: 5e49 },
 
 
     "Book": { name: "Book", expense: 10, effect: 1.5, description: "Ability XP", heromult: 2 },
@@ -301,7 +301,7 @@ function getPreviousTaskInCategory(task) {
             if (job == task)
                 return prev
             prev = job
-        }        
+        }
     }
 
     prev = ""
@@ -369,7 +369,7 @@ const tooltips = {
     "Miner": "Delve into dangerous caverns and mine valuable ores. The pay is quite meager compared to the risk involved.",
     "Blacksmith": "Smelt ores and carefully forge weapons for the military. A respectable and OK paying commoner job.",
     "Merchant": "Travel from town to town, bartering fine goods. The job pays decently well and is a lot less manually-intensive.",
-	
+
     // Military
     "Squire": "Carry around your knight's shield and sword along the battlefield. Very meager pay but the work experience is quite valuable.",
     "Footman": "Put down your life to battle with enemy soldiers. A courageous, respectable job but you are still worthless in the grand scheme of things.",
@@ -399,13 +399,13 @@ const tooltips = {
 	"Void Reaver": "There are few who may tread the paths between worlds, these powers grant you an ability to generate fields of void energy that devour all living things.",
 	"Void Lord": "You gazed into the dark heart of the Void long enough to become one of the most powerful and feared beings. All lesser void creatures are at your command.",
 	"Abyss God": "Creator of the Void, a vast canvas of blackness and nothingness, in which the concept of its existence defies all logic. Nothing will escape you.",
- 
+
     // Galactic Council
     "Eternal Wanderer": "With the powers bestowed upon you by an unknown entity, you wander around, visiting places revered and feared in search of answers.",
     "Nova": "Extremely powerful being with tremedous telekinetic powers and the ability to rearrange the molecular structure of matter and energy, even up to cosmic scale.",
 	"Sigma Proioxis": "A nigh-omnipotent cosmological entity, with vast matter and energy manipulation abilities that help you push the boundaries of the Universe itself.",
     "Acallaris": "Primordial being that predate the universe, involved with the creation of life and powerful beyond mortal comprehension, existing as myths to the oldest species in the universe.",
-	"One Above All": "Creator of everything.",	
+	"One Above All": "Creator of everything.",
 
     // Fundamentals
     "Concentration": "Improve your learning speed through practising intense concentration activities.",
@@ -438,7 +438,7 @@ const tooltips = {
 	"Void Influence": "Tapping into the powers of the Void while combining them with evil grants you an unlimited potential.",
 	"Time Loop": "Mastery is achieved when 'telling time' becomes 'telling time what to do'.",
 	"Evil Incarnate": "You have became the very thing you swore to destroy.",
-	
+
 	// Void Manipulation
 	"Absolute Wish": "The power to fulfill absolutely any and all wishes without any limitations.",
     "Void Amplification": "You surrender yourself to the Void, making it easier to take control of you.",
@@ -447,13 +447,13 @@ const tooltips = {
 	"Void Symbiosis": "A symbiotic relationship that helps you become one with the Void.",
 	"Void Embodiment": "If thou gaze long into an abyss, the abyss will also gaze into thee.",
 	"Abyss Manipulation": "Allows you to shape your own reality within the Void itself.",
-	
+
 	// Celestial Powers
 	"Cosmic Longevity": "You have seen it all, from the very beginning to the very end.",
 	"Cosmic Recollection": "Being able to exist in multiple parallel timelines and manipulating you parallel selves, influencing their lives as you see fit.",
 	"Essence Collector": "Exploit the unlimited potential of multiverse energies and collect its resources.",
 	"Galactic Command": "Absolute power corrupts absolutely.",
-	
+
 	// Almightiness
 	"Yin Yang": "Born from chaos when the universe was first created, believed to exist in harmony, balancing evil and good.",
 	"Parallel Universe": "Self-contained plane of existence, co-existing with one's own, helping you restore fragments of your forgotten power.",
@@ -467,7 +467,7 @@ const tooltips = {
     "Dark Magician": "By performing forbidden magic on your subordinates, you can extract every last drop of Essence from them.",
     "Universal Ruler": "No one dares to challenge your rule when ruling with an iron fist.",
     "Blinded By Darkness": "Blinded by darkness, you can no longer control yourself. You start to destroy everything in existance to calm yourself.",
-	
+
     // Properties
     "Homeless": "Sleep on the uncomfortable, filthy streets while almost freezing to death every night. It cannot get any worse than this.",
     "Tent": "A thin sheet of tattered cloth held up by a couple of feeble, wooden sticks. Horrible living conditions but at least you have a roof over your head.",
@@ -484,7 +484,7 @@ const tooltips = {
 	"Void Realm": "Unknown how or when the Void realm came into existence, containing elements which don’t exist outside of its dimensional plane are now all to your disposal",
 	"Void Universe": "Predating our own universe, the Void has an unlimited amount of space for your belongings, if you are willing to submit to it.",
 	"Astral Realm": "Beneath personality and ego lays the source of our deep character, our personhood. Here are the psychic senses, our deep mind and emotions, symbols and inner reality.",
-    "Galactic Throne": "You sit on your throne, overseeing the existence itself.", 
+    "Galactic Throne": "You sit on your throne, overseeing the existence itself.",
     "Spaceship": "Your own personal cosmic house.",
     "Planet": "A planet with the sole purpose of housing you and your family.",
     "The Universe": "The universe is now yours.",
@@ -608,7 +608,7 @@ function addMultipliers() {
         } else if (jobCategories["The Arcane Association"].includes(task.name)) {
             task.xpMultipliers.push(getBindedTaskEffect("Mana Control"))
             task.xpMultipliers.push(getTaaAndMagicXpGain)
-			task.incomeMultipliers.push(getBindedTaskEffect("All Seeing Eye"))	
+			task.incomeMultipliers.push(getBindedTaskEffect("All Seeing Eye"))
 	    } else if (jobCategories["The Void"].includes(task.name)) {
             task.xpMultipliers.push(getBindedTaskEffect("Void Amplification"))
 			task.xpMultipliers.push(getBindedItemEffect("Void Armor"))
@@ -622,7 +622,7 @@ function addMultipliers() {
 			task.xpMultipliers.push(getEssenceXpGain)
         } else if (skillCategories["Fundamentals"].includes(task.name)) {
 			task.xpMultipliers.push(getBindedItemEffect("Mind's Eye"))
-		}	
+		}
     }
 
     for (const itemName in gameData.itemData) {
@@ -700,14 +700,14 @@ function setCustomEffects() {
         if (multiplier < 0.1) return 0.1
         return multiplier
     }
-	
+
 	const brainwashing = gameData.taskData["Brainwashing"]
     brainwashing.getEffect = function () {
         const multiplier = 1 - getBaseLog(brainwashing.isHero ? 3 : 7, brainwashing.level + 1) / 10
         if (multiplier < 0.1) return 0.1
         return multiplier
     }
-	
+
 	const abyssManipulation = gameData.taskData["Abyss Manipulation"]
     abyssManipulation.getEffect = function () {
         const multiplier = 1 - getBaseLog(abyssManipulation.isHero ? 3 : 7, abyssManipulation.level + 1) / 10
@@ -729,9 +729,9 @@ function setCustomEffects() {
 
     const immortality = gameData.taskData["Life Essence"]
     immortality.getEffect = function () {
-        return 1 + getBaseLog(immortality.isHero ? 1.01 : 33, immortality.level + 1) 
+        return 1 + getBaseLog(immortality.isHero ? 1.01 : 33, immortality.level + 1)
     }
-	
+
 	const unholyRecall = gameData.taskData["Cosmic Recollection"];
     unholyRecall.getEffect = function() {
         return unholyRecall.level * (unholyRecall.isHero ? 0.065 : 0.00065);
@@ -739,7 +739,7 @@ function setCustomEffects() {
 
     const transcendentMaster = gameData.milestoneData["Transcendent Master"]
     transcendentMaster.getEffect = function () {
-        if (gameData.requirements["Transcendent Master"].isCompleted()) 
+        if (gameData.requirements["Transcendent Master"].isCompleted())
             return 1.5
 
         return 1
@@ -776,13 +776,13 @@ function setCustomEffects() {
 
 function getHappiness() {
     if (gameData.active_challenge == "legends_never_die") return 1
-    
+
     const meditationEffect = getBindedTaskEffect("Meditation")
     const butlerEffect = getBindedItemEffect("Butler")
 	const mindreleaseEffect = getBindedTaskEffect("Mind Release")
     const multiverseFragment = getBindedItemEffect("Multiverse Fragment")
     const godsBlessings = gameData.requirements["God's Blessings"].isCompleted() ? 10000000 : 1
-    const happiness = godsBlessings * meditationEffect() * butlerEffect() * mindreleaseEffect() 
+    const happiness = godsBlessings * meditationEffect() * butlerEffect() * mindreleaseEffect()
         * multiverseFragment() * gameData.currentProperty.getEffect() * getChallengeBonus("an_unhappy_life")
 
     if (gameData.active_challenge == "dance_with_the_devil") return Math.pow(happiness, 0.075)
@@ -797,7 +797,7 @@ function getEvil() {
 
 function getEvilXpGain() {
     if (gameData.active_challenge == "legends_never_die") return 1
-    
+
     if (gameData.active_challenge == "dance_with_the_devil") {
         const evilEffect = (Math.pow(getEvil(), 0.35) / 1e3) - 1
         return evilEffect < 0 ? 0 : evilEffect
@@ -850,8 +850,8 @@ function getEvilGain() {
     const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 2 ? 100 : 1
     const essenceCollector = gameData.dark_matter_shop.essence_collector == 1 ? 0.5 : 1
 
-    return evilControl.getEffect() * bloodMeditation.getEffect() * absoluteWish.getEffect() 
-        * oblivionEmbodiment.getEffect() * yingYang.getEffect() * inferno * getChallengeBonus("legends_never_die") 
+    return evilControl.getEffect() * bloodMeditation.getEffect() * absoluteWish.getEffect()
+        * oblivionEmbodiment.getEffect() * yingYang.getEffect() * inferno * getChallengeBonus("legends_never_die")
         * speedIsLife * yourGreatestDebt * essenceCollector
 }
 
@@ -867,7 +867,7 @@ function getEssenceGain() {
         : (gameData.dark_matter_shop.essence_collector == 2 ? 1000 : 1)
 
     return essenceControl.getEffect() * essenceCollector.getEffect() * transcendentMaster.getEffect()
-        * faintHope.getEffect() * rise.getEffect() * getChallengeBonus("dance_with_the_devil") 
+        * faintHope.getEffect() * rise.getEffect() * getChallengeBonus("dance_with_the_devil")
         * getAGiftFromGodEssenceGain() * darkMagician.getEffect() * speedIsLife * essenceCollectorSkillTree
 }
 
@@ -982,7 +982,7 @@ function createGameObjects(data, baseData) {
 function createGameObject(data, entity) {
     if ("income" in entity) { data[entity.name] = new Job(entity) }
     else if ("maxXp" in entity) { data[entity.name] = new Skill(entity) }
-    else if ("tier" in entity) { data[entity.name] = new Milestone(entity) }    
+    else if ("tier" in entity) { data[entity.name] = new Milestone(entity) }
     else {data[entity.name] = new Item(entity)}
     data[entity.name].id = "row " + entity.name
 }
@@ -1002,7 +1002,7 @@ function getNet() {
 }
 
 function getIncome() {
-    const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 1 ? (1 / 1000) 
+    const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 1 ? (1 / 1000)
         : (gameData.dark_matter_shop.your_greatest_debt == 2 ? (1 / 250) : 1)
     const essenceCollector = gameData.dark_matter_shop.essence_collector == 2 ? (1 / 50) : 1
 
@@ -1016,13 +1016,6 @@ function getExpense() {
         expense += misc.getExpense()
     }
     return expense
-}
-
-function performTask(task) {
-    task.increaseXp()
-    if (task instanceof Job && task == gameData.currentJob) {
-        increaseCoins()
-    }
 }
 
 function increaseCoins() {
@@ -1039,7 +1032,7 @@ function autoPromote() {
     let maxIncome = 0;
     for (const key in gameData.taskData) {
         const task = gameData.taskData[key]
-        if (task instanceof Job && gameData.requirements[key].completed) {
+        if (task instanceof Job && gameData.requirements[key].isCompleted()) {
             const income = task.getIncome();
             if (income > maxIncome) {
                 maxIncome = income
@@ -1056,7 +1049,7 @@ function autoBuy() {
     const income = getIncome()
 
     for (const key in gameData.itemData) {
-        if (gameData.requirements[key].completed) {
+        if (gameData.requirements[key].isCompleted()) {
             const item = gameData.itemData[key]
             const expense = item.getExpense()
 
@@ -1074,7 +1067,7 @@ function autoBuy() {
     }
 
     for (const key in gameData.itemData) {
-        if (gameData.requirements[key].completed) {
+        if (gameData.requirements[key].isCompleted()) {
             const item = gameData.itemData[key]
             const expense = item.getExpense()
             if (itemCategories['Misc'].indexOf(key) != -1) {
@@ -1095,7 +1088,7 @@ function increaseDays() {
 }
 
 function increaseRealtime() {
-    if (!canSimulate()) 
+    if (!canSimulate())
         return;
     gameData.realtime += 1.0 / updateSpeed;
     gameData.realtimeRun += 1.0 / updateSpeed;
@@ -1116,9 +1109,9 @@ function setTheme(index, reload=false) {
         body.classList.add("dark")
     }
     else if (index == 2){
-        // colorblind Tritanopia 
+        // colorblind Tritanopia
         body.classList.add("colorblind")
-    }   
+    }
 
     gameData.settings.theme = index
     selectElementInGroup("Theme", index)
@@ -1143,24 +1136,24 @@ function rebirthTwo() {
 
     if (gameData.stats.fastest2 == null || gameData.realtime < gameData.stats.fastest2)
         gameData.stats.fastest2 = gameData.realtime
-	
+
     rebirthReset()
     gameData.active_challenge = ""
 
     for (const taskName in gameData.taskData) {
         const task = gameData.taskData[taskName]
         task.maxLevel = 0
-    }    
+    }
 }
 
 function rebirthThree() {
-    gameData.rebirthThreeCount += 1	
-	gameData.essence += getEssenceGain()	
+    gameData.rebirthThreeCount += 1
+	gameData.essence += getEssenceGain()
     gameData.evil = 0
 
     if (gameData.stats.fastest3 == null || gameData.realtime < gameData.stats.fastest3)
         gameData.stats.fastest3 = gameData.realtime
-	
+
 	const recallEffect = gameData.taskData["Cosmic Recollection"].getEffect();
 
 	for (const taskName in gameData.taskData) {
@@ -1173,7 +1166,7 @@ function rebirthThree() {
 }
 
 function rebirthFour() {
-    gameData.rebirthFourCount += 1	
+    gameData.rebirthFourCount += 1
 	gameData.essence = 0
     gameData.evil = 0
     gameData.dark_matter += getDarkMatterGain()
@@ -1260,7 +1253,7 @@ function rebirthReset(set_tab_to_jobs = true) {
     }
 
     for (const itemName in gameData.itemData) {
-        var item = gameData.itemData[itemName]        
+        var item = gameData.itemData[itemName]
         item.isHero = false
     }
 
@@ -1307,7 +1300,7 @@ function isHeroesUnlocked() {
 }
 
 function makeHero(task) {
-    if ((task instanceof Job || task instanceof Skill) && !task.isHero) {           
+    if ((task instanceof Job || task instanceof Skill) && !task.isHero) {
         task.level = 0
         task.maxLevel = 0
         task.xp = 0
@@ -1322,11 +1315,11 @@ function makeHeroes() {
         const task = gameData.taskData[taskname]
 
         if (task.isHero)
-            continue        
+            continue
 
         const prev = getPreviousTaskInCategory(taskname)
 
-        if (prev != "" && (!gameData.taskData[prev].isHero || gameData.taskData[prev].level < 20)) 
+        if (prev != "" && (!gameData.taskData[prev].isHero || gameData.taskData[prev].level < 20))
                 continue
 
         const req = gameData.requirements[taskname]
@@ -1353,7 +1346,7 @@ function makeHeroes() {
         item.isHero = true
         gameData.currentProperty = gameData.itemData["Homeless"]
         gameData.currentMisc = []
-    }    
+    }
 }
 
 
@@ -1363,11 +1356,11 @@ function assignMethods() {
         if (task.baseData.income) {
             task.baseData = jobBaseData[task.name]
             task = Object.assign(new Job(jobBaseData[task.name]), task)
-            
+
         } else {
             task.baseData = skillBaseData[task.name]
             task = Object.assign(new Skill(skillBaseData[task.name]), task)
-        } 
+        }
 
         task.xpBigInt = BigInt(task.xpBigInt)
 
@@ -1519,20 +1512,21 @@ function update(needUpdateUI = true) {
     increaseRealtime()
     increaseDays()
     autoPromote()
-    autoBuy()  
+    autoBuy()
     applyExpenses()
     for (const key in gameData.taskData) {
         const task = gameData.taskData[key]
-        if ((task instanceof Skill || task instanceof Job) && gameData.requirements[key].completed) {
-            performTask(task)
+        if ((task instanceof Skill || task instanceof Job) && gameData.requirements[key].isCompleted()) {
+            task.increaseXp()
         }
     }
+    increaseCoins()
 
     gameData.dark_orbs += applySpeed(getDarkOrbGeneration())
-    
-    applyMilestones() 
+
+    applyMilestones()
     updateStats()
-    if (needUpdateUI)
+    if (needUpdateUI && !document.hidden)
         updateUI()
     else
         updateRequirements()
@@ -1663,7 +1657,7 @@ gameData.requirements = {
     "Dark Magic": new EvilRequirement(getElementsByClass("Dark Magic"), [{requirement: 1}]),
 	"Almightiness": new EssenceRequirement(getElementsByClass("Almightiness"), [{requirement: 1}]),
 	"Darkness": new DarkMatterRequirement(getElementsByClass("Darkness"), [{requirement: 1}]),
-    
+
     // Rebirth items
     "Rebirth tab": new AgeRequirement([document.getElementById("rebirthTabButton")], [{requirement: 25}]),
     "Rebirth note 1": new AgeRequirement([document.getElementById("rebirthNote1")], [{requirement: 45}]),
@@ -1698,7 +1692,7 @@ gameData.requirements = {
     "Blacksmith": new TaskRequirement([getTaskElement("Blacksmith")], [{task: "Strength", requirement: 30}, {task: "Miner", requirement: 10}]),
     "Merchant": new TaskRequirement([getTaskElement("Merchant")], [{task: "Bargaining", requirement: 50}, {task: "Blacksmith", requirement: 10}]),
 
-    // Military 
+    // Military
     "Squire": new TaskRequirement([getTaskElement("Squire")], [{task: "Strength", requirement: 5}]),
     "Footman": new TaskRequirement([getTaskElement("Footman")], [{task: "Strength", requirement: 20}, {task: "Squire", requirement: 10}]),
     "Veteran footman": new TaskRequirement([getTaskElement("Veteran footman")], [{task: "Battle Tactics", requirement: 40}, {task: "Footman", requirement: 10}]),
@@ -1707,7 +1701,7 @@ gameData.requirements = {
     "Veteran Knight": new TaskRequirement([getTaskElement("Veteran Knight")], [{task: "Strength", requirement: 300}, {task: "Knight", requirement: 10}]),
     "Holy Knight": new TaskRequirement([getTaskElement("Holy Knight")], [{task: "Mana Control", requirement: 500}, {task: "Veteran Knight", requirement: 10}]),
     "Lieutenant General": new TaskRequirement([getTaskElement("Lieutenant General")], [{task: "Mana Control", requirement: 1000}, {task: "Battle Tactics", requirement: 1000}, {task: "Holy Knight", requirement: 10}]),
-	
+
     // The Arcane Association
     "Student": new TaskRequirement([getTaskElement("Student")], [{task: "Concentration", requirement: 200}, {task: "Meditation", requirement: 200}]),
     "Apprentice Mage": new TaskRequirement([getTaskElement("Apprentice Mage")], [{task: "Mana Control", requirement: 400}, {task: "Student", requirement: 10}]),
@@ -1717,7 +1711,7 @@ gameData.requirements = {
 	"Chronomancer": new TaskRequirement([getTaskElement("Chronomancer")], [{task: "Mana Control", requirement: 1500}, {task: "Meditation", requirement: 1500}, {task: "Archmage", requirement: 25}]),
     "Chairman": new TaskRequirement([getTaskElement("Chairman")], [{task: "Mana Control", requirement: 2000}, {task: "Productivity", requirement: 2000}, {task: "Chronomancer", requirement: 50}]),
     "Imperator": new TaskRequirement([getTaskElement("Imperator")], [{ task: "All Seeing Eye", requirement: 3000, herequirement:650}, {task: "Concentration", requirement: 3000},  {task: "Chairman", requirement: 666}]),
-	
+
 	// The Void
     "Corrupted": new AgeRequirement([getTaskElement("Corrupted")], [{requirement: 1000}]),
     "Void Slave": new TaskRequirement([getTaskElement("Void Slave")], [{task: "Corrupted", requirement: 30}]),
@@ -1733,7 +1727,7 @@ gameData.requirements = {
     "Nova": new TaskRequirement([getTaskElement("Nova")], [{ task: "Eternal Wanderer", requirement: 15 }, { task: "Cosmic Longevity", requirement: 4000, herequirement: 180 }]),
     "Sigma Proioxis": new TaskRequirement([getTaskElement("Sigma Proioxis")], [{ task: "Nova", requirement: 200 }, { task: "Cosmic Recollection", requirement: 4500, herequirement: 350 }]),
     "Acallaris": new TaskRequirement([getTaskElement("Acallaris")], [{ task: "Galactic Command", requirement: 5000, herequirement: 250 }, { task: "Sigma Proioxis", requirement: 1000, herequirement: 480 }]),
-    "One Above All": new TaskRequirement([getTaskElement("One Above All")], [{ task: "Meditation", requirement: 6300 }, { task: "Acallaris", requirement: 1400, herequirement: 500 }]),	
+    "One Above All": new TaskRequirement([getTaskElement("One Above All")], [{ task: "Meditation", requirement: 6300 }, { task: "Acallaris", requirement: 1400, herequirement: 500 }]),
 
     // Fundamentals
     "Concentration": new TaskRequirement([getTaskElement("Concentration")], []),
@@ -1766,7 +1760,7 @@ gameData.requirements = {
 	"Void Influence": new EvilRequirement([getTaskElement("Void Influence")], [{requirement: 50000}]),
 	"Time Loop": new EvilRequirement([getTaskElement("Time Loop")], [{requirement: 2500000}]),
 	"Evil Incarnate": new EvilRequirement([getTaskElement("Evil Incarnate")], [{requirement: 1000000000}]),
-	
+
 	// Void Manipulation
 	"Absolute Wish": new TaskRequirement([getTaskElement("Absolute Wish")], [{task: "Void Slave", requirement: 25}, {task: "Chairman", requirement: 300}]),
     "Void Amplification": new TaskRequirement([getTaskElement("Void Amplification")], [{ task: "Void Slave", requirement: 100 }, { task: "Absolute Wish", requirement: 3000, herequirement: 1700 }]),
@@ -1775,7 +1769,7 @@ gameData.requirements = {
     "Void Symbiosis": new TaskRequirement([getTaskElement("Void Symbiosis")], [{ task: "Ceaseless Abyss", requirement: 3500, herequirement: 220 }, { task: "Void Reaver", requirement: 50 }]),
     "Void Embodiment": new TaskRequirement([getTaskElement("Void Embodiment")], [{ task: "Dark Influence", requirement: 4600, herequirement: 3700 }, { task: "Void Lord", requirement: 50 }]),
     "Abyss Manipulation": new TaskRequirement([getTaskElement("Abyss Manipulation")], [{ task: "Abyss God", requirement: 350, herequirement: 200 }, { task: "Dark Influence", requirement: 6000, herequirement: 4100 }, { task: "Void Influence", requirement: 6000, herequirement: 2600 }]),
-	
+
 	// Celestial Powers
 	"Cosmic Longevity": new TaskRequirement([getTaskElement("Cosmic Longevity")], [{task: "Eternal Wanderer", requirement: 1}]),
     "Cosmic Recollection": new TaskRequirement([getTaskElement("Cosmic Recollection")], [{ task: "Nova", requirement: 50 }, { task: "Meditation", requirement: 4200 }, { task: "Mind Release", requirement: 900 }]),
@@ -1825,7 +1819,7 @@ gameData.requirements = {
     "Butler": new CoinRequirement([getItemElement("Butler")], [{requirement: gameData.itemData["Butler"].getExpense() * 100}]),
     "Sapphire Charm": new CoinRequirement([getItemElement("Sapphire Charm")], [{requirement: gameData.itemData["Sapphire Charm"].getExpense() * 100}]),
     "Study Desk": new CoinRequirement([getItemElement("Study Desk")], [{requirement: gameData.itemData["Study Desk"].getExpense() * 100}]),
-    "Library": new CoinRequirement([getItemElement("Library")], [{requirement: gameData.itemData["Library"].getExpense() * 100}]), 
+    "Library": new CoinRequirement([getItemElement("Library")], [{requirement: gameData.itemData["Library"].getExpense() * 100}]),
 	"Observatory": new CoinRequirement([getItemElement("Observatory")], [{requirement: gameData.itemData["Observatory"].getExpense() * 100}]),
 	"Mind's Eye": new CoinRequirement([getItemElement("Mind's Eye")], [{requirement: gameData.itemData["Mind's Eye"].getExpense() * 100}]),
 	"Void Necklace": new CoinRequirement([getItemElement("Void Necklace")], [{requirement: gameData.itemData["Void Necklace"].getExpense() * 100}]),
