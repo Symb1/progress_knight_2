@@ -4,7 +4,7 @@ version 2.2.4 / 31.12.2022
 * Fix minor spelling mistakes and bugs
 * Clean up the code
 * Add goals to challenges
-* Format the Effect column when the numbers get to large
+* Format the Effect column when the numbers get too large
 
 version 2.2.3 / 29.12.2022
 * Added 6 new skills
