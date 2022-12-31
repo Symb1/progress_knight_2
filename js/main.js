@@ -12,6 +12,7 @@ var gameData = {
 
     coins: 0,
     days: 365 * 14,
+    totalDays: 0,
     evil: 0,
     essence: 0,
     dark_matter: 0,
@@ -1086,6 +1087,7 @@ function autoBuy() {
 
 function increaseDays() {
     gameData.days += applySpeed(1)
+    gameData.totalDays += applySpeed(1)
 }
 
 function increaseRealtime() {

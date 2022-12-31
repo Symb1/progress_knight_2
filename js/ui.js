@@ -506,6 +506,8 @@ function updateText() {
     const currentDate = new Date()
     document.getElementById("playedDaysDisplay").textContent = format((currentDate.getTime() - date.getTime()) / (1000 * 3600 * 24), 2)
 
+    document.getElementById("playedGameTimeDisplay").textContent = format(gameData.totalDays, 2)
+
     if (gameData.rebirthOneCount > 0)
         document.getElementById("statsRebirth1").classList.remove("hidden")
     else
