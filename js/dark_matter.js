@@ -47,7 +47,10 @@ function buyLifeCoach() {
 // Rewards
 function getDarkOrbGeneration() {
     if (gameData.dark_matter_shop.dark_orb_generator == 0) return 0
-    return Math.pow(100, gameData.dark_matter_shop.dark_orb_generator - 1)
+
+    const darkOrbiter = gameData.requirements["Dark Orbiter"].isCompleted() ? 1e10 : 1
+
+    return Math.pow(100, gameData.dark_matter_shop.dark_orb_generator - 1) * darkOrbiter
 }
 
 function getTaaAndMagicXpGain() {

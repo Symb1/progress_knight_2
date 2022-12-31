@@ -195,3 +195,14 @@ function bigIntToExponential(value) {
 
     return (isNegative ? "-" : '') + mantissa + "e" + exp.toString();
 }
+
+function exponentialToRawNumberString(value) {
+    if (value == "" || value.length == 0) 
+        return "0"
+
+    const split = value.split("e")
+    const first = split[0]
+    const exponent = Number(split[1])
+
+    return first + [...Array(exponent)].map(() => "0").join("")
+}
