@@ -260,8 +260,10 @@ milestoneBaseData = {
 
     "Mind Control": { name: "Mind Control", expense: 1e13, tier: 24, description: "Makes Hell Portal even stronger" },
     "Galactic Emperor": { name: "Galactic Emperor", expense: 1e15, tier: 25, description: "Passively gain a small amount of Essence" },
-    "Dark Matter Harvester": { name: "Dark Matter Harvester", expense: 1e17, tier: 26, description: "Increase Dark Matter gain by 10x" },
+    "Dark Matter Harvester": { name: "Dark Matter Harvester", expense: 1e17, tier: 26, description: "Multiply Dark Matter gain by 10x" },
     "A Dark Era": { name: "A Dark Era", expense: 1e20, tier: 27, description: "Unlocks Dark Matter Skills" },
+    "Dark Orbiter": { name: "Dark Orbiter", expense: 1e22, tier: 28, description: "Multiply Dark Orb gain by 1e10x" },
+    "Dark Matter Mining": { name: "Dark Matter Mining", expense: 1e25, tier: 29, description: "Multiply Dark Matter gain by 3x" },
 }
 
 const jobCategories = {
@@ -291,7 +293,7 @@ const itemCategories = {
 const milestoneCategories = {
     "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcendent Master", "Eternal Time", "Hell Portal", "Inferno", "God's Blessings", "Faint Hope"],
     "Heroic Milestones": ["New Beginning", "Rise of Great Heroes", "Lazy Heroes", "Dirty Heroes", "Angry Heroes", "Tired Heroes", "Scared Heroes", "Good Heroes", "Funny Heroes", "Beautiful Heroes", "Awesome Heroes", "Furious Heroes", "Superb Heroes", "A new beginning"],
-    "Dark Milestones": ["Mind Control", "Galactic Emperor", "Dark Matter Harvester", "A Dark Era"]
+    "Dark Milestones": ["Mind Control", "Galactic Emperor", "Dark Matter Harvester", "A Dark Era", "Dark Orbiter", "Dark Matter Mining"]
 }
 
 function getPreviousTaskInCategory(task) {
@@ -541,6 +543,8 @@ const tooltips = {
     "Galactic Emperor": "Commander of the Galactic Council grants you the privilege to automatically collect Essence from the nearby planets",
     "Dark Matter Harvester": "Harvest the universe to extract even more Dark Matter from it.",
     "A Dark Era": "Start a new era of Dark Matter.",
+    "Dark Orbiter": "Using some wizardry you can improve your Dark Orb generators massively.",
+    "Dark Matter Mining": "Mine a huge amount of Dark Matter from each planet you visit.",
 }
 
 function getBindedTaskEffect(taskName) {
@@ -874,8 +878,9 @@ function getEssenceGain() {
 function getDarkMatterGain() {
     const darkRuler = gameData.taskData["Dark Ruler"]
     const darkMatterHarvester = gameData.requirements["Dark Matter Harvester"].isCompleted() ? 10 : 1
+    const darkMatterMining = gameData.requirements["Dark Matter Mining"].isCompleted() ? 3 : 1
 
-    return 1 * darkRuler.getEffect() * darkMatterHarvester
+    return 1 * darkRuler.getEffect() * darkMatterHarvester * darkMatterMining
 }
 
 function getDarkMatter() {
@@ -1370,7 +1375,11 @@ function assignMethods() {
             task = Object.assign(new Skill(skillBaseData[task.name]), task)
         }
 
-        task.xpBigInt = BigInt(task.xpBigInt)
+        // There are two cases. The number is stored as a large number or in the scientific notation.
+        if (typeof task.xpBigInt === "string" && task.xpBigInt.includes("e"))
+            task.xpBigInt = BigInt(exponentialToRawNumberString(task.xpBigInt))
+        else
+            task.xpBigInt = BigInt(task.xpBigInt)
 
         gameData.taskData[key] = task
     }

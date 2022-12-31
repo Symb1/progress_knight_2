@@ -19,7 +19,7 @@ class Task {
             level: this.level,
             maxLevel: this.maxLevel,
             xp: this.xp,
-            xpBigInt: this.xpBigInt.toString(),
+            xpBigInt: bigIntToExponential(this.xpBigInt),
             isHero: this.isHero,
             isFinished: this.isFinished
         }
@@ -154,7 +154,7 @@ class Skill extends Task {
     }
 
     getEffectDescription() {
-        return "x" + String(this.getEffect().toFixed(2)) + " " + this.baseData.description
+        return "x" + format(this.getEffect(), 2) + " " + this.baseData.description
     }
 }
 

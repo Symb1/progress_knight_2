@@ -1,8 +1,10 @@
 version 2.2.4 / 31.12.2022
+* Add 2 new milestones
 * Do not render when the game is not visible (still gain progress)
-* Fix minor spelling mistakes
+* Fix minor spelling mistakes and bugs
 * Clean up the code
 * Add goals to challenges
+* Format the Effect column when the numbers get to large
 
 version 2.2.3 / 29.12.2022
 * Added 6 new skills
