@@ -264,17 +264,17 @@
 								<div id="exitChallengeDiv">
 									<p>Current challenge: <b><span id="activeChallengeName"></span></b></p>
 									<button class="w3-button button" onclick="exitChallenge()">Exit challenge</button>
-									<div id="currentChallengeReward1" class="an_unhappy_life hidden" style="display: inline; padding-left:1em">Current reward: Increases happiness by x<span id="currentChallengeHappinessBuff"></span></div>
-									<div id="currentChallengeReward2" class="rich_and_the_poor hidden" style="display: inline; padding-left:1em">Current reward: Increases income by x<span id="currentChallengeIncomeBuff"></span></div>
-									<div id="currentChallengeReward3" class="time_does_not_fly hidden" style="display: inline; padding-left:1em">Current reward: Increases time warping by x<span id="currentChallengeTimewarpingBuff"></span></div>
-									<div id="currentChallengeReward4" class="dance_with_the_devil hidden" style="display: inline; padding-left:1em">Current reward: Increases essence gain by x<span id="currentChallengeEssenceGainBuff"></span></div>
-									<div id="currentChallengeReward5" class="legends_never_die hidden" style="display: inline; padding-left:1em">Current reward: Increases evil gain by x<span id="currentChallengeEvilGainBuff"></span></div>
+									<div id="currentChallengeReward1" class="an_unhappy_life hidden" style="display: inline; padding-left:1em">Current reward: Multiplies happiness by x<span id="currentChallengeHappinessBuff"></span></div>
+									<div id="currentChallengeReward2" class="rich_and_the_poor hidden" style="display: inline; padding-left:1em">Current reward: Multiplies income by x<span id="currentChallengeIncomeBuff"></span></div>
+									<div id="currentChallengeReward3" class="time_does_not_fly hidden" style="display: inline; padding-left:1em">Current reward: Multiplies time warping by x<span id="currentChallengeTimewarpingBuff"></span></div>
+									<div id="currentChallengeReward4" class="dance_with_the_devil hidden" style="display: inline; padding-left:1em">Current reward: Multiplies essence gain by x<span id="currentChallengeEssenceGainBuff"></span></div>
+									<div id="currentChallengeReward5" class="legends_never_die hidden" style="display: inline; padding-left:1em">Current reward: Multiplies evil gain by x<span id="currentChallengeEvilGainBuff"></span></div>
 								</div>
 								<div id="anUnhappyLifeChallenge" style="padding-top:2em">
 									<div class="text-caption challenge-title">1. An unhappy life</div>
 									<div style="color:gray; padding-bottom:0.3em">Reduces happiness by ^0.5</div>
 									<div style="color: gold; padding-bottom: 0.3em">Goal: Reach <span id="challengeGoal1">992.2M</span> Happiness</div>
-									<div id="challengeReward1" class="reward">Reward: Increases happiness by x<span id="challengeHappinessBuff">1</span></div>
+									<div id="challengeReward1" class="reward">Reward: Multiplies happiness by x<span id="challengeHappinessBuff">1</span></div>
 									<button id="challengeButton1" class="w3-button button" onclick="enterChallenge('an_unhappy_life')">Enter challenge</button>
 								</div>
 								<div id="theRichAndThePoorChallenge" style="padding-top:2em">
@@ -286,28 +286,28 @@
 										<span></span>
 										<span></span>
 									</div> Gross Income</div>
-									<div id="challengeReward2" class="reward">Reward: Increases income by x<span id="challengeIncomeBuff">1</span></div>
+									<div id="challengeReward2" class="reward">Reward: Multiplies income by x<span id="challengeIncomeBuff">1</span></div>
 									<button id="challengeButton2" class="w3-button button" onclick="enterChallenge('rich_and_the_poor')">Enter challenge</button>
 								</div>
 								<div id="timeDoesNotFlyChallenge" style="padding-top:2em">
 									<div class="text-caption challenge-title">3. Time does not fly</div>
 									<div style="color: gray; padding-bottom: 0.3em">Reduces time warping by ^0.7</div>
 									<div style="color: gold; padding-bottom: 0.3em">Goal: Reach x<span id="challengeGoal3">1.0M</span> Time Warping</div>
-									<div id="challengeReward3" class="reward">Reward: Increases time warping by x<span id="challengeTimewarpingBuff">1</span></div>
+									<div id="challengeReward3" class="reward">Reward: Multiplies time warping by x<span id="challengeTimewarpingBuff">1</span></div>
 									<button id="challengeButton3" class="w3-button button" onclick="enterChallenge('time_does_not_fly')">Enter challenge</button>
 								</div>
 								<div id="danceWithTheDevilChallenge" style="padding-top:2em">
 									<div class="text-caption challenge-title">4. Dance with the devil</div>
 									<div style="color: gray; padding-bottom: 0.3em">Reduces Dark Magic and Almightiness XP effect enormously, max level reduces XP gain and happiness is reduced by ^0.075</div>
 									<div style="color: gold; padding-bottom: 0.3em">Goal: Reach <span id="challengeGoal4">5.8k</span> Evil Gain</div>
-									<div id="challengeReward4" class="reward">Reward: Increases essence gain by x<span id="challengeEssenceGainBuff">1</span></div>
+									<div id="challengeReward4" class="reward">Reward: Multiplies essence gain by x<span id="challengeEssenceGainBuff">1</span></div>
 									<button id="challengeButton4" class="w3-button button" onclick="enterChallenge('dance_with_the_devil')">Enter challenge</button>
 								</div>
 								<div id="legendsNeverDieChallenge" style="padding-top:2em">
 									<div class="text-caption challenge-title">5. Legends never die</div>
 									<div style="color: gray; padding-bottom: 0.3em">Reduces your lifespan by ^0.72, happiness does nothing and Dark Magic XP effect is always 1x</div>
 									<div style="color: gold; padding-bottom: 0.3em">Goal: Reach Chairman lvl <span id="challengeGoal5">1227</span></div>
-									<div id="challengeReward5" class="reward">Reward: Increases evil gain by x<span id="challengeEvilGainBuff">1</span></div>
+									<div id="challengeReward5" class="reward">Reward: Multiplies evil gain by x<span id="challengeEvilGainBuff">1</span></div>
 									<button id="challengeButton5" class="w3-button button" onclick="enterChallenge('legends_never_die')">Enter challenge</button>
 								</div>
 							</div>
@@ -661,11 +661,11 @@
 											</div>
 											<div id="statsChallenges">
 												<ul>
-													<li id="challengeStat1">Challenge 1 Reward: Increases happiness by x<span id="challengeHappinessBuffDisplay"></span>.</li>
-													<li id="challengeStat2">Challenge 2 Reward: Increases income by x<span id="challengeIncomeBuffDisplay"></span>.</li>
-													<li id="challengeStat3">Challenge 3 Reward: Increases time warping by x<span id="challengeTimewarpingBuffDisplay"></span>.</li>
-													<li id="challengeStat4">Challenge 4 Reward: Increases essence gain by x<span id="challengeEssenceGainBuffDisplay"></span>.</li>
-													<li id="challengeStat5">Challenge 5 Reward: Increases evil gain by x<span id="challengeEvilGainBuffDisplay"></span>.</li>
+													<li id="challengeStat1">Challenge 1 Reward: Multiplies happiness by x<span id="challengeHappinessBuffDisplay"></span>.</li>
+													<li id="challengeStat2">Challenge 2 Reward: Multiplies income by x<span id="challengeIncomeBuffDisplay"></span>.</li>
+													<li id="challengeStat3">Challenge 3 Reward: Multiplies time warping by x<span id="challengeTimewarpingBuffDisplay"></span>.</li>
+													<li id="challengeStat4">Challenge 4 Reward: Multiplies essence gain by x<span id="challengeEssenceGainBuffDisplay"></span>.</li>
+													<li id="challengeStat5">Challenge 5 Reward: Multiplies evil gain by x<span id="challengeEvilGainBuffDisplay"></span>.</li>
 												</ul>
 											</div>
 										</div>
