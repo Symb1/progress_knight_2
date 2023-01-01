@@ -1307,6 +1307,11 @@ function isAlive() {
     return condition && !tempData.hasError
 }
 
+function getFormattedCurrentChallengeName() {
+    const challengeTitle = gameData.active_challenge.replaceAll("_", " ")
+    return challengeTitle.charAt(0).toUpperCase() + challengeTitle.slice(1)
+}
+
 function canSimulate() {
     return !gameData.paused && isAlive()
 }
@@ -1518,15 +1523,6 @@ function loadGameData() {
     assignMethods()
 }
 
-// TODO Not used currently. I assume we want to use this to update the game when the tab is focussed
-function addMinutes(count = 1) {
-    for (let i = 0; i < count * 60 * updateSpeed; i++) {
-        update(false)
-        if (!isAlive())
-            break;
-    }
-}
-
 function update(needUpdateUI = true) {
     makeHeroes()
     increaseRealtime()
@@ -1554,7 +1550,7 @@ function update(needUpdateUI = true) {
 
 function updateRequirements() {
     // Call isCompleted on every requirement as that function caches its result in requirement.completed
-    for (i in gameData.requirements) gameData.requirements[i].isCompleted()
+    for (const i in gameData.requirements) gameData.requirements[i].isCompleted()
 }
 
 function updateStats() {
@@ -1658,10 +1654,7 @@ createGameObjects(gameData.milestoneData, milestoneBaseData)
 
 gameData.settings.theme = peekThemeFromSave()
 
-createAllRows(jobCategories, "jobTable")
-createAllRows(skillCategories, "skillTable")
-createAllRows(itemCategories, "itemTable")
-createAllRows(milestoneCategories, "milestoneTable")
+initializeUI()
 
 gameData.currentJob = gameData.taskData["Beggar"]
 gameData.currentProperty = gameData.itemData["Homeless"]
@@ -1882,8 +1875,6 @@ loadGameData()
 
 gameData.milestoneData = {}
 createGameObjects(gameData.milestoneData, milestoneBaseData)
-
-initUI()
 
 setCustomEffects()
 addMultipliers()

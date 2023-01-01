@@ -1,3 +1,6 @@
+version 2.2.6 / 01.01.2023
+* Greatly improve the performance of the game by ~2x
+
 version 2.2.5 / 01.01.2023
 * Buffed Faint Hope, now affected by time Warping
 * Add another Dark Matter shop upgrade
