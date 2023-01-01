@@ -239,7 +239,7 @@ function updateTaskRows() {
 
             if (prev != "") {
                 var prevTask = gameData.taskData[prev]
-                var prevlvl = (prevTask.isHero ? formatLevel(prevTask.level) : 0)
+                var prevlvl = (prevTask.isHero ? prevTask.level : 0)
                 if (prevlvl < 20)
                     prevReq = "Great " + prev + " " + prevlvl + "/20<br>"
             }
