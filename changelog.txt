@@ -1,3 +1,10 @@
+version 2.2.5 / 01.01.2023
+* Buffed Faint Hope, now affected by time Warping
+* Add another Dark Matter shop upgrade
+* Fix a few small bugs and add more formatting
+* Slightly increase the xp cost of jobs and skills past 1e280
+* Buff a few Dark Matter skills
+
 version 2.2.4 / 31.12.2022
 * Add 2 new milestones
 * Do not render when the game is not visible (still gain progress)

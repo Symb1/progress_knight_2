@@ -16,7 +16,7 @@ function getADealWithTheChairmanCost() {
 }
 
 function buyADealWithTheChairman() {
-    if (gameData.dark_orbs >= getADealWithTheChairmanCost()) {
+    if (gameData.dark_orbs >= getADealWithTheChairmanCost() && getADealWithTheChairmanCost() != Infinity) {
         gameData.dark_orbs -= getADealWithTheChairmanCost()
         gameData.dark_matter_shop.a_deal_with_the_chairman += 1
     }
@@ -27,7 +27,7 @@ function getAGiftFromGodCost() {
 }
 
 function buyAGiftFromGod() {
-    if (gameData.dark_orbs >= getAGiftFromGodCost()) {
+    if (gameData.dark_orbs >= getAGiftFromGodCost() && getAGiftFromGodCost() != Infinity) {
         gameData.dark_orbs -= getAGiftFromGodCost()
         gameData.dark_matter_shop.a_gift_from_god += 1
     }
@@ -38,7 +38,7 @@ function getLifeCoachCost() {
 }
 
 function buyLifeCoach() {
-    if (gameData.dark_orbs >= getLifeCoachCost()) {
+    if (gameData.dark_orbs >= getLifeCoachCost() && getLifeCoachCost() != Infinity) {
         gameData.dark_orbs -= getLifeCoachCost()
         gameData.dark_matter_shop.life_coach += 1
     }
@@ -49,7 +49,7 @@ function getGottaBeFastCost() {
 }
 
 function buyGottaBeFast() {
-    if (gameData.dark_orbs >= getGottaBeFastCost()) {
+    if (gameData.dark_orbs >= getGottaBeFastCost() && getGottaBeFastCost() != Infinity) {
         gameData.dark_orbs -= getGottaBeFastCost()
         gameData.dark_matter_shop.gotta_be_fast += 1
     } 
