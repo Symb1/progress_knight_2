@@ -87,7 +87,7 @@ function updateQuickTaskDisplay() {
     const task = gameData.currentJob
     const quickTaskDisplayElement = document.getElementById("quickTaskDisplay")
     const progressBar = quickTaskDisplayElement.getElementsByClassName("job")[0]
-    progressBar.getElementsByClassName("name")[0].textContent = (task.isHero ? "Great " : "") + task.name + " lvl " + task.level
+    progressBar.getElementsByClassName("name")[0].textContent = (task.isHero ? "Great " : "") + task.name + " lvl " + formatLevel(task.level)
     const progressFill = progressBar.getElementsByClassName("progressFill")[0]
 
     if (task.isFinished) {
@@ -181,7 +181,7 @@ function updateRequiredRows(data, categoryType) {
                     for (const requirement of requirements) {
                         const task = gameData.taskData[requirement.task]
                         if (task.level >= requirement.requirement) continue
-                        finalText += " " + requirement.task + " " + task.level + "/" + requirement.requirement + ","
+                        finalText += " " + requirement.task + " " + formatLevel(task.level) + "/" + formatLevel(requirement.requirement) + ","
                     }
                     finalText = finalText.substring(0, finalText.length - 1)
                     levelElement.textContent = finalText
@@ -222,7 +222,7 @@ function updateTaskRows() {
     for (const key in gameData.taskData) {
         let task = gameData.taskData[key]
         const row = document.getElementById("row " + task.name)
-        row.getElementsByClassName("level")[0].textContent = task.level
+        row.getElementsByClassName("level")[0].textContent = formatLevel(task.level)
         row.getElementsByClassName("xpGain")[0].textContent = task.getXpGainFormatted()
         row.getElementsByClassName("xpLeft")[0].textContent = task.getXpLeftFormatted()
 
@@ -239,7 +239,7 @@ function updateTaskRows() {
 
             if (prev != "") {
                 var prevTask = gameData.taskData[prev]
-                var prevlvl = (prevTask.isHero ? prevTask.level : 0)
+                var prevlvl = (prevTask.isHero ? formatLevel(prevTask.level) : 0)
                 if (prevlvl < 20)
                     prevReq = "Great " + prev + " " + prevlvl + "/20<br>"
             }
@@ -278,7 +278,7 @@ function updateTaskRows() {
         row.getElementsByClassName("tooltipText")[0].innerHTML = tooltip
 
         const maxLevel = row.getElementsByClassName("maxLevel")[0]
-        maxLevel.textContent = task.maxLevel
+        maxLevel.textContent = formatLevel(task.maxLevel)
         gameData.rebirthOneCount > 0 ? maxLevel.classList.remove("hidden") : maxLevel.classList.add("hidden")
 
         const progressBar = row.getElementsByClassName("progressBar")[0]
@@ -593,7 +593,7 @@ function updateText() {
     formatCoins(getChallengeGoal("rich_and_the_poor"), document.getElementById("challengeGoal2"))
     document.getElementById("challengeGoal3").textContent = format(getChallengeGoal("time_does_not_fly"))
     document.getElementById("challengeGoal4").textContent = format(getChallengeGoal("dance_with_the_devil"))
-    document.getElementById("challengeGoal5").textContent = Math.floor(getChallengeGoal("legends_never_die"))
+    document.getElementById("challengeGoal5").textContent = formatLevel(Math.floor(getChallengeGoal("legends_never_die")))
 
     document.getElementById("challengeReward1").hidden = gameData.challenges.an_unhappy_life == 0
     document.getElementById("challengeReward2").hidden = gameData.challenges.rich_and_the_poor == 0
