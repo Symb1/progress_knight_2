@@ -144,6 +144,13 @@ function formatTime(sec_num, show_ms = false) {
     return hours + ':' + minutes + ':' + seconds + mss   
 }
 
+function formatLevel(level) {
+    if (level >= 100000)
+        return format(level)
+    
+    return level.toLocaleString()
+}
+
 function formatAge(days) {
     const years = daysToYears(days)
     const day = getCurrentDay(days)
