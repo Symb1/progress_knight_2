@@ -34,19 +34,19 @@ function updateUI() {
 
     const currentTab = gameData.settings.selectedTab
 
-    if (currentTab == Tab.JOBS) {
+    if (currentTab == Tab.JOBS || gameData.settings.layout == 0) {
         renderRequirementsForCategoryType(gameData.taskData, jobCategories)
         renderHeaderRows(jobCategories)
         renderJobs()
     }
 
-    if (currentTab == Tab.SKILLS) {
+    if (currentTab == Tab.SKILLS || gameData.settings.layout == 0) {
         updateRequiredRows(gameData.taskData, skillCategories)
         renderHeaderRows(skillCategories)
         renderSkills()
     }
 
-    if (currentTab == Tab.SHOP) {
+    if (currentTab == Tab.SHOP || gameData.settings.layout == 0) {
         updateRequiredRows(gameData.itemData, itemCategories)
         renderShop()
     }
