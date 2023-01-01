@@ -507,6 +507,11 @@ function renderDarkMatter() {
 
     if (gameData.dark_matter_shop.a_miracle)
         document.getElementById("aMiracleBuyButton").classList.add("hidden")
+    
+    if (getDarkOrbGeneration() != Infinity)
+        document.getElementById("darkOrbGeneratorBuyButton").classList.remove("hidden")
+    else
+        document.getElementById("darkOrbGeneratorBuyButton").classList.add("hidden")
 
     // Dark Matter Skill tree
     renderSkillTreeButton(document.getElementById("speedIsLife1"), gameData.dark_matter_shop.speed_is_life != 0, gameData.dark_matter_shop.speed_is_life == 1)

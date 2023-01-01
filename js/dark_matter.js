@@ -4,7 +4,7 @@ function getDarkOrbGeneratorCost() {
 }
 
 function buyDarkOrbGenerator() {
-    if (gameData.dark_matter >= getDarkOrbGeneratorCost()) {
+    if (gameData.dark_matter >= getDarkOrbGeneratorCost() && getDarkOrbGeneration() != Infinity) {
         gameData.dark_matter -= getDarkOrbGeneratorCost()
         gameData.dark_matter_shop.dark_orb_generator += 1
     }
