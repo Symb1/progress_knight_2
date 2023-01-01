@@ -41,7 +41,7 @@ class Task {
         if (maxXp < 1e305)
             return maxXp
 
-        return maxXp * 2n ** (BigInt(this.level) / 125n) * (2n ** (BigInt(this.baseData.heroxp) / 10n))
+        return maxXp * 2n ** (BigInt(this.level) / 120n) * (2n ** (BigInt(this.baseData.heroxp) / 9n))
     }
 
     getXpLeft() {

@@ -45,7 +45,7 @@ function getChallengeBonus(challenge_name, current = false) {
         return softcap(Math.pow((current ? getIncome() : gameData.challenges.rich_and_the_poor) + 1, 0.25), 25, 0.55)
     }
     if (challenge_name == "time_does_not_fly") {
-        return softcap(Math.pow((current ? getUnpausedGameSpeed() / baseGameSpeed : gameData.challenges.time_does_not_fly) + 1, 0.05), 2)
+        return softcap(Math.pow((current ? getUnpausedGameSpeed() / baseGameSpeed : gameData.challenges.time_does_not_fly) + 1, 0.055), 2)
     }
     if (challenge_name == "dance_with_the_devil") {
         return softcap(Math.pow((current ? Math.max(0, getEvilGain() - 10) : gameData.challenges.dance_with_the_devil) + 1, 0.09), 2, 0.75)
