@@ -100,7 +100,7 @@
 						<div class="text-caption"><span style="color: rgb(143, 114, 207)">Dark Orbs: </span><span id="darkOrbsDisplay"></span></div>
 						<div style="color: gray" class="sidebar-element">Used to buy items in the Dark Matter shop</div>
 					</div>
-					<div id="timeWarping" class="hidden">
+					<div id="timeWarping">
 						<div class="text-caption"><span style="color: rgb(204, 34, 219)">Time Warping: </span><span id="timeWarpingDisplay"></span></div>
 						<div style="color: gray" class="sidebar-element">Affects game speed</div>
 					</div>
@@ -446,21 +446,27 @@
 												</div>
 												<div style="padding-top:2em">
 													<div class="text-caption dark-matter-title">A deal with the Chairman</div>
-													<div style="color:gray; padding-bottom: 0.5em;">Reward: Improves <span style="color: rgb(199, 21, 133);">T.A.A and Magic</span> XP gain by x<span id="aDealWithTheChairmanEffect"></span></div>
+													<div style="color:gray; padding-bottom: 0.5em;">Reward: Multiply <span style="color: rgb(199, 21, 133);">T.A.A & Magic</span> XP gain by x<span id="aDealWithTheChairmanEffect"></span></div>
 													<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="aDealWithTheChairmanCost"></b> <span style="color: rgb(143, 114, 207)">Dark Orbs</span></div>
 													<button class="w3-button button" onclick="buyADealWithTheChairman()">Upgrade</button>
 												</div>
 												<div style="padding-top:2em">
 													<div class="text-caption dark-matter-title">A gift from god</div>
-													<div style="color:gray; padding-bottom: 0.5em;">Reward: Increases <span style="color: rgb(24, 210, 217)">Essence</span> gain by x<span id="aGiftFromGodEffect"></span></div>
+													<div style="color:gray; padding-bottom: 0.5em;">Reward: Multiply <span style="color: rgb(24, 210, 217)">Essence</span> gain by x<span id="aGiftFromGodEffect"></span></div>
 													<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="aGiftFromGodCost"></b> <span style="color: rgb(143, 114, 207)">Dark Orbs</span></div>
 													<button class="w3-button button" onclick="buyAGiftFromGod()">Upgrade</button>
 												</div>
 												<div style="padding-top:2em">
 													<div class="text-caption dark-matter-title">Life coach</div>
-													<div style="color:gray; padding-bottom: 0.5em;">Reward: Increases <span style="color: lightgreen;">Income</span> by x<span id="lifeCoachEffect"></span></div>
+													<div style="color:gray; padding-bottom: 0.5em;">Reward: Multiply <span style="color: lightgreen;">Income</span> by x<span id="lifeCoachEffect"></span></div>
 													<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="lifeCoachCost"></b> <span style="color: rgb(143, 114, 207)">Dark Orbs</span></div>
 													<button class="w3-button button" onclick="buyLifeCoach()">Upgrade</button>
+												</div>
+												<div style="padding-top:2em">
+													<div class="text-caption dark-matter-title">Gotta be fast</div>
+													<div style="color:gray; padding-bottom: 0.5em;">Reward: Multiply <span style="color: rgb(204, 34, 219)">Time Warping</span> by x<span id="gottaBeFastEffect"></span></div>
+													<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="gottaBeFastCost"></b> <span style="color: rgb(143, 114, 207)">Dark Orbs</span></div>
+													<button class="w3-button button" onclick="buyGottaBeFast()">Upgrade</button>
 												</div>
 											</div>
 										</div>
@@ -493,13 +499,13 @@
 												<div style="color:gray; padding-bottom:0.3em">
 													<button id="yourGreatestDebt1" class="w3-button button" onclick="buyYourGreatestDebt(1)">Buy</button> - 
 													Multiply <span style="color:rgb(255, 204, 102)">all XP</span> gain by <b>500x</b>, 
-													but divide <span style="color: lightgreen;">Income</span> by <b>1000x</b>
+													but divide <span style="color: lightgreen;">Income</span> by <b>10x</b>
 												</div>
 												<div style="color: rgb(255, 255, 255); padding: 0.6em">OR</div>
 												<div style="color:gray; padding-bottom:0.3em">
 													<button id="yourGreatestDebt2" class="w3-button button" onclick="buyYourGreatestDebt(2)">Buy</button> - 
 													Multiply <span style="color: rgb(200, 0, 0)">Evil gain</span> by <b>100x</b>, 
-													but divide <span style="color: lightgreen;">Income</span> by <b>250x</b>
+													but divide <span style="color: lightgreen;">Income</span> by <b>2x</b>
 												</div>
 												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b>1k</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
 											</div>
@@ -514,7 +520,7 @@
 												<div style="color:gray; padding-bottom:0.3em">
 													<button id="essenceCollector2" class="w3-button button" onclick="buyEssenceCollector(2)">Buy</button> - 
 													Multiply <span style="color: rgb(24, 210, 217)">Essence</span> gain by <b>1000x</b>, 
-													but divide <span style="color: lightgreen;">Income</span> by <b>50x</b>
+													but divide <span style="color: lightgreen;">Income</span> by <b>25x</b>
 												</div>
 												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b>10k</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
 											</div>

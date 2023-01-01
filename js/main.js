@@ -68,6 +68,7 @@ var gameData = {
         a_deal_with_the_chairman: 0,
         a_gift_from_god: 0,
         life_coach: 0,
+        gotta_be_fast: 0,
 
         // Permanent unlocks
         a_miracle: false,
@@ -187,7 +188,7 @@ const skillBaseData = {
     "Immortal Ruler": { name: "Immortal Ruler", maxXp: 100, heroxp: 425, effect: 0.01, description: "All XP"},
     "Dark Magician": { name: "Dark Magician", maxXp: 100, heroxp: 475, effect: 0.0000025, description: "Essence Gain"},
     "Universal Ruler": { name: "Universal Ruler", maxXp: 100, heroxp: 500, effect: 1, description: "Magic XP"},
-    "Blinded By Darkness": { name: "Blinded By Darkness", maxXp: 100, heroxp: 550, effect: 0.1, description: "All XP"},
+    "Blinded By Darkness": { name: "Blinded By Darkness", maxXp: 100, heroxp: 550, effect: 1, description: "All XP"},
 }
 
 const itemBaseData = {
@@ -241,7 +242,7 @@ milestoneBaseData = {
     "Hell Portal": { name: "Hell Portal", expense: 120000, tier: 6, description: "Passively gain a huge amount of Evil" },
     "Inferno": { name: "Inferno", expense: 170000, tier: 7, description: "x5 Evil gain" },
     "God's Blessings": { name: "God's Blessings", expense: 250000, tier: 8, description: "x10M Happiness" },
-    "Faint Hope": { name: "Faint Hope", expense: 400000, tier: 9, description: "Essence gain (increases over time)" },
+    "Faint Hope": { name: "Faint Hope", expense: 400000, tier: 9, description: "Essence gain (increases over time, influenced by time warping)" },
     "New Beginning": { name: "New Beginning", expense: 5000000, tier: 10, description: "Heroic jobs, skills and items are unlocked" },
 
     "Rise of Great Heroes": { name: "Rise of Great Heroes", expense: 10000000, tier: 11, description: "Essence gain + x10000 Hero XP" },
@@ -756,7 +757,9 @@ function setCustomEffects() {
             let kickin = 1.1754 - 0.082 * Math.log(gameData.realtime)
             if (kickin < 0.15)
                 kickin = 0.15
-            mult = 1 + (gameData.realtime) / (600 * kickin)
+
+            mult = 1 + (gameData.realtime / (7750 * kickin)) * (Math.log(getUnpausedGameSpeed()) / Math.log(2))
+            mult = softcap(mult, 200)
         }
 
         return mult
@@ -912,7 +915,7 @@ function getUnpausedGameSpeed() {
     const warpDrive = (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
     const timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive
     const speedIsLife = gameData.dark_matter_shop.speed_is_life == 1 ? 3 : (gameData.dark_matter_shop.speed_is_life == 2 ? 7 : 1)
-    const gameSpeed = baseGameSpeed * timeWarpingSpeed * getChallengeBonus("time_does_not_fly") * speedIsLife
+    const gameSpeed = baseGameSpeed * timeWarpingSpeed * getChallengeBonus("time_does_not_fly") * speedIsLife * getGottaBeFastGain()
     
     return gameData.active_challenge == "time_does_not_fly" ? Math.pow(gameSpeed, 0.7) : gameSpeed
 }
@@ -1015,9 +1018,9 @@ function getNet() {
 }
 
 function getIncome() {
-    const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 1 ? (1 / 1000)
-        : (gameData.dark_matter_shop.your_greatest_debt == 2 ? (1 / 250) : 1)
-    const essenceCollector = gameData.dark_matter_shop.essence_collector == 2 ? (1 / 50) : 1
+    const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 1 ? (1 / 10)
+        : (gameData.dark_matter_shop.your_greatest_debt == 2 ? (1 / 2) : 1)
+    const essenceCollector = gameData.dark_matter_shop.essence_collector == 2 ? (1 / 25) : 1
 
     return gameData.currentJob.getIncome() * yourGreatestDebt * essenceCollector
 }
@@ -1695,7 +1698,6 @@ gameData.requirements = {
 
     // Sidebar items
     "Quick task display": new AgeRequirement([document.getElementById("quickTaskDisplay")], [{requirement: 20}]),
-    "Time warping info": new TaskRequirement([document.getElementById("timeWarping")], [{task: "Adept Mage", requirement: 10}]),
     "Evil info": new EvilRequirement([document.getElementById("evilInfo")], [{requirement: 1}]),
 	"Essence info": new EssenceRequirement([document.getElementById("essenceInfo")], [{requirement: 1}]),
     "Dark Matter info": new DarkMatterRequirement([document.getElementById("darkMatterInfo")], [{requirement: 1}]),

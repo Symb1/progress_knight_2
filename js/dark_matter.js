@@ -44,6 +44,17 @@ function buyLifeCoach() {
     }
 }
 
+function getGottaBeFastCost() {
+    return Math.pow(1e15, gameData.dark_matter_shop.gotta_be_fast + 1)
+}
+
+function buyGottaBeFast() {
+    if (gameData.dark_orbs >= getGottaBeFastCost()) {
+        gameData.dark_orbs -= getGottaBeFastCost()
+        gameData.dark_matter_shop.gotta_be_fast += 1
+    } 
+}
+
 // Rewards
 function getDarkOrbGeneration() {
     if (gameData.dark_matter_shop.dark_orb_generator == 0) return 0
@@ -63,6 +74,10 @@ function getAGiftFromGodEssenceGain() {
 
 function getLifeCoachIncomeGain() {
     return Math.pow(10, gameData.dark_matter_shop.life_coach)
+}
+
+function getGottaBeFastGain() {
+    return 1 + 0.05 * gameData.dark_matter_shop.gotta_be_fast
 }
 
 // Permanent unlocks

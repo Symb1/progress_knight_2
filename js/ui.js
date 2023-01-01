@@ -278,7 +278,7 @@ function updateTaskRows() {
         row.getElementsByClassName("tooltipText")[0].innerHTML = tooltip
 
         const maxLevel = row.getElementsByClassName("maxLevel")[0]
-        maxLevel.textContent = task.maxLevel
+        maxLevel.textContent = task.maxLevel > 100000 ? format(task.maxLevel) : task.maxLevel
         gameData.rebirthOneCount > 0 ? maxLevel.classList.remove("hidden") : maxLevel.classList.add("hidden")
 
         const progressBar = row.getElementsByClassName("progressBar")[0]
@@ -470,6 +470,9 @@ function updateText() {
     document.getElementById("lifeCoachEffect").textContent = format(getLifeCoachIncomeGain())
     document.getElementById("lifeCoachCost").textContent = format(getLifeCoachCost())
 
+    document.getElementById("gottaBeFastEffect").textContent = format(getGottaBeFastGain(), 2)
+    document.getElementById("gottaBeFastCost").textContent = format(getGottaBeFastCost())
+
     if (gameData.dark_matter_shop.a_miracle)
         document.getElementById("aMiracleBuyButton").classList.add("hidden")
 
@@ -484,18 +487,15 @@ function updateText() {
     renderSkillTreeButton(document.getElementById("essenceCollector2"), gameData.dark_matter_shop.essence_collector != 0, gameData.dark_matter_shop.essence_collector == 2)
 
     // Time Warping
-    const timeWarping = gameData.taskData["Time Warping"].getEffect() *
-        gameData.taskData["Temporal Dimension"].getEffect() *
-        gameData.taskData["Time Loop"].getEffect() *
-        (gameData.requirements["Eternal Time"].isCompleted() ? 2 : 1) *
-        getChallengeBonus("time_does_not_fly")
-        * (gameData.dark_matter_shop.speed_is_life == 1 ? 3 : (gameData.dark_matter_shop.speed_is_life == 2 ? 7 : 1))
-
-    document.getElementById("timeWarpingDisplay").textContent = "x" + format(getUnpausedGameSpeed() / baseGameSpeed)
+    document.getElementById("timeWarping").hidden = (getUnpausedGameSpeed() / baseGameSpeed) <= 1
+    document.getElementById("timeWarpingDisplay").textContent = "x" + format(getUnpausedGameSpeed() / baseGameSpeed, 2)
 
     // Transcend for Next Milestone indicator
     const button = document.getElementById("rebirthButton3").getElementsByClassName("button")[0]
     button.style.background = isNextMilestoneInReach() ? "#065c21" : ""
+
+    // Hide the rebirthOneButton from the sidebar when you have `Almighty Eye` unlocked.
+    document.getElementById("rebirthButton1").hidden = gameData.requirements["Almighty Eye"].isCompleted()
 
     // Stats
     const date = new Date(gameData.stats.startDate)
