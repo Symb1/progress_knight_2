@@ -1,3 +1,7 @@
+version 2.2.6.1 / 02.01.2023
+* Fix a few bugs caused by the performance update
+* Add a toolip which contains the requirements for hero jobs.
+
 version 2.2.6 / 01.01.2023
 * Greatly improve the performance of the game by ~2x
 

@@ -9,7 +9,7 @@ function initializeUI() {
     createAllRows(milestoneCategories, "milestoneTable")
 
     setLayout(gameData.settings.layout)
-    setFontSize(gameData.settings.fontSize)
+    setFontSize(peekFontSizeFromSave())
     setNotation(gameData.settings.numberNotation)
     setCurrency(gameData.settings.currencyNotation)
     setStickySidebar(gameData.settings.stickySidebar)
@@ -244,7 +244,55 @@ function renderJobs() {
         row.querySelector(".xpGain").textContent = task.getXpGainFormatted()
         row.querySelector(".xpLeft").textContent = task.getXpLeftFormatted()
 
-        const tooltip = tooltips[key]
+        let tooltip = tooltips[key]
+
+        if (!task.isHero && isHeroesUnlocked()) {
+            const requirementObject = gameData.requirements[key]
+            const requirements = requirementObject.requirements
+            const prev = getPreviousTaskInCategory(key)
+
+            tooltip += "<br> <span style=\"color: red\">Required</span>: <span style=\"color: orange\">"
+            let reqlist = ""
+            let prevReq = ""
+
+            if (prev != "") {
+                var prevTask = gameData.taskData[prev]
+                var prevlvl = (prevTask.isHero ? prevTask.level : 0)
+                if (prevlvl < 20)
+                    prevReq = "Great " + prev + " " + prevlvl + "/20<br>"
+            }
+            
+            if (requirementObject instanceof EvilRequirement) {                
+                reqlist += format(requirements[0].requirement) + " evil<br>"
+            } else if (requirementObject instanceof EssenceRequirement) {
+                reqlist += format(requirements[0].requirement) + " essence<br>"
+            } else if (requirementObject instanceof AgeRequirement) {
+                reqlist += "Age " + format(requirements[0].requirement) + "<br>"
+            } else if (requirementObject instanceof DarkMatterRequirement) {
+                reqlist += format(requirements[0].requirement) + " Dark Matter<br>"
+            } else {
+                for (const requirement of requirements) {
+                    const task_check = gameData.taskData[requirement.task]
+
+                    const reqvalue = (requirement.herequirement == null ? requirement.requirement : requirement.herequirement)
+
+                    if (task_check.isHero && task_check.level >= reqvalue) continue
+                    if (prev != "" && task_check.name == prevTask.name) {
+                        if (reqvalue <= 20)
+                            continue
+                        else
+                            prevReq = " Great " + requirement.task + " " + (task_check.isHero ? task_check.level : 0) + "/" + reqvalue + "<br>"
+                    } else {
+                        reqlist += " Great " + requirement.task + " " + (task_check.isHero ? task_check.level : 0) + "/" + reqvalue + "<br>"
+                    }
+                }                
+            }
+
+            reqlist += prevReq
+            reqlist = reqlist.substring(0, reqlist.length - 4)                
+            tooltip += reqlist + "</span>"
+        }
+
         row.querySelector(".tooltipText").innerHTML = tooltip
 
         const maxLevel = row.getElementsByClassName("maxLevel")[0]
