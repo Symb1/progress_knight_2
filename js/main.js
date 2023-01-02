@@ -1470,6 +1470,22 @@ function peekThemeFromSave() {
     }
 }
 
+function peekFontSizeFromSave() {
+    try {
+        const save = localStorage.getItem("gameDataSave")
+        if (save == null)
+            return 1
+        const gameDataSave = JSON.parse(save)
+        if (gameDataSave.settings == undefined || gameDataSave.settings.fontSize == undefined)
+            return 1
+        return gameDataSave.settings.fontSize
+    } catch (error) {
+        console.error(error)
+        console.log(localStorage.getItem("gameDataSave"))
+        alert("It looks like you tried to load a corrupted save... If this issue persists feel free to contact the developers!")
+    }
+}
+
 function loadGameData() {
     try {
         const gameDataSave = JSON.parse(localStorage.getItem("gameDataSave"))
@@ -1647,6 +1663,10 @@ function isNextMilestoneInReach() {
 }
 
 // Init
+
+// TODO(Thomas) The order sucks. Refactor this in the future.
+// A good start would be to replace the requirements dom elements with query selectors and fetch them later
+
 createGameObjects(gameData.taskData, jobBaseData)
 createGameObjects(gameData.taskData, skillBaseData)
 createGameObjects(gameData.itemData, itemBaseData)
