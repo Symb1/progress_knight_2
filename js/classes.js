@@ -215,8 +215,10 @@ class Item {
         return "x" + format(effect) + " " + description
     }
 
-    getExpense() {
-        return (this.isHero ? 4 * Math.pow(10, this.baseData.heromult) * heroIncomeMult : 1) 
+    getExpense(heroic) {
+        if (heroic === undefined)
+            heroic = this.isHero
+        return (heroic ? 4 * Math.pow(10, this.baseData.heromult) * heroIncomeMult : 1) 
             * applyMultipliers(this.baseData.expense, this.expenseMultipliers) 
     }
 }

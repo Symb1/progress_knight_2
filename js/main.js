@@ -209,7 +209,12 @@ const itemBaseData = {
     "Galactic Throne": { name: "Galactic Throne", expense: 5000000000000000, effect: 300000, heromult: 13, heroeffect: 2e35 },
     "Spaceship": { name: "Spaceship", expense: 1000000000000000000, effect: 1500000, heromult: 15, heroeffect: 5e42 },
     "Planet": { name: "Planet", expense: 1e22, effect: 5000000, heromult: 16, heroeffect: 5e46 },
-    "The Universe": { name: "The Universe", expense: 1e24, effect: 50000000, heromult: 17, heroeffect: 5e49 },
+    "Ringworld": { name: "Ringworld", expense: 1e24, effect: 50000000, heromult: 17, heroeffect: 5e49 },
+    "Stellar Neighborhood": { name: "Stellar Neighborhood", expense: 1e27, effect: 60000000, heromult: 17, heroeffect: 6e49 },
+    "Galaxy": { name: "Galaxy", expense: 1e30, effect: 70000000, heromult: 18, heroeffect: 7e49 },
+    "Supercluster": { name: "Supercluster", expense: 1e33, effect: 80000000, heromult: 20, heroeffect: 8e49 },
+    "Galaxy Filament": { name: "Galaxy Filament", expense: 1e36, effect: 90000000, heromult: 25, heroeffect: 9e49 },
+    "Observable Universe": { name: "Observable Universe", expense: 1e39, effect: 100000000, heromult: 30, heroeffect: 1e50 },
 
     "Book": { name: "Book", expense: 10, effect: 1.5, description: "Ability XP", heromult: 2 },
     "Dumbbells": { name: "Dumbbells", expense: 50, effect: 1.5, description: "Strength XP", heromult: 2 },
@@ -285,7 +290,7 @@ const skillCategories = {
 }
 
 const itemCategories = {
-    "Properties": ["Homeless", "Tent", "Wooden Hut", "Cottage", "House", "Large House", "Small Palace", "Grand Palace", "Town Ruler", "City Ruler", "Nation Ruler", "Pocket Dimension", "Void Realm", "Void Universe", "Astral Realm", "Galactic Throne", "Spaceship", "Planet", "The Universe"],
+    "Properties": ["Homeless", "Tent", "Wooden Hut", "Cottage", "House", "Large House", "Small Palace", "Grand Palace", "Town Ruler", "City Ruler", "Nation Ruler", "Pocket Dimension", "Void Realm", "Void Universe", "Astral Realm", "Galactic Throne", "Spaceship", "Planet", "Ringworld", "Stellar Neighborhood", "Galaxy", "Supercluster", "Galaxy Filament", "Observable Universe"],
     "Misc": ["Book", "Dumbbells", "Personal Squire", "Steel Longsword", "Butler", "Sapphire Charm", "Study Desk", "Library", "Observatory", "Mind's Eye", "Void Necklace", "Void Armor", "Void Blade", "Void Orb", "Void Dust", "Celestial Robe", "Universe Fragment", "Multiverse Fragment"]
 }
 
@@ -884,7 +889,7 @@ function autoBuy() {
             const expense = item.getExpense()
 
             if (itemCategories['Properties'].indexOf(key) != -1) {
-                if (expense < income) {
+                if (expense < income && expense >= usedExpense) {
                     gameData.currentProperty = item
                     usedExpense = expense
                 }
@@ -1655,7 +1660,12 @@ gameData.requirements = {
     "Galactic Throne": new CoinRequirement([getItemElement("Galactic Throne")], [{ requirement: gameData.itemData["Galactic Throne"].getExpense() * 100 }]),
     "Spaceship": new CoinRequirement([getItemElement("Spaceship")], [{ requirement: gameData.itemData["Spaceship"].getExpense() * 100 }]),
     "Planet": new CoinRequirement([getItemElement("Planet")], [{ requirement: gameData.itemData["Planet"].getExpense() * 100 }]),
-    "The Universe": new CoinRequirement([getItemElement("The Universe")], [{ requirement: gameData.itemData["The Universe"].getExpense() * 100 }]),
+    "Ringworld": new CoinRequirement([getItemElement("Ringworld")], [{ requirement: gameData.itemData["Ringworld"].getExpense() * 100 }]),
+    "Stellar Neighborhood": new CoinRequirement([getItemElement("Stellar Neighborhood")], [{ requirement: gameData.itemData["Stellar Neighborhood"].getExpense(true) * 100 }]),
+    "Galaxy": new CoinRequirement([getItemElement("Galaxy")], [{ requirement: gameData.itemData["Galaxy"].getExpense(true) * 1e5 }]),
+    "Supercluster": new CoinRequirement([getItemElement("Supercluster")], [{ requirement: gameData.itemData["Supercluster"].getExpense(true) * 1e8 }]),
+    "Galaxy Filament": new CoinRequirement([getItemElement("Galaxy Filament")], [{ requirement: gameData.itemData["Galaxy Filament"].getExpense(true) * 1e10 }]),
+    "Observable Universe": new CoinRequirement([getItemElement("Observable Universe")], [{ requirement: gameData.itemData["Observable Universe"].getExpense(true) * 1e14 }]),
 
     // Misc
     "Book": new CoinRequirement([getItemElement("Book")], [{requirement: 0}]),

@@ -122,9 +122,14 @@ const tooltips = {
     "Void Universe": "Predating our own universe, the Void has an unlimited amount of space for your belongings, if you are willing to submit to it.",
     "Astral Realm": "Beneath personality and ego lays the source of our deep character, our personhood. Here are the psychic senses, our deep mind and emotions, symbols and inner reality.",
     "Galactic Throne": "You sit on your throne, overseeing the existence itself.",
-    "Spaceship": "Your own personal cosmic house.",
+    "Spaceship": "Your own personal cosmic house, able to travel anywhere in the universe at 99.99% of the speed of light.",
     "Planet": "A planet with the sole purpose of housing you and your family.",
-    "The Universe": "The universe is now yours.",
+    "Ringworld": "A construct with the mass of Jupiter and a surface area millions of times that of Earth, capable of housing trillions of humans and other animals including alien species. The expenses are literally astronomical due to the maintenance involved in keeping the structure stable and the inside area habitable, but the massive living space is worth it.",
+    "Stellar Neighborhood": "A fully colonized network of stars and star systems spanning dozens of light years is ready for you to explore and call home.",
+    "Galaxy": "You rule your very own galaxy the size of the Milky Way, with billions of planets organized into thousands of different states all under your control. While your power is astronomical, so are your responsibilities.",
+    "Supercluster": "A cluster of galactic groups spanning hundreds of millions of light years across and containing thousands of galaxies is under your control.",
+    "Galaxy Filament": "One of the largest known structures of the universe, containing dozens of superclusters and millions of galaxies.",
+    "Observable Universe": "You did it! You finally rule the entire universe...or do you?",
 
     // Misc
     "Book": "A place to write down all your thoughts and discoveries, allowing you to learn a lot more quickly.",
