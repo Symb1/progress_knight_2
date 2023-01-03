@@ -837,6 +837,8 @@ function applyMultipliers(value, multipliers) {
 function applySpeed(value) {
     if (value == 0)
         return 0
+    if (value == Infinity)
+        return Infinity
     return value * getGameSpeed() / updateSpeed
 }
 
@@ -1523,7 +1525,7 @@ function loadGameData() {
             if (gameData.dark_matter == null || isNaN(gameData.dark_matter))
                 gameData.dark_matter = 0
 
-            if (gameData.dark_orbs == null || isNaN(gameData.dark_matter))
+            if (gameData.dark_orbs == null || isNaN(gameData.dark_matter) || isNaN(gameData.dark_orbs))
                 gameData.dark_orbs = 0
 
             if (gameData.settings.theme == null) {
