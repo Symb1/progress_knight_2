@@ -1,3 +1,6 @@
+version 2.2.6.2 / 05.01.2023
+* Add 5 new end game shop items
+
 version 2.2.6.1 / 02.01.2023
 * Fix a few bugs caused by the performance update
 * Add a toolip which contains the requirements for hero jobs.
