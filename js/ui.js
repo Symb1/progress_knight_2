@@ -15,6 +15,11 @@ function initializeUI() {
     setStickySidebar(gameData.settings.stickySidebar)
 
     setTheme(gameData.settings.theme)
+
+    for (const key in gameData.requirements) {
+        const requirement = gameData.requirements[key]
+        requirement.queryElements()
+    }
 }
 
 function updateUI() {
@@ -238,7 +243,7 @@ function renderJobs() {
         let task = gameData.taskData[key]
         if (!(task instanceof Job)) continue
 
-        const row = document.getElementById("row " + task.name)
+        const row = getTaskRowByName(task.name)
 
         row.querySelector(".level").textContent = formatLevel(task.level)
         row.querySelector(".xpGain").textContent = task.getXpGainFormatted()
@@ -338,7 +343,7 @@ function renderSkills() {
 
         if (!(task instanceof Skill)) continue
 
-        const row = document.getElementById("row " + task.name)
+        const row = getTaskRowByName(task.name)
 
         row.querySelector(".level").textContent = formatLevel(task.level)
         row.querySelector(".xpGain").textContent = task.getXpGainFormatted()
@@ -436,7 +441,7 @@ function renderSkills() {
 function renderShop() {
     for (const key in gameData.itemData) {
         const item = gameData.itemData[key]
-        const row = document.getElementById("row " + item.name)
+        const row = getTaskRowByName(item.name)
         const button = row.querySelector(".button")
         button.disabled = gameData.coins < item.getExpense()
         const name = button.querySelector(".name")
@@ -521,7 +526,7 @@ function renderChallenges() {
 function renderMilestones() {
     for (const key in gameData.milestoneData) {
         const milestone = gameData.milestoneData[key]
-        const row = document.getElementById("row " + milestone.name)
+        const row = getTaskRowByName(milestone.name)
         row.querySelector(".essence").textContent = format(milestone.expense)
 
 
@@ -692,7 +697,7 @@ function createRow(templates, name, categoryName, categoryType) {
     const row = templates.row.content.firstElementChild.cloneNode(true)
     row.getElementsByClassName("name")[0].textContent = name
     row.getElementsByClassName("tooltipText")[0].textContent = tooltips[name]
-    row.id = "row " + name
+    row.id = "row" + removeSpaces(removeStrangeCharacters(name))
 
     if (categoryType == itemCategories) {
         row.getElementsByClassName("button")[0].onclick = categoryName == "Properties" ? () => { setCurrentProperty(name) } : () => { setMisc(name) }
@@ -918,19 +923,23 @@ function setSignDisplay() {
     }
 }
 
-function getTaskElement(taskName) {
+function getTaskQuerySelector(taskName) {
     const task = gameData.taskData[taskName]
-    return document.getElementById(task.id)
+    return "#row" + removeSpaces(removeStrangeCharacters(task.name))
 }
 
-function getItemElement(itemName) {
+function getItemQuerySelector(itemName) {
     const item = gameData.itemData[itemName]
-    return document.getElementById(item.id)
+    return "#row" + removeSpaces(removeStrangeCharacters(item.name))
 }
 
-function getMilestoneElement(milestoneName) {
+function getMilestoneQuerySelector(milestoneName) {
     const milestone = gameData.milestoneData[milestoneName]
-    return document.getElementById(milestone.id)
+    return "#row" + removeSpaces(removeStrangeCharacters(milestone.name))
+}
+
+function getTaskRowByName(name) {
+    return document.getElementById("row" + removeSpaces(removeStrangeCharacters(name)))
 }
 
 const Tab = Object.freeze({
