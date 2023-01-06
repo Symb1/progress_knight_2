@@ -118,6 +118,7 @@ function renderSideBar() {
     document.getElementById("essenceGainButtonDisplay").textContent = "+" + format(getEssenceGain())
 
     document.getElementById("darkMatterDisplay").textContent = format(gameData.dark_matter)
+    document.getElementById("darkMatterGainDisplay").textContent = format(getDarkMatterGain())
     document.getElementById("darkMatterGainButtonDisplay").textContent = "+" + format(getDarkMatterGain())
 
     document.getElementById("darkOrbsDisplay").textContent = format(gameData.dark_orbs)
