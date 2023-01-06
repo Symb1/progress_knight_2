@@ -1520,7 +1520,7 @@ gameData.requirements = {
 	"Rebirth note 4": new AgeRequirement([document.getElementById("rebirthNote4")], [{requirement: 1000}]),
 	"Rebirth note 5": new AgeRequirement([document.getElementById("rebirthNote5")], [{requirement: 10000}]),
     "Rebirth note 6": new TaskRequirement([document.getElementById("rebirthNote6")], [{ task: "Cosmic Recollection", requirement: 1 }]),
-    "Rebirth note 7": new EssenceRequirement([document.getElementById("rebirthNote7")], [{ requirement: 2e10 }]),
+    "Rebirth note 7": new EssenceRequirement([document.getElementById("rebirthNote7")], [{ requirement: 5e10 }]),
 
     "Rebirth button 1": new AgeRequirement([document.getElementById("rebirthButton1")], [{ requirement: 65 }]),
     "Rebirth button 2": new AgeRequirement([document.getElementById("rebirthButton2")], [{ requirement: 200 }]),
