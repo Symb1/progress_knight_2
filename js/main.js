@@ -1291,15 +1291,15 @@ function peekThemeFromSave() {
     }
 }
 
-function peekFontSizeFromSave() {
+function peekSettingFromSave(setting) {
     try {
         const save = localStorage.getItem("gameDataSave")
         if (save == null)
-            return 1
+            return gameData.settings[setting]
         const gameDataSave = JSON.parse(save)
-        if (gameDataSave.settings == undefined || gameDataSave.settings.fontSize == undefined)
-            return 1
-        return gameDataSave.settings.fontSize
+        if (gameDataSave.settings == undefined || gameDataSave.settings[setting] == undefined)
+            return gameData.settings[setting]
+        return gameDataSave.settings[setting]
     } catch (error) {
         console.error(error)
         console.log(localStorage.getItem("gameDataSave"))

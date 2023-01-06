@@ -8,13 +8,13 @@ function initializeUI() {
     createAllRows(itemCategories, "itemTable")
     createAllRows(milestoneCategories, "milestoneTable")
 
-    setLayout(gameData.settings.layout)
-    setFontSize(peekFontSizeFromSave())
-    setNotation(gameData.settings.numberNotation)
-    setCurrency(gameData.settings.currencyNotation)
-    setStickySidebar(gameData.settings.stickySidebar)
+    setLayout(peekSettingFromSave("layout"))
+    setFontSize(peekSettingFromSave("fontSize"))
+    setNotation(peekSettingFromSave("numberNotation"))
+    setCurrency(peekSettingFromSave("currencyNotation"))
+    setStickySidebar(peekSettingFromSave("stickySidebar"))
 
-    setTheme(gameData.settings.theme)
+    setTheme(peekSettingFromSave("theme"))
 }
 
 function updateUI() {
