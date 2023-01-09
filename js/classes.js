@@ -224,10 +224,17 @@ class Item {
 }
 
 class Requirement {
-    constructor(elements, requirements) {
-        this.elements = elements
+    constructor(querySelectors, requirements) {
+        this.querySelectors = querySelectors
+        this.elements = []
         this.requirements = requirements
         this.completed = false
+    }
+
+    queryElements() {
+        this.querySelectors.forEach(querySelector => {
+            this.elements.push(...document.querySelectorAll(querySelector))  
+        })
     }
 
     isCompleted() {
@@ -252,8 +259,8 @@ class Requirement {
 }
 
 class TaskRequirement extends Requirement {
-    constructor(elements, requirements) {
-        super(elements, requirements)
+    constructor(querySelectors, requirements) {
+        super(querySelectors, requirements)
         this.type = "task"
     }
 
@@ -268,8 +275,8 @@ class TaskRequirement extends Requirement {
 }
 
 class CoinRequirement extends Requirement {
-    constructor(elements, requirements) {
-        super(elements, requirements)
+    constructor(querySelectors, requirements) {
+        super(querySelectors, requirements)
         this.type = "coins"
     }
 
@@ -279,8 +286,8 @@ class CoinRequirement extends Requirement {
 }
 
 class AgeRequirement extends Requirement {
-    constructor(elements, requirements) {
-        super(elements, requirements)
+    constructor(querySelectors, requirements) {
+        super(querySelectors, requirements)
         this.type = "age"
     }
 
@@ -290,8 +297,8 @@ class AgeRequirement extends Requirement {
 }
 
 class EvilRequirement extends Requirement {
-    constructor(elements, requirements) {
-        super(elements, requirements)
+    constructor(querySelectors, requirements) {
+        super(querySelectors, requirements)
         this.type = "evil"
     }
 
@@ -301,8 +308,8 @@ class EvilRequirement extends Requirement {
 }
 
 class EssenceRequirement extends Requirement {
-    constructor(elements, requirements) {
-        super(elements, requirements)
+    constructor(querySelectors, requirements) {
+        super(querySelectors, requirements)
         this.type = "essence"
     }
 
@@ -312,8 +319,8 @@ class EssenceRequirement extends Requirement {
 }
 
 class DarkMatterRequirement extends Requirement {
-    constructor(elements, requirements) {
-        super(elements, requirements)
+    constructor(querySelectors, requirements) {
+        super(querySelectors, requirements)
         this.type = "darkMatter"
     }
 
@@ -323,8 +330,8 @@ class DarkMatterRequirement extends Requirement {
 }
 
 class DarkOrbsRequirement extends Requirement {
-    constructor(elements, requirements) {
-        super(elements, requirements)
+    constructor(querySelectors, requirements) {
+        super(querySelectors, requirements)
         this.type = "darkOrb"
     }
 

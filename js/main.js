@@ -725,7 +725,7 @@ function getDarkOrbs() {
 function getGameSpeed() {
     if (!canSimulate())
         return 0
-    
+
     return getUnpausedGameSpeed()
 }
 
@@ -737,7 +737,7 @@ function getUnpausedGameSpeed() {
     const timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive
     const speedIsLife = gameData.dark_matter_shop.speed_is_life == 1 ? 3 : (gameData.dark_matter_shop.speed_is_life == 2 ? 7 : 1)
     const gameSpeed = baseGameSpeed * timeWarpingSpeed * getChallengeBonus("time_does_not_fly") * speedIsLife * getGottaBeFastGain()
-    
+
     return gameData.active_challenge == "time_does_not_fly" ? Math.pow(gameSpeed, 0.7) : gameSpeed
 }
 
@@ -1223,19 +1223,19 @@ function assignMethods() {
     for (const key in gameData.requirements) {
         let requirement = gameData.requirements[key]
         if (requirement.type == "task") {
-            requirement = Object.assign(new TaskRequirement(requirement.elements, requirement.requirements), requirement)
+            requirement = Object.assign(new TaskRequirement(requirement.querySelectors, requirement.requirements), requirement)
         } else if (requirement.type == "coins") {
-            requirement = Object.assign(new CoinRequirement(requirement.elements, requirement.requirements), requirement)
+            requirement = Object.assign(new CoinRequirement(requirement.querySelectors, requirement.requirements), requirement)
         } else if (requirement.type == "age") {
-            requirement = Object.assign(new AgeRequirement(requirement.elements, requirement.requirements), requirement)
+            requirement = Object.assign(new AgeRequirement(requirement.querySelectors, requirement.requirements), requirement)
         } else if (requirement.type == "evil") {
-            requirement = Object.assign(new EvilRequirement(requirement.elements, requirement.requirements), requirement)
+            requirement = Object.assign(new EvilRequirement(requirement.querySelectors, requirement.requirements), requirement)
         } else if (requirement.type == "essence") {
-            requirement = Object.assign(new EssenceRequirement(requirement.elements, requirement.requirements), requirement)
+            requirement = Object.assign(new EssenceRequirement(requirement.querySelectors, requirement.requirements), requirement)
         } else if (requirement.type == "darkMatter") {
-            requirement = Object.assign(new DarkMatterRequirement(requirement.elements, requirement.requirements), requirement)
+            requirement = Object.assign(new DarkMatterRequirement(requirement.querySelectors, requirement.requirements), requirement)
         } else if (requirement.type == "darkOrb") {
-            requirement = Object.assign(new DarkOrbsRequirement(requirement.elements, requirement.requirements), requirement)
+            requirement = Object.assign(new DarkOrbsRequirement(requirement.querySelectors, requirement.requirements), requirement)
         }
 
         const tempRequirement = tempData["requirements"][key]
@@ -1495,219 +1495,217 @@ createGameObjects(gameData.milestoneData, milestoneBaseData)
 
 gameData.settings.theme = peekThemeFromSave()
 
-initializeUI()
-
 gameData.currentJob = gameData.taskData["Beggar"]
 gameData.currentProperty = gameData.itemData["Homeless"]
 gameData.currentMisc = []
 
 gameData.requirements = {
     // Categories
-    "The Arcane Association": new TaskRequirement(getElementsByClass("The Arcane Association"), [{task: "Concentration", requirement: 200}, {task: "Meditation", requirement: 200}]),
-	"Galactic Council": new AgeRequirement(getElementsByClass("Galactic Council"), [{requirement: 10000}]),
-	"The Void": new AgeRequirement(getElementsByClass("The Void"), [{requirement: 1000}]),
-	"Void Manipulation": new AgeRequirement(getElementsByClass("Void Manipulation"), [{requirement: 1000}]),
-	"Celestial Powers": new AgeRequirement(getElementsByClass("Celestial Powers"), [{requirement: 10000}]),
-    "Dark Magic": new EvilRequirement(getElementsByClass("Dark Magic"), [{requirement: 1}]),
-	"Almightiness": new EssenceRequirement(getElementsByClass("Almightiness"), [{requirement: 1}]),
-	"Darkness": new DarkMatterRequirement(getElementsByClass("Darkness"), [{requirement: 1}]),
+    "The Arcane Association": new TaskRequirement([removeSpaces(".The Arcane Association")], [{task: "Concentration", requirement: 200}, {task: "Meditation", requirement: 200}]),
+	"Galactic Council": new AgeRequirement([removeSpaces(".Galactic Council")], [{requirement: 10000}]),
+	"The Void": new AgeRequirement([removeSpaces(".The Void")], [{requirement: 1000}]),
+	"Void Manipulation": new AgeRequirement([removeSpaces(".Void Manipulation")], [{requirement: 1000}]),
+	"Celestial Powers": new AgeRequirement([removeSpaces(".Celestial Powers")], [{requirement: 10000}]),
+    "Dark Magic": new EvilRequirement([removeSpaces(".Dark Magic")], [{requirement: 1}]),
+	"Almightiness": new EssenceRequirement([".Almightiness"], [{requirement: 1}]),
+	"Darkness": new DarkMatterRequirement([".Darkness"], [{requirement: 1}]),
 
     // Rebirth items
-    "Rebirth tab": new AgeRequirement([document.getElementById("rebirthTabButton")], [{requirement: 25}]),
-    "Rebirth note 1": new AgeRequirement([document.getElementById("rebirthNote1")], [{requirement: 45}]),
-    "Rebirth note 2": new AgeRequirement([document.getElementById("rebirthNote2")], [{requirement: 65}]),
-    "Rebirth note 3": new AgeRequirement([document.getElementById("rebirthNote3")], [{requirement: 200}]),
-	"Rebirth note 4": new AgeRequirement([document.getElementById("rebirthNote4")], [{requirement: 1000}]),
-	"Rebirth note 5": new AgeRequirement([document.getElementById("rebirthNote5")], [{requirement: 10000}]),
-    "Rebirth note 6": new TaskRequirement([document.getElementById("rebirthNote6")], [{ task: "Cosmic Recollection", requirement: 1 }]),
-    "Rebirth note 7": new EssenceRequirement([document.getElementById("rebirthNote7")], [{ requirement: 5e10 }]),
+    "Rebirth tab": new AgeRequirement(["#rebirthTabButton"], [{requirement: 25}]),
+    "Rebirth note 1": new AgeRequirement(["#rebirthNote1"], [{requirement: 45}]),
+    "Rebirth note 2": new AgeRequirement(["#rebirthNote2"], [{requirement: 65}]),
+    "Rebirth note 3": new AgeRequirement(["#rebirthNote3"], [{requirement: 200}]),
+	"Rebirth note 4": new AgeRequirement(["#rebirthNote4"], [{requirement: 1000}]),
+	"Rebirth note 5": new AgeRequirement(["#rebirthNote5"], [{requirement: 10000}]),
+    "Rebirth note 6": new TaskRequirement(["#rebirthNote6"], [{ task: "Cosmic Recollection", requirement: 1 }]),
+    "Rebirth note 7": new EssenceRequirement(["#rebirthNote7"], [{ requirement: 5e10 }]),
 
-    "Rebirth button 1": new AgeRequirement([document.getElementById("rebirthButton1")], [{ requirement: 65 }]),
-    "Rebirth button 2": new AgeRequirement([document.getElementById("rebirthButton2")], [{ requirement: 200 }]),
-    "Rebirth button 3": new TaskRequirement([document.getElementById("rebirthButton3")], [{ task: "Cosmic Recollection", requirement: 1 }]),
-    "Rebirth button 4": new EssenceRequirement([document.getElementById("rebirthButton4")], [{ requirement: 5e10 }]),
+    "Rebirth button 1": new AgeRequirement(["#rebirthButton1"], [{ requirement: 65 }]),
+    "Rebirth button 2": new AgeRequirement(["#rebirthButton2"], [{ requirement: 200 }]),
+    "Rebirth button 3": new TaskRequirement(["#rebirthButton3"], [{ task: "Cosmic Recollection", requirement: 1 }]),
+    "Rebirth button 4": new EssenceRequirement(["#rebirthButton4"], [{ requirement: 5e10 }]),
 
-    "Rebirth stats evil": new AgeRequirement([document.getElementById("statsEvilGain")], [{ requirement: 200 }]),
-    "Rebirth stats essence": new TaskRequirement([document.getElementById("statsEssenceGain")], [{ task: "Cosmic Recollection", requirement: 1 }]),
+    "Rebirth stats evil": new AgeRequirement(["#statsEvilGain"], [{ requirement: 200 }]),
+    "Rebirth stats essence": new TaskRequirement(["#statsEssenceGain"], [{ task: "Cosmic Recollection", requirement: 1 }]),
 
     // Sidebar items
-    "Quick task display": new AgeRequirement([document.getElementById("quickTaskDisplay")], [{requirement: 20}]),
-    "Evil info": new EvilRequirement([document.getElementById("evilInfo")], [{requirement: 1}]),
-	"Essence info": new EssenceRequirement([document.getElementById("essenceInfo")], [{requirement: 1}]),
-    "Dark Matter info": new DarkMatterRequirement([document.getElementById("darkMatterInfo")], [{requirement: 1}]),
-    "Dark Orbs info": new DarkOrbsRequirement([document.getElementById("darkOrbsInfo")], [{requirement: 1}]),
+    "Quick task display": new AgeRequirement(["#quickTaskDisplay"], [{requirement: 20}]),
+    "Evil info": new EvilRequirement(["#evilInfo"], [{requirement: 1}]),
+	"Essence info": new EssenceRequirement(["#essenceInfo"], [{requirement: 1}]),
+    "Dark Matter info": new DarkMatterRequirement(["#darkMatterInfo"], [{requirement: 1}]),
+    "Dark Orbs info": new DarkOrbsRequirement(["#darkOrbsInfo"], [{requirement: 1}]),
 
     // Common work
-    "Beggar": new TaskRequirement([getTaskElement("Beggar")], []),
-    "Farmer": new TaskRequirement([getTaskElement("Farmer")], [{task: "Beggar", requirement: 10}]),
-    "Fisherman": new TaskRequirement([getTaskElement("Fisherman")], [{task: "Farmer", requirement: 10}]),
-    "Miner": new TaskRequirement([getTaskElement("Miner")], [{task: "Strength", requirement: 10}, {task: "Fisherman", requirement: 10}]),
-    "Blacksmith": new TaskRequirement([getTaskElement("Blacksmith")], [{task: "Strength", requirement: 30}, {task: "Miner", requirement: 10}]),
-    "Merchant": new TaskRequirement([getTaskElement("Merchant")], [{task: "Bargaining", requirement: 50}, {task: "Blacksmith", requirement: 10}]),
+    "Beggar": new TaskRequirement([getTaskQuerySelector("Beggar")], []),
+    "Farmer": new TaskRequirement([getTaskQuerySelector("Farmer")], [{task: "Beggar", requirement: 10}]),
+    "Fisherman": new TaskRequirement([getTaskQuerySelector("Fisherman")], [{task: "Farmer", requirement: 10}]),
+    "Miner": new TaskRequirement([getTaskQuerySelector("Miner")], [{task: "Strength", requirement: 10}, {task: "Fisherman", requirement: 10}]),
+    "Blacksmith": new TaskRequirement([getTaskQuerySelector("Blacksmith")], [{task: "Strength", requirement: 30}, {task: "Miner", requirement: 10}]),
+    "Merchant": new TaskRequirement([getTaskQuerySelector("Merchant")], [{task: "Bargaining", requirement: 50}, {task: "Blacksmith", requirement: 10}]),
 
     // Military
-    "Squire": new TaskRequirement([getTaskElement("Squire")], [{task: "Strength", requirement: 5}]),
-    "Footman": new TaskRequirement([getTaskElement("Footman")], [{task: "Strength", requirement: 20}, {task: "Squire", requirement: 10}]),
-    "Veteran footman": new TaskRequirement([getTaskElement("Veteran footman")], [{task: "Battle Tactics", requirement: 40}, {task: "Footman", requirement: 10}]),
-    "Centenary": new TaskRequirement([getTaskElement("Centenary")], [{task: "Strength", requirement: 100}, {task: "Veteran footman", requirement: 10}]),
-    "Knight": new TaskRequirement([getTaskElement("Knight")], [{task: "Battle Tactics", requirement: 150}, {task: "Centenary", requirement: 10}]),
-    "Veteran Knight": new TaskRequirement([getTaskElement("Veteran Knight")], [{task: "Strength", requirement: 300}, {task: "Knight", requirement: 10}]),
-    "Holy Knight": new TaskRequirement([getTaskElement("Holy Knight")], [{task: "Mana Control", requirement: 500}, {task: "Veteran Knight", requirement: 10}]),
-    "Lieutenant General": new TaskRequirement([getTaskElement("Lieutenant General")], [{task: "Mana Control", requirement: 1000}, {task: "Battle Tactics", requirement: 1000}, {task: "Holy Knight", requirement: 10}]),
+    "Squire": new TaskRequirement([getTaskQuerySelector("Squire")], [{task: "Strength", requirement: 5}]),
+    "Footman": new TaskRequirement([getTaskQuerySelector("Footman")], [{task: "Strength", requirement: 20}, {task: "Squire", requirement: 10}]),
+    "Veteran footman": new TaskRequirement([getTaskQuerySelector("Veteran footman")], [{task: "Battle Tactics", requirement: 40}, {task: "Footman", requirement: 10}]),
+    "Centenary": new TaskRequirement([getTaskQuerySelector("Centenary")], [{task: "Strength", requirement: 100}, {task: "Veteran footman", requirement: 10}]),
+    "Knight": new TaskRequirement([getTaskQuerySelector("Knight")], [{task: "Battle Tactics", requirement: 150}, {task: "Centenary", requirement: 10}]),
+    "Veteran Knight": new TaskRequirement([getTaskQuerySelector("Veteran Knight")], [{task: "Strength", requirement: 300}, {task: "Knight", requirement: 10}]),
+    "Holy Knight": new TaskRequirement([getTaskQuerySelector("Holy Knight")], [{task: "Mana Control", requirement: 500}, {task: "Veteran Knight", requirement: 10}]),
+    "Lieutenant General": new TaskRequirement([getTaskQuerySelector("Lieutenant General")], [{task: "Mana Control", requirement: 1000}, {task: "Battle Tactics", requirement: 1000}, {task: "Holy Knight", requirement: 10}]),
 
     // The Arcane Association
-    "Student": new TaskRequirement([getTaskElement("Student")], [{task: "Concentration", requirement: 200}, {task: "Meditation", requirement: 200}]),
-    "Apprentice Mage": new TaskRequirement([getTaskElement("Apprentice Mage")], [{task: "Mana Control", requirement: 400}, {task: "Student", requirement: 10}]),
-    "Adept Mage": new TaskRequirement([getTaskElement("Adept Mage")], [{task: "Mana Control", requirement: 700}, {task: "Apprentice Mage", requirement: 10}]),
-    "Master Wizard": new TaskRequirement([getTaskElement("Master Wizard")], [{task: "Mana Control", requirement: 1000}, {task: "Adept Mage", requirement: 10}]),
-    "Archmage": new TaskRequirement([getTaskElement("Archmage")], [{task: "Mana Control", requirement: 1200}, {task: "Master Wizard", requirement: 10}]),
-	"Chronomancer": new TaskRequirement([getTaskElement("Chronomancer")], [{task: "Mana Control", requirement: 1500}, {task: "Meditation", requirement: 1500}, {task: "Archmage", requirement: 25}]),
-    "Chairman": new TaskRequirement([getTaskElement("Chairman")], [{task: "Mana Control", requirement: 2000}, {task: "Productivity", requirement: 2000}, {task: "Chronomancer", requirement: 50}]),
-    "Imperator": new TaskRequirement([getTaskElement("Imperator")], [{ task: "All Seeing Eye", requirement: 3000, herequirement:650}, {task: "Concentration", requirement: 3000},  {task: "Chairman", requirement: 666}]),
+    "Student": new TaskRequirement([getTaskQuerySelector("Student")], [{task: "Concentration", requirement: 200}, {task: "Meditation", requirement: 200}]),
+    "Apprentice Mage": new TaskRequirement([getTaskQuerySelector("Apprentice Mage")], [{task: "Mana Control", requirement: 400}, {task: "Student", requirement: 10}]),
+    "Adept Mage": new TaskRequirement([getTaskQuerySelector("Adept Mage")], [{task: "Mana Control", requirement: 700}, {task: "Apprentice Mage", requirement: 10}]),
+    "Master Wizard": new TaskRequirement([getTaskQuerySelector("Master Wizard")], [{task: "Mana Control", requirement: 1000}, {task: "Adept Mage", requirement: 10}]),
+    "Archmage": new TaskRequirement([getTaskQuerySelector("Archmage")], [{task: "Mana Control", requirement: 1200}, {task: "Master Wizard", requirement: 10}]),
+	"Chronomancer": new TaskRequirement([getTaskQuerySelector("Chronomancer")], [{task: "Mana Control", requirement: 1500}, {task: "Meditation", requirement: 1500}, {task: "Archmage", requirement: 25}]),
+    "Chairman": new TaskRequirement([getTaskQuerySelector("Chairman")], [{task: "Mana Control", requirement: 2000}, {task: "Productivity", requirement: 2000}, {task: "Chronomancer", requirement: 50}]),
+    "Imperator": new TaskRequirement([getTaskQuerySelector("Imperator")], [{ task: "All Seeing Eye", requirement: 3000, herequirement:650}, {task: "Concentration", requirement: 3000},  {task: "Chairman", requirement: 666}]),
 
 	// The Void
-    "Corrupted": new AgeRequirement([getTaskElement("Corrupted")], [{requirement: 1000}]),
-    "Void Slave": new TaskRequirement([getTaskElement("Void Slave")], [{task: "Corrupted", requirement: 30}]),
-    "Void Fiend": new TaskRequirement([getTaskElement("Void Fiend")], [{ task: "Brainwashing", requirement: 3000 }, { task: "Void Slave", requirement: 200 }]),
-    "Abyss Anomaly": new TaskRequirement([getTaskElement("Abyss Anomaly")], [{ task: "Mind Release", requirement: 3000, herequirement: 100 }, { task: "Void Fiend", requirement: 200, herequirement: 100 }]),
-    "Void Wraith": new TaskRequirement([getTaskElement("Void Wraith")], [{ task: "Temporal Dimension", requirement: 3400 }, { task: "Abyss Anomaly", requirement: 300, herequirement: 180 }]),
-    "Void Reaver": new TaskRequirement([getTaskElement("Void Reaver")], [{ task: "Void Amplification", requirement: 3400, herequirement: 180 }, { task: "Void Wraith", requirement: 250, herequirement: 125 }]),
-    "Void Lord": new TaskRequirement([getTaskElement("Void Lord")], [{ task: "Void Symbiosis", requirement: 3800, herequirement: 200 }, { task: "Void Reaver", requirement: 150 }]),
-    "Abyss God": new TaskRequirement([getTaskElement("Abyss God")], [{ task: "Void Embodiment", requirement: 4700, herequirement: 300 }, { task: "Void Lord", requirement: 750, herequirement : 125 }]),
+    "Corrupted": new AgeRequirement([getTaskQuerySelector("Corrupted")], [{requirement: 1000}]),
+    "Void Slave": new TaskRequirement([getTaskQuerySelector("Void Slave")], [{task: "Corrupted", requirement: 30}]),
+    "Void Fiend": new TaskRequirement([getTaskQuerySelector("Void Fiend")], [{ task: "Brainwashing", requirement: 3000 }, { task: "Void Slave", requirement: 200 }]),
+    "Abyss Anomaly": new TaskRequirement([getTaskQuerySelector("Abyss Anomaly")], [{ task: "Mind Release", requirement: 3000, herequirement: 100 }, { task: "Void Fiend", requirement: 200, herequirement: 100 }]),
+    "Void Wraith": new TaskRequirement([getTaskQuerySelector("Void Wraith")], [{ task: "Temporal Dimension", requirement: 3400 }, { task: "Abyss Anomaly", requirement: 300, herequirement: 180 }]),
+    "Void Reaver": new TaskRequirement([getTaskQuerySelector("Void Reaver")], [{ task: "Void Amplification", requirement: 3400, herequirement: 180 }, { task: "Void Wraith", requirement: 250, herequirement: 125 }]),
+    "Void Lord": new TaskRequirement([getTaskQuerySelector("Void Lord")], [{ task: "Void Symbiosis", requirement: 3800, herequirement: 200 }, { task: "Void Reaver", requirement: 150 }]),
+    "Abyss God": new TaskRequirement([getTaskQuerySelector("Abyss God")], [{ task: "Void Embodiment", requirement: 4700, herequirement: 300 }, { task: "Void Lord", requirement: 750, herequirement : 125 }]),
 
 	// Galactic Council
-    "Eternal Wanderer": new AgeRequirement([getTaskElement("Eternal Wanderer")], [{ requirement: 10000 }]),
-    "Nova": new TaskRequirement([getTaskElement("Nova")], [{ task: "Eternal Wanderer", requirement: 15 }, { task: "Cosmic Longevity", requirement: 4000, herequirement: 180 }]),
-    "Sigma Proioxis": new TaskRequirement([getTaskElement("Sigma Proioxis")], [{ task: "Nova", requirement: 200 }, { task: "Cosmic Recollection", requirement: 4500, herequirement: 350 }]),
-    "Acallaris": new TaskRequirement([getTaskElement("Acallaris")], [{ task: "Galactic Command", requirement: 5000, herequirement: 250 }, { task: "Sigma Proioxis", requirement: 1000, herequirement: 480 }]),
-    "One Above All": new TaskRequirement([getTaskElement("One Above All")], [{ task: "Meditation", requirement: 6300 }, { task: "Acallaris", requirement: 1400, herequirement: 500 }]),
+    "Eternal Wanderer": new AgeRequirement([getTaskQuerySelector("Eternal Wanderer")], [{ requirement: 10000 }]),
+    "Nova": new TaskRequirement([getTaskQuerySelector("Nova")], [{ task: "Eternal Wanderer", requirement: 15 }, { task: "Cosmic Longevity", requirement: 4000, herequirement: 180 }]),
+    "Sigma Proioxis": new TaskRequirement([getTaskQuerySelector("Sigma Proioxis")], [{ task: "Nova", requirement: 200 }, { task: "Cosmic Recollection", requirement: 4500, herequirement: 350 }]),
+    "Acallaris": new TaskRequirement([getTaskQuerySelector("Acallaris")], [{ task: "Galactic Command", requirement: 5000, herequirement: 250 }, { task: "Sigma Proioxis", requirement: 1000, herequirement: 480 }]),
+    "One Above All": new TaskRequirement([getTaskQuerySelector("One Above All")], [{ task: "Meditation", requirement: 6300 }, { task: "Acallaris", requirement: 1400, herequirement: 500 }]),
 
     // Fundamentals
-    "Concentration": new TaskRequirement([getTaskElement("Concentration")], []),
-    "Productivity": new TaskRequirement([getTaskElement("Productivity")], [{task: "Concentration", requirement: 5}]),
-    "Bargaining": new TaskRequirement([getTaskElement("Bargaining")], [{task: "Concentration", requirement: 20}]),
-    "Meditation": new TaskRequirement([getTaskElement("Meditation")], [{task: "Concentration", requirement: 30}, {task: "Productivity", requirement: 20}]),
+    "Concentration": new TaskRequirement([getTaskQuerySelector("Concentration")], []),
+    "Productivity": new TaskRequirement([getTaskQuerySelector("Productivity")], [{task: "Concentration", requirement: 5}]),
+    "Bargaining": new TaskRequirement([getTaskQuerySelector("Bargaining")], [{task: "Concentration", requirement: 20}]),
+    "Meditation": new TaskRequirement([getTaskQuerySelector("Meditation")], [{task: "Concentration", requirement: 30}, {task: "Productivity", requirement: 20}]),
 
     // Combat
-    "Strength": new TaskRequirement([getTaskElement("Strength")], []),
-    "Battle Tactics": new TaskRequirement([getTaskElement("Battle Tactics")], [{task: "Concentration", requirement: 20}]),
-    "Muscle Memory": new TaskRequirement([getTaskElement("Muscle Memory")], [{task: "Concentration", requirement: 30}, {task: "Strength", requirement: 30}]),
+    "Strength": new TaskRequirement([getTaskQuerySelector("Strength")], []),
+    "Battle Tactics": new TaskRequirement([getTaskQuerySelector("Battle Tactics")], [{task: "Concentration", requirement: 20}]),
+    "Muscle Memory": new TaskRequirement([getTaskQuerySelector("Muscle Memory")], [{task: "Concentration", requirement: 30}, {task: "Strength", requirement: 30}]),
 
     // Magic
-    "Mana Control": new TaskRequirement([getTaskElement("Mana Control")], [{task: "Concentration", requirement: 200}, {task: "Meditation", requirement: 200}]),
-    "Life Essence": new TaskRequirement([getTaskElement("Life Essence")], [{task: "Apprentice Mage", requirement: 10}]),
-    "Time Warping": new TaskRequirement([getTaskElement("Time Warping")], [{task: "Adept Mage", requirement: 10}]),
-    "Astral Body": new TaskRequirement([getTaskElement("Astral Body")], [{task: "Archmage", requirement: 10}]),
-    "Temporal Dimension": new TaskRequirement([getTaskElement("Temporal Dimension")], [{task: "Chronomancer", requirement: 25}]),
-	"All Seeing Eye": new TaskRequirement([getTaskElement("All Seeing Eye")], [{task: "Mana Control", requirement: 2350}, {task: "Chairman", requirement: 100}]),
-	"Brainwashing": new TaskRequirement([getTaskElement("Brainwashing")], [{task: "Imperator", requirement: 100}]),
+    "Mana Control": new TaskRequirement([getTaskQuerySelector("Mana Control")], [{task: "Concentration", requirement: 200}, {task: "Meditation", requirement: 200}]),
+    "Life Essence": new TaskRequirement([getTaskQuerySelector("Life Essence")], [{task: "Apprentice Mage", requirement: 10}]),
+    "Time Warping": new TaskRequirement([getTaskQuerySelector("Time Warping")], [{task: "Adept Mage", requirement: 10}]),
+    "Astral Body": new TaskRequirement([getTaskQuerySelector("Astral Body")], [{task: "Archmage", requirement: 10}]),
+    "Temporal Dimension": new TaskRequirement([getTaskQuerySelector("Temporal Dimension")], [{task: "Chronomancer", requirement: 25}]),
+	"All Seeing Eye": new TaskRequirement([getTaskQuerySelector("All Seeing Eye")], [{task: "Mana Control", requirement: 2350}, {task: "Chairman", requirement: 100}]),
+	"Brainwashing": new TaskRequirement([getTaskQuerySelector("Brainwashing")], [{task: "Imperator", requirement: 100}]),
 
     // Dark Magic
-    "Dark Influence": new EvilRequirement([getTaskElement("Dark Influence")], [{requirement: 1}]),
-    "Evil Control": new EvilRequirement([getTaskElement("Evil Control")], [{requirement: 1}]),
-    "Intimidation": new EvilRequirement([getTaskElement("Intimidation")], [{requirement: 1}]),
-    "Demon Training": new EvilRequirement([getTaskElement("Demon Training")], [{requirement: 20}]),
-    "Blood Meditation": new EvilRequirement([getTaskElement("Blood Meditation")], [{requirement: 50}]),
-    "Demon's Wealth": new EvilRequirement([getTaskElement("Demon's Wealth")], [{requirement: 500}]),
-	"Dark Knowledge": new EvilRequirement([getTaskElement("Dark Knowledge")], [{requirement: 5000}]),
-	"Void Influence": new EvilRequirement([getTaskElement("Void Influence")], [{requirement: 50000}]),
-	"Time Loop": new EvilRequirement([getTaskElement("Time Loop")], [{requirement: 2500000}]),
-	"Evil Incarnate": new EvilRequirement([getTaskElement("Evil Incarnate")], [{requirement: 1000000000}]),
+    "Dark Influence": new EvilRequirement([getTaskQuerySelector("Dark Influence")], [{requirement: 1}]),
+    "Evil Control": new EvilRequirement([getTaskQuerySelector("Evil Control")], [{requirement: 1}]),
+    "Intimidation": new EvilRequirement([getTaskQuerySelector("Intimidation")], [{requirement: 1}]),
+    "Demon Training": new EvilRequirement([getTaskQuerySelector("Demon Training")], [{requirement: 20}]),
+    "Blood Meditation": new EvilRequirement([getTaskQuerySelector("Blood Meditation")], [{requirement: 50}]),
+    "Demon's Wealth": new EvilRequirement([getTaskQuerySelector("Demon's Wealth")], [{requirement: 500}]),
+	"Dark Knowledge": new EvilRequirement([getTaskQuerySelector("Dark Knowledge")], [{requirement: 5000}]),
+	"Void Influence": new EvilRequirement([getTaskQuerySelector("Void Influence")], [{requirement: 50000}]),
+	"Time Loop": new EvilRequirement([getTaskQuerySelector("Time Loop")], [{requirement: 2500000}]),
+	"Evil Incarnate": new EvilRequirement([getTaskQuerySelector("Evil Incarnate")], [{requirement: 1000000000}]),
 
 	// Void Manipulation
-	"Absolute Wish": new TaskRequirement([getTaskElement("Absolute Wish")], [{task: "Void Slave", requirement: 25}, {task: "Chairman", requirement: 300}]),
-    "Void Amplification": new TaskRequirement([getTaskElement("Void Amplification")], [{ task: "Void Slave", requirement: 100 }, { task: "Absolute Wish", requirement: 3000, herequirement: 1700 }]),
-    "Mind Release": new TaskRequirement([getTaskElement("Mind Release")], [{ task: "Void Amplification", requirement: 3000, herequirement: 100 }]),
-    "Ceaseless Abyss": new TaskRequirement([getTaskElement("Ceaseless Abyss")], [{ task: "Void Influence", requirement: 4000, herequirement: 1950 }, { task: "Abyss Anomaly", requirement: 50 }]),
-    "Void Symbiosis": new TaskRequirement([getTaskElement("Void Symbiosis")], [{ task: "Ceaseless Abyss", requirement: 3500, herequirement: 220 }, { task: "Void Reaver", requirement: 50 }]),
-    "Void Embodiment": new TaskRequirement([getTaskElement("Void Embodiment")], [{ task: "Dark Influence", requirement: 4600, herequirement: 3700 }, { task: "Void Lord", requirement: 50 }]),
-    "Abyss Manipulation": new TaskRequirement([getTaskElement("Abyss Manipulation")], [{ task: "Abyss God", requirement: 350, herequirement: 200 }, { task: "Dark Influence", requirement: 6000, herequirement: 4100 }, { task: "Void Influence", requirement: 6000, herequirement: 2600 }]),
+	"Absolute Wish": new TaskRequirement([getTaskQuerySelector("Absolute Wish")], [{task: "Void Slave", requirement: 25}, {task: "Chairman", requirement: 300}]),
+    "Void Amplification": new TaskRequirement([getTaskQuerySelector("Void Amplification")], [{ task: "Void Slave", requirement: 100 }, { task: "Absolute Wish", requirement: 3000, herequirement: 1700 }]),
+    "Mind Release": new TaskRequirement([getTaskQuerySelector("Mind Release")], [{ task: "Void Amplification", requirement: 3000, herequirement: 100 }]),
+    "Ceaseless Abyss": new TaskRequirement([getTaskQuerySelector("Ceaseless Abyss")], [{ task: "Void Influence", requirement: 4000, herequirement: 1950 }, { task: "Abyss Anomaly", requirement: 50 }]),
+    "Void Symbiosis": new TaskRequirement([getTaskQuerySelector("Void Symbiosis")], [{ task: "Ceaseless Abyss", requirement: 3500, herequirement: 220 }, { task: "Void Reaver", requirement: 50 }]),
+    "Void Embodiment": new TaskRequirement([getTaskQuerySelector("Void Embodiment")], [{ task: "Dark Influence", requirement: 4600, herequirement: 3700 }, { task: "Void Lord", requirement: 50 }]),
+    "Abyss Manipulation": new TaskRequirement([getTaskQuerySelector("Abyss Manipulation")], [{ task: "Abyss God", requirement: 350, herequirement: 200 }, { task: "Dark Influence", requirement: 6000, herequirement: 4100 }, { task: "Void Influence", requirement: 6000, herequirement: 2600 }]),
 
 	// Celestial Powers
-	"Cosmic Longevity": new TaskRequirement([getTaskElement("Cosmic Longevity")], [{task: "Eternal Wanderer", requirement: 1}]),
-    "Cosmic Recollection": new TaskRequirement([getTaskElement("Cosmic Recollection")], [{ task: "Nova", requirement: 50 }, { task: "Meditation", requirement: 4200 }, { task: "Mind Release", requirement: 900 }]),
-    "Essence Collector": new TaskRequirement([getTaskElement("Essence Collector")], [{ task: "Sigma Proioxis", requirement: 500, herequirement: 360 }, { task: "Absolute Wish", requirement: 4900, herequirement: 2900 }, { task: "Dark Knowledge", requirement: 6300, herequirement: 3400 }]),
-    "Galactic Command": new TaskRequirement([getTaskElement("Galactic Command")], [{ task: "Essence Collector", requirement: 5000, herequirement: 210 }, { task: "Bargaining", requirement: 5000 }]),
+	"Cosmic Longevity": new TaskRequirement([getTaskQuerySelector("Cosmic Longevity")], [{task: "Eternal Wanderer", requirement: 1}]),
+    "Cosmic Recollection": new TaskRequirement([getTaskQuerySelector("Cosmic Recollection")], [{ task: "Nova", requirement: 50 }, { task: "Meditation", requirement: 4200 }, { task: "Mind Release", requirement: 900 }]),
+    "Essence Collector": new TaskRequirement([getTaskQuerySelector("Essence Collector")], [{ task: "Sigma Proioxis", requirement: 500, herequirement: 360 }, { task: "Absolute Wish", requirement: 4900, herequirement: 2900 }, { task: "Dark Knowledge", requirement: 6300, herequirement: 3400 }]),
+    "Galactic Command": new TaskRequirement([getTaskQuerySelector("Galactic Command")], [{ task: "Essence Collector", requirement: 5000, herequirement: 210 }, { task: "Bargaining", requirement: 5000 }]),
 
     // Essence
-	"Yin Yang": new EssenceRequirement([getTaskElement("Yin Yang")], [{requirement: 1}]),
-	"Parallel Universe": new EssenceRequirement([getTaskElement("Parallel Universe")], [{requirement: 1}]),
-	"Higher Dimensions": new EssenceRequirement([getTaskElement("Higher Dimensions")], [{requirement: 10000}]),
-	"Epiphany": new EssenceRequirement([getTaskElement("Epiphany")], [{requirement: 30000}]),
+	"Yin Yang": new EssenceRequirement([getTaskQuerySelector("Yin Yang")], [{requirement: 1}]),
+	"Parallel Universe": new EssenceRequirement([getTaskQuerySelector("Parallel Universe")], [{requirement: 1}]),
+	"Higher Dimensions": new EssenceRequirement([getTaskQuerySelector("Higher Dimensions")], [{requirement: 10000}]),
+	"Epiphany": new EssenceRequirement([getTaskQuerySelector("Epiphany")], [{requirement: 30000}]),
 
     // Darkness
-    "Dark Prince": new DarkMatterRequirement([getTaskElement("Dark Prince")], [{requirement: 3}]),
-    "Dark Ruler": new DarkMatterRequirement([getTaskElement("Dark Ruler")], [{requirement: 10}]),
-    "Immortal Ruler": new DarkMatterRequirement([getTaskElement("Immortal Ruler")], [{requirement: 25}]),
-    "Dark Magician": new DarkMatterRequirement([getTaskElement("Dark Magician")], [{requirement: 100}]),
-    "Universal Ruler": new DarkMatterRequirement([getTaskElement("Universal Ruler")], [{requirement: 1e3}]),
-    "Blinded By Darkness": new DarkMatterRequirement([getTaskElement("Blinded By Darkness")], [{requirement: 1e4}]),
+    "Dark Prince": new DarkMatterRequirement([getTaskQuerySelector("Dark Prince")], [{requirement: 3}]),
+    "Dark Ruler": new DarkMatterRequirement([getTaskQuerySelector("Dark Ruler")], [{requirement: 10}]),
+    "Immortal Ruler": new DarkMatterRequirement([getTaskQuerySelector("Immortal Ruler")], [{requirement: 25}]),
+    "Dark Magician": new DarkMatterRequirement([getTaskQuerySelector("Dark Magician")], [{requirement: 100}]),
+    "Universal Ruler": new DarkMatterRequirement([getTaskQuerySelector("Universal Ruler")], [{requirement: 1e3}]),
+    "Blinded By Darkness": new DarkMatterRequirement([getTaskQuerySelector("Blinded By Darkness")], [{requirement: 1e4}]),
 
     // Properties
-    "Homeless": new CoinRequirement([getItemElement("Homeless")], [{requirement: 0}]),
-    "Tent": new CoinRequirement([getItemElement("Tent")], [{requirement: 0}]),
-    "Wooden Hut": new CoinRequirement([getItemElement("Wooden Hut")], [{requirement: gameData.itemData["Wooden Hut"].getExpense() * 100}]),
-    "Cottage": new CoinRequirement([getItemElement("Cottage")], [{requirement: gameData.itemData["Cottage"].getExpense() * 100}]),
-    "House": new CoinRequirement([getItemElement("House")], [{requirement: gameData.itemData["House"].getExpense() * 100}]),
-    "Large House": new CoinRequirement([getItemElement("Large House")], [{requirement: gameData.itemData["Large House"].getExpense() * 100}]),
-    "Small Palace": new CoinRequirement([getItemElement("Small Palace")], [{requirement: gameData.itemData["Small Palace"].getExpense() * 100}]),
-    "Grand Palace": new CoinRequirement([getItemElement("Grand Palace")], [{requirement: gameData.itemData["Grand Palace"].getExpense() * 100}]),
-	"Town Ruler": new CoinRequirement([getItemElement("Town Ruler")], [{requirement: gameData.itemData["Town Ruler"].getExpense() * 100}]),
-	"City Ruler": new CoinRequirement([getItemElement("City Ruler")], [{requirement: gameData.itemData["City Ruler"].getExpense() * 100}]),
-	"Nation Ruler": new CoinRequirement([getItemElement("Nation Ruler")], [{requirement: gameData.itemData["Nation Ruler"].getExpense() * 100}]),
-    "Pocket Dimension": new CoinRequirement([getItemElement("Pocket Dimension")], [{requirement: gameData.itemData["Pocket Dimension"].getExpense() * 100}]),
-	"Void Realm": new CoinRequirement([getItemElement("Void Realm")], [{requirement: gameData.itemData["Void Realm"].getExpense() * 100}]),
-	"Void Universe": new CoinRequirement([getItemElement("Void Universe")], [{requirement: gameData.itemData["Void Universe"].getExpense() * 100}]),
-	"Astral Realm": new CoinRequirement([getItemElement("Astral Realm")], [{requirement: gameData.itemData["Astral Realm"].getExpense() * 100}]),
-    "Galactic Throne": new CoinRequirement([getItemElement("Galactic Throne")], [{ requirement: gameData.itemData["Galactic Throne"].getExpense() * 100 }]),
-    "Spaceship": new CoinRequirement([getItemElement("Spaceship")], [{ requirement: gameData.itemData["Spaceship"].getExpense() * 100 }]),
-    "Planet": new CoinRequirement([getItemElement("Planet")], [{ requirement: gameData.itemData["Planet"].getExpense() * 100 }]),
-    "Ringworld": new CoinRequirement([getItemElement("Ringworld")], [{ requirement: gameData.itemData["Ringworld"].getExpense() * 100 }]),
-    "Stellar Neighborhood": new CoinRequirement([getItemElement("Stellar Neighborhood")], [{ requirement: gameData.itemData["Stellar Neighborhood"].getExpense(true) * 100 }]),
-    "Galaxy": new CoinRequirement([getItemElement("Galaxy")], [{ requirement: gameData.itemData["Galaxy"].getExpense(true) * 1e5 }]),
-    "Supercluster": new CoinRequirement([getItemElement("Supercluster")], [{ requirement: gameData.itemData["Supercluster"].getExpense(true) * 1e8 }]),
-    "Galaxy Filament": new CoinRequirement([getItemElement("Galaxy Filament")], [{ requirement: gameData.itemData["Galaxy Filament"].getExpense(true) * 1e10 }]),
-    "Observable Universe": new CoinRequirement([getItemElement("Observable Universe")], [{ requirement: gameData.itemData["Observable Universe"].getExpense(true) * 1e14 }]),
+    "Homeless": new CoinRequirement([getItemQuerySelector("Homeless")], [{requirement: 0}]),
+    "Tent": new CoinRequirement([getItemQuerySelector("Tent")], [{requirement: 0}]),
+    "Wooden Hut": new CoinRequirement([getItemQuerySelector("Wooden Hut")], [{requirement: gameData.itemData["Wooden Hut"].getExpense() * 100}]),
+    "Cottage": new CoinRequirement([getItemQuerySelector("Cottage")], [{requirement: gameData.itemData["Cottage"].getExpense() * 100}]),
+    "House": new CoinRequirement([getItemQuerySelector("House")], [{requirement: gameData.itemData["House"].getExpense() * 100}]),
+    "Large House": new CoinRequirement([getItemQuerySelector("Large House")], [{requirement: gameData.itemData["Large House"].getExpense() * 100}]),
+    "Small Palace": new CoinRequirement([getItemQuerySelector("Small Palace")], [{requirement: gameData.itemData["Small Palace"].getExpense() * 100}]),
+    "Grand Palace": new CoinRequirement([getItemQuerySelector("Grand Palace")], [{requirement: gameData.itemData["Grand Palace"].getExpense() * 100}]),
+	"Town Ruler": new CoinRequirement([getItemQuerySelector("Town Ruler")], [{requirement: gameData.itemData["Town Ruler"].getExpense() * 100}]),
+	"City Ruler": new CoinRequirement([getItemQuerySelector("City Ruler")], [{requirement: gameData.itemData["City Ruler"].getExpense() * 100}]),
+	"Nation Ruler": new CoinRequirement([getItemQuerySelector("Nation Ruler")], [{requirement: gameData.itemData["Nation Ruler"].getExpense() * 100}]),
+    "Pocket Dimension": new CoinRequirement([getItemQuerySelector("Pocket Dimension")], [{requirement: gameData.itemData["Pocket Dimension"].getExpense() * 100}]),
+	"Void Realm": new CoinRequirement([getItemQuerySelector("Void Realm")], [{requirement: gameData.itemData["Void Realm"].getExpense() * 100}]),
+	"Void Universe": new CoinRequirement([getItemQuerySelector("Void Universe")], [{requirement: gameData.itemData["Void Universe"].getExpense() * 100}]),
+	"Astral Realm": new CoinRequirement([getItemQuerySelector("Astral Realm")], [{requirement: gameData.itemData["Astral Realm"].getExpense() * 100}]),
+    "Galactic Throne": new CoinRequirement([getItemQuerySelector("Galactic Throne")], [{ requirement: gameData.itemData["Galactic Throne"].getExpense() * 100 }]),
+    "Spaceship": new CoinRequirement([getItemQuerySelector("Spaceship")], [{ requirement: gameData.itemData["Spaceship"].getExpense() * 100 }]),
+    "Planet": new CoinRequirement([getItemQuerySelector("Planet")], [{ requirement: gameData.itemData["Planet"].getExpense() * 100 }]),
+    "Ringworld": new CoinRequirement([getItemQuerySelector("Ringworld")], [{ requirement: gameData.itemData["Ringworld"].getExpense() * 100 }]),
+    "Stellar Neighborhood": new CoinRequirement([getItemQuerySelector("Stellar Neighborhood")], [{ requirement: gameData.itemData["Stellar Neighborhood"].getExpense(true) * 100 }]),
+    "Galaxy": new CoinRequirement([getItemQuerySelector("Galaxy")], [{ requirement: gameData.itemData["Galaxy"].getExpense(true) * 1e5 }]),
+    "Supercluster": new CoinRequirement([getItemQuerySelector("Supercluster")], [{ requirement: gameData.itemData["Supercluster"].getExpense(true) * 1e8 }]),
+    "Galaxy Filament": new CoinRequirement([getItemQuerySelector("Galaxy Filament")], [{ requirement: gameData.itemData["Galaxy Filament"].getExpense(true) * 1e10 }]),
+    "Observable Universe": new CoinRequirement([getItemQuerySelector("Observable Universe")], [{ requirement: gameData.itemData["Observable Universe"].getExpense(true) * 1e14 }]),
 
     // Misc
-    "Book": new CoinRequirement([getItemElement("Book")], [{requirement: 0}]),
-    "Dumbbells": new CoinRequirement([getItemElement("Dumbbells")], [{requirement: gameData.itemData["Dumbbells"].getExpense() * 100}]),
-    "Personal Squire": new CoinRequirement([getItemElement("Personal Squire")], [{requirement: gameData.itemData["Personal Squire"].getExpense() * 100}]),
-    "Steel Longsword": new CoinRequirement([getItemElement("Steel Longsword")], [{requirement: gameData.itemData["Steel Longsword"].getExpense() * 100}]),
-    "Butler": new CoinRequirement([getItemElement("Butler")], [{requirement: gameData.itemData["Butler"].getExpense() * 100}]),
-    "Sapphire Charm": new CoinRequirement([getItemElement("Sapphire Charm")], [{requirement: gameData.itemData["Sapphire Charm"].getExpense() * 100}]),
-    "Study Desk": new CoinRequirement([getItemElement("Study Desk")], [{requirement: gameData.itemData["Study Desk"].getExpense() * 100}]),
-    "Library": new CoinRequirement([getItemElement("Library")], [{requirement: gameData.itemData["Library"].getExpense() * 100}]),
-	"Observatory": new CoinRequirement([getItemElement("Observatory")], [{requirement: gameData.itemData["Observatory"].getExpense() * 100}]),
-	"Mind's Eye": new CoinRequirement([getItemElement("Mind's Eye")], [{requirement: gameData.itemData["Mind's Eye"].getExpense() * 100}]),
-	"Void Necklace": new CoinRequirement([getItemElement("Void Necklace")], [{requirement: gameData.itemData["Void Necklace"].getExpense() * 100}]),
-	"Void Armor": new CoinRequirement([getItemElement("Void Armor")], [{requirement: gameData.itemData["Void Armor"].getExpense() * 100}]),
-	"Void Blade": new CoinRequirement([getItemElement("Void Blade")], [{requirement: gameData.itemData["Void Blade"].getExpense() * 100}]),
-	"Void Orb": new CoinRequirement([getItemElement("Void Orb")], [{requirement: gameData.itemData["Void Orb"].getExpense() * 100}]),
-	"Void Dust": new CoinRequirement([getItemElement("Void Dust")], [{requirement: gameData.itemData["Void Dust"].getExpense() * 100}]),
-	"Celestial Robe": new CoinRequirement([getItemElement("Celestial Robe")], [{requirement: gameData.itemData["Celestial Robe"].getExpense() * 100}]),
-	"Universe Fragment": new CoinRequirement([getItemElement("Universe Fragment")], [{requirement: gameData.itemData["Universe Fragment"].getExpense() * 100}]),
-    "Multiverse Fragment": new CoinRequirement([getItemElement("Multiverse Fragment")], [{ requirement: gameData.itemData["Multiverse Fragment"].getExpense() * 100 }]),
+    "Book": new CoinRequirement([getItemQuerySelector("Book")], [{requirement: 0}]),
+    "Dumbbells": new CoinRequirement([getItemQuerySelector("Dumbbells")], [{requirement: gameData.itemData["Dumbbells"].getExpense() * 100}]),
+    "Personal Squire": new CoinRequirement([getItemQuerySelector("Personal Squire")], [{requirement: gameData.itemData["Personal Squire"].getExpense() * 100}]),
+    "Steel Longsword": new CoinRequirement([getItemQuerySelector("Steel Longsword")], [{requirement: gameData.itemData["Steel Longsword"].getExpense() * 100}]),
+    "Butler": new CoinRequirement([getItemQuerySelector("Butler")], [{requirement: gameData.itemData["Butler"].getExpense() * 100}]),
+    "Sapphire Charm": new CoinRequirement([getItemQuerySelector("Sapphire Charm")], [{requirement: gameData.itemData["Sapphire Charm"].getExpense() * 100}]),
+    "Study Desk": new CoinRequirement([getItemQuerySelector("Study Desk")], [{requirement: gameData.itemData["Study Desk"].getExpense() * 100}]),
+    "Library": new CoinRequirement([getItemQuerySelector("Library")], [{requirement: gameData.itemData["Library"].getExpense() * 100}]),
+	"Observatory": new CoinRequirement([getItemQuerySelector("Observatory")], [{requirement: gameData.itemData["Observatory"].getExpense() * 100}]),
+	"Mind's Eye": new CoinRequirement([getItemQuerySelector("Mind's Eye")], [{requirement: gameData.itemData["Mind's Eye"].getExpense() * 100}]),
+	"Void Necklace": new CoinRequirement([getItemQuerySelector("Void Necklace")], [{requirement: gameData.itemData["Void Necklace"].getExpense() * 100}]),
+	"Void Armor": new CoinRequirement([getItemQuerySelector("Void Armor")], [{requirement: gameData.itemData["Void Armor"].getExpense() * 100}]),
+	"Void Blade": new CoinRequirement([getItemQuerySelector("Void Blade")], [{requirement: gameData.itemData["Void Blade"].getExpense() * 100}]),
+	"Void Orb": new CoinRequirement([getItemQuerySelector("Void Orb")], [{requirement: gameData.itemData["Void Orb"].getExpense() * 100}]),
+	"Void Dust": new CoinRequirement([getItemQuerySelector("Void Dust")], [{requirement: gameData.itemData["Void Dust"].getExpense() * 100}]),
+	"Celestial Robe": new CoinRequirement([getItemQuerySelector("Celestial Robe")], [{requirement: gameData.itemData["Celestial Robe"].getExpense() * 100}]),
+	"Universe Fragment": new CoinRequirement([getItemQuerySelector("Universe Fragment")], [{requirement: gameData.itemData["Universe Fragment"].getExpense() * 100}]),
+    "Multiverse Fragment": new CoinRequirement([getItemQuerySelector("Multiverse Fragment")], [{ requirement: gameData.itemData["Multiverse Fragment"].getExpense() * 100 }]),
 
     // Milestones
-    "Milestones": new EssenceRequirement([document.getElementById("milestonesTabButton")], [{ requirement: 1 }]),
+    "Milestones": new EssenceRequirement(["#milestonesTabButton"], [{ requirement: 1 }]),
 
     // Dark Matter
-    "Dark Matter": new DarkMatterRequirement([document.getElementById("darkMatterTabButton")], [{ requirement: 1 }]),
-    "Dark Matter Skills": new EssenceRequirement([document.getElementById("skillTreeTabTabButton")], [{ requirement: 1e20 }]),
+    "Dark Matter": new DarkMatterRequirement(["#darkMatterTabButton"], [{ requirement: 1 }]),
+    "Dark Matter Skills": new EssenceRequirement(["#skillTreeTabTabButton"], [{ requirement: 1e20 }]),
 
     // Challenges
-    "Challenges": new EvilRequirement([document.getElementById("challengesTabButton")], [{ requirement: 10000 }]),
-    "Challenge_an_unhappy_life": new EvilRequirement([document.getElementById("anUnhappyLifeChallenge")], [{ requirement: 10000 }]),
-    "Challenge_the_rich_and_the_poor": new EvilRequirement([document.getElementById("theRichAndThePoorChallenge")], [{ requirement: 1000000 }]),
-    "Challenge_time_does_not_fly": new EssenceRequirement([document.getElementById("timeDoesNotFlyChallenge")], [{ requirement: 10000 }]),
-    "Challenge_dance_with_the_devil": new EssenceRequirement([document.getElementById("danceWithTheDevilChallenge")], [{ requirement: 1e6 }]),
-    "Challenge_legends_never_die": new EssenceRequirement([document.getElementById("legendsNeverDieChallenge")], [{ requirement: 2.5e7 }]),
+    "Challenges": new EvilRequirement(["#challengesTabButton"], [{ requirement: 10000 }]),
+    "Challenge_an_unhappy_life": new EvilRequirement(["#anUnhappyLifeChallenge"], [{ requirement: 10000 }]),
+    "Challenge_the_rich_and_the_poor": new EvilRequirement(["#theRichAndThePoorChallenge"], [{ requirement: 1000000 }]),
+    "Challenge_time_does_not_fly": new EssenceRequirement(["#timeDoesNotFlyChallenge"], [{ requirement: 10000 }]),
+    "Challenge_dance_with_the_devil": new EssenceRequirement(["#danceWithTheDevilChallenge"], [{ requirement: 1e6 }]),
+    "Challenge_legends_never_die": new EssenceRequirement(["#legendsNeverDieChallenge"], [{ requirement: 2.5e7 }]),
 }
 
 for (const key in milestoneBaseData) {
     const milestone = gameData.milestoneData[key]
-    gameData.requirements[milestone.name] = new EssenceRequirement([getMilestoneElement(milestone.name)],
+    gameData.requirements[milestone.name] = new EssenceRequirement([getMilestoneQuerySelector(milestone.name)],
         [{ requirement: milestone.expense }])
 }
 
@@ -1716,6 +1714,8 @@ for (const key in gameData.requirements) {
     const requirement = gameData.requirements[key]
     tempData["requirements"][key] = requirement
 }
+
+initializeUI()
 
 loadGameData()
 

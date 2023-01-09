@@ -184,6 +184,10 @@ function removeSpaces(string) {
     return string.replace(/ /g, "")
 }
 
+function removeStrangeCharacters(string) {
+    return string.replace(/'/g, "")
+}
+
 function bigIntToExponential(value) {
     if(typeof value !== 'bigint') throw new Error("Argument must be a bigint, but a " + (typeof value) + " was supplied.");
 
