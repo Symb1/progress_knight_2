@@ -1,3 +1,6 @@
+version 2.2.8 / 09.01.2023
+* Improve the code quality
+
 version 2.2.6.2 / 05.01.2023
 * Add 5 new end game shop items
 
