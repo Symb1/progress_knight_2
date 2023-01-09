@@ -178,8 +178,8 @@ const skillBaseData = {
     "Galactic Command": { name: "Galactic Command", maxXp: 100, heroxp: 290, effect: -0.01, description: "Reduced Expenses" },
 
     "Yin Yang": { name: "Yin Yang", maxXp: 100, heroxp: 290, effect: 0.020, description: "Essence + Evil Gain" },
-    "Parallel Universe": { name: "Parallel Universe", maxXp: 290, heroxp: 300, effect: 0.02, description: "All XP"},
-    "Higher Dimensions": { name: "Higher Dimensions", maxXp: 290, heroxp: 300, effect: 0.001, description: "Longer Lifespan" },
+    "Parallel Universe": { name: "Parallel Universe", maxXp: 100, heroxp: 300, effect: 0.02, description: "All XP"},
+    "Higher Dimensions": { name: "Higher Dimensions", maxXp: 100, heroxp: 300, effect: 0.001, description: "Longer Lifespan" },
     "Epiphany": { name: "Epiphany", maxXp: 100, heroxp: 280, effect: 0.012, description: "Galactic Council XP"},
 
     "Dark Prince": { name: "Dark Prince", maxXp: 100, heroxp: 350, effect: 0.01, description: "Skill XP"},
