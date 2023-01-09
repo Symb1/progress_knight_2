@@ -84,7 +84,16 @@ class Task {
 
             if (this.xpBigInt >= this.getMaxBigIntXp()) {
                 let excess = this.xpBigInt - this.getMaxBigIntXp()
+
+                let iterations = 0
                 while (excess >= 0n) {
+                    iterations += 1
+
+                    // This amount is way lower because calculations with a BigInt are really expensive.
+                    // Probably want to look into more optimizations.
+                    if (iterations > 300)
+                        excess = -1n
+
                     this.level += 1
                     excess -= this.getMaxBigIntXp()
                 }
@@ -98,10 +107,17 @@ class Task {
                 this.isFinished = true
                 return
             }
-           
+            
             if (this.xp >= this.getMaxXp()) {
                 let excess = this.xp - this.getMaxXp()
+
+                let iterations = 0
                 while (excess >= 0) {
+                    iterations += 1
+
+                    if (iterations > 2500)
+                        excess = -1
+
                     this.level += 1
                     excess -= this.getMaxXp()
                 }

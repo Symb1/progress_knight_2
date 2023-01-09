@@ -185,4 +185,11 @@ const tooltips = {
     "A Dark Era": "Start a new era of Dark Matter.",
     "Dark Orbiter": "Using some wizardry you can improve your Dark Orb generators massively.",
     "Dark Matter Mining": "Mine a huge amount of Dark Matter from each planet you visit.",
+    "The new gold": "Essence might become the new gold due to mass adoption.",
+    "The Devil inside you": "Shady deals with the Devil grant you a huge Evil bonus.",
+    "Strange Magic": "A strange wizard offers you a few secret spells which might be usefull.",
+    "Life is valueable": "Time is limited... Even as the ruler of the universe.",
+    "Speed speed speed": "You can affect the speed of the universe with your gigantic amount of Dark Matter.",
+    "Dark Matter Millionaire": "This secret spell will help you reach your quest to become the first Dark Matter millionaire.",
+    "The new Dark Matter": "",
 }
