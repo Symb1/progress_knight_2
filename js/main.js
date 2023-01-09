@@ -725,7 +725,7 @@ function getDarkOrbs() {
 function getGameSpeed() {
     if (!canSimulate())
         return 0
-    
+
     return getUnpausedGameSpeed()
 }
 
@@ -737,7 +737,7 @@ function getUnpausedGameSpeed() {
     const timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive
     const speedIsLife = gameData.dark_matter_shop.speed_is_life == 1 ? 3 : (gameData.dark_matter_shop.speed_is_life == 2 ? 7 : 1)
     const gameSpeed = baseGameSpeed * timeWarpingSpeed * getChallengeBonus("time_does_not_fly") * speedIsLife * getGottaBeFastGain()
-    
+
     return gameData.active_challenge == "time_does_not_fly" ? Math.pow(gameSpeed, 0.7) : gameSpeed
 }
 
@@ -1291,15 +1291,15 @@ function peekThemeFromSave() {
     }
 }
 
-function peekFontSizeFromSave() {
+function peekSettingFromSave(setting) {
     try {
         const save = localStorage.getItem("gameDataSave")
         if (save == null)
-            return 1
+            return gameData.settings[setting]
         const gameDataSave = JSON.parse(save)
-        if (gameDataSave.settings == undefined || gameDataSave.settings.fontSize == undefined)
-            return 1
-        return gameDataSave.settings.fontSize
+        if (gameDataSave.settings == undefined || gameDataSave.settings[setting] == undefined)
+            return gameData.settings[setting]
+        return gameDataSave.settings[setting]
     } catch (error) {
         console.error(error)
         console.log(localStorage.getItem("gameDataSave"))
@@ -1518,7 +1518,7 @@ gameData.requirements = {
 	"Rebirth note 4": new AgeRequirement(["#rebirthNote4"], [{requirement: 1000}]),
 	"Rebirth note 5": new AgeRequirement(["#rebirthNote5"], [{requirement: 10000}]),
     "Rebirth note 6": new TaskRequirement(["#rebirthNote6"], [{ task: "Cosmic Recollection", requirement: 1 }]),
-    "Rebirth note 7": new EssenceRequirement(["#rebirthNote7"], [{ requirement: 2e10 }]),
+    "Rebirth note 7": new EssenceRequirement(["#rebirthNote7"], [{ requirement: 5e10 }]),
 
     "Rebirth button 1": new AgeRequirement(["#rebirthButton1"], [{ requirement: 65 }]),
     "Rebirth button 2": new AgeRequirement(["#rebirthButton2"], [{ requirement: 200 }]),

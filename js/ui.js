@@ -8,13 +8,13 @@ function initializeUI() {
     createAllRows(itemCategories, "itemTable")
     createAllRows(milestoneCategories, "milestoneTable")
 
-    setLayout(gameData.settings.layout)
-    setFontSize(peekFontSizeFromSave())
-    setNotation(gameData.settings.numberNotation)
-    setCurrency(gameData.settings.currencyNotation)
-    setStickySidebar(gameData.settings.stickySidebar)
+    setLayout(peekSettingFromSave("layout"))
+    setFontSize(peekSettingFromSave("fontSize"))
+    setNotation(peekSettingFromSave("numberNotation"))
+    setCurrency(peekSettingFromSave("currencyNotation"))
+    setStickySidebar(peekSettingFromSave("stickySidebar"))
 
-    setTheme(gameData.settings.theme)
+    setTheme(peekSettingFromSave("theme"))
 
     for (const key in gameData.requirements) {
         const requirement = gameData.requirements[key]
@@ -24,11 +24,11 @@ function initializeUI() {
 
 function updateUI() {
     /*
-        NOTE: To ensure that performance does not decrease, 
+        NOTE: To ensure that performance does not decrease,
         please only call the render function when the user can actually see the content.
         If they can always see the content put the function call at the top of this function.
 
-        NOTE2: Do NOT render anything to the screen outside of this function. 
+        NOTE2: Do NOT render anything to the screen outside of this function.
     */
 
     // Always render the sidebar.
@@ -100,7 +100,7 @@ function renderSideBar() {
         task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
     }
 
-        
+
     document.getElementById("ageDisplay").textContent = formatAge(gameData.days)
     document.getElementById("lifespanDisplay").textContent = formatWhole(daysToYears(getLifespan()))
     document.getElementById("realtimeDisplay").textContent = formatTime(gameData.realtime)
@@ -123,6 +123,7 @@ function renderSideBar() {
     document.getElementById("essenceGainButtonDisplay").textContent = "+" + format(getEssenceGain())
 
     document.getElementById("darkMatterDisplay").textContent = format(gameData.dark_matter)
+    document.getElementById("darkMatterGainDisplay").textContent = format(getDarkMatterGain())
     document.getElementById("darkMatterGainButtonDisplay").textContent = "+" + format(getDarkMatterGain())
 
     document.getElementById("darkOrbsDisplay").textContent = format(gameData.dark_orbs)
@@ -150,13 +151,13 @@ function renderSideBar() {
 
     if (getDarkMatter() == 0)
         gameData.requirements["Dark Matter info"].completed = false
-} 
+}
 
 function renderRequirementsForCategoryType(data, categoryType) {
     const requiredRows = document.getElementsByClassName("requiredRow")
     for (const requiredRow of requiredRows) {
         let nextEntity = null
-        const category = categoryType[requiredRow.id] 
+        const category = categoryType[requiredRow.id]
         if (category == null) {continue}
         for (let i = 0; i < category.length; i++) {
             const entityName = category[i]
@@ -178,11 +179,11 @@ function renderRequirementsForCategoryType(data, categoryType) {
             if (!nextEntityRequirements.isCompleted()) {
                 nextEntity = data[nextEntityName]
                 break
-            }       
+            }
         }
 
         if (nextEntity == null) {
-            requiredRow.classList.add("hiddenTask")           
+            requiredRow.classList.add("hiddenTask")
         } else {
             requiredRow.classList.remove("hiddenTask")
             const requirementObject = gameData.requirements[nextEntity.name]
@@ -234,7 +235,7 @@ function renderRequirementsForCategoryType(data, categoryType) {
                 essenceElement.classList.remove("hiddenTask")
                 essenceElement.textContent = format(requirements[0].requirement) + " essence"
             }
-        }   
+        }
     }
 }
 
@@ -266,8 +267,8 @@ function renderJobs() {
                 if (prevlvl < 20)
                     prevReq = "Great " + prev + " " + prevlvl + "/20<br>"
             }
-            
-            if (requirementObject instanceof EvilRequirement) {                
+
+            if (requirementObject instanceof EvilRequirement) {
                 reqlist += format(requirements[0].requirement) + " evil<br>"
             } else if (requirementObject instanceof EssenceRequirement) {
                 reqlist += format(requirements[0].requirement) + " essence<br>"
@@ -290,11 +291,11 @@ function renderJobs() {
                     } else {
                         reqlist += " Great " + requirement.task + " " + (task_check.isHero ? task_check.level : 0) + "/" + reqvalue + "<br>"
                     }
-                }                
+                }
             }
 
             reqlist += prevReq
-            reqlist = reqlist.substring(0, reqlist.length - 4)                
+            reqlist = reqlist.substring(0, reqlist.length - 4)
             tooltip += reqlist + "</span>"
         }
 
@@ -310,7 +311,7 @@ function renderJobs() {
 
         if (task.isFinished) {
             progressFill.style.width = "100%"
-            progressFill.classList.add("progress-fill-finished") 
+            progressFill.classList.add("progress-fill-finished")
             progressBar.classList.add("progress-bar-finished")
             const time = gameData.realtime / 3
             let x = time - Math.floor(time)
@@ -366,8 +367,8 @@ function renderSkills() {
                 if (prevlvl < 20)
                     prevReq = "Great " + prev + " " + prevlvl + "/20<br>"
             }
-            
-            if (requirementObject instanceof EvilRequirement) {                
+
+            if (requirementObject instanceof EvilRequirement) {
                 reqlist += format(requirements[0].requirement) + " evil<br>"
             } else if (requirementObject instanceof EssenceRequirement) {
                 reqlist += format(requirements[0].requirement) + " essence<br>"
@@ -390,11 +391,11 @@ function renderSkills() {
                     } else {
                         reqlist += " Great " + requirement.task + " " + (task_check.isHero ? task_check.level : 0) + "/" + reqvalue + "<br>"
                     }
-                }                
+                }
             }
 
             reqlist += prevReq
-            reqlist = reqlist.substring(0, reqlist.length - 4)                
+            reqlist = reqlist.substring(0, reqlist.length - 4)
             tooltip += reqlist + "</span>"
         }
 
@@ -410,7 +411,7 @@ function renderSkills() {
 
         if (task.isFinished) {
             progressFill.style.width = "100%"
-            progressFill.classList.add("progress-fill-finished") 
+            progressFill.classList.add("progress-fill-finished")
             progressBar.classList.add("progress-bar-finished")
             const time = gameData.realtime / 3
             let x = time - Math.floor(time)
@@ -446,10 +447,10 @@ function renderShop() {
         button.disabled = gameData.coins < item.getExpense()
         const name = button.querySelector(".name")
 
-        if (isHeroesUnlocked()) 
-            name.classList.add("legendary")        
-        else 
-            name.classList.remove("legendary")        
+        if (isHeroesUnlocked())
+            name.classList.add("legendary")
+        else
+            name.classList.remove("legendary")
 
         const active = row.querySelector(".active")
         const color = autoBuyEnabled
@@ -471,8 +472,8 @@ function renderChallenges() {
         for (let i = 1; i <= Object.keys(gameData.challenges).length; i++) {
             const element = document.getElementById("challengeButton" + i)
             if (element != null)
-                element.classList.remove("hidden")        
-            
+                element.classList.remove("hidden")
+
         }
     } else {
         document.getElementById("exitChallengeDiv").hidden = false
@@ -497,7 +498,7 @@ function renderChallenges() {
             }
         }
     }
-    
+
     document.getElementById("challengeGoal1").textContent = format(getChallengeGoal("an_unhappy_life"))
     formatCoins(getChallengeGoal("rich_and_the_poor"), document.getElementById("challengeGoal2"))
     document.getElementById("challengeGoal3").textContent = format(getChallengeGoal("time_does_not_fly"))
@@ -560,7 +561,7 @@ function renderDarkMatter() {
 
     if (gameData.dark_matter_shop.a_miracle)
         document.getElementById("aMiracleBuyButton").classList.add("hidden")
-    
+
     if (getDarkOrbGeneration() != Infinity)
         document.getElementById("darkOrbGeneratorBuyButton").classList.remove("hidden")
     else
@@ -574,7 +575,7 @@ function renderDarkMatter() {
     renderSkillTreeButton(document.getElementById("yourGreatestDebt2"), gameData.dark_matter_shop.your_greatest_debt != 0, gameData.dark_matter_shop.your_greatest_debt == 2)
 
     renderSkillTreeButton(document.getElementById("essenceCollector1"), gameData.dark_matter_shop.essence_collector != 0, gameData.dark_matter_shop.essence_collector == 1)
-    renderSkillTreeButton(document.getElementById("essenceCollector2"), gameData.dark_matter_shop.essence_collector != 0, gameData.dark_matter_shop.essence_collector == 2)    
+    renderSkillTreeButton(document.getElementById("essenceCollector2"), gameData.dark_matter_shop.essence_collector != 0, gameData.dark_matter_shop.essence_collector == 2)
 }
 
 function renderSettings() {
@@ -689,7 +690,7 @@ function createHeaderRow(templates, categoryType, categoryName) {
     headerRow.style.color = (gameData.settings.theme == 2) ? headerRowTextColors[categoryName] : "#ffffff"
     headerRow.classList.add(removeSpaces(categoryName))
     headerRow.classList.add("headerRow")
-    
+
     return headerRow
 }
 
@@ -701,7 +702,7 @@ function createRow(templates, name, categoryName, categoryType) {
 
     if (categoryType == itemCategories) {
         row.getElementsByClassName("button")[0].onclick = categoryName == "Properties" ? () => { setCurrentProperty(name) } : () => { setMisc(name) }
-    } 
+    }
 
     return row
 }
@@ -725,11 +726,11 @@ function createAllRows(categoryType, tableId) {
     for (const categoryName in categoryType) {
         const headerRow = createHeaderRow(templates, categoryType, categoryName)
         table.appendChild(headerRow)
-        
+
         const category = categoryType[categoryName]
         category.forEach(function(name) {
             const row = createRow(templates, name, categoryName, categoryType)
-            table.appendChild(row)       
+            table.appendChild(row)
         })
 
         const requiredRow = createRequiredRow(categoryName)
@@ -741,7 +742,7 @@ function updateRequiredRows(data, categoryType) {
     const requiredRows = document.getElementsByClassName("requiredRow")
     for (const requiredRow of requiredRows) {
         let nextEntity = null
-        const category = categoryType[requiredRow.id] 
+        const category = categoryType[requiredRow.id]
         if (category == null) {continue}
         for (let i = 0; i < category.length; i++) {
             const entityName = category[i]
@@ -763,11 +764,11 @@ function updateRequiredRows(data, categoryType) {
             if (!nextEntityRequirements.isCompleted()) {
                 nextEntity = data[nextEntityName]
                 break
-            }       
+            }
         }
 
         if (nextEntity == null) {
-            requiredRow.classList.add("hiddenTask")           
+            requiredRow.classList.add("hiddenTask")
         } else {
             requiredRow.classList.remove("hiddenTask")
             const requirementObject = gameData.requirements[nextEntity.name]
@@ -819,7 +820,7 @@ function updateRequiredRows(data, categoryType) {
                 essenceElement.classList.remove("hiddenTask")
                 essenceElement.textContent = format(requirements[0].requirement) + " essence"
             }
-        }   
+        }
     }
 }
 
@@ -896,7 +897,7 @@ function setFontSize(id) {
     if (id > 7) id = 7
 
     gameData.settings.fontSize = id
-    document.getElementById("body").style.fontSize = fontSizes[id]    
+    document.getElementById("body").style.fontSize = fontSizes[id]
 }
 
 function renderSkillTreeButton(element, categoryBought, elementBought) {
@@ -954,7 +955,7 @@ const Tab = Object.freeze({
 })
 
 /**
- * @param {Tab} selectedTab 
+ * @param {Tab} selectedTab
  */
 function setTab(selectedTab) {
     const tabElement = document.getElementById(selectedTab)
@@ -1035,7 +1036,7 @@ function changeTab(direction){
     if (targetTab > tabs.length - 1) targetTab = 0
     while (tabButtons[targetTab].style.display.includes("none") || tabButtons[targetTab].classList.contains("hidden")){
         targetTab = targetTab + direction
-        targetTab = Math.max(0, targetTab) 
+        targetTab = Math.max(0, targetTab)
         if (targetTab > tabs.length-1) targetTab = 0
     }
 
@@ -1048,7 +1049,7 @@ window.addEventListener('keydown', function(e) {
 		if (e.target == document.body) {
 			e.preventDefault();
 		}
-	}	
-    if (e.key=="ArrowRight") changeTab(1) 
-    if (e.key=="ArrowLeft") changeTab(-1)     
+	}
+    if (e.key=="ArrowRight") changeTab(1)
+    if (e.key=="ArrowLeft") changeTab(-1)
 });
