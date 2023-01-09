@@ -95,6 +95,7 @@ function resetSkillTree() {
         gameData.dark_matter_shop.speed_is_life = 0
         gameData.dark_matter_shop.your_greatest_debt = 0
         gameData.dark_matter_shop.essence_collector = 0
+        gameData.dark_matter_shop.explosion_of_the_universe = 0
     }
 }
 
@@ -116,5 +117,12 @@ function buyEssenceCollector(number) {
     if (gameData.dark_matter >= 10000) {
         gameData.dark_matter -= 10000
         gameData.dark_matter_shop.essence_collector = number
+    }
+}
+
+function buyExplosionOfTheUniverse(number) {
+    if (gameData.dark_matter >= 100000) {
+        gameData.dark_matter -= 100000
+        gameData.dark_matter_shop.explosion_of_the_universe = number
     }
 }

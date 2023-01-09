@@ -1,4 +1,10 @@
 version 2.2.8 / 09.01.2023
+* 6 new milestones
+* 1 new Dark Matter skill
+* Buff to end game shop items
+* Buff early game Dark Matter content
+* Fix the lag when becoming heroic
+* Bug fixes
 * Improve the code quality
 
 version 2.2.6.2 / 05.01.2023

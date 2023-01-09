@@ -77,6 +77,7 @@ var gameData = {
         speed_is_life: 0,
         your_greatest_debt: 0,
         essence_collector: 0,
+        explosion_of_the_universe: 0,
     },
     realtime: 0.0,
     realtimeRun: 0.0
@@ -211,10 +212,10 @@ const itemBaseData = {
     "Planet": { name: "Planet", expense: 1e22, effect: 5000000, heromult: 16, heroeffect: 5e46 },
     "Ringworld": { name: "Ringworld", expense: 1e24, effect: 50000000, heromult: 17, heroeffect: 5e49 },
     "Stellar Neighborhood": { name: "Stellar Neighborhood", expense: 1e27, effect: 60000000, heromult: 17, heroeffect: 6e49 },
-    "Galaxy": { name: "Galaxy", expense: 1e30, effect: 70000000, heromult: 18, heroeffect: 7e49 },
-    "Supercluster": { name: "Supercluster", expense: 1e33, effect: 80000000, heromult: 20, heroeffect: 8e49 },
-    "Galaxy Filament": { name: "Galaxy Filament", expense: 1e36, effect: 90000000, heromult: 25, heroeffect: 9e49 },
-    "Observable Universe": { name: "Observable Universe", expense: 1e39, effect: 100000000, heromult: 30, heroeffect: 1e50 },
+    "Galaxy": { name: "Galaxy", expense: 1e30, effect: 75000000, heromult: 18, heroeffect: 7.5e49 },
+    "Supercluster": { name: "Supercluster", expense: 1e33, effect: 10000000, heromult: 20, heroeffect: 1e50 },
+    "Galaxy Filament": { name: "Galaxy Filament", expense: 1e36, effect: 100000000, heromult: 25, heroeffect: 1e52 },
+    "Observable Universe": { name: "Observable Universe", expense: 1e39, effect: 10000000000, heromult: 30, heroeffect: 1e54 },
 
     "Book": { name: "Book", expense: 10, effect: 1.5, description: "Ability XP", heromult: 2 },
     "Dumbbells": { name: "Dumbbells", expense: 50, effect: 1.5, description: "Strength XP", heromult: 2 },
@@ -268,6 +269,15 @@ milestoneBaseData = {
     "A Dark Era": { name: "A Dark Era", expense: 1e20, tier: 27, description: "Unlocks Dark Matter Skills" },
     "Dark Orbiter": { name: "Dark Orbiter", expense: 1e22, tier: 28, description: "Multiply Dark Orb gain by 1e10x" },
     "Dark Matter Mining": { name: "Dark Matter Mining", expense: 1e25, tier: 29, description: "Multiply Dark Matter gain by 3x" },
+    "The new gold": { name: "The new gold", expense: 1e30, tier: 30, description: "Multiply Essence gain by 1000x" },
+    "The Devil inside you": { name: "The Devil inside you", expense: 1e35, tier: 31, description: "Multiply Evil gain by 1e15x" },
+    "Strange Magic": { name: "Strange Magic", expense: 1e40, tier: 32, description: "Multiply Darkness xp gain by 1e50x" },
+    "Life is valueable": { name: "Life is valueable", expense: 1e45, tier: 33, description: "Multiply your lifespan by 1e5x" },
+    "Speed speed speed": { name: "Speed speed speed", expense: 1e50, tier: 34, description: "Multiply Time Warping by 1000x" },
+    "Dark Matter Millionaire": { name: "Dark Matter Millionaire", expense: 1e55, tier: 35, description: "Multiply Dark Matter gain by 5x" },
+
+    // Commented because it will be included in the next release :)
+    // "The new Dark Matter": { name: "The new Dark Matter", expense: 1e60, tier: 36, description: "Unlocks Red Matter" },
 }
 
 const jobCategories = {
@@ -297,7 +307,7 @@ const itemCategories = {
 const milestoneCategories = {
     "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcendent Master", "Eternal Time", "Hell Portal", "Inferno", "God's Blessings", "Faint Hope"],
     "Heroic Milestones": ["New Beginning", "Rise of Great Heroes", "Lazy Heroes", "Dirty Heroes", "Angry Heroes", "Tired Heroes", "Scared Heroes", "Good Heroes", "Funny Heroes", "Beautiful Heroes", "Awesome Heroes", "Furious Heroes", "Superb Heroes", "A new beginning"],
-    "Dark Milestones": ["Mind Control", "Galactic Emperor", "Dark Matter Harvester", "A Dark Era", "Dark Orbiter", "Dark Matter Mining"]
+    "Dark Milestones": ["Mind Control", "Galactic Emperor", "Dark Matter Harvester", "A Dark Era", "Dark Orbiter", "Dark Matter Mining", "The new gold", "The Devil inside you", "Strange Magic", "Life is valueable", "Speed speed speed", "Dark Matter Millionaire"]
 }
 
 function getPreviousTaskInCategory(task) {
@@ -394,6 +404,13 @@ function addMultipliers() {
 		task.xpMultipliers.push(getBindedTaskEffect("Parallel Universe"))
         task.xpMultipliers.push(getBindedTaskEffect("Immortal Ruler"))
         task.xpMultipliers.push(getBindedTaskEffect("Blinded By Darkness"))
+        task.xpMultipliers.push(() => {
+            if (gameData.dark_matter_shop.explosion_of_the_universe == 1)
+                return 1e100
+            if (gameData.dark_matter_shop.explosion_of_the_universe == 2)
+                return 1e150
+            return 1
+        })
 
         if (task instanceof Job) {
             task.incomeMultipliers.push(task.getLevelMultiplier.bind(task))
@@ -446,7 +463,9 @@ function addMultipliers() {
 			task.xpMultipliers.push(getEssenceXpGain)
         } else if (skillCategories["Fundamentals"].includes(task.name)) {
 			task.xpMultipliers.push(getBindedItemEffect("Mind's Eye"))
-		}
+		} else if (skillCategories["Darkness"].includes(task.name)) {
+            task.xpMultipliers.push(getDarknessXpGain)
+        }
     }
 
     for (const itemName in gameData.itemData) {
@@ -600,6 +619,11 @@ function setCustomEffects() {
     }
 }
 
+function getDarknessXpGain() {
+    const strangeMagic = gameData.requirements["Strange Magic"].isCompleted() ? 1e50 : 1
+    return strangeMagic
+}
+
 function getHappiness() {
     if (gameData.active_challenge == "legends_never_die") return 1
 
@@ -677,10 +701,11 @@ function getEvilGain() {
     const speedIsLife = gameData.dark_matter_shop.speed_is_life == 1 ? 0.5 : 1
     const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 2 ? 100 : 1
     const essenceCollector = gameData.dark_matter_shop.essence_collector == 1 ? 0.5 : 1
+    const theDevilInsideYou = gameData.requirements["The Devil inside you"].isCompleted() ? 1e15 : 1
 
     return evilControl.getEffect() * bloodMeditation.getEffect() * absoluteWish.getEffect()
         * oblivionEmbodiment.getEffect() * yingYang.getEffect() * inferno * getChallengeBonus("legends_never_die")
-        * speedIsLife * yourGreatestDebt * essenceCollector
+        * speedIsLife * yourGreatestDebt * essenceCollector * theDevilInsideYou
 }
 
 function getEssenceGain() {
@@ -693,18 +718,22 @@ function getEssenceGain() {
     const speedIsLife = gameData.dark_matter_shop.speed_is_life == 2 ? 0.5 : 1
     const essenceCollectorSkillTree = gameData.dark_matter_shop.essence_collector == 1 ? 500
         : (gameData.dark_matter_shop.essence_collector == 2 ? 1000 : 1)
+    const theNewGold = gameData.requirements["The new gold"].isCompleted() ? 1000 : 1
+    const explosionOfTheUniverse = gameData.dark_matter_shop.explosion_of_the_universe == 1 ? 0.5 : 1
 
     return essenceControl.getEffect() * essenceCollector.getEffect() * transcendentMaster.getEffect()
         * faintHope.getEffect() * rise.getEffect() * getChallengeBonus("dance_with_the_devil")
         * getAGiftFromGodEssenceGain() * darkMagician.getEffect() * speedIsLife * essenceCollectorSkillTree
+        * theNewGold * explosionOfTheUniverse
 }
 
 function getDarkMatterGain() {
     const darkRuler = gameData.taskData["Dark Ruler"]
     const darkMatterHarvester = gameData.requirements["Dark Matter Harvester"].isCompleted() ? 10 : 1
     const darkMatterMining = gameData.requirements["Dark Matter Mining"].isCompleted() ? 3 : 1
+    const darkMatterMillionaire = gameData.requirements["Dark Matter Millionaire"].isCompleted() ? 5 : 1
 
-    return 1 * darkRuler.getEffect() * darkMatterHarvester * darkMatterMining
+    return 1 * darkRuler.getEffect() * darkMatterHarvester * darkMatterMining * darkMatterMillionaire
 }
 
 function getDarkMatter() {
@@ -715,7 +744,7 @@ function getDarkMatterXpGain() {
     if (getDarkMatter() < 1)
         return 1
 
-    return getDarkMatter();
+    return getDarkMatter() + 1;
 }
 
 function getDarkOrbs() {
@@ -734,7 +763,9 @@ function getUnpausedGameSpeed() {
     const temporalDimension = gameData.taskData["Temporal Dimension"]
     const timeLoop = gameData.taskData["Time Loop"]
     const warpDrive = (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
-    const timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive
+    const speedSpeedSpeed = gameData.requirements["Speed speed speed"].isCompleted() ? 1000 : 1
+
+    const timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive * speedSpeedSpeed
     const speedIsLife = gameData.dark_matter_shop.speed_is_life == 1 ? 3 : (gameData.dark_matter_shop.speed_is_life == 2 ? 7 : 1)
     const gameSpeed = baseGameSpeed * timeWarpingSpeed * getChallengeBonus("time_does_not_fly") * speedIsLife * getGottaBeFastGain()
 
@@ -842,8 +873,9 @@ function getIncome() {
     const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 1 ? (1 / 10)
         : (gameData.dark_matter_shop.your_greatest_debt == 2 ? (1 / 2) : 1)
     const essenceCollector = gameData.dark_matter_shop.essence_collector == 2 ? (1 / 25) : 1
+    const explosionOfTheUniverse = gameData.dark_matter_shop.explosion_of_the_universe == 2 ? (1 / 1e5) : 1
 
-    return gameData.currentJob.getIncome() * yourGreatestDebt * essenceCollector
+    return gameData.currentJob.getIncome() * yourGreatestDebt * essenceCollector * explosionOfTheUniverse
 }
 
 function getExpense() {
@@ -1023,9 +1055,6 @@ function rebirthFour() {
     }
 
     gameData.active_challenge = ""
-
-    if (gameData.dark_matter_shop.a_miracle)
-        gameData.requirements["Magic Eye"].completed = true
 }
 
 function applyMilestones() {
@@ -1099,6 +1128,13 @@ function rebirthReset(set_tab_to_jobs = true) {
         if (requirement.completed && permanentUnlocks.includes(key)) continue
         requirement.completed = false
     }
+
+    // Keep milestones which were bought in the Dark Matter shop
+    if (gameData.dark_matter_shop.a_miracle) {
+        gameData.requirements["Magic Eye"].completed = true
+        if (gameData.rebirthOneCount == 0)
+            gameData.rebirthOneCount = 1
+    }
 }
 
 function getLifespan() {
@@ -1107,8 +1143,9 @@ function getLifespan() {
 	const higherDimensions = gameData.taskData["Higher Dimensions"]
 	const abyss = gameData.taskData["Ceaseless Abyss"]
     const cosmicLongevity = gameData.taskData["Cosmic Longevity"]
+    const lifeIsValueable = gameData.requirements["Life is valueable"].isCompleted() ? 1e5 : 1
     const lifespan = baseLifespan * immortality.getEffect() * superImmortality.getEffect() * abyss.getEffect()
-        * cosmicLongevity.getEffect() * higherDimensions.getEffect()
+        * cosmicLongevity.getEffect() * higherDimensions.getEffect() * lifeIsValueable
 
     if (gameData.active_challenge == "legends_never_die") return Math.pow(lifespan, 0.72) + 365 * 25
 
