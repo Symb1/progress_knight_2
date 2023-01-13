@@ -91,7 +91,7 @@ function buyAMiracle() {
 
 // Skill tree
 function resetSkillTree() {
-    if (confirm("Are you sure that you want to reset your skills?")) {
+    if (confirm("Are you sure that you want to reset your Dark Matter Skills?")) {
         gameData.dark_matter_shop.speed_is_life = 0
         gameData.dark_matter_shop.your_greatest_debt = 0
         gameData.dark_matter_shop.essence_collector = 0
