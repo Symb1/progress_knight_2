@@ -223,7 +223,7 @@ button:focus {
     z-index: 1;
     top: 0;
     left: 102%;
-    width: 25vw;
+    width: 32em;
 
     opacity: 0;
     transition: opacity 0.5s;
