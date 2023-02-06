@@ -1574,7 +1574,6 @@ function isNextDarkMatterSkillInReach() {
         if (skillCategories["Dark Magic"].includes(key)) {
             const requirement = gameData.requirements[key]
             if (!requirement.isCompleted()) {
-                console.log()
                 if (totalEvil >= requirement.requirements[0].requirement) {
                     return true
                 }
