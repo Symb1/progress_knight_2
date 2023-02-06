@@ -1515,8 +1515,14 @@ function importGameData() {
 
 function exportGameData() {
     const importExportBox = document.getElementById("importExportBox")
-    importExportBox.value = window.btoa(JSON.stringify(gameData))
-    copyTextToClipboard(importExportBox.value)
+    const saveString = window.btoa(JSON.stringify(gameData))
+    importExportBox.value = saveString
+    copyTextToClipboard(saveString)
+    setTimeout(() => {
+        if (importExportBox.value == saveString) {
+            importExportBox.value = ""
+        }
+    }, 15 * 1000)
 }
 
 function copyTextToClipboard(text) {
