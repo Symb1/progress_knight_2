@@ -1,6 +1,8 @@
 function enterChallenge(challengeName) {
     rebirthReset(false)
     gameData.active_challenge = challengeName
+    gameData.rebirthOneTime = 0
+    gameData.rebirthTwoTime = 0
 
     for (const taskName in gameData.taskData) {
         const task = gameData.taskData[taskName]
@@ -12,6 +14,8 @@ function exitChallenge() {
     setChallengeProgress()
     rebirthReset(false)    
     gameData.active_challenge = ""
+    gameData.rebirthOneTime = 0
+    gameData.rebirthTwoTime = 0
 
     for (const taskName in gameData.taskData) {
         const task = gameData.taskData[taskName]

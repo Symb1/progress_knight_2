@@ -23,9 +23,13 @@ var gameData = {
     timeWarpingEnabled: true,
 
     rebirthOneCount: 0,
+    rebirthOneTime: 0,
     rebirthTwoCount: 0,
+    rebirthTwoTime: 0,
     rebirthThreeCount: 0,
+    rebirthThreeTime: 0,
     rebirthFourCount: 0,
+    rebirthFourTime: 0,
 
     currentJob: null,
     currentProperty: null,
@@ -961,6 +965,10 @@ function increaseRealtime() {
         return;
     gameData.realtime += 1.0 / updateSpeed;
     gameData.realtimeRun += 1.0 / updateSpeed;
+    gameData.rebirthOneTime += 1.0 / updateSpeed;
+    gameData.rebirthTwoTime += 1.0 / updateSpeed;
+    gameData.rebirthThreeTime += 1.0 / updateSpeed;
+    gameData.rebirthFourTime += 1.0 / updateSpeed;
 }
 
 function setTheme(index, reload=false) {
@@ -993,8 +1001,9 @@ function setTheme(index, reload=false) {
 
 function rebirthOne() {
     gameData.rebirthOneCount += 1
-    if (gameData.stats.fastest1 == null || gameData.realtime < gameData.stats.fastest1)
-        gameData.stats.fastest1 = gameData.realtime
+    if (gameData.stats.fastest1 == null || gameData.rebirthOneTime < gameData.stats.fastest1)
+        gameData.stats.fastest1 = gameData.rebirthOneTime
+    gameData.rebirthOneTime = 0
 
     rebirthReset()
 }
@@ -1003,8 +1012,10 @@ function rebirthTwo() {
     gameData.rebirthTwoCount += 1
     gameData.evil += getEvilGain()
 
-    if (gameData.stats.fastest2 == null || gameData.realtime < gameData.stats.fastest2)
-        gameData.stats.fastest2 = gameData.realtime
+    if (gameData.stats.fastest2 == null || gameData.rebirthTwoTime < gameData.stats.fastest2)
+        gameData.stats.fastest2 = gameData.rebirthTwoTime
+    gameData.rebirthOneTime = 0
+    gameData.rebirthTwoTime = 0
 
     rebirthReset()
     gameData.active_challenge = ""
@@ -1020,8 +1031,11 @@ function rebirthThree() {
 	gameData.essence += getEssenceGain()
     gameData.evil = 0
 
-    if (gameData.stats.fastest3 == null || gameData.realtime < gameData.stats.fastest3)
-        gameData.stats.fastest3 = gameData.realtime
+    if (gameData.stats.fastest3 == null || gameData.rebirthThreeTime < gameData.stats.fastest3)
+        gameData.stats.fastest3 = gameData.rebirthThreeTime
+    gameData.rebirthOneTime = 0
+    gameData.rebirthTwoTime = 0
+    gameData.rebirthThreeTime = 0
 
 	const recallEffect = gameData.taskData["Cosmic Recollection"].getEffect();
 
@@ -1044,8 +1058,12 @@ function rebirthFour() {
         gameData.challenges[challenge] = 0
     }
 
-    if (gameData.stats.fastest4 == null || gameData.realtime < gameData.stats.fastest4)
-        gameData.stats.fastest4 = gameData.realtime
+    if (gameData.stats.fastest4 == null || gameData.rebirthFourTime < gameData.stats.fastest4)
+        gameData.stats.fastest4 = gameData.rebirthFourTime
+    gameData.rebirthOneTime = 0
+    gameData.rebirthTwoTime = 0
+    gameData.rebirthThreeTime = 0
+    gameData.rebirthFourTime = 0
 
     rebirthReset()
 
@@ -1387,6 +1405,22 @@ function loadGameData() {
             if (gameData.settings.theme == null) {
                 gameData.settings.theme = 1
             }
+
+            if (gameData.rebirthOneTime == null || gameData.rebirthOneTime === 0) {
+                gameData.rebirthOneTime = gameData.realtime
+            }
+
+            if (gameData.rebirthTwoTime == null || gameData.rebirthTwoTime === 0) {
+                gameData.rebirthTwoTime = gameData.realtime
+            }
+
+            if (gameData.rebirthThreeTime == null || gameData.rebirthThreeTime === 0) {
+                gameData.rebirthThreeTime = gameData.realtime
+            }
+
+            if (gameData.rebirthFourTime == null || gameData.rebirthFourTime === 0) {
+                gameData.rebirthFourTime = gameData.realtime
+            }
         }
     } catch (error) {
         console.error(error)
@@ -1429,18 +1463,18 @@ function updateRequirements() {
 
 function updateStats() {
     if (gameData.requirements["Rebirth stats evil"].isCompleted()) {
-        gameData.stats.EvilPerSecond = getEvilGain() / gameData.realtime
+        gameData.stats.EvilPerSecond = getEvilGain() / gameData.rebirthTwoTime
         if (gameData.stats.EvilPerSecond > gameData.stats.maxEvilPerSecond) {
             gameData.stats.maxEvilPerSecond = gameData.stats.EvilPerSecond
-            gameData.stats.maxEvilPerSecondRt = gameData.realtime
+            gameData.stats.maxEvilPerSecondRt = gameData.rebirthTwoTime
         }
     }
 
     if (gameData.requirements["Rebirth stats essence"].isCompleted()) {
-        gameData.stats.EssencePerSecond = getEssenceGain() / gameData.realtime
+        gameData.stats.EssencePerSecond = getEssenceGain() / gameData.rebirthThreeTime
         if (gameData.stats.EssencePerSecond > gameData.stats.maxEssencePerSecond) {
             gameData.stats.maxEssencePerSecond = gameData.stats.EssencePerSecond
-            gameData.stats.maxEssencePerSecondRt = gameData.realtime
+            gameData.stats.maxEssencePerSecondRt = gameData.rebirthThreeTime
         }
     }
 }
