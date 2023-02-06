@@ -239,6 +239,8 @@ const itemBaseData = {
     "Celestial Robe": { name: "Celestial Robe", expense: 300002050000000, effect: 5, description: "Galactic Council XP", heromult: 12 },
     "Universe Fragment": { name: "Universe Fragment", expense: 18500002050000000, effect: 3, description: "Ability XP", heromult: 13 },
     "Multiverse Fragment": { name: "Multiverse Fragment", expense: 200500002050000000, effect: 5, description: "Happiness", heromult: 15 },
+    "Stairway to heaven": { name: "Stairway to heaven", expense: 1e38, effect: 10, description: "Happiness", heromult: 30 },
+    "Stairway to hell": { name: "Stairway to hell", expense: 1e42, effect: 10, description: "Evil", heromult: 30 },
 }
 
 milestoneBaseData = {
@@ -276,8 +278,8 @@ milestoneBaseData = {
     "The new gold": { name: "The new gold", expense: 1e30, tier: 30, description: "Multiply Essence gain by 1000x" },
     "The Devil inside you": { name: "The Devil inside you", expense: 1e35, tier: 31, description: "Multiply Evil gain by 1e15x" },
     "Strange Magic": { name: "Strange Magic", expense: 1e40, tier: 32, description: "Multiply Darkness xp gain by 1e50x" },
-    "Life is valueable": { name: "Life is valueable", expense: 1e45, tier: 33, description: "Multiply your lifespan by 1e5x" },
-    "Speed speed speed": { name: "Speed speed speed", expense: 1e50, tier: 34, description: "Multiply Time Warping by 1000x" },
+    "Speed speed speed": { name: "Speed speed speed", expense: 1e45, tier: 33, description: "Multiply Time Warping and Lifespan by 1000x" },
+    "Life is valueable": { name: "Life is valueable", expense: 1e50, tier: 34, description: "Multiply your lifespan by 1e5x" },
     "Dark Matter Millionaire": { name: "Dark Matter Millionaire", expense: 1e55, tier: 35, description: "Multiply Dark Matter gain by 5x" },
 
     // Commented because it will be included in the next release :)
@@ -305,7 +307,7 @@ const skillCategories = {
 
 const itemCategories = {
     "Properties": ["Homeless", "Tent", "Wooden Hut", "Cottage", "House", "Large House", "Small Palace", "Grand Palace", "Town Ruler", "City Ruler", "Nation Ruler", "Pocket Dimension", "Void Realm", "Void Universe", "Astral Realm", "Galactic Throne", "Spaceship", "Planet", "Ringworld", "Stellar Neighborhood", "Galaxy", "Supercluster", "Galaxy Filament", "Observable Universe"],
-    "Misc": ["Book", "Dumbbells", "Personal Squire", "Steel Longsword", "Butler", "Sapphire Charm", "Study Desk", "Library", "Observatory", "Mind's Eye", "Void Necklace", "Void Armor", "Void Blade", "Void Orb", "Void Dust", "Celestial Robe", "Universe Fragment", "Multiverse Fragment"]
+    "Misc": ["Book", "Dumbbells", "Personal Squire", "Steel Longsword", "Butler", "Sapphire Charm", "Study Desk", "Library", "Observatory", "Mind's Eye", "Void Necklace", "Void Armor", "Void Blade", "Void Orb", "Void Dust", "Celestial Robe", "Universe Fragment", "Multiverse Fragment", "Stairway to heaven", "Stairway to hell"]
 }
 
 const milestoneCategories = {
@@ -636,8 +638,9 @@ function getHappiness() {
 	const mindreleaseEffect = getBindedTaskEffect("Mind Release")
     const multiverseFragment = getBindedItemEffect("Multiverse Fragment")
     const godsBlessings = gameData.requirements["God's Blessings"].isCompleted() ? 10000000 : 1
+    const stairWayToHeaven = getBindedItemEffect("Stairway to heaven")
     const happiness = godsBlessings * meditationEffect() * butlerEffect() * mindreleaseEffect()
-        * multiverseFragment() * gameData.currentProperty.getEffect() * getChallengeBonus("an_unhappy_life")
+        * multiverseFragment() * gameData.currentProperty.getEffect() * getChallengeBonus("an_unhappy_life") * stairWayToHeaven()
 
     if (gameData.active_challenge == "dance_with_the_devil") return Math.pow(happiness, 0.075)
     if (gameData.active_challenge == "an_unhappy_life") return Math.pow(happiness, 0.5)
@@ -706,10 +709,11 @@ function getEvilGain() {
     const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 2 ? 100 : 1
     const essenceCollector = gameData.dark_matter_shop.essence_collector == 1 ? 0.5 : 1
     const theDevilInsideYou = gameData.requirements["The Devil inside you"].isCompleted() ? 1e15 : 1
+    const stairWayToHell = getBindedItemEffect("Stairway to hell")
 
     return evilControl.getEffect() * bloodMeditation.getEffect() * absoluteWish.getEffect()
         * oblivionEmbodiment.getEffect() * yingYang.getEffect() * inferno * getChallengeBonus("legends_never_die")
-        * speedIsLife * yourGreatestDebt * essenceCollector * theDevilInsideYou
+        * speedIsLife * yourGreatestDebt * essenceCollector * theDevilInsideYou * stairWayToHell()
 }
 
 function getEssenceGain() {
@@ -1161,9 +1165,10 @@ function getLifespan() {
 	const higherDimensions = gameData.taskData["Higher Dimensions"]
 	const abyss = gameData.taskData["Ceaseless Abyss"]
     const cosmicLongevity = gameData.taskData["Cosmic Longevity"]
+    const speedSpeedSpeed = gameData.requirements["Speed speed speed"].isCompleted() ? 1000 : 1
     const lifeIsValueable = gameData.requirements["Life is valueable"].isCompleted() ? 1e5 : 1
     const lifespan = baseLifespan * immortality.getEffect() * superImmortality.getEffect() * abyss.getEffect()
-        * cosmicLongevity.getEffect() * higherDimensions.getEffect() * lifeIsValueable
+        * cosmicLongevity.getEffect() * higherDimensions.getEffect() * lifeIsValueable * speedSpeedSpeed
 
     if (gameData.active_challenge == "legends_never_die") return Math.pow(lifespan, 0.72) + 365 * 25
 
@@ -1757,6 +1762,8 @@ gameData.requirements = {
 	"Celestial Robe": new CoinRequirement([getItemQuerySelector("Celestial Robe")], [{requirement: gameData.itemData["Celestial Robe"].getExpense() * 100}]),
 	"Universe Fragment": new CoinRequirement([getItemQuerySelector("Universe Fragment")], [{requirement: gameData.itemData["Universe Fragment"].getExpense() * 100}]),
     "Multiverse Fragment": new CoinRequirement([getItemQuerySelector("Multiverse Fragment")], [{ requirement: gameData.itemData["Multiverse Fragment"].getExpense() * 100 }]),
+    "Stairway to heaven": new CoinRequirement([getItemQuerySelector("Stairway to heaven")], [{ requirement: gameData.itemData["Stairway to heaven"].getExpense() * 100 }]),
+    "Stairway to hell": new CoinRequirement([getItemQuerySelector("Stairway to hell")], [{ requirement: gameData.itemData["Stairway to hell"].getExpense() * 100 }]),
 
     // Milestones
     "Milestones": new EssenceRequirement(["#milestonesTabButton"], [{ requirement: 1 }]),

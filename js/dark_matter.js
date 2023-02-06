@@ -45,7 +45,7 @@ function buyLifeCoach() {
 }
 
 function getGottaBeFastCost() {
-    return Math.pow(1e15, gameData.dark_matter_shop.gotta_be_fast + 1)
+    return Math.pow(5e7, gameData.dark_matter_shop.gotta_be_fast + 1)
 }
 
 function buyGottaBeFast() {
