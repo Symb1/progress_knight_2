@@ -217,3 +217,19 @@ function exponentialToRawNumberString(value) {
 
     return first + [...Array(exponent)].map(() => "0").join("")
 }
+
+function getChallengeTaskGoalProgress(taskName) {
+    if (!Object.keys(gameData.taskData).includes(taskName))
+        return 0
+    if (gameData.taskData[taskName].isHero)
+        return gameData.taskData[taskName].level * 1000
+    else
+        return gameData.taskData[taskName].level
+}
+
+function getFormattedChallengeTaskGoal(taskName, level) {
+    if (level < 100000)
+        return taskName + " lvl " + formatLevel(level)
+    else
+        return "Great " + taskName + " lvl " + formatLevel(Math.ceil(level / 1000))
+}
