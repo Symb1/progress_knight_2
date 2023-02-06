@@ -588,6 +588,7 @@ function renderSettings() {
 
     const currentDate = new Date()
     document.getElementById("playedDaysDisplay").textContent = format((currentDate.getTime() - date.getTime()) / (1000 * 3600 * 24), 2)
+    document.getElementById("playedRealTimeDisplay").textContent = formatTime(gameData.realtimeRun)
 
     document.getElementById("playedGameTimeDisplay").textContent = format(gameData.totalDays, 2)
 
