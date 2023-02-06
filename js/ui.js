@@ -131,9 +131,13 @@ function renderSideBar() {
     document.getElementById("timeWarping").hidden = (getUnpausedGameSpeed() / baseGameSpeed) <= 1
     document.getElementById("timeWarpingDisplay").textContent = "x" + format(getUnpausedGameSpeed() / baseGameSpeed, 2)
 
+    // Embrace evil indicator
+    const embraceEvilButton = document.getElementById("rebirthButton2").querySelector(".button")
+    embraceEvilButton.style.background = isNextDarkMatterSkillInReach() ? "#29010c" : ""
+
     // Transcend for Next Milestone indicator
-    const button = document.getElementById("rebirthButton3").querySelector(".button")
-    button.style.background = isNextMilestoneInReach() ? "#065c21" : ""
+    const transcendButton = document.getElementById("rebirthButton3").querySelector(".button")
+    transcendButton.style.background = isNextMilestoneInReach() ? "#065c21" : ""
 
     // Hide the rebirthOneButton from the sidebar when you have `Almighty Eye` unlocked.
     document.getElementById("rebirthButton1").hidden = gameData.requirements["Almighty Eye"].isCompleted()
