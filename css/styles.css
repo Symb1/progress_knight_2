@@ -211,14 +211,19 @@ button:focus {
     background-color: black;
     color: #fff;
     text-align: center;
-    border-radius: 0.5em;
     padding: 0.5em 0.5em;
+
+    border-style: solid;
+    border-width: 3px;
+    border-color: rgb(92, 92, 247);
+    border-radius: 6px;
 
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
     top: 0;
     left: 102%;
+    width: 25vw;
 
     opacity: 0;
     transition: opacity 0.5s;
@@ -229,22 +234,22 @@ button:focus {
     opacity: 0.8;
 }
 
-    .tooltip-pointer .tooltipText-pointer {
-        visibility: hidden;
-        width: 20em;
-        background-color: black;
-        color: #fff;
-        text-align: center;
-        border-radius: 0.5em;
-        padding: 0.5em 0.5em;
-        /* Position the tooltip */
-        position: absolute;
-        z-index: 1;
-        top: 0;
-        left: 5%;       
-        opacity: 0;
-        transition: opacity 0.5s;
-    }
+.tooltip-pointer .tooltipText-pointer {
+    visibility: hidden;
+    width: 20em;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 0.5em;
+    padding: 0.5em 0.5em;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 5%;       
+    opacity: 0;
+    transition: opacity 0.5s;
+}
 
 .tooltip-pointer:hover .tooltipText-pointer {
     visibility: visible;

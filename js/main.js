@@ -313,7 +313,7 @@ const itemCategories = {
 const milestoneCategories = {
     "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcendent Master", "Eternal Time", "Hell Portal", "Inferno", "God's Blessings", "Faint Hope"],
     "Heroic Milestones": ["New Beginning", "Rise of Great Heroes", "Lazy Heroes", "Dirty Heroes", "Angry Heroes", "Tired Heroes", "Scared Heroes", "Good Heroes", "Funny Heroes", "Beautiful Heroes", "Awesome Heroes", "Furious Heroes", "Superb Heroes", "A new beginning"],
-    "Dark Milestones": ["Mind Control", "Galactic Emperor", "Dark Matter Harvester", "A Dark Era", "Dark Orbiter", "Dark Matter Mining", "The new gold", "The Devil inside you", "Strange Magic", "Life is valueable", "Speed speed speed", "Dark Matter Millionaire"]
+    "Dark Milestones": ["Mind Control", "Galactic Emperor", "Dark Matter Harvester", "A Dark Era", "Dark Orbiter", "Dark Matter Mining", "The new gold", "The Devil inside you", "Strange Magic", "Speed speed speed", "Life is valueable", "Dark Matter Millionaire"]
 }
 
 function getPreviousTaskInCategory(task) {
@@ -1130,6 +1130,7 @@ function rebirthReset(set_tab_to_jobs = true) {
     gameData.stats.EvilPerSecond = 0
     gameData.stats.maxEvilPerSecond = 0
     gameData.stats.maxEvilPerSecondRt = 0
+    autoBuyEnabled = true
 
     for (const taskName in gameData.taskData) {
         const task = gameData.taskData[taskName]
@@ -1557,11 +1558,29 @@ function isNextMilestoneInReach() {
 
         if (requirementObject instanceof EssenceRequirement) {
             if (!requirementObject.isCompleted()) {
-                if (totalEssence > requirementObject.requirements[0].requirement)
+                if (totalEssence >= requirementObject.requirements[0].requirement)
                     return true
             }
         }
     }
+    return false
+}
+
+function isNextDarkMatterSkillInReach() {
+    const totalEvil = gameData.evil + getEvilGain()
+
+    for (const key in gameData.taskData) {
+        const skill = gameData.taskData[key]
+        if (skillCategories["Dark Magic"].includes(key)) {
+            const requirement = gameData.requirements[key]
+            if (!requirement.isCompleted()) {
+                if (totalEvil >= requirement.requirements[0].requirement) {
+                    return true
+                }
+            }
+        }
+    }
+    
     return false
 }
 
