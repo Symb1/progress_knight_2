@@ -1566,7 +1566,7 @@ function isNextMilestoneInReach() {
     return false
 }
 
-function isNextDarkMatterSkillInReach() {
+function isNextDarkMagicSkillInReach() {
     const totalEvil = gameData.evil + getEvilGain()
 
     for (const key in gameData.taskData) {
