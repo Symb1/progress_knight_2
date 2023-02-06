@@ -133,7 +133,7 @@ function renderSideBar() {
 
     // Embrace evil indicator
     const embraceEvilButton = document.getElementById("rebirthButton2").querySelector(".button")
-    embraceEvilButton.style.background = isNextDarkMatterSkillInReach() ? "#29010c" : ""
+    embraceEvilButton.style.background = isNextDarkMagicSkillInReach() ? "#29010c" : ""
 
     // Transcend for Next Milestone indicator
     const transcendButton = document.getElementById("rebirthButton3").querySelector(".button")
