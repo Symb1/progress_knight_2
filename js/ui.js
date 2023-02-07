@@ -790,13 +790,13 @@ function updateRequiredRows(data, categoryType) {
             const coinElement = requiredRow.querySelector(".coins")
             const levelElement = requiredRow.querySelector(".levels")
             const evilElement = requiredRow.querySelector(".evil")
-			const essenceElement = requiredRow.querySelector(".essence")
+            const essenceElement = requiredRow.querySelector(".essence")
             const darkMatterElement = requiredRow.querySelector(".darkMatter")
 
             coinElement.classList.add("hiddenTask")
             levelElement.classList.add("hiddenTask")
             evilElement.classList.add("hiddenTask")
-			essenceElement.classList.add("hiddenTask")
+            essenceElement.classList.add("hiddenTask")
             darkMatterElement.classList.add("hiddenTask")
 
             let finalText = ""
@@ -1053,16 +1053,16 @@ function changeTab(direction){
         if (targetTab > tabs.length-1) targetTab = 0
     }
 
-	setTab(tabs[targetTab].id)
+    setTab(tabs[targetTab].id)
 }
 
 window.addEventListener('keydown', function(e) {
-	if (e.key == " " && !e.repeat ) {
-		togglePause()
-		if (e.target == document.body) {
-			e.preventDefault();
-		}
-	}
+    if (e.key == " " && !e.repeat ) {
+        togglePause()
+        if (e.target == document.body) {
+            e.preventDefault();
+        }
+    }
     if (e.key=="ArrowRight") changeTab(1)
     if (e.key=="ArrowLeft") changeTab(-1)
 });
