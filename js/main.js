@@ -1610,6 +1610,8 @@ gameData.requirements = {
     "Dark Magic": new EvilRequirement([removeSpaces(".Dark Magic")], [{requirement: 1}]),
 	"Almightiness": new EssenceRequirement([".Almightiness"], [{requirement: 1}]),
 	"Darkness": new DarkMatterRequirement([".Darkness"], [{requirement: 1}]),
+    "Heroic Milestones": new EssenceRequirement([removeSpaces(".Heroic Milestones")], [{requirement: 400000}]),
+    "Dark Milestones": new EssenceRequirement([removeSpaces(".Dark Milestones")], [{requirement: 5e10}]),
 
     // Rebirth items
     "Rebirth tab": new AgeRequirement(["#rebirthTabButton"], [{requirement: 25}]),
