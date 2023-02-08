@@ -40,7 +40,7 @@ function updateUI() {
     const currentTab = gameData.settings.selectedTab
 
     if (currentTab == Tab.JOBS || gameData.settings.layout == 0) {
-        renderRequirementsForCategoryType(gameData.taskData, jobCategories)
+        updateRequiredRows(gameData.taskData, jobCategories)
         renderHeaderRows(jobCategories)
         renderJobs()
     }
@@ -155,92 +155,6 @@ function renderSideBar() {
 
     if (getDarkMatter() == 0)
         gameData.requirements["Dark Matter info"].completed = false
-}
-
-function renderRequirementsForCategoryType(data, categoryType) {
-    const requiredRows = document.getElementsByClassName("requiredRow")
-    for (const requiredRow of requiredRows) {
-        let nextEntity = null
-        const category = categoryType[requiredRow.id]
-        if (category == null) {continue}
-        for (let i = 0; i < category.length; i++) {
-            const entityName = category[i]
-            if (i >= category.length - 1) break
-
-            const requirements = gameData.requirements[entityName]
-            if (requirements && i == 0) {
-                if (!requirements.isCompleted()) {
-                    nextEntity = data[entityName]
-                    break
-                }
-            }
-
-            const nextIndex = i + 1
-            if (nextIndex >= category.length) {break}
-            const nextEntityName = category[nextIndex]
-            nextEntityRequirements = gameData.requirements[nextEntityName]
-
-            if (!nextEntityRequirements.isCompleted()) {
-                nextEntity = data[nextEntityName]
-                break
-            }
-        }
-
-        if (nextEntity == null) {
-            requiredRow.classList.add("hiddenTask")
-        } else {
-            requiredRow.classList.remove("hiddenTask")
-            const requirementObject = gameData.requirements[nextEntity.name]
-            const requirements = requirementObject.requirements
-
-            const coinElement = requiredRow.querySelector(".coins")
-            const levelElement = requiredRow.querySelector(".levels")
-            const evilElement = requiredRow.querySelector(".evil")
-			const essenceElement = requiredRow.querySelector(".essence")
-            const darkMatterElement = requiredRow.querySelector(".darkMatter")
-
-            coinElement.classList.add("hiddenTask")
-            levelElement.classList.add("hiddenTask")
-            evilElement.classList.add("hiddenTask")
-			essenceElement.classList.add("hiddenTask")
-            darkMatterElement.classList.add("hiddenTask")
-
-            let finalText = ""
-            if (data == gameData.taskData) {
-                if (requirementObject instanceof EvilRequirement) {
-                    evilElement.classList.remove("hiddenTask")
-                    evilElement.textContent = format(requirements[0].requirement) + " evil"
-                } else if (requirementObject instanceof EssenceRequirement) {
-                    essenceElement.classList.remove("hiddenTask")
-                    essenceElement.textContent = format(requirements[0].requirement) + " essence"
-                } else if (requirementObject instanceof DarkMatterRequirement) {
-                    darkMatterElement.classList.remove("hiddenTask")
-                    darkMatterElement.textContent = format(requirements[0].requirement) + " Dark Matter"
-                } else if (requirementObject instanceof AgeRequirement) {
-                    essenceElement.classList.remove("hiddenTask")
-                    essenceElement.textContent = "Age " + format(requirements[0].requirement)
-                }
-                else {
-                    levelElement.classList.remove("hiddenTask")
-                    for (const requirement of requirements) {
-                        const task = gameData.taskData[requirement.task]
-                        if (task.level >= requirement.requirement) continue
-                        finalText += " " + requirement.task + " " + formatLevel(task.level) + "/" + formatLevel(requirement.requirement) + ","
-                    }
-                    finalText = finalText.substring(0, finalText.length - 1)
-                    levelElement.textContent = finalText
-                }
-            }
-            else if (data == gameData.itemData) {
-                coinElement.classList.remove("hiddenTask")
-                formatCoins(requirements[0].requirement, coinElement)
-            }
-            else if (data == gameData.milestoneData) {
-                essenceElement.classList.remove("hiddenTask")
-                essenceElement.textContent = format(requirements[0].requirement) + " essence"
-            }
-        }
-    }
 }
 
 function renderJobs() {
