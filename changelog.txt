@@ -1,10 +1,10 @@
 version 2.2.9 / 06.02.2023
-- Buff to Gotta be fast
-- Rebalance a few milestones
-- Improve endgame challenge rewards
-- 2 more endgame shop items
-- Bug fixes
-- Improved statistics
+* Buff to Gotta be fast
+* Rebalance a few milestones
+* Improve endgame challenge rewards
+* 2 more endgame shop items
+* Bug fixes
+* Improved statistics
 
 version 2.2.8 / 09.01.2023
 * 6 new milestones
