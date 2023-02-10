@@ -1,5 +1,5 @@
 function softcap(value, cap, power = 0.5) {
-	if (value <= cap) return value
+    if (value <= cap) return value
     
     return Math.pow(value, power) * Math.pow(cap, 1 - power)
 }
