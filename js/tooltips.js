@@ -151,7 +151,7 @@ const tooltips = {
     "Universe Fragment": "From the time the universe was born. Can create more small universes.",
     "Multiverse Fragment": "Came into existance long before our universe was created, this strange looking object with no shape radiates unlimited energy.",
     "Stairway to heaven": "A staircase to the all mighty themselves.",
-    "Stairway to hell": "The devil invites you to his palace of terror.",
+    "Highway to hell": "The devil invites you to his palace of terror.",
 
     // Essence Milestones
     "Magic Eye": "The Eye in your Amulet starts to glow.",

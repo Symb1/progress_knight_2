@@ -240,7 +240,7 @@ const itemBaseData = {
     "Universe Fragment": { name: "Universe Fragment", expense: 18500002050000000, effect: 3, description: "Ability XP", heromult: 13 },
     "Multiverse Fragment": { name: "Multiverse Fragment", expense: 200500002050000000, effect: 5, description: "Happiness", heromult: 15 },
     "Stairway to heaven": { name: "Stairway to heaven", expense: 1e38, effect: 10, description: "Happiness", heromult: 30 },
-    "Stairway to hell": { name: "Stairway to hell", expense: 1e42, effect: 10, description: "Evil", heromult: 30 },
+    "Highway to hell": { name: "Highway to hell", expense: 1e42, effect: 10, description: "Evil", heromult: 30 },
 }
 
 milestoneBaseData = {
@@ -307,7 +307,7 @@ const skillCategories = {
 
 const itemCategories = {
     "Properties": ["Homeless", "Tent", "Wooden Hut", "Cottage", "House", "Large House", "Small Palace", "Grand Palace", "Town Ruler", "City Ruler", "Nation Ruler", "Pocket Dimension", "Void Realm", "Void Universe", "Astral Realm", "Galactic Throne", "Spaceship", "Planet", "Ringworld", "Stellar Neighborhood", "Galaxy", "Supercluster", "Galaxy Filament", "Observable Universe"],
-    "Misc": ["Book", "Dumbbells", "Personal Squire", "Steel Longsword", "Butler", "Sapphire Charm", "Study Desk", "Library", "Observatory", "Mind's Eye", "Void Necklace", "Void Armor", "Void Blade", "Void Orb", "Void Dust", "Celestial Robe", "Universe Fragment", "Multiverse Fragment", "Stairway to heaven", "Stairway to hell"]
+    "Misc": ["Book", "Dumbbells", "Personal Squire", "Steel Longsword", "Butler", "Sapphire Charm", "Study Desk", "Library", "Observatory", "Mind's Eye", "Void Necklace", "Void Armor", "Void Blade", "Void Orb", "Void Dust", "Celestial Robe", "Universe Fragment", "Multiverse Fragment", "Stairway to heaven", "Highway to hell"]
 }
 
 const milestoneCategories = {
@@ -709,7 +709,7 @@ function getEvilGain() {
     const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 2 ? 100 : 1
     const essenceCollector = gameData.dark_matter_shop.essence_collector == 1 ? 0.5 : 1
     const theDevilInsideYou = gameData.requirements["The Devil inside you"].isCompleted() ? 1e15 : 1
-    const stairWayToHell = getBindedItemEffect("Stairway to hell")
+    const stairWayToHell = getBindedItemEffect("Highway to hell")
 
     return evilControl.getEffect() * bloodMeditation.getEffect() * absoluteWish.getEffect()
         * oblivionEmbodiment.getEffect() * yingYang.getEffect() * inferno * getChallengeBonus("legends_never_die")
@@ -1790,7 +1790,7 @@ gameData.requirements = {
 	"Universe Fragment": new CoinRequirement([getItemQuerySelector("Universe Fragment")], [{requirement: gameData.itemData["Universe Fragment"].getExpense() * 100}]),
     "Multiverse Fragment": new CoinRequirement([getItemQuerySelector("Multiverse Fragment")], [{ requirement: gameData.itemData["Multiverse Fragment"].getExpense() * 100 }]),
     "Stairway to heaven": new CoinRequirement([getItemQuerySelector("Stairway to heaven")], [{ requirement: gameData.itemData["Stairway to heaven"].getExpense() * 100 }]),
-    "Stairway to hell": new CoinRequirement([getItemQuerySelector("Stairway to hell")], [{ requirement: gameData.itemData["Stairway to hell"].getExpense() * 100 }]),
+    "Highway to hell": new CoinRequirement([getItemQuerySelector("Highway to hell")], [{ requirement: gameData.itemData["Highway to hell"].getExpense() * 100 }]),
 
     // Milestones
     "Milestones": new EssenceRequirement(["#milestonesTabButton"], [{ requirement: 1 }]),
