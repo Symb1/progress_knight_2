@@ -1,6 +1,6 @@
 function softcap(value, cap, power = 0.5) {
     if (value <= cap) return value
-    
+
     return Math.pow(value, power) * Math.pow(cap, 1 - power)
 }
 
@@ -80,13 +80,13 @@ function formatCoins(coins, element) {
     for (const c of element.children) {
         c.textContent = "";
     }
-    
+
     switch (gameData.settings.currencyNotation) {
         case 0:
         case 1:
         case 2:
             const money2 = getCoinsData()
-            
+
             let coinsUsed = 0
             for (let i = 0; i < money2.length; i++) {
                 const m = money2[i];
@@ -119,7 +119,7 @@ function formatTime(sec_num, show_ms = false) {
     if (sec_num < 0) {
         return '-' + formatTime(-sec_num, show_ms)
     }
-    
+
     if (sec_num >= 31536000) {
         let years = Math.floor(sec_num / 31536000)
         if (years >= 1000) {
@@ -141,21 +141,21 @@ function formatTime(sec_num, show_ms = false) {
     if (hours < 10) hours = "0" + hours
     if (minutes < 10) minutes = "0" + minutes
     if (seconds < 10) seconds = "0" + seconds
-    return hours + ':' + minutes + ':' + seconds + mss   
+    return hours + ':' + minutes + ':' + seconds + mss
 }
 
 function formatLevel(level) {
     if (level >= 100000)
         return format(level)
-    
+
     return level.toLocaleString()
 }
 
 function formatAge(days) {
     const years = daysToYears(days)
     const day = getCurrentDay(days)
-    if (years > 10000)    
-        return "Age " + format(years)    
+    if (years > 10000)
+        return "Age " + format(years)
     else
         return "Age " + years + " Day " + day
 }
@@ -171,7 +171,7 @@ function yearsToDays(years) {
 function daysToYears(days) {
     return Math.floor(days / 365)
 }
- 
+
 function getCurrentDay(days) {
     return Math.floor(days - daysToYears(days) * 365)
 }
@@ -195,7 +195,7 @@ function bigIntToExponential(value) {
     if (isNegative) value = -value; // Using the absolute value for the digits.
 
     const str = value.toString();
-    
+
     const exp = str.length - 1;
     if (exp == 0) return (isNegative ? "-" : '') + str + "e0";
 
@@ -208,7 +208,7 @@ function bigIntToExponential(value) {
 }
 
 function exponentialToRawNumberString(value) {
-    if (value == "" || value.length == 0) 
+    if (value == "" || value.length == 0)
         return "0"
 
     const split = value.split("e")
