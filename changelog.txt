@@ -1,3 +1,8 @@
+version 2.2.9.1 / 10.02.2023
+* Remove a bit of technical debt
+* Run a formatter over the code
+* Rename 'Stairway to hell' to 'Highway to hell'
+
 version 2.2.9 / 06.02.2023
 * Buff to Gotta be fast
 * Rebalance a few milestones
