@@ -12,7 +12,7 @@ function enterChallenge(challengeName) {
 
 function exitChallenge() {
     setChallengeProgress()
-    rebirthReset(false)    
+    rebirthReset(false)
     gameData.active_challenge = ""
     gameData.rebirthOneTime = 0
     gameData.rebirthTwoTime = 0

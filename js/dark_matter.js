@@ -52,7 +52,7 @@ function buyGottaBeFast() {
     if (gameData.dark_orbs >= getGottaBeFastCost() && getGottaBeFastCost() != Infinity) {
         gameData.dark_orbs -= getGottaBeFastCost()
         gameData.dark_matter_shop.gotta_be_fast += 1
-    } 
+    }
 }
 
 // Rewards

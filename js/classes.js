@@ -3,7 +3,7 @@ class Task {
         this.baseData = baseData
         this.name = baseData.name
         this.level = 0
-        this.maxLevel = 0 
+        this.maxLevel = 0
         this.xp = 0
         this.xpBigInt = BigInt(0)
         this.isHero = false
@@ -58,7 +58,7 @@ class Task {
 
     getXpGainBigInt() {
         let xpGain = BigInt(Math.floor(this.isHero ? getHeroXpGainMultipliers(this) : 1))
-        
+
         this.xpMultipliers.forEach(multiplier => {
             xpGain *= BigInt(Math.ceil(multiplier()))
         })
@@ -102,12 +102,12 @@ class Task {
         } else {
             this.xp += applySpeed(this.getXpGain())
 
-            if (this.xp > 1e275 || isNaN(this.xp) || this.xp == Infinity || this.getXpGain() == Infinity 
+            if (this.xp > 1e275 || isNaN(this.xp) || this.xp == Infinity || this.getXpGain() == Infinity
                 || this.getMaxXp() == Infinity || this.getXpLeft() == Infinity) {
                 this.isFinished = true
                 return
             }
-            
+
             if (this.xp >= this.getMaxXp()) {
                 let excess = this.xp - this.getMaxXp()
 
@@ -141,14 +141,14 @@ class Milestone {
 
 class Job extends Task {
     constructor(baseData) {
-        super(baseData)   
+        super(baseData)
         this.incomeMultipliers = []
     }
 
     getLevelMultiplier() {
         return 1 + Math.log10(this.level + 1)
     }
-    
+
     getIncome() {
         const income = (this.isHero ? heroIncomeMult
             * (this.baseData.heroxp > 78 ? 1e6 : 1)
@@ -175,7 +175,7 @@ class Skill extends Task {
 }
 
 class Item {
-    constructor(baseData) {  
+    constructor(baseData) {
         this.baseData = baseData
         this.name = baseData.name
         this.expenseMultipliers = []
@@ -183,7 +183,7 @@ class Item {
     }
 
     getEffect() {
-        let effect = this.baseData.effect        
+        let effect = this.baseData.effect
 
         if (this.isHero) {
             if (itemCategories["Misc"].includes(this.name))
@@ -234,8 +234,8 @@ class Item {
     getExpense(heroic) {
         if (heroic === undefined)
             heroic = this.isHero
-        return (heroic ? 4 * Math.pow(10, this.baseData.heromult) * heroIncomeMult : 1) 
-            * applyMultipliers(this.baseData.expense, this.expenseMultipliers) 
+        return (heroic ? 4 * Math.pow(10, this.baseData.heromult) * heroIncomeMult : 1)
+            * applyMultipliers(this.baseData.expense, this.expenseMultipliers)
     }
 }
 
@@ -249,7 +249,7 @@ class Requirement {
 
     queryElements() {
         this.querySelectors.forEach(querySelector => {
-            this.elements.push(...document.querySelectorAll(querySelector))  
+            this.elements.push(...document.querySelectorAll(querySelector))
         })
     }
 
@@ -320,7 +320,7 @@ class EvilRequirement extends Requirement {
 
     getCondition(isHero, requirement) {
         return gameData.evil >= requirement.requirement
-    }    
+    }
 }
 
 class EssenceRequirement extends Requirement {
@@ -331,7 +331,7 @@ class EssenceRequirement extends Requirement {
 
     getCondition(isHero, requirement) {
         return gameData.essence >= requirement.requirement
-    }    
+    }
 }
 
 class DarkMatterRequirement extends Requirement {
@@ -342,7 +342,7 @@ class DarkMatterRequirement extends Requirement {
 
     getCondition(isHero, requirement) {
         return gameData.dark_matter >= requirement.requirement
-    }    
+    }
 }
 
 class DarkOrbsRequirement extends Requirement {
@@ -353,5 +353,5 @@ class DarkOrbsRequirement extends Requirement {
 
     getCondition(isHero, requirement) {
         return gameData.dark_orbs >= requirement.requirement
-    }    
+    }
 }

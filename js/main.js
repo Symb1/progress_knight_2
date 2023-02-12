@@ -1583,7 +1583,7 @@ function isNextDarkMagicSkillInReach() {
             }
         }
     }
-    
+
     return false
 }
 
