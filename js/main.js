@@ -1427,6 +1427,9 @@ function loadGameData() {
             if (gameData.rebirthFourTime == null || gameData.rebirthFourTime === 0) {
                 gameData.rebirthFourTime = gameData.realtime
             }
+
+            // Remove invalid active misc items
+            gameData.currentMisc = gameData.currentMisc.filter((element) => element instanceof Item)
         }
     } catch (error) {
         console.error(error)
