@@ -53,9 +53,10 @@ const jobBaseData = {
     "Knight": {name: "Knight", maxXp: 1000000, income: 1000},
     "Veteran Knight": {name: "Veteran Knight", maxXp: 7500000, income: 3000},
     "Holy Knight": {name: "Holy Knight", maxXp: 40000000, income: 5000},
-    "Lieutenant General": {name: "Lieutenant General", maxXp: 150000000, income: 50000},
-
-    "Student": {name: "Student", maxXp: 100000, income: 100},
+    "Legendary Knight": {name: "Legendary knight", maxXp: 150000000, income: 50000},
+"Dark Crusader":{name: "Dark crusader",  maxXp:666, income: 270000000000000000000000000000000000000000000000000000000},
+    
+	"Student": {name: "Student", maxXp: 100000, income: 100},
     "Apprentice Mage": {name: "Apprentice Mage", maxXp: 1000000, income: 1000},
     "Adept Mage": {name: "Adept Mage", maxXp: 10000000, income: 9500},
     "Master Wizard": {name: "Master Wizard", maxXp: 100000000, income: 70000},
@@ -96,12 +97,12 @@ const skillBaseData = {
     "Battle Tactics": {name: "Battle Tactics", maxXp: 100, effect: 0.01, description: "Military XP"},
     "Muscle Memory": {name: "Muscle Memory", maxXp: 100, effect: 0.01, description: "Strength XP"},
 
-    "Mana Control": {name: "Mana Control", maxXp: 100, effect: 0.01, description: "T.A.A. XP"},
+    "Mana Control": {name: "Mana Control", maxXp: 100, effect: 0.1, description: "T.A.A. XP"},
     "Life Essence": {name: "Life Essence", maxXp: 100, effect: 0.01, description: "Longer Lifespan"},
     "Time Warping": {name: "Time Warping", maxXp: 100, effect: 0.01, description: "Gamespeed"},
-    "Astral Body": {name: "Astral Body", maxXp: 100, effect: 0.0035, description: "Longer lifespan"},
+    "Astral Body": {name: "Astral Body", maxXp: 100, effect: 0.666, description: "Longer lifespan"},
 	"Temporal Dimension": {name: "Temporal Dimension", maxXp: 100, effect: 0.025, description: "Gamespeed"},
-	"All Seeing Eye": {name: "All Seeing Eye", maxXp: 100, effect: 0.0027, description: "T.A.A Pay"},
+	"All Seeing Eye": {name: "All Seeing Eye", maxXp: 100, effect: 0.1, description: "T.A.A Pay"},
 	"Brainwashing": {name: "Brainwashing", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
 	
 	"Absolute Wish": {name: "Absolute Wish", maxXp: 100, effect: 0.005, description: "Evil Gain"},
@@ -120,11 +121,11 @@ const skillBaseData = {
 	
 	
     "Dark Influence": {name: "Dark Influence", maxXp: 100, effect: 0.01, description: "All XP"},
-    "Evil Control": {name: "Evil Control", maxXp: 100, effect: 0.01, description: "Evil Gain"},
-    "Intimidation": {name: "Intimidation", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
-    "Demon Training": {name: "Demon Training", maxXp: 100, effect: 0.01, description: "All XP"},
-    "Blood Meditation": {name: "Blood Meditation", maxXp: 100, effect: 0.01, description: "Evil Gain"},
-    "Demon's Wealth": {name: "Demon's Wealth", maxXp: 100, effect: 0.002, description: "Class Pay"},
+    "Evil Control": {name: "Evil Control", maxXp: 100, effect: 0.5, description: "Evil Gain"},
+    "Intimidation": {name: "Intimidation", maxXp: 100, effect: -0.1, description: "Reduced Expenses"},
+    "Demon Training": {name: "Demon Training", maxXp: 100, effect: 0.1, description: "All XP"},
+    "Blood Meditation": {name: "Blood Meditation", maxXp: 100, effect: 6.66, description: "Evil Gain"},
+    "Demon's Wealth": {name: "Demon's Wealth", maxXp: 100, effect: 1, description: "Class Pay"},
 	"Dark Knowledge": {name: "Dark Knowledge", maxXp: 100, effect: 0.003, description: "Class XP"},
 	"Void Influence": {name: "Void Influence", maxXp: 100, effect: 0.0028, description: "All XP"},
 	"Time Loop": {name: "Time Loop", maxXp: 100, effect: 0.001, description: "Gamespeed"},
@@ -156,7 +157,7 @@ const itemBaseData = {
 	"Astral Realm": {name: "Astral Realm", expense: 160000000000000, effect: 150000},
 	"Galactic Throne": {name: "Galactic Throne", expense: 5000000000000000, effect: 300000},
 
-
+    "Rah Feyn":name: "Rah Feyn", expense: 0, effect: 5500, description: "Happiness"},
     "Book": {name: "Book", expense: 10, effect: 1.5, description: "Ability XP"},
     "Dumbbells": {name: "Dumbbells", expense: 50, effect: 1.5, description: "Strength XP"},
     "Personal Squire": {name: "Personal Squire", expense: 200, effect: 2, description: "Class XP"},
@@ -180,7 +181,7 @@ const itemBaseData = {
 
 const jobCategories = {
     "Common work"            : ["Beggar", "Farmer", "Fisherman", "Miner", "Blacksmith", "Merchant"],
-    "Military"               : ["Squire", "Footman", "Veteran footman", "Centenary", "Knight", "Veteran Knight", "Holy Knight", "Lieutenant General"],
+    "Military"               : ["Squire", "Footman", "Veteran footman", "Centenary", "Knight", "Veteran Knight", "Holy Knight", "Lieutenant Generl, "Dark Crusader",],
     "The Arcane Association" : ["Student", "Apprentice Mage", "Adept Mage", "Master Wizard", "Archmage", "Chronomancer", "Chairman", "Imperator"],
 	"The Void"               : ["Corrupted", "Void Slave", "Void Fiend", "Abyss Anomaly", "Void Wraith", "Void Reaver", "Void Lord", "Abyss God"],
     "Galactic Council"       : ["Eternal Wanderer", "Nova", "Sigma Proioxis", "Acallaris", "One Above All"]
