@@ -2,9 +2,9 @@ var gameData = {
     taskData: {},
     itemData: {},
 
-    coins: 0,
+    coins: 9999999,
     days: 365 * 14,
-    evil: 0,
+    evil: 500000,
 	essence: 0,
     paused: false,
     timeWarpingEnabled: false,
