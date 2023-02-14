@@ -53,7 +53,7 @@ const jobBaseData = {
     "Knight": {name: "Knight", maxXp: 1000000, income: 1000},
     "Veteran Knight": {name: "Veteran Knight", maxXp: 7500000, income: 3000},
     "Holy Knight": {name: "Holy Knight", maxXp: 40000000, income: 5000},
-    "Legendary Knight": {name: "Legendary knight", maxXp: 150000000, income: 50000},
+    "Dark Crusader": {name: "Dark Crusader", maxXp: 150000000, income: 500000000000000000},
     
 	"Student": {name: "Student", maxXp: 100000, income: 100},
     "Apprentice Mage": {name: "Apprentice Mage", maxXp: 1000000, income: 1000},
