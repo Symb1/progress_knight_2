@@ -73,6 +73,8 @@ function getAGiftFromGodEssenceGain() {
 }
 
 function getLifeCoachIncomeGain() {
+    if (gameData.dark_matter_shop.life_coach > 30)
+        return 1e30 * Math.pow(2, gameData.dark_matter_shop.life_coach - 30)
     return Math.pow(10, gameData.dark_matter_shop.life_coach)
 }
 
