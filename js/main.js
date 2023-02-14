@@ -3,7 +3,7 @@ var gameData = {
     itemData: {},
 
     coins: 0,
-    days: 365 * 14,
+    days: 365 * 65,
     evil: 0,
 	essence: 0,
     paused: false,
@@ -1643,3 +1643,8 @@ update()
 setInterval(update, 1000 / updateSpeed)
 setInterval(saveGameData, 3000)
 setInterval(setSkillWithLowestMaxXp, 1000)
+Footer
+© 2023 GitHub, Inc.
+Footer navigation
+Terms
+P
