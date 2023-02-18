@@ -1336,22 +1336,6 @@ function saveGameData() {
     localStorage.setItem("gameDataSave", JSON.stringify(gameData))
 }
 
-function peekThemeFromSave() {
-    try {
-        const save = localStorage.getItem("gameDataSave")
-        if (save == null)
-            return 1
-        const gameDataSave = JSON.parse(save)
-        if (gameDataSave.settings == undefined || gameDataSave.settings.theme == undefined)
-            return 1
-        return gameDataSave.settings.theme
-    } catch (error) {
-        console.error(error)
-        console.log(localStorage.getItem("gameDataSave"))
-        alert("It looks like you tried to load a corrupted save... If this issue persists, feel free to contact the developers!")
-    }
-}
-
 function peekSettingFromSave(setting) {
     try {
         const save = localStorage.getItem("gameDataSave")
@@ -1597,7 +1581,7 @@ createGameObjects(gameData.taskData, skillBaseData)
 createGameObjects(gameData.itemData, itemBaseData)
 createGameObjects(gameData.milestoneData, milestoneBaseData)
 
-gameData.settings.theme = peekThemeFromSave()
+gameData.settings.theme = peekSettingFromSave("theme")
 
 gameData.currentJob = gameData.taskData["Beggar"]
 gameData.currentProperty = gameData.itemData["Homeless"]
