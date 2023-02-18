@@ -1,3 +1,7 @@
+version 2.2.9.2 / 18.02.2023
+* Remove a bit of technical debt
+* The buff from Faint hope now only resets upon a trancend instead of any prestige.
+
 version 2.2.9.1 / 10.02.2023
 * Remove a bit of technical debt
 * Run a formatter over the code
