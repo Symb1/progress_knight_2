@@ -217,8 +217,8 @@ const itemBaseData = {
     "Ringworld": { name: "Ringworld", expense: 1e24, effect: 50000000, heromult: 17, heroeffect: 5e49 },
     "Stellar Neighborhood": { name: "Stellar Neighborhood", expense: 1e27, effect: 60000000, heromult: 17, heroeffect: 6e49 },
     "Galaxy": { name: "Galaxy", expense: 1e30, effect: 75000000, heromult: 18, heroeffect: 7.5e49 },
-    "Supercluster": { name: "Supercluster", expense: 1e33, effect: 10000000, heromult: 20, heroeffect: 1e50 },
-    "Galaxy Filament": { name: "Galaxy Filament", expense: 1e36, effect: 100000000, heromult: 25, heroeffect: 1e52 },
+    "Supercluster": { name: "Supercluster", expense: 1e33, effect: 100000000, heromult: 20, heroeffect: 1e50 },
+    "Galaxy Filament": { name: "Galaxy Filament", expense: 1e36, effect: 1000000000, heromult: 25, heroeffect: 1e52 },
     "Observable Universe": { name: "Observable Universe", expense: 1e39, effect: 10000000000, heromult: 30, heroeffect: 1e54 },
 
     "Book": { name: "Book", expense: 10, effect: 1.5, description: "Ability XP", heromult: 2 },
