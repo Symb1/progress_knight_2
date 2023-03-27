@@ -240,7 +240,7 @@ const itemBaseData = {
     "Universe Fragment": { name: "Universe Fragment", expense: 18500002050000000, effect: 3, description: "Ability XP", heromult: 13 },
     "Multiverse Fragment": { name: "Multiverse Fragment", expense: 200500002050000000, effect: 5, description: "Happiness", heromult: 15 },
     "Stairway to heaven": { name: "Stairway to heaven", expense: 1e38, effect: 10, description: "Happiness", heromult: 30 },
-    "Highway to hell": { name: "Highway to hell", expense: 1e42, effect: 10, description: "Evil", heromult: 30 },
+    "Highway to hell": { name: "Highway to hell", expense: 1e42, effect: 10, description: "Evil Gain", heromult: 30 },
 }
 
 milestoneBaseData = {
