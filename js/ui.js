@@ -126,18 +126,18 @@ function renderSideBar() {
     document.getElementById("darkMatterGainDisplay").textContent = format(getDarkMatterGain())
     document.getElementById("darkMatterGainButtonDisplay").textContent = "+" + format(getDarkMatterGain())
 
-    document.getElementById("darkOrbsDisplay").textContent = format(gameData.dark_orbs)
+    document.getElementById("darkOrbsDisplay").textContent = formatTreshold(gameData.dark_orbs)
 
     document.getElementById("timeWarping").hidden = (getUnpausedGameSpeed() / baseGameSpeed) <= 1
     document.getElementById("timeWarpingDisplay").textContent = "x" + format(getUnpausedGameSpeed() / baseGameSpeed, 2)
 
     // Embrace evil indicator
     const embraceEvilButton = document.getElementById("rebirthButton2").querySelector(".button")
-    embraceEvilButton.style.background = isNextDarkMagicSkillInReach() ? "#29010c" : ""
+    embraceEvilButton.style.background = isNextDarkMagicSkillInReach() ? (gameData.settings.theme == 0 ? "#f0b5b5" : "#4B0317") : ""
 
     // Transcend for Next Milestone indicator
     const transcendButton = document.getElementById("rebirthButton3").querySelector(".button")
-    transcendButton.style.background = isNextMilestoneInReach() ? "#065c21" : ""
+    transcendButton.style.background = isNextMilestoneInReach() ? (gameData.settings.theme == 0 ? "#b8f4cb": "#065c21") : ""
 
     // Hide the rebirthOneButton from the sidebar when you have `Almighty Eye` unlocked.
     document.getElementById("rebirthButton1").hidden = gameData.requirements["Almighty Eye"].isCompleted()
@@ -374,7 +374,16 @@ function renderMilestones() {
     }
 }
 
+function renderDarkMaterShopButton(elemName, condition) {
+    document.getElementById(elemName).disabled = !condition    
+}
+
 function renderDarkMatter() {
+    // Display currency
+    document.getElementById("darkMatterShopDisplay").textContent = format(gameData.dark_matter)
+    document.getElementById("darkMatterSkillsDisplay").textContent = format(gameData.dark_matter)    
+    document.getElementById("darkOrbsShopDisplay").textContent = formatTreshold(gameData.dark_orbs)
+
     // Dark Matter Shop
     document.getElementById("darkOrbGeneratorCost").textContent = format(getDarkOrbGeneratorCost())
     document.getElementById("darkOrbGenerator").textContent = format(getDarkOrbGeneration())
@@ -399,18 +408,27 @@ function renderDarkMatter() {
     else
         document.getElementById("darkOrbGeneratorBuyButton").classList.add("hidden")
 
+    // enable/disable buttons
+
+    renderDarkMaterShopButton("darkOrbGeneratorBuyButton", canBuyDarkOrbGenerator())
+    renderDarkMaterShopButton("aMiracleBuyButton", canBuyAMiracle())
+    renderDarkMaterShopButton("aDealWithTheChairmanBuyButton", canBuyADealWithTheChairman())
+    renderDarkMaterShopButton("aGiftFromGodBuyButton", canBuyAGiftFromGod())
+    renderDarkMaterShopButton("gottaBeFastBuyButton", canBuyGottaBeFast())
+    renderDarkMaterShopButton("lifeCoachBuyButton", canBuyLifeCoach())
+
     // Dark Matter Skill tree
-    renderSkillTreeButton(document.getElementById("speedIsLife1"), gameData.dark_matter_shop.speed_is_life != 0, gameData.dark_matter_shop.speed_is_life == 1)
-    renderSkillTreeButton(document.getElementById("speedIsLife2"), gameData.dark_matter_shop.speed_is_life != 0, gameData.dark_matter_shop.speed_is_life == 2)
+    renderSkillTreeButton(document.getElementById("speedIsLife1"), gameData.dark_matter_shop.speed_is_life != 0, gameData.dark_matter_shop.speed_is_life == 1, gameData.dark_matter >= 100)
+    renderSkillTreeButton(document.getElementById("speedIsLife2"), gameData.dark_matter_shop.speed_is_life != 0, gameData.dark_matter_shop.speed_is_life == 2, gameData.dark_matter >= 100)
 
-    renderSkillTreeButton(document.getElementById("yourGreatestDebt1"), gameData.dark_matter_shop.your_greatest_debt != 0, gameData.dark_matter_shop.your_greatest_debt == 1)
-    renderSkillTreeButton(document.getElementById("yourGreatestDebt2"), gameData.dark_matter_shop.your_greatest_debt != 0, gameData.dark_matter_shop.your_greatest_debt == 2)
+    renderSkillTreeButton(document.getElementById("yourGreatestDebt1"), gameData.dark_matter_shop.your_greatest_debt != 0, gameData.dark_matter_shop.your_greatest_debt == 1, gameData.dark_matter >= 1000)
+    renderSkillTreeButton(document.getElementById("yourGreatestDebt2"), gameData.dark_matter_shop.your_greatest_debt != 0, gameData.dark_matter_shop.your_greatest_debt == 2, gameData.dark_matter >= 1000)
 
-    renderSkillTreeButton(document.getElementById("essenceCollector1"), gameData.dark_matter_shop.essence_collector != 0, gameData.dark_matter_shop.essence_collector == 1)
-    renderSkillTreeButton(document.getElementById("essenceCollector2"), gameData.dark_matter_shop.essence_collector != 0, gameData.dark_matter_shop.essence_collector == 2)
+    renderSkillTreeButton(document.getElementById("essenceCollector1"), gameData.dark_matter_shop.essence_collector != 0, gameData.dark_matter_shop.essence_collector == 1, gameData.dark_matter >= 10000)
+    renderSkillTreeButton(document.getElementById("essenceCollector2"), gameData.dark_matter_shop.essence_collector != 0, gameData.dark_matter_shop.essence_collector == 2, gameData.dark_matter >= 10000)
 
-    renderSkillTreeButton(document.getElementById("explosionOfTheUniverse1"), gameData.dark_matter_shop.explosion_of_the_universe != 0, gameData.dark_matter_shop.explosion_of_the_universe == 1)
-    renderSkillTreeButton(document.getElementById("explosionOfTheUniverse2"), gameData.dark_matter_shop.explosion_of_the_universe != 0, gameData.dark_matter_shop.explosion_of_the_universe == 2)
+    renderSkillTreeButton(document.getElementById("explosionOfTheUniverse1"), gameData.dark_matter_shop.explosion_of_the_universe != 0, gameData.dark_matter_shop.explosion_of_the_universe == 1, gameData.dark_matter >= 100000)
+    renderSkillTreeButton(document.getElementById("explosionOfTheUniverse2"), gameData.dark_matter_shop.explosion_of_the_universe != 0, gameData.dark_matter_shop.explosion_of_the_universe == 2, gameData.dark_matter >= 100000)
 }
 
 function renderSettings() {
@@ -789,13 +807,24 @@ function setFontSize(id) {
     document.getElementById("body").style.fontSize = fontSizes[id]
 }
 
-function renderSkillTreeButton(element, categoryBought, elementBought) {
-    element.disabled = categoryBought
+function renderSkillTreeButton(element, categoryBought, elementBought, canBuy) {
+    element.disabled = categoryBought | !canBuy
 
-    if (elementBought)
-        element.classList.add("w3-blue-gray")
+    if (categoryBought) {
+        if (elementBought) {
+            element.textContent = "Accepted"
+            element.classList.add("w3-green")
+        } else {
+            element.textContent = "Rejected"
+            element.classList.add("w3-red")
+        }
+    }
     else
-        element.classList.remove("w3-blue-gray")
+    {        
+        element.textContent = "Buy"
+        element.classList.remove("w3-green")
+        element.classList.remove("w3-red")
+    }
 }
 
 function setSignDisplay() {

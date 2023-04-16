@@ -142,7 +142,7 @@ const jobBaseData = {
 
 const skillBaseData = {
     "Concentration": { name: "Concentration", maxXp: 100, heroxp: 36, effect: 0.01, description: "Skill XP"},
-    "Productivity": { name: "Productivity", maxXp: 100, heroxp: 37, effect: 0.01, description: "Class XP"},
+    "Productivity": { name: "Productivity", maxXp: 100, heroxp: 37, effect: 0.01, description: "Hero XP"},
     "Bargaining": { name: "Bargaining", maxXp: 100, heroxp: 38, effect: -0.01, description: "Reduced Expenses"},
     "Meditation": { name: "Meditation", maxXp: 100, heroxp: 39, effect: 0.01, description: "Happiness"},
 
@@ -163,8 +163,8 @@ const skillBaseData = {
     "Intimidation": { name: "Intimidation", maxXp: 100, heroxp: 157, effect: -0.01, description: "Reduced Expenses" },
     "Demon Training": { name: "Demon Training", maxXp: 100, heroxp: 174, effect: 0.01, description: "All XP"},
     "Blood Meditation": { name: "Blood Meditation", maxXp: 100, heroxp: 176, effect: 0.01, description: "Evil Gain"},
-    "Demon's Wealth": { name: "Demon's Wealth", maxXp: 100, heroxp: 178, effect: 0.002, description: "Class Pay"},
-    "Dark Knowledge": { name: "Dark Knowledge", maxXp: 100, heroxp: 180, effect: 0.003, description: "Class XP" },
+    "Demon's Wealth": { name: "Demon's Wealth", maxXp: 100, heroxp: 178, effect: 0.002, description: "Hero Pay"},
+    "Dark Knowledge": { name: "Dark Knowledge", maxXp: 100, heroxp: 180, effect: 0.003, description: "Hero XP" },
 
     "Void Influence": { name: "Void Influence", maxXp: 100, heroxp: 206, effect: 0.0028, description: "All XP"},
     "Time Loop": { name: "Time Loop", maxXp: 100, heroxp: 207, effect: 0.001, description: "Gamespeed"},
@@ -221,23 +221,23 @@ const itemBaseData = {
     "Galaxy Filament": { name: "Galaxy Filament", expense: 1e36, effect: 100000000, heromult: 25, heroeffect: 1e52 },
     "Observable Universe": { name: "Observable Universe", expense: 1e39, effect: 10000000000, heromult: 30, heroeffect: 1e54 },
 
-    "Book": { name: "Book", expense: 10, effect: 1.5, description: "Ability XP", heromult: 2 },
+    "Book": { name: "Book", expense: 10, effect: 1.5, description: "Skill XP", heromult: 2 },
     "Dumbbells": { name: "Dumbbells", expense: 50, effect: 1.5, description: "Strength XP", heromult: 2 },
-    "Personal Squire": { name: "Personal Squire", expense: 200, effect: 2, description: "Class XP", heromult: 3 },
+    "Personal Squire": { name: "Personal Squire", expense: 200, effect: 2, description: "Hero XP", heromult: 3 },
     "Steel Longsword": { name: "Steel Longsword", expense: 1000, effect: 2, description: "Military XP", heromult: 3 },
     "Butler": { name: "Butler", expense: 7500, effect: 1.5, description: "Happiness", heromult: 4 },
     "Sapphire Charm": { name: "Sapphire Charm", expense: 50000, effect: 3, description: "Magic XP", heromult:4 },
-    "Study Desk": { name: "Study Desk", expense: 1000000, effect: 2, description: "Ability XP", heromult: 5 },
-    "Library": { name: "Library", expense: 10000000, effect: 2, description: "Ability XP", heromult: 5 },
+    "Study Desk": { name: "Study Desk", expense: 1000000, effect: 2, description: "Skill XP", heromult: 5 },
+    "Library": { name: "Library", expense: 10000000, effect: 2, description: "Skill XP", heromult: 5 },
     "Observatory": { name: "Observatory", expense: 140000000, effect: 5, description: "Magic XP", heromult: 6 },
     "Mind's Eye": { name: "Mind's Eye", expense: 3250000000, effect: 10, description: "Fundamentals XP", heromult: 8 },
     "Void Necklace": { name: "Void Necklace", expense: 28050000000, effect: 3, description: "Void Manipulation XP", heromult: 10 },
     "Void Armor": { name: "Void Armor", expense: 197050000000, effect: 3, description: "The Void XP", heromult: 10 },
-    "Void Blade": { name: "Void Blade", expense: 502050000000, effect: 3, description: "Ability XP", heromult: 11 },
+    "Void Blade": { name: "Void Blade", expense: 502050000000, effect: 3, description: "Skill XP", heromult: 11 },
     "Void Orb": { name: "Void Orb", expense: 1202050000000, effect: 3, description: "Void Manipulation XP", heromult: 11 },
     "Void Dust": { name: "Void Dust", expense: 25002050000000, effect: 3, description: "The Void XP", heromult: 12 },
     "Celestial Robe": { name: "Celestial Robe", expense: 300002050000000, effect: 5, description: "Galactic Council XP", heromult: 12 },
-    "Universe Fragment": { name: "Universe Fragment", expense: 18500002050000000, effect: 3, description: "Ability XP", heromult: 13 },
+    "Universe Fragment": { name: "Universe Fragment", expense: 18500002050000000, effect: 3, description: "Skill XP", heromult: 13 },
     "Multiverse Fragment": { name: "Multiverse Fragment", expense: 200500002050000000, effect: 5, description: "Happiness", heromult: 15 },
     "Stairway to heaven": { name: "Stairway to heaven", expense: 1e38, effect: 10, description: "Happiness", heromult: 30 },
     "Highway to hell": { name: "Highway to hell", expense: 1e42, effect: 10, description: "Evil Gain", heromult: 30 },
@@ -1061,6 +1061,9 @@ function rebirthFour() {
     for (const challenge in gameData.challenges) {
         gameData.challenges[challenge] = 0
     }
+
+    // hide challenges tab till player will get 10k evil again (not actually Permanent unlock now)
+    gameData.requirements["Challenges"].completed = false
 
     if (gameData.stats.fastest4 == null || gameData.rebirthFourTime < gameData.stats.fastest4)
         gameData.stats.fastest4 = gameData.rebirthFourTime

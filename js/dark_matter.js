@@ -3,8 +3,13 @@ function getDarkOrbGeneratorCost() {
     return 1 + 3 * gameData.dark_matter_shop.dark_orb_generator
 }
 
+function canBuyDarkOrbGenerator() {
+    return gameData.dark_matter >= getDarkOrbGeneratorCost() && getDarkOrbGeneration() != Infinity
+}
+
+
 function buyDarkOrbGenerator() {
-    if (gameData.dark_matter >= getDarkOrbGeneratorCost() && getDarkOrbGeneration() != Infinity) {
+    if (canBuyDarkOrbGenerator()) {
         gameData.dark_matter -= getDarkOrbGeneratorCost()
         gameData.dark_matter_shop.dark_orb_generator += 1
     }
@@ -15,8 +20,12 @@ function getADealWithTheChairmanCost() {
     return Math.pow(1e3, gameData.dark_matter_shop.a_deal_with_the_chairman + 1)
 }
 
+function canBuyADealWithTheChairman() {
+    return gameData.dark_orbs >= getADealWithTheChairmanCost() && getADealWithTheChairmanCost() != Infinity
+}
+
 function buyADealWithTheChairman() {
-    if (gameData.dark_orbs >= getADealWithTheChairmanCost() && getADealWithTheChairmanCost() != Infinity) {
+    if (canBuyADealWithTheChairman()) {
         gameData.dark_orbs -= getADealWithTheChairmanCost()
         gameData.dark_matter_shop.a_deal_with_the_chairman += 1
     }
@@ -26,8 +35,12 @@ function getAGiftFromGodCost() {
     return Math.pow(1e5, gameData.dark_matter_shop.a_gift_from_god + 1)
 }
 
+function canBuyAGiftFromGod() {
+    return gameData.dark_orbs >= getAGiftFromGodCost() && getAGiftFromGodCost() != Infinity
+}
+
 function buyAGiftFromGod() {
-    if (gameData.dark_orbs >= getAGiftFromGodCost() && getAGiftFromGodCost() != Infinity) {
+    if (canBuyAGiftFromGod()) {
         gameData.dark_orbs -= getAGiftFromGodCost()
         gameData.dark_matter_shop.a_gift_from_god += 1
     }
@@ -37,8 +50,12 @@ function getLifeCoachCost() {
     return Math.pow(1e10, gameData.dark_matter_shop.life_coach + 1)
 }
 
+function canBuyLifeCoach() {
+    return gameData.dark_orbs >= getLifeCoachCost() && getLifeCoachCost() != Infinity 
+}
+
 function buyLifeCoach() {
-    if (gameData.dark_orbs >= getLifeCoachCost() && getLifeCoachCost() != Infinity) {
+    if (canBuyLifeCoach()) {
         gameData.dark_orbs -= getLifeCoachCost()
         gameData.dark_matter_shop.life_coach += 1
     }
@@ -48,8 +65,12 @@ function getGottaBeFastCost() {
     return Math.pow(5e7, gameData.dark_matter_shop.gotta_be_fast + 1)
 }
 
+function canBuyGottaBeFast() {
+    return gameData.dark_orbs >= getGottaBeFastCost() && getGottaBeFastCost() != Infinity
+}
+
 function buyGottaBeFast() {
-    if (gameData.dark_orbs >= getGottaBeFastCost() && getGottaBeFastCost() != Infinity) {
+    if (canBuyGottaBeFast()) {
         gameData.dark_orbs -= getGottaBeFastCost()
         gameData.dark_matter_shop.gotta_be_fast += 1
     }
@@ -82,11 +103,19 @@ function getGottaBeFastGain() {
     return 1 + 0.05 * gameData.dark_matter_shop.gotta_be_fast
 }
 
+function getAMiracleCost() {
+    return 10
+}
+
 // Permanent unlocks
+function canBuyAMiracle() {
+    return getDarkMatter() >= getAMiracleCost()
+}
+
 function buyAMiracle() {
-    if (getDarkMatter() >= 10) {
+    if (canBuyAMiracle()) {
         gameData.dark_matter_shop.a_miracle = true
-        gameData.dark_matter -= 10
+        gameData.dark_matter -= getAMiracleCost()
     }
 }
 

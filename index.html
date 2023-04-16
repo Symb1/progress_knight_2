@@ -22,7 +22,7 @@
 					<div id="challengeTitle" class="challenge-title">
 						In challenge: <span id="challengeName"></span>
 					</div>
-					<div class="text-caption" id="errorInfo" hidden="true">
+					<div class="text-caption" id="errorInfo" hidden="hidden">
 						<div>⚠️ Oh no! It looks like something on the site broke.. If this issue persists, feel free to contact the developers.</div>
 						<br>
 					</div>
@@ -342,7 +342,7 @@
 										</div>
 										<i style="color: grey">
 										By touching the eyeball, you will be reborn and have to restart life again, losing all your levels and coins.
-										However, you will gain <b>xp multipliers</b> for your classes and abilities equivalent to: <b>1 + the max level of the class or ability / 10.</b>
+										However, you will gain <b>xp multipliers</b> for your heroes and skills equivalent to: <b>1 + the max level of the hero or skill / 10.</b>
 										This means you will learn everything again much more quickly than you did in your previous life. <span style="color: rgb(200, 0, 0)">
 										Something tells you that the amulet might evolve after living for <b>2 whole centuries</b>...
 										</span>
@@ -378,7 +378,7 @@
 											</span>
 										</div>
 										<i style="color: rgb(204, 0, 255)">
-										You have unlocked <b>"The Void"</b> class category along with <b>"Void Manipulation"</b> abilities.
+										You have unlocked <b>"The Void"</b> class category along with <b>"Void Manipulation"</b> skills.
 										</i>
 									</li>
 									<li style="margin: 0.4em;" id="rebirthNote5" class="hidden">
@@ -389,18 +389,18 @@
 											</b>
 										</div>
 										<i style="color: rgb(255, 204, 102)">
-										You have unlocked <b>"Galactic Council"</b> class category along with <b>"Celestial Powers"</b> abilities.
+										You have unlocked <b>"Galactic Council"</b> class category along with <b>"Celestial Powers"</b> skills.
 										<i style="color: grey">
 										<br>
 										If you decide to <b>transcend</b>, you will be reborn once again, losing all your coins, <b>evil</b> and current levels.
-										However, your max levels won't be erased, but instead multiplied with the effect from the <b>Cosmic Recollection</b> ability and you will gain
+										However, your max levels won't be erased, but instead multiplied with the effect from the <b>Cosmic Recollection</b> skill and you will gain
 										<i style="color: rgb(24, 210, 217)">
 										<b><span id="essenceGainDisplay"></span> essence</b>,
 										</i>
-										along with new abilities that will boost you even further in your journey.
+										along with new skills that will boost you even further in your journey.
 										<br>
 										<i style="color: rgb(200, 0, 0)">
-										Transcend will only appear if you have the <b>Cosmic Recollection</b> ability unlocked!
+										Transcend will only appear if you have the <b>Cosmic Recollection</b> skill unlocked!
 										</i>
 										</i>
 										<br>
@@ -415,7 +415,7 @@
 										</i>
 										<i style="color: grey">
 										<br>
-										If you decide to <b>collapse the universe</b>, all of your levels, coins, max levels, evil, and <b>essence</b> will be reset. You will be reborn as a fresh slate in a new universe, with no memory of milestones and challenges from any of your past selves. In exchange, you will unlock a third new line of abilities and gain <i style="color: rgb(114, 83, 182)">
+										If you decide to <b>collapse the universe</b>, all of your levels, coins, max levels, evil, and <b>essence</b> will be reset. You will be reborn as a fresh slate in a new universe, with no memory of milestones and challenges from any of your past selves. In exchange, you will unlock a third new line of skills and gain <i style="color: rgb(114, 83, 182)">
 										<b><span id="darkMatterGainDisplay"></span> Dark Matter</b>,
 										</i>
 										which will boost you much further in your journey across the multiverse.
@@ -436,49 +436,56 @@
 								</div>
 								<div id="maincolumnSettings" class="panel w3-margin-left w3-margin-top w3-padding settings-main-column">
 									<div id="shopTab" class="tabDarkMatter">
-										<div id="settingsPage" style="flex: 1; margin-left: 0.5em;">
-											<div class="panel w3-margin-left w3-margin-top w3-padding">
-												<div style="padding-top:2em">
-													<div class="text-caption dark-matter-title">Dark Orb Generator</div>
-													<div style="color:gray; padding-bottom:0.3em">Generates <b id="darkOrbGenerator"></b> <span style="color: rgb(143, 114, 207)">Dark Orb</span> per day</div>
-													<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="darkOrbGeneratorCost"></b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
-													<button class="w3-button button" id="darkOrbGeneratorBuyButton" onclick="buyDarkOrbGenerator()">Upgrade</button>
-												</div>
-												<div style="padding-top:2em">
-													<div class="text-caption dark-matter-title">A miracle</div>
-													<div style="color:gray; padding-bottom:0.3em">Keep <b>Magic Eye</b> when performing a Dark Matter or lower reset</div>
-													<div style="color:gray; padding-bottom: 0.5em;">Cost: <b>10</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
-													<button class="w3-button button" id="aMiracleBuyButton" onclick="buyAMiracle()">Buy</button>
-												</div>
-												<div style="padding-top:2em">
-													<div class="text-caption dark-matter-title">A deal with the Chairman</div>
-													<div style="color:gray; padding-bottom: 0.5em;">Reward: Multiply <span style="color: rgb(199, 21, 133);">T.A.A & Magic</span> XP gain by x<span id="aDealWithTheChairmanEffect"></span></div>
-													<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="aDealWithTheChairmanCost"></b> <span style="color: rgb(143, 114, 207)">Dark Orbs</span></div>
-													<button class="w3-button button" onclick="buyADealWithTheChairman()">Upgrade</button>
-												</div>
-												<div style="padding-top:2em">
-													<div class="text-caption dark-matter-title">A gift from god</div>
-													<div style="color:gray; padding-bottom: 0.5em;">Reward: Multiply <span style="color: rgb(24, 210, 217)">Essence</span> gain by x<span id="aGiftFromGodEffect"></span></div>
-													<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="aGiftFromGodCost"></b> <span style="color: rgb(143, 114, 207)">Dark Orbs</span></div>
-													<button class="w3-button button" onclick="buyAGiftFromGod()">Upgrade</button>
-												</div>
-												<div style="padding-top:2em">
-													<div class="text-caption dark-matter-title">Gotta be fast</div>
-													<div style="color:gray; padding-bottom: 0.5em;">Reward: Multiply <span style="color: rgb(204, 34, 219)">Time Warping</span> by x<span id="gottaBeFastEffect"></span></div>
-													<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="gottaBeFastCost"></b> <span style="color: rgb(143, 114, 207)">Dark Orbs</span></div>
-													<button class="w3-button button" onclick="buyGottaBeFast()">Upgrade</button>
-												</div>
-												<div style="padding-top:2em">
-													<div class="text-caption dark-matter-title">Life coach</div>
-													<div style="color:gray; padding-bottom: 0.5em;">Reward: Multiply <span style="color: lightgreen;">Income</span> by x<span id="lifeCoachEffect"></span></div>
-													<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="lifeCoachCost"></b> <span style="color: rgb(143, 114, 207)">Dark Orbs</span></div>
-													<button class="w3-button button" onclick="buyLifeCoach()">Upgrade</button>
-												</div>
+										<div class="panel w3-margin-left w3-margin-top w3-padding">
+											<div class="text-caption" style="padding-top:0em">
+												<div class="text-caption"><span style="color: rgb(114, 83, 182)">Dark Matter: </span><span id="darkMatterShopDisplay"></span></div>
+											</div>
+											<div style="padding-top:2em">
+												<div class="text-caption dark-matter-title">Dark Orb Generator</div>
+												<div style="color:gray; padding-bottom:0.3em">Generates <b id="darkOrbGenerator"></b> <span style="color: rgb(143, 114, 207)">Dark Orb</span> per day</div>
+												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="darkOrbGeneratorCost"></b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
+												<button class="w3-button button" id="darkOrbGeneratorBuyButton" onclick="buyDarkOrbGenerator()">Upgrade</button>
+											</div>
+											<div style="padding-top:2em">
+												<div class="text-caption dark-matter-title">A miracle</div>
+												<div style="color:gray; padding-bottom:0.3em">Keep <b>Magic Eye</b> when performing a Dark Matter or lower reset</div>
+												<div id="aMiracleCost" style="color:gray; padding-bottom: 0.5em;">Cost: <b>10</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
+												<button class="w3-button button" id="aMiracleBuyButton" onclick="buyAMiracle()">Buy</button>
+											</div>
+											<div class="text-caption" style="padding-top:4em">
+												<div class="text-caption"><span style="color: rgb(143, 114, 207)">Dark Orbs: </span><span id="darkOrbsShopDisplay"></span></div>
+											</div>
+											<div style="padding-top:2em">
+												<div class="text-caption dark-matter-title">A deal with the Chairman</div>
+												<div style="color:gray; padding-bottom: 0.5em;">Reward: Multiply <span style="color: rgb(199, 21, 133);">T.A.A & Magic</span> XP gain by x<span id="aDealWithTheChairmanEffect"></span></div>
+												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="aDealWithTheChairmanCost"></b> <span style="color: rgb(143, 114, 207)">Dark Orbs</span></div>
+												<button class="w3-button button" id="aDealWithTheChairmanBuyButton" onclick="buyADealWithTheChairman()">Upgrade</button>
+											</div>
+											<div style="padding-top:2em">
+												<div class="text-caption dark-matter-title">A gift from God</div>
+												<div style="color:gray; padding-bottom: 0.5em;">Reward: Multiply <span style="color: rgb(24, 210, 217)">Essence</span> gain by x<span id="aGiftFromGodEffect"></span></div>
+												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="aGiftFromGodCost"></b> <span style="color: rgb(143, 114, 207)">Dark Orbs</span></div>
+												<button class="w3-button button" id="aGiftFromGodBuyButton" onclick="buyAGiftFromGod()">Upgrade</button>
+											</div>
+											<div style="padding-top:2em">
+												<div class="text-caption dark-matter-title">Gotta be fast</div>
+												<div style="color:gray; padding-bottom: 0.5em;">Reward: Multiply <span style="color: rgb(204, 34, 219)">Time Warping</span> by x<span id="gottaBeFastEffect"></span></div>
+												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="gottaBeFastCost"></b> <span style="color: rgb(143, 114, 207)">Dark Orbs</span></div>
+												<button class="w3-button button" id="gottaBeFastBuyButton" onclick="buyGottaBeFast()">Upgrade</button>
+											</div>
+											<div style="padding-top:2em">
+												<div class="text-caption dark-matter-title">Life coach</div>
+												<div style="color:gray; padding-bottom: 0.5em;">Reward: Multiply <span style="color: lightgreen;">Income</span> by x<span id="lifeCoachEffect"></span></div>
+												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="lifeCoachCost"></b> <span style="color: rgb(143, 114, 207)">Dark Orbs</span></div>
+												<button class="w3-button button" id="lifeCoachBuyButton" onclick="buyLifeCoach()">Upgrade</button>
 											</div>
 										</div>
 									</div>
 									<div id="skillTreeTab" class="tabDarkMatter">
 										<div class="panel w3-margin-left w3-margin-top w3-padding">
+											<div class="text-caption" style="padding-top:0em">
+												<div class="text-caption"><span style="color: rgb(114, 83, 182)">Dark Matter: </span><span id="darkMatterSkillsDisplay"></span></div>
+											</div>
 											<div style="padding-top:2em">
 												<div style="color:gray; padding-bottom:0.3em">
 													You can only choose 1 upgrade in each category; pick wisely. You can reset the skills, but you will <b>NOT</b> get your <span style="color: rgb(114, 83, 182)">Dark Matter</span> back!
@@ -498,7 +505,7 @@
 													Multiply <span style="color: rgb(204, 34, 219)">Time Warping</span> by <b>7x</b>, 
 													but divide <span style="color: rgb(24, 210, 217)">Essence</span> gain by <b>2x</b>
 												</div>
-												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b>100</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
+												<div id="speedIsLifeCost" style="color:gray; padding-bottom: 0.5em;">Cost: <b>100</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
 											</div>
 											<div style="padding-top:2em">
 												<div class="text-caption dark-matter-title">Your greatest debt</div>
@@ -513,7 +520,7 @@
 													Multiply <span style="color: rgb(200, 0, 0)">Evil gain</span> by <b>100x</b>, 
 													but divide <span style="color: lightgreen;">Income</span> by <b>2x</b>
 												</div>
-												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b>1k</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
+												<div id="yourGreatestDebtCost" style="color:gray; padding-bottom: 0.5em;">Cost: <b>1k</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
 											</div>
 											<div style="padding-top:2em">
 												<div class="text-caption dark-matter-title">Essence collector</div>
@@ -528,7 +535,7 @@
 													Multiply <span style="color: rgb(24, 210, 217)">Essence</span> gain by <b>1000x</b>, 
 													but divide <span style="color: lightgreen;">Income</span> by <b>25x</b>
 												</div>
-												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b>10k</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
+												<div id="essenceCollectorCost" style="color:gray; padding-bottom: 0.5em;">Cost: <b>10k</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
 											</div>
 											<div style="padding-top:2em">
 												<div class="text-caption dark-matter-title">Explosion of the universe</div>
@@ -543,7 +550,7 @@
 													Multiply <span style="color:rgb(255, 204, 102)">all XP</span> gain by <b>1e150x</b>, 
 													but divide <span style="color: lightgreen;">Income</span> by <b>1e6x</b>
 												</div>
-												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b>100k</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
+												<div id="explosionOfTheUniverseCost" style="color:gray; padding-bottom: 0.5em;">Cost: <b>100k</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
 											</div>
 										</div>
 									</div>
@@ -642,7 +649,7 @@
 													</div>
 												</li>
 											</ul>
-											<span id="version" style="font-size:smaller; float:right" class="w3-text-gray">Version: 2.2.9.2</span>
+											<span id="version" style="font-size:smaller; float:right" class="w3-text-gray">Version: 2.2.10</span>
 										</div>
 									</div>
 									<div id="statsTab" class="tabSettings">

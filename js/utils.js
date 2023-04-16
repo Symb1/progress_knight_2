@@ -144,6 +144,13 @@ function formatTime(sec_num, show_ms = false) {
     return hours + ':' + minutes + ':' + seconds + mss
 }
 
+function formatTreshold(number, decimals = 1, treshold = 100000) {
+    if (number < treshold)
+        return Math.floor(number)
+    else
+        return format(number, decimals)
+}
+
 function formatLevel(level) {
     if (level >= 100000)
         return format(level)
