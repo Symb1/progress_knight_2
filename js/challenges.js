@@ -39,6 +39,9 @@ function setChallengeProgress() {
     if (gameData.active_challenge == "legends_never_die") {
         gameData.challenges.legends_never_die = Math.max(gameData.challenges.legends_never_die, getChallengeTaskGoalProgress("Chairman"))
     }
+    if (gameData.active_challenge == "the_darkest_time") {
+        gameData.challenges.the_darkest_time = Math.max(gameData.challenges.the_darkest_time, getChallengeTaskGoalProgress("Sigma Proioxis") / 100)
+    }
 }
 
 function getChallengeBonus(challenge_name, current = false) {
@@ -57,6 +60,9 @@ function getChallengeBonus(challenge_name, current = false) {
     if (challenge_name == "legends_never_die") {
         return softcap(Math.pow((current ? getChallengeTaskGoalProgress("Chairman") : gameData.challenges.legends_never_die) + 1, 0.85), 25, 0.6)
     }
+    if (challenge_name == "the_darkest_time") {
+        return softcap(Math.pow((current ? getChallengeTaskGoalProgress("Sigma Proioxis") / 100.0 : gameData.challenges.the_darkest_time) + 1, 0.85), 25, 0.6)
+    }
 }
 
 function getChallengeGoal(challenge_name) {
@@ -74,5 +80,8 @@ function getChallengeGoal(challenge_name) {
     }
     if (challenge_name == "legends_never_die") {
         return gameData.challenges.legends_never_die + 1
+    }
+    if (challenge_name == "the_darkest_time") {
+        return gameData.challenges.the_darkest_time + 1
     }
 }

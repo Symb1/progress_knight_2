@@ -104,6 +104,11 @@ function renderSideBar() {
     document.getElementById("ageDisplay").textContent = formatAge(gameData.days)
     document.getElementById("lifespanDisplay").textContent = formatWhole(daysToYears(getLifespan()))
     document.getElementById("realtimeDisplay").textContent = formatTime(gameData.realtime)
+    document.getElementById("boostCooldownDisplay").textContent =
+        gameData.boost_active
+        ? "Boost: " + formatTime(gameData.boost_timer)
+            : (gameData.boost_cooldown <= 0 ? "Ready!" : "Cooldown: " + formatTime(gameData.boost_cooldown))
+    document.getElementById("boostButton").disabled = !canApplyBoost()
     document.getElementById("pauseButton").textContent = gameData.paused ? "Play" : "Pause"
 
     formatCoins(gameData.coins, document.getElementById("coinDisplay"))
@@ -336,24 +341,28 @@ function renderChallenges() {
     document.getElementById("challengeGoal3").textContent = format(getChallengeGoal("time_does_not_fly"))
     document.getElementById("challengeGoal4").textContent = format(getChallengeGoal("dance_with_the_devil"))
     document.getElementById("challengeGoal5").textContent = getFormattedChallengeTaskGoal("Chairman", Math.floor(getChallengeGoal("legends_never_die")))
+    document.getElementById("challengeGoal6").textContent = getFormattedChallengeTaskGoal("Sigma Proioxis", Math.floor(100*(getChallengeGoal("the_darkest_time")-1)))
 
     document.getElementById("challengeReward1").hidden = gameData.challenges.an_unhappy_life == 0
     document.getElementById("challengeReward2").hidden = gameData.challenges.rich_and_the_poor == 0
     document.getElementById("challengeReward3").hidden = gameData.challenges.time_does_not_fly == 0
     document.getElementById("challengeReward4").hidden = gameData.challenges.dance_with_the_devil == 0
     document.getElementById("challengeReward5").hidden = gameData.challenges.legends_never_die == 0
+    document.getElementById("challengeReward6").hidden = gameData.challenges.the_darkest_time == 0
 
     document.getElementById("currentChallengeHappinessBuff").textContent = format(getChallengeBonus("an_unhappy_life", true), 2)
     document.getElementById("currentChallengeIncomeBuff").textContent = format(getChallengeBonus("rich_and_the_poor", true), 2)
     document.getElementById("currentChallengeTimewarpingBuff").textContent = format(getChallengeBonus("time_does_not_fly", true), 2)
     document.getElementById("currentChallengeEssenceGainBuff").textContent = format(getChallengeBonus("dance_with_the_devil", true), 2)
     document.getElementById("currentChallengeEvilGainBuff").textContent = format(getChallengeBonus("legends_never_die", true), 2)
+    document.getElementById("currentChallengeDarkMatterGainBuff").textContent = format(getChallengeBonus("the_darkest_time", true), 2)
 
     document.getElementById("challengeHappinessBuff").textContent = format(getChallengeBonus("an_unhappy_life"), 2)
     document.getElementById("challengeIncomeBuff").textContent = format(getChallengeBonus("rich_and_the_poor"), 2)
     document.getElementById("challengeTimewarpingBuff").textContent = format(getChallengeBonus("time_does_not_fly"), 2)
     document.getElementById("challengeEssenceGainBuff").textContent = format(getChallengeBonus("dance_with_the_devil"), 2)
     document.getElementById("challengeEvilGainBuff").textContent = format(getChallengeBonus("legends_never_die"), 2)
+    document.getElementById("challengeDarkMatterGainBuff").textContent = format(getChallengeBonus("the_darkest_time"), 2)
 }
 
 function renderMilestones() {
@@ -429,6 +438,9 @@ function renderDarkMatter() {
 
     renderSkillTreeButton(document.getElementById("explosionOfTheUniverse1"), gameData.dark_matter_shop.explosion_of_the_universe != 0, gameData.dark_matter_shop.explosion_of_the_universe == 1, gameData.dark_matter >= 100000)
     renderSkillTreeButton(document.getElementById("explosionOfTheUniverse2"), gameData.dark_matter_shop.explosion_of_the_universe != 0, gameData.dark_matter_shop.explosion_of_the_universe == 2, gameData.dark_matter >= 100000)
+
+    renderSkillTreeButton(document.getElementById("multiverseExplorer1"), gameData.dark_matter_shop.multiverse_explorer != 0, gameData.dark_matter_shop.multiverse_explorer == 1, gameData.dark_matter >= 100000000)
+    renderSkillTreeButton(document.getElementById("multiverseExplorer2"), gameData.dark_matter_shop.multiverse_explorer != 0, gameData.dark_matter_shop.multiverse_explorer == 2, gameData.dark_matter >= 100000000)
 }
 
 function renderSettings() {
