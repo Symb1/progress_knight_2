@@ -277,13 +277,10 @@ milestoneBaseData = {
     "Dark Matter Mining": { name: "Dark Matter Mining", expense: 1e25, tier: 29, description: "Multiply Dark Matter gain by 3x" },
     "The new gold": { name: "The new gold", expense: 1e30, tier: 30, description: "Multiply Essence gain by 1000x" },
     "The Devil inside you": { name: "The Devil inside you", expense: 1e35, tier: 31, description: "Multiply Evil gain by 1e15x" },
-    "Strange Magic": { name: "Strange Magic", expense: 1e40, tier: 32, description: "Multiply Darkness xp gain by 1e50x" },
-    "Speed speed speed": { name: "Speed speed speed", expense: 1e45, tier: 33, description: "Multiply Time Warping and Lifespan by 1000x" },
-    "Life is valueable": { name: "Life is valueable", expense: 1e50, tier: 34, description: "Multiply your lifespan by 1e5x" },
-    "Dark Matter Millionaire": { name: "Dark Matter Millionaire", expense: 1e55, tier: 35, description: "Multiply Dark Matter gain by 5x" },
-
-    // Commented because it will be included in the next release :)
-    // "The new Dark Matter": { name: "The new Dark Matter", expense: 1e60, tier: 36, description: "Unlocks Red Matter" },
+    "Strange Magic": { name: "Strange Magic", expense: 1e38, tier: 32, description: "Multiply Darkness xp gain by 1e50x" },
+    "Speed speed speed": { name: "Speed speed speed", expense: 1e40, tier: 33, description: "Multiply Time Warping by 10x and Lifespan by 1000x" },
+    "Life is valueable": { name: "Life is valueable", expense: 1e43, tier: 34, description: "Multiply Essence gain by 10x" },
+    "Dark Matter Millionaire": { name: "Dark Matter Millionaire", expense: 1e45, tier: 35, description: "Multiply Dark Matter gain by 5x" }
 }
 
 const jobCategories = {
@@ -728,11 +725,12 @@ function getEssenceGain() {
         : (gameData.dark_matter_shop.essence_collector == 2 ? 1000 : 1)
     const theNewGold = gameData.requirements["The new gold"].isCompleted() ? 1000 : 1
     const explosionOfTheUniverse = gameData.dark_matter_shop.explosion_of_the_universe == 1 ? 0.5 : 1
+    const lifeIsValueable = gameData.requirements["Life is valueable"].isCompleted() ? 10 : 1
 
     return essenceControl.getEffect() * essenceCollector.getEffect() * transcendentMaster.getEffect()
         * faintHope.getEffect() * rise.getEffect() * getChallengeBonus("dance_with_the_devil")
         * getAGiftFromGodEssenceGain() * darkMagician.getEffect() * speedIsLife * essenceCollectorSkillTree
-        * theNewGold * explosionOfTheUniverse
+        * theNewGold * explosionOfTheUniverse * lifeIsValueable
 }
 
 function getDarkMatterGain() {
@@ -771,7 +769,7 @@ function getUnpausedGameSpeed() {
     const temporalDimension = gameData.taskData["Temporal Dimension"]
     const timeLoop = gameData.taskData["Time Loop"]
     const warpDrive = (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
-    const speedSpeedSpeed = gameData.requirements["Speed speed speed"].isCompleted() ? 1000 : 1
+    const speedSpeedSpeed = gameData.requirements["Speed speed speed"].isCompleted() ? 10 : 1
 
     const timeWarpingSpeed = timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive * speedSpeedSpeed
     const speedIsLife = gameData.dark_matter_shop.speed_is_life == 1 ? 3 : (gameData.dark_matter_shop.speed_is_life == 2 ? 7 : 1)
@@ -1170,9 +1168,8 @@ function getLifespan() {
     const abyss = gameData.taskData["Ceaseless Abyss"]
     const cosmicLongevity = gameData.taskData["Cosmic Longevity"]
     const speedSpeedSpeed = gameData.requirements["Speed speed speed"].isCompleted() ? 1000 : 1
-    const lifeIsValueable = gameData.requirements["Life is valueable"].isCompleted() ? 1e5 : 1
     const lifespan = baseLifespan * immortality.getEffect() * superImmortality.getEffect() * abyss.getEffect()
-        * cosmicLongevity.getEffect() * higherDimensions.getEffect() * lifeIsValueable * speedSpeedSpeed
+        * cosmicLongevity.getEffect() * higherDimensions.getEffect() * speedSpeedSpeed
 
     if (gameData.active_challenge == "legends_never_die") return Math.pow(lifespan, 0.72) + 365 * 25
 

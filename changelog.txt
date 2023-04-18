@@ -1,3 +1,6 @@
+version 2.2.11 / 19.04.2023
+* Make the last milestones achievable.
+
 version 2.2.10 / 16.04.2023
 * Some effect names have been renamed to maintain consistency
 * Improved Dark matter shop and skills UI
