@@ -240,3 +240,8 @@ function getFormattedChallengeTaskGoal(taskName, level) {
     else
         return "Great " + taskName + " lvl " + formatLevel(Math.ceil(level / 1000))
 }
+
+function getFormattedTitle(parameter) {
+    const Title = parameter.replaceAll("_", " ")
+    return Title.charAt(0).toUpperCase() + Title.slice(1)
+}

@@ -355,3 +355,36 @@ class DarkOrbsRequirement extends Requirement {
         return gameData.dark_orbs >= requirement.requirement
     }
 }
+
+class MetaverseRequirement extends Requirement {
+    constructor(querySelectors, requirements) {
+        super(querySelectors, requirements)
+        this.type = "metaverse"
+    }
+
+    getCondition(isHero, requirement) {
+        return gameData.rebirthFiveCount >= requirement.requirement
+    }
+}
+
+class HypercubeRequirement extends Requirement {
+    constructor(querySelectors, requirements) {
+        super(querySelectors, requirements)
+        this.type = "hypercube"
+    }
+
+    getCondition(isHero, requirement) {
+        return gameData.hypercubes >= requirement.requirement
+    }
+}
+
+class PerkPointRequirement extends Requirement {
+    constructor(querySelectors, requirements) {
+        super(querySelectors, requirements)
+        this.type = "perkpoint"
+    }
+
+    getCondition(isHero, requirement) {
+        return gameData.perks_points >= requirement.requirement
+    }
+}

@@ -18,6 +18,27 @@ var gameData = {
     essence: 0,
     dark_matter: 0,
     dark_orbs: 0,
+    hypercubes: 0,
+    perks_points: 0,
+    perks: {
+        auto_dark_orb: 0,
+        auto_dark_shop: 0,
+        auto_boost: 0,
+        instant_evil: 0,
+        instant_essence: 0,
+        hypercube_boost: 0,
+        super_dark_mater_skills: 0,
+        save_challenges: 0,
+        auto_sacrifice: 0,
+        double_perk_points_gain: 0,
+        instant_dark_matter: 0,
+        keep_dark_mater_skills: 0,
+        hyper_speed: 0,
+        the_last_of_us: 0,
+
+
+    },
+
 
     paused: false,
     timeWarpingEnabled: true,
@@ -30,6 +51,8 @@ var gameData = {
     rebirthThreeTime: 0,
     rebirthFourCount: 0,
     rebirthFourTime: 0,
+    rebirthFiveCount: 0,
+    rebirthFiveTime: 0,
 
     currentJob: null,
     currentProperty: null,
@@ -85,6 +108,17 @@ var gameData = {
         explosion_of_the_universe: 0,
         multiverse_explorer: 0,
     },
+    metaverse: {
+        boost_cooldown_modifier: 1,
+        boost_timer_modifier: 1,
+        boost_warp_modifier: 100,
+        hypercube_gain_modifier: 1,
+        evil_tran_gain: 0,
+        essence_gain_modifier: 0,
+        challenge_altar: 0,
+        dark_mater_gain_modifer: 0,
+    },
+
     realtime: 0.0,
     realtimeRun: 0.0,
 
@@ -103,7 +137,9 @@ const baseLifespan = 365 * 70
 const baseGameSpeed = 4
 const heroIncomeMult = 2500000000000000000
 
-const permanentUnlocks = ["Quick task display", "Dark Matter", "Dark Matter Skills", "Challenges", "Red Matter"]
+const permanentUnlocks = ["Quick task display", "Dark Matter", "Dark Matter Skills", "Dark Matter Skills2", "Challenges", "Metaverse", , "Metaverse Perks", "Metaverse Perks Button"]
+const metaverseUnlocks = ["Reduce Boost Cooldown", "Increase Boost Duration", "Increase Hypercube Gain", "Gain evil at new transcension",
+    "Essence gain multiplier", "Challenges are not reset", "Dark Mater gain multiplier"]
 
 const jobBaseData = {
     "Beggar": { name: "Beggar", maxXp: 50, income: 5, heroxp: 36 },
@@ -288,9 +324,11 @@ milestoneBaseData = {
     "Speed speed speed": { name: "Speed speed speed", expense: 1e45, tier: 33, description: "Multiply Time Warping and Lifespan by 1000x. Heavily boosts Faint Hope" },
     "Life is valueable": { name: "Life is valueable", expense: 1e50, tier: 34, description: "Multiply your lifespan by 1e5x. New challenge unlocked. Dark Matter boosts essence gain." },
     "Dark Matter Millionaire": { name: "Dark Matter Millionaire", expense: 1e55, tier: 35, description: "Multiply Dark Matter gain by 500x" },
+    "The new Dark Matter": { name: "The new Dark Matter", expense: 1e60, tier: 36, description: "Unlocks Metaverse" },
 
-    // Commented because it will be included in the next release :)
-    "The new Dark Matter": { name: "The new Dark Matter", expense: 1e60, tier: 36, description: "Unlocks Red Matter" },
+    "Strong Hope": { name: "Strong Hope", expense: 1e70, tier: 37, description: "Faint Hope does not reset on transcend or collapse" },
+    "Ruler of the Metaverse": { name: "Ruler of the Metaverse", expense: 1e85, tier: 38, description: "Unlocks Metaverse Perks" },
+    "The End": { name: "The End", expense: 1e300, tier: 38, description: "The End" },
 }
 
 const jobCategories = {
@@ -320,7 +358,8 @@ const itemCategories = {
 const milestoneCategories = {
     "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcendent Master", "Eternal Time", "Hell Portal", "Inferno", "God's Blessings", "Faint Hope"],
     "Heroic Milestones": ["New Beginning", "Rise of Great Heroes", "Lazy Heroes", "Dirty Heroes", "Angry Heroes", "Tired Heroes", "Scared Heroes", "Good Heroes", "Funny Heroes", "Beautiful Heroes", "Awesome Heroes", "Furious Heroes", "Superb Heroes", "A new beginning"],
-    "Dark Milestones": ["Mind Control", "Galactic Emperor", "Dark Matter Harvester", "A Dark Era", "Dark Orbiter", "Dark Matter Mining", "The new gold", "The Devil inside you", "Strange Magic", "Speed speed speed", "Life is valueable", "Dark Matter Millionaire", "The new Dark Matter"]
+    "Dark Milestones": ["Mind Control", "Galactic Emperor", "Dark Matter Harvester", "A Dark Era", "Dark Orbiter", "Dark Matter Mining", "The new gold", "The Devil inside you", "Strange Magic", "Speed speed speed", "Life is valueable", "Dark Matter Millionaire", "The new Dark Matter"],
+    "Metaverse Milestones": ["Strong Hope", "Ruler of the Metaverse", "The End"],
 }
 
 function getPreviousTaskInCategory(task) {
@@ -365,6 +404,7 @@ const headerRowColors = {
     "Essence Milestones": "#0066ff",
     "Heroic Milestones": "#ff6600",
     "Dark Milestones": "#873160",
+    "Metaverse Milestones": "#09a0e6",
 }
 
 const headerRowTextColors = {
@@ -388,6 +428,7 @@ const headerRowTextColors = {
     "Essence Milestones": "purple",
     "Heroic Milestones": "purple",
     "Dark Milestones": "purple",
+    "Metaverse Milestones": "purple",
 }
 
 function getBindedTaskEffect(taskName) {
@@ -607,7 +648,7 @@ function setCustomEffects() {
     faintHope.getEffect = function () {
         var mult = 1
         if (gameData.requirements["Speed speed speed"].isCompleted()) {
-            mult = 7.5275 * Math.exp(0.0053 * gameData.rebirthThreeTime) * (Math.log(getUnpausedGameSpeed()) / Math.log(2))
+            mult = 7.5275 * Math.exp(0.0053 * (gameData.requirements["Strong Hope"].isCompleted() ? gameData.rebirthFiveTime : gameData.rebirthThreeTime)) * (Math.log(getUnpausedGameSpeed()) / Math.log(2))
             if (mult == Infinity)
                 mult = 1e308
             mult = softcap(mult, 10000000, 0.01)
@@ -722,14 +763,14 @@ function getEvilGain() {
     const oblivionEmbodiment = gameData.taskData ["Void Embodiment"]
     const yingYang = gameData.taskData["Yin Yang"]
     const inferno = gameData.requirements["Inferno"].isCompleted() ? 5 : 1
-    let speedIsLife = gameData.dark_matter_shop.speed_is_life == 1 ? 0.5 : 1
+    let speedIsLife = gameData.dark_matter_shop.speed_is_life == 1 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.5) : 1
     let yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 2 ? 100 : 1
-    let essenceCollector = gameData.dark_matter_shop.essence_collector == 1 ? 0.5 : 1
+    let essenceCollector = gameData.dark_matter_shop.essence_collector == 1 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.5) : 1
     if (gameData.active_challenge == "the_darkest_time") {
         speedIsLife = 0.5
         yourGreatestDebt = 1
         essenceCollector = 0.5
-    }
+    }    
 
 
     const theDevilInsideYou = gameData.requirements["The Devil inside you"].isCompleted() ? 1e15 : 1
@@ -750,10 +791,10 @@ function getEssenceGain() {
 
     let multiverseExplorer = gameData.dark_matter_shop.multiverse_explorer == 1 ? 5000
         : (gameData.dark_matter_shop.multiverse_explorer == 2 ? 10000 : 1)
-    let speedIsLife = gameData.dark_matter_shop.speed_is_life == 2 ? 0.5 : 1
+    let speedIsLife = gameData.dark_matter_shop.speed_is_life == 2 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.5) : 1
     let essenceCollectorSkillTree = gameData.dark_matter_shop.essence_collector == 1 ? 500
         : (gameData.dark_matter_shop.essence_collector == 2 ? 1000 : 1)    
-    let explosionOfTheUniverse = gameData.dark_matter_shop.explosion_of_the_universe == 1 ? 0.5 : 1
+    let explosionOfTheUniverse = gameData.dark_matter_shop.explosion_of_the_universe == 1 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.5) : 1
 
     if (gameData.active_challenge == "the_darkest_time") {
         speedIsLife = 0.5
@@ -764,12 +805,12 @@ function getEssenceGain() {
 
 
     const theNewGold = gameData.requirements["The new gold"].isCompleted() ? 1000 : 1
-    const lifeIsValueable = gameData.requirements["Life is valueable"].isCompleted ? gameData.dark_matter : 1
+    const lifeIsValueable = gameData.requirements["Life is valueable"].isCompleted() ? gameData.dark_matter : 1
 
     return essenceControl.getEffect() * essenceCollector.getEffect() * transcendentMaster.getEffect()
         * faintHope.getEffect() * rise.getEffect() * getChallengeBonus("dance_with_the_devil")
         * getAGiftFromGodEssenceGain() * darkMagician.getEffect() * speedIsLife * essenceCollectorSkillTree
-        * theNewGold * explosionOfTheUniverse * lifeIsValueable * multiverseExplorer
+        * theNewGold * explosionOfTheUniverse * lifeIsValueable * multiverseExplorer * essenceMultGain()
 }
 
 function getDarkMatterGain() {
@@ -777,11 +818,11 @@ function getDarkMatterGain() {
     const darkMatterHarvester = gameData.requirements["Dark Matter Harvester"].isCompleted() ? 10 : 1
     const darkMatterMining = gameData.requirements["Dark Matter Mining"].isCompleted() ? 3 : 1
     const darkMatterMillionaire = gameData.requirements["Dark Matter Millionaire"].isCompleted() ? 500 : 1
-    let multiverseExplorer = gameData.dark_matter_shop.multiverse_explorer == 2 ? 0.01 : 1
+    let multiverseExplorer = gameData.dark_matter_shop.multiverse_explorer == 2 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.01) : 1
     if (gameData.active_challenge == "the_darkest_time")
         multiverseExplorer = 1
 
-    return 1 * darkRuler.getEffect() * darkMatterHarvester * darkMatterMining * darkMatterMillionaire * getChallengeBonus("the_darkest_time") * multiverseExplorer
+    return 1 * darkRuler.getEffect() * darkMatterHarvester * darkMatterMining * darkMatterMillionaire * getChallengeBonus("the_darkest_time") * multiverseExplorer * darkMaterMultGain()
 }
 
 function getDarkMatter() {
@@ -807,7 +848,7 @@ function getGameSpeed() {
 }
 
 function getUnpausedGameSpeed() {
-    const boostWarping = gameData.boost_active ? 100 : 1
+    const boostWarping = gameData.boost_active ? gameData.metaverse.boost_warp_modifier : 1
     const timeWarping = gameData.taskData["Time Warping"]
     const temporalDimension = gameData.taskData["Temporal Dimension"]
     const timeLoop = gameData.taskData["Time Loop"]
@@ -819,7 +860,7 @@ function getUnpausedGameSpeed() {
     if (gameData.active_challenge == "the_darkest_time") 
         speedIsLife = 1    
 
-    let multiverseExplorer = gameData.dark_matter_shop.multiverse_explorer == 1 ? 0.0001 : 1
+    let multiverseExplorer = gameData.dark_matter_shop.multiverse_explorer == 1 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.001) : 1
     if (gameData.active_challenge == "the_darkest_time")
         multiverseExplorer = 1    
 
@@ -873,30 +914,6 @@ document.querySelector("#changelogTabTabButton").addEventListener('click', async
 
 function togglePause() {
     gameData.paused = !gameData.paused
-}
-
-function getBoostTimeSeconds() {
-    let defaultTime = 60.0
-
-    return defaultTime
-}
-
-function getBoostCooldownSeconds() {
-    let defaultTime = 60.0 * 10.0
-
-    return defaultTime
-}
-
-function canApplyBoost() {
-    return gameData.boost_cooldown <= 0 && !gameData.boost_active;
-}
-
-function applyBoost() {
-    if (canApplyBoost())
-    {
-        gameData.boost_timer = getBoostTimeSeconds();
-        gameData.boost_active = true;
-    }    
 }
 
 function forceAutobuy() {
@@ -953,10 +970,10 @@ function getIncome() {
     if (gameData.active_challenge == "the_darkest_time")
         return 0
 
-    const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 1 ? (1 / 10)
-        : (gameData.dark_matter_shop.your_greatest_debt == 2 ? (1 / 2) : 1)
-    const essenceCollector = gameData.dark_matter_shop.essence_collector == 2 ? (1 / 25) : 1
-    const explosionOfTheUniverse = gameData.dark_matter_shop.explosion_of_the_universe == 2 ? (1 / 1e5) : 1
+    const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 1 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.1)
+        : (gameData.dark_matter_shop.your_greatest_debt == 2 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.5) : 1)
+    const essenceCollector = gameData.dark_matter_shop.essence_collector == 2 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.04) : 1
+    const explosionOfTheUniverse = gameData.dark_matter_shop.explosion_of_the_universe == 2 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.00001) : 1
 
     return gameData.currentJob.getIncome() * yourGreatestDebt * essenceCollector * explosionOfTheUniverse
 }
@@ -1035,6 +1052,37 @@ function autoBuy() {
             }
         }
     }
+
+    // perks
+    if (gameData.perks.auto_boost == 1 && !gameData.boost_active && gameData.boost_cooldown <= 0) 
+        applyBoost()    
+
+    if (gameData.perks.auto_dark_orb == 1 && gameData.dark_matter >= getDarkOrbGeneratorCost() * 10 && gameData.dark_orbs != Infinity)
+        buyDarkOrbGenerator()
+
+    if (gameData.perks.auto_dark_orb == 1 && gameData.dark_matter >= 100 && gameData.dark_matter_shop.a_miracle == false)
+        buyAMiracle()
+
+    if (gameData.perks.auto_dark_shop == 1 && gameData.dark_orbs >= 1000) {
+        buyADealWithTheChairman()
+        buyAGiftFromGod()
+        buyGottaBeFast()
+        buyLifeCoach()
+    }    
+
+    if (gameData.perks.auto_sacrifice == 1 && gameData.hypercubes > 1000) {
+        buyDarkMaterMult()
+        buyChallengeAltar()
+        buyEssenceMult()
+        if (gameData.hypercubes > evilTranCost() * 100)
+            buyEvilTran()
+        if (gameData.hypercubes > boostDurationCost() * 100)
+            buyBoostDuration()
+        if (gameData.hypercubes > reduceBoostCooldownCost() * 100)
+            buyReduceBoostCooldown()
+        if (gameData.hypercubes > hypercubeGainCost() * 100)
+            buyHypercubeGain()
+    }
 }
 
 function increaseDays() {
@@ -1051,6 +1099,7 @@ function increaseRealtime() {
     gameData.rebirthTwoTime += 1.0 / updateSpeed
     gameData.rebirthThreeTime += 1.0 / updateSpeed
     gameData.rebirthFourTime += 1.0 / updateSpeed
+    gameData.rebirthFiveTime += 1.0 / updateSpeed
 
     if (gameData.boost_active) {
         gameData.boost_timer -= 1.0 / updateSpeed
@@ -1126,7 +1175,8 @@ function rebirthTwo() {
 function rebirthThree() {
     gameData.rebirthThreeCount += 1
     gameData.essence += getEssenceGain()
-    gameData.evil = 0
+    gameData.evil = evilTranGain()
+
 
     if (gameData.stats.fastest3 == null || gameData.rebirthThreeTime < gameData.stats.fastest3)
         gameData.stats.fastest3 = gameData.rebirthThreeTime
@@ -1148,15 +1198,15 @@ function rebirthThree() {
 function rebirthFour() {
     gameData.rebirthFourCount += 1
     gameData.essence = 0
-    gameData.evil = 0
+    gameData.evil = evilTranGain()
     gameData.dark_matter += getDarkMatterGain()
 
-    for (const challenge in gameData.challenges) {
-        gameData.challenges[challenge] = 0
+    if (gameData.metaverse.challenge_altar == 0 && gameData.perks.save_challenges == 0)  {
+        for (const challenge in gameData.challenges) {
+            gameData.challenges[challenge] = 0
+        }
+        gameData.requirements["Challenges"].completed = false
     }
-
-    // hide challenges tab till player will get 10k evil again (not actually Permanent unlock now)
-    gameData.requirements["Challenges"].completed = false
 
     if (gameData.stats.fastest4 == null || gameData.rebirthFourTime < gameData.stats.fastest4)
         gameData.stats.fastest4 = gameData.rebirthFourTime
@@ -1164,6 +1214,74 @@ function rebirthFour() {
     gameData.rebirthTwoTime = 0
     gameData.rebirthThreeTime = 0
     gameData.rebirthFourTime = 0
+
+    rebirthReset()
+
+    for (const taskName in gameData.taskData) {
+        const task = gameData.taskData[taskName]
+        task.maxLevel = 0
+    }
+
+    gameData.active_challenge = ""
+}
+
+function rebirthFive() {
+    gameData.rebirthFiveCount += 1
+    gameData.perks_points += getMetaversePerkPointsGain()
+    gameData.essence = 0
+    gameData.evil = 0
+    gameData.dark_matter = 0
+    gameData.dark_orbs = 0
+    gameData.dark_matter_shop.dark_orb_generator = 0
+    gameData.dark_matter_shop.a_miracle = false
+
+    gameData.dark_matter_shop.a_deal_with_the_chairman = 0
+    gameData.dark_matter_shop.a_gift_from_god = 0
+    gameData.dark_matter_shop.gotta_be_fast = 0
+    gameData.dark_matter_shop.life_coach = 0
+    
+
+    if (gameData.perks.keep_dark_mater_skills == 0) {
+        gameData.dark_matter_shop.speed_is_life = 0
+        gameData.dark_matter_shop.your_greatest_debt = 0
+        gameData.dark_matter_shop.essence_collector = 0
+        gameData.dark_matter_shop.explosion_of_the_universe = 0
+        gameData.dark_matter_shop.multiverse_explorer = 0
+    }
+
+    if (gameData.perks.save_challenges == 0) {
+        for (const challenge in gameData.challenges) {
+            gameData.challenges[challenge] = 0
+        }
+        gameData.requirements["Challenges"].completed = false
+    }
+
+    gameData.requirements["Dark Matter"].completed = false
+    gameData.requirements["Dark Matter Skills"].completed = false
+    gameData.requirements["Dark Matter Skills2"].completed = false
+
+
+    if (gameData.stats.fastest5 == null || gameData.rebirthFiveTime < gameData.stats.fastest5)
+        gameData.stats.fastest5 = gameData.rebirthFiveTime
+    gameData.rebirthOneTime = 0
+    gameData.rebirthTwoTime = 0
+    gameData.rebirthThreeTime = 0
+    gameData.rebirthFourTime = 0
+    gameData.rebirthFiveTime = 0
+
+    gameData.boost_active = false
+    gameData.boost_timer = 0
+    gameData.boost_cooldown = 0
+
+    gameData.hypercubes = 0
+    gameData.metaverse.boost_cooldown_modifier = 1
+    gameData.metaverse.boost_timer_modifier = 1
+    gameData.metaverse.boost_warp_modifier = 100
+    gameData.metaverse.hypercube_gain_modifier = 1
+    gameData.metaverse.evil_tran_gain = 0
+    gameData.metaverse.essence_gain_modifier = 0
+    gameData.metaverse.challenge_altar = 0
+    gameData.metaverse.dark_mater_gain_modifer = 0    
 
     rebirthReset()
 
@@ -1244,7 +1362,7 @@ function rebirthReset(set_tab_to_jobs = true) {
 
     for (const key in gameData.requirements) {
         const requirement = gameData.requirements[key]
-        if (requirement.completed && permanentUnlocks.includes(key)) continue
+        if (requirement.completed && (permanentUnlocks.includes(key) || metaverseUnlocks.includes(key))) continue
         requirement.completed = false
     }
 
@@ -1269,6 +1387,8 @@ function getLifespan() {
 
     if (gameData.active_challenge == "legends_never_die" || gameData.active_challenge == "the_darkest_time") return Math.pow(lifespan, 0.72) + 365 * 25
 
+    if (gameData.rebirthFiveCount > 0) return Infinity
+
     return lifespan
 }
 
@@ -1285,10 +1405,7 @@ function isAlive() {
     return condition && !tempData.hasError
 }
 
-function getFormattedCurrentChallengeName() {
-    const challengeTitle = gameData.active_challenge.replaceAll("_", " ")
-    return challengeTitle.charAt(0).toUpperCase() + challengeTitle.slice(1)
-}
+
 
 function canSimulate() {
     return !gameData.paused && isAlive()
@@ -1393,7 +1510,14 @@ function assignMethods() {
             requirement = Object.assign(new DarkMatterRequirement(requirement.querySelectors, requirement.requirements), requirement)
         } else if (requirement.type == "darkOrb") {
             requirement = Object.assign(new DarkOrbsRequirement(requirement.querySelectors, requirement.requirements), requirement)
+        } else if (requirement.type == "metaverse") {
+            requirement = Object.assign(new MetaverseRequirement(requirement.querySelectors, requirement.requirements), requirement)
+        } else if (requirement.type == "hypercube") {
+            requirement = Object.assign(new HypercubeRequirement(requirement.querySelectors, requirement.requirements), requirement)
+        } else if (requirement.type == "perkpoint") {
+            requirement = Object.assign(new PerkPointRequirement(requirement.querySelectors, requirement.requirements), requirement)
         }
+        
 
         const tempRequirement = tempData["requirements"][key]
         requirement.elements = tempRequirement.elements
@@ -1468,6 +1592,8 @@ function loadGameData() {
             replaceSaveDict(gameData.stats, gameDataSave.stats)
             replaceSaveDict(gameData.challenges, gameDataSave.challenges)
             replaceSaveDict(gameData.dark_matter_shop, gameDataSave.dark_matter_shop)
+            replaceSaveDict(gameData.metaverse, gameDataSave.metaverse)
+            replaceSaveDict(gameData.perks, gameDataSave.perks)
             gameData = gameDataSave
 
             if (gameData.coins == null)
@@ -1537,12 +1663,32 @@ function update(needUpdateUI = true) {
 
     gameData.dark_orbs += applySpeed(getDarkOrbGeneration())
 
+    gameData.hypercubes += applySpeed(getHypercubeGeneration())
+
     applyMilestones()
+    applyPerks()
     updateStats()
     if (needUpdateUI && !document.hidden)
         updateUI()
     else
         updateRequirements()
+}
+
+function applyPerks() {
+    if (gameData.perks.instant_evil == 1) {
+        if (gameData.evil < getEvilGain() * 10)
+            gameData.evil = getEvilGain() * 10
+    }
+
+    if (gameData.perks.instant_essence == 1) {
+        if (gameData.essence < getEssenceGain() * 10)
+            gameData.essence = getEssenceGain() * 10
+    }
+
+    if (gameData.perks.instant_dark_matter == 1) {
+        if (gameData.dark_matter < getDarkMatterGain() * 10)
+            gameData.dark_matter = getDarkMatterGain() * 10
+    }
 }
 
 function updateRequirements() {
@@ -1694,7 +1840,8 @@ gameData.requirements = {
     "Almightiness": new EssenceRequirement([".Almightiness"], [{requirement: 1}]),
     "Darkness": new DarkMatterRequirement([".Darkness"], [{requirement: 1}]),
     "Heroic Milestones": new EssenceRequirement([removeSpaces(".Heroic Milestones")], [{requirement: 400000}]),
-    "Dark Milestones": new EssenceRequirement([removeSpaces(".Dark Milestones")], [{requirement: 5e10}]),
+    "Dark Milestones": new EssenceRequirement([removeSpaces(".Dark Milestones")], [{ requirement: 5e10 }]),
+    "Metaverse Milestones": new EssenceRequirement([removeSpaces(".Metaverse Milestones")], [{ requirement: 1e60 }]),
 
     // Rebirth items
     "Rebirth tab": new AgeRequirement(["#rebirthTabButton"], [{requirement: 25}]),
@@ -1705,11 +1852,13 @@ gameData.requirements = {
     "Rebirth note 5": new AgeRequirement(["#rebirthNote5"], [{requirement: 10000}]),
     "Rebirth note 6": new TaskRequirement(["#rebirthNote6"], [{ task: "Cosmic Recollection", requirement: 1 }]),
     "Rebirth note 7": new EssenceRequirement(["#rebirthNote7"], [{ requirement: 5e10 }]),
+    "Rebirth note 8": new EssenceRequirement(["#rebirthNote8"], [{ requirement: 1e60 }]),
 
     "Rebirth button 1": new AgeRequirement(["#rebirthButton1"], [{ requirement: 65 }]),
     "Rebirth button 2": new AgeRequirement(["#rebirthButton2"], [{ requirement: 200 }]),
     "Rebirth button 3": new TaskRequirement(["#rebirthButton3"], [{ task: "Cosmic Recollection", requirement: 1 }]),
     "Rebirth button 4": new EssenceRequirement(["#rebirthButton4"], [{ requirement: 5e10 }]),
+    "Rebirth button 5": new EssenceRequirement(["#rebirthButton5"], [{ requirement: 1e85 }]),
 
     "Rebirth stats evil": new AgeRequirement(["#statsEvilGain"], [{ requirement: 200 }]),
     "Rebirth stats essence": new TaskRequirement(["#statsEssenceGain"], [{ task: "Cosmic Recollection", requirement: 1 }]),
@@ -1719,7 +1868,8 @@ gameData.requirements = {
     "Evil info": new EvilRequirement(["#evilInfo"], [{requirement: 1}]),
     "Essence info": new EssenceRequirement(["#essenceInfo"], [{requirement: 1}]),
     "Dark Matter info": new DarkMatterRequirement(["#darkMatterInfo"], [{requirement: 1}]),
-    "Dark Orbs info": new DarkOrbsRequirement(["#darkOrbsInfo"], [{requirement: 1}]),
+    "Dark Orbs info": new DarkOrbsRequirement(["#darkOrbsInfo"], [{ requirement: 1 }]),
+    "Hypercubes info": new HypercubeRequirement(["#hypercubesInfo"], [{ requirement: 1 }]),
 
     // Common work
     "Beggar": new TaskRequirement([getTaskQuerySelector("Beggar")], []),
@@ -1881,6 +2031,7 @@ gameData.requirements = {
     // Dark Matter
     "Dark Matter": new DarkMatterRequirement(["#darkMatterTabButton"], [{ requirement: 1 }]),
     "Dark Matter Skills": new EssenceRequirement(["#skillTreeTabTabButton"], [{ requirement: 1e20 }]),
+    "Dark Matter Skills2": new EssenceRequirement(["#skillTreePage"], [{ requirement: 1e20 }]),
 
     // Challenges
     "Challenges": new EvilRequirement(["#challengesTabButton"], [{ requirement: 10000 }]),
@@ -1890,6 +2041,20 @@ gameData.requirements = {
     "Challenge_dance_with_the_devil": new EssenceRequirement(["#danceWithTheDevilChallenge"], [{ requirement: 1e6 }]),
     "Challenge_legends_never_die": new EssenceRequirement(["#legendsNeverDieChallenge"], [{ requirement: 2.5e7 }]),
     "Challenge_the_darkest_time": new EssenceRequirement(["#theDarkestTimeChallenge"], [{ requirement: 1e50 }]),
+
+    // Metaverse Altars
+    "Metaverse": new MetaverseRequirement(["#metaverseTabButton"], [{ requirement: 1 }]),
+    "Increase Hypercube Gain": new HypercubeRequirement(["#IncreaseHypercubeGainAltar"], [{ requirement: 400 }]),
+    "Reduce Boost Cooldown": new HypercubeRequirement(["#ReduceBoostCooldownAltar"], [{ requirement: 500 }]),    
+    "Increase Boost Duration": new HypercubeRequirement(["#IncreaseBoostDurationAltar"], [{ requirement: 2500 }]),
+    "Gain evil at new transcension": new HypercubeRequirement(["#EvilAltar"], [{ requirement: 50000000 }]),
+    "Essence gain multiplier": new HypercubeRequirement(["#EssenceAltar"], [{ requirement: 500000000 }]),
+    "Challenges are not reset": new HypercubeRequirement(["#ChallengeAltar"], [{ requirement: 1e15 }]),
+    "Dark Mater gain multiplier": new HypercubeRequirement(["#DarkMaterAltar"], [{ requirement: 1e17 }]),
+
+    // Metaverse Perks
+    "Metaverse Perks": new PerkPointRequirement(["#metaversePage2"], [{ requirement: 1 }]),
+    "Metaverse Perks Button": new PerkPointRequirement(["#metaverseTab2TabButton"], [{ requirement: 1 }]),
 }
 
 for (const key in milestoneBaseData) {
@@ -1919,6 +2084,7 @@ update()
 setTab(gameData.settings.selectedTab)
 setTabSettings("settingsTab")
 setTabDarkMatter("shopTab")
+setTabMetaverse("metaverseTab1")
 
 let ticking = false;
 

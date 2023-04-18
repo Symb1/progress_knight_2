@@ -193,5 +193,5 @@ const tooltips = {
     "Life is valueable": "Time is limited... Even as the ruler of the universe.",
     "Speed speed speed": "You can affect the speed of the universe with your gigantic amount of Dark Matter.",
     "Dark Matter Millionaire": "This secret spell will help you reach your quest to become the first Dark Matter millionaire.",
-    "The new Dark Matter": "",
+    "The new Dark Matter": "Welcome to Metaverse.",
 }

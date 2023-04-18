@@ -36,7 +36,7 @@
 						<br>Real Time: <span id="realtimeDisplay">00:00:00</span>
 					</div>
 					<button id="pauseButton" class="w3-button button sidebar-element" onClick="togglePause()">Pause</button>
-					<div class="sidebar-element" style="color: gray">
+					<div id="boostPanel" class="sidebar-element" style="color: gray">
 						<button id="boostButton" class="w3-button button sidebar-element" onClick="applyBoost()">Boost</button>
 						<span id="boostCooldownDisplay">00:00</span>
 					</div>
@@ -108,6 +108,10 @@
 						<div class="text-caption"><span style="color: rgb(204, 34, 219)">Time Warping: </span><span id="timeWarpingDisplay"></span></div>
 						<div style="color: gray" class="sidebar-element">Affects game speed</div>
 					</div>
+					<div id="hypercubesInfo">
+						<div class="text-caption"><span style="color: rgb(9, 160, 230)">Hypercubes: </span><span id="hypercubesDisplay"></span></div>
+						<div style="color: gray" class="sidebar-element">for Metaverse sacrifaces</div>
+					</div>
 					<div id="rebirthButton1" class="hidden">
 						<div class="text-caption"><span style="color: rgb(102, 229, 71)">Rebirth</span></div>
 						<button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100%" onClick="rebirthOne()">Touch the eye</button>
@@ -121,6 +125,9 @@
 					<div id="rebirthButton4" class="hidden">
 						<button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100% " onClick="rebirthFour()">Collapse the universe: <span style="color: rgb(114, 83, 182)" id="darkMatterGainButtonDisplay"></span></button>
 					</div>
+					<div id="rebirthButton5" class="hidden">
+						<button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100% " onClick="rebirthFive()">Reset Multiverse: <span style="color: rgb(217, 24, 119)" id="metaversePerkPointsGainButtonDisplay"></span></button>
+					</div>
 				</div>
 				<div id="column" class="column">
 					<div id="tabcolumn" class="panel w3-margin-left tabs-tab-column">
@@ -131,6 +138,7 @@
 						<div class="w3-button w3-bar-item tabButton baritem" id="milestonesTabButton" onClick="setTab('milestones')">Milestones</div>
 						<div class="w3-button w3-bar-item tabButton baritem" id="rebirthTabButton" onClick="setTab('rebirth')">Amulet</div>
 						<div class="w3-button w3-bar-item tabButton baritem" id="darkMatterTabButton" onClick="setTab('darkMatter')">Dark Matter</div>
+						<div class="w3-button w3-bar-item tabButton baritem" id="metaverseTabButton" onClick="setTab('metaverse')">Metaverse</div>
 						<div class="w3-button w3-bar-item tabButton baritem" id="settingsTabButton" onClick="setTab('settings')">Settings</div>
 					</div>
 					<div id="maincolumn" class="panel w3-margin-left w3-margin-top w3-padding tabs-main-column">
@@ -172,8 +180,8 @@
 							<tr class="item-header-row" onclick="forceAutobuy()">
 								<th class="category" style="width: 20em">
 									<button class="button-no-button tooltip" style="background-color:transparent;" onclick="forceAutobuy()">
-									<span class="name">Item</span>
-									<span class="tooltipText">Click to activate auto-buy</span>
+										<span class="name">Item</span>
+										<span class="tooltipText">Click to activate auto-buy</span>
 									</button>
 								</th>
 								<th>Active</th>
@@ -185,8 +193,8 @@
 							<tr>
 								<td>
 									<button class="button item-button tooltip">
-									<span class="name"></span>
-									<span class="tooltipText">tooltip</span>
+										<span class="name"></span>
+										<span class="tooltipText">tooltip</span>
 									</button>
 								</td>
 								<td>
@@ -237,6 +245,7 @@
 									<span style="color: rgb(200, 0, 0)" class="evil"></span>
 									<span style="color: rgb(24, 210, 217)" class="essence"></span>
 									<span style="color: rgb(114, 83, 182)" class="darkMatter"></span>
+									<span style="color: rgb(9, 160, 230)" class="hypercube"></span>
 								</div>
 							</td>
 						</template>
@@ -285,12 +294,14 @@
 								<div id="theRichAndThePoorChallenge" style="padding-top:2em">
 									<div class="text-caption challenge-title">2. The rich and the poor</div>
 									<div style="color:gray; padding-bottom:0.3em">Reduces income by ^0.35</div>
-									<div style="color: gold; padding-bottom: 0.3em">Goal: Reach <div id="challengeGoal2" class="coins" style="display:inline">
-										<span></span>
-										<span></span>
-										<span></span>
-										<span></span>
-									</div> Gross Income</div>
+									<div style="color: gold; padding-bottom: 0.3em">
+										Goal: Reach <div id="challengeGoal2" class="coins" style="display:inline">
+											<span></span>
+											<span></span>
+											<span></span>
+											<span></span>
+										</div> Gross Income
+									</div>
 									<div id="challengeReward2" class="reward">Reward: Multiplies income by x<span id="challengeIncomeBuff">1</span></div>
 									<button id="challengeButton2" class="w3-button button" onclick="enterChallenge('rich_and_the_poor')">Enter challenge</button>
 								</div>
@@ -329,11 +340,11 @@
 								<table id="milestoneTable" class="w3-table w3-bordered">
 								</table>
 							</div>
-							<div id="dummyPage1" style="flex: 2; margin-left: 0.5em;">                            
+							<div id="dummyPage1" style="flex: 2; margin-left: 0.5em;">
 							</div>
 						</div>
 						<div class="tab" id="rebirth">
-							<div id="rebirthPage" style="flex: 1; margin-left: 0.5em;" >
+							<div id="rebirthPage" style="flex: 1; margin-left: 0.5em;">
 								<ul>
 									<li style="margin: 0.4em;">
 										You stumble across a strange looking amulet on your 25th birthday. It does not look like
@@ -353,11 +364,11 @@
 											to see what happens.
 										</div>
 										<i style="color: grey">
-										By touching the eyeball, you will be reborn and have to restart life again, losing all your levels and coins.
-										However, you will gain <b>xp multipliers</b> for your heroes and skills equivalent to: <b>1 + the max level of the hero or skill / 10.</b>
-										This means you will learn everything again much more quickly than you did in your previous life. <span style="color: rgb(200, 0, 0)">
-										Something tells you that the amulet might evolve after living for <b>2 whole centuries</b>...
-										</span>
+											By touching the eyeball, you will be reborn and have to restart life again, losing all your levels and coins.
+											However, you will gain <b>xp multipliers</b> for your heroes and skills equivalent to: <b>1 + the max level of the hero or skill / 10.</b>
+											This means you will learn everything again much more quickly than you did in your previous life. <span style="color: rgb(200, 0, 0)">
+												Something tells you that the amulet might evolve after living for <b>2 whole centuries</b>...
+											</span>
 										</i>
 										<br>
 										<button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em " onClick="rebirthOne()">Touch the eye</button>
@@ -368,13 +379,13 @@
 											Your gut instinct was right. The moment you hit the grand age of 200, you hear an ominous hum coming from the amulet.
 											A mouth emerges from its surface and begins to cackle, and proceeds to say: "So you've made it this far... Are you ready to embrace evil?"
 											<br><span style="color: rgb(200, 0, 0)">
-											The amulet might transform even further after living for a <b>millennium</b>.
+												The amulet might transform even further after living for a <b>millennium</b>.
 											</span>
 										</div>
 										<i style="color: rgb(200, 0, 0)">
-										If you decide to embrace evil, all of your levels, coins and even max levels will be reset.
-										You will be reborn as a fresh slate. However, you will unlock a new line of skills and gain
-										<b><span id="evilGainDisplay"></span> evil</b>, which will heavily impact your future lives.
+											If you decide to embrace evil, all of your levels, coins and even max levels will be reset.
+											You will be reborn as a fresh slate. However, you will unlock a new line of skills and gain
+											<b><span id="evilGainDisplay"></span> evil</b>, which will heavily impact your future lives.
 										</i>
 										<br>
 										<button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em " onClick="rebirthTwo()">Embrace evil</button>
@@ -386,36 +397,36 @@
 											full of eyeballs emergin from it. As you are about to drop the amulet, you hear frightening screech followed by whispers in your head... <b>"You have to embrace the Void..."</b>
 											<br>
 											<span style="color: rgb(200, 0, 0)">
-											The amulet will reach its final form after <b>ten millennia</b>!
+												The amulet will reach its final form after <b>ten millennia</b>!
 											</span>
 										</div>
 										<i style="color: rgb(204, 0, 255)">
-										You have unlocked <b>"The Void"</b> class category along with <b>"Void Manipulation"</b> skills.
+											You have unlocked <b>"The Void"</b> class category along with <b>"Void Manipulation"</b> skills.
 										</i>
 									</li>
 									<li style="margin: 0.4em;" id="rebirthNote5" class="hidden">
 										<div style="margin-bottom: 0.4em;">
 											Ten millenia have passed... most of them spent serving the Void, yet there is still a glimpse of humanity inside of you. All of the sudden your amulet starts to glow in the distance,
 											illuminating darkness around you with the brightness of a thousand suns. With the very last remnant of your free will, you run to your amulet and touch it... <b>
-											"You are now part of something bigger than yourself..."
+												"You are now part of something bigger than yourself..."
 											</b>
 										</div>
 										<i style="color: rgb(255, 204, 102)">
-										You have unlocked <b>"Galactic Council"</b> class category along with <b>"Celestial Powers"</b> skills.
-										<i style="color: grey">
-										<br>
-										If you decide to <b>transcend</b>, you will be reborn once again, losing all your coins, <b>evil</b> and current levels.
-										However, your max levels won't be erased, but instead multiplied with the effect from the <b>Cosmic Recollection</b> skill and you will gain
-										<i style="color: rgb(24, 210, 217)">
-										<b><span id="essenceGainDisplay"></span> essence</b>,
-										</i>
-										along with new skills that will boost you even further in your journey.
-										<br>
-										<i style="color: rgb(200, 0, 0)">
-										Transcend will only appear if you have the <b>Cosmic Recollection</b> skill unlocked!
-										</i>
-										</i>
-										<br>
+											You have unlocked <b>"Galactic Council"</b> class category along with <b>"Celestial Powers"</b> skills.
+											<i style="color: grey">
+												<br>
+												If you decide to <b>transcend</b>, you will be reborn once again, losing all your coins, <b>evil</b> and current levels.
+												However, your max levels won't be erased, but instead multiplied with the effect from the <b>Cosmic Recollection</b> skill and you will gain
+												<i style="color: rgb(24, 210, 217)">
+													<b><span id="essenceGainDisplay"></span> essence</b>,
+												</i>
+												along with new skills that will boost you even further in your journey.
+												<br>
+												<i style="color: rgb(200, 0, 0)">
+													Transcend will only appear if you have the <b>Cosmic Recollection</b> skill unlocked!
+												</i>
+											</i>
+											<br>
 										</i>
 										<div style="margin-bottom: 0.4em;" id="rebirthNote6" class="hidden">
 											<button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em" onClick="rebirthThree()">Transcend</button>
@@ -423,17 +434,29 @@
 									</li>
 									<li style="margin: 0.4em;" id="rebirthNote7" class="hidden">
 										<i style="color: rgb(114, 83, 182)">
-										You are starting to become way too powerful. The end of the universe may be near...
+											You are starting to become way too powerful. The end of the universe may be near...
 										</i>
 										<i style="color: grey">
-										<br>
-										If you decide to <b>collapse the universe</b>, all of your levels, coins, max levels, evil, and <b>essence</b> will be reset. You will be reborn as a fresh slate in a new universe, with no memory of milestones and challenges from any of your past selves. In exchange, you will unlock a third new line of skills and gain <i style="color: rgb(114, 83, 182)">
-										<b><span id="darkMatterGainDisplay"></span> Dark Matter</b>,
-										</i>
-										which will boost you much further in your journey across the multiverse.
+											<br>
+											If you decide to <b>collapse the universe</b>, all of your levels, coins, max levels, evil, and <b>essence</b> will be reset. You will be reborn as a fresh slate in a new universe, with no memory of milestones and challenges from any of your past selves. In exchange, you will unlock a third new line of skills and gain <i style="color: rgb(114, 83, 182)">
+												<b><span id="darkMatterGainDisplay"></span> Dark Matter</b>,
+											</i>
+											which will boost you much further in your journey across the multiverse.
 										</i>
 										<br>
 										<button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em " onClick="rebirthFour()">Collapse the universe</button>
+									</li>
+									<li style="margin: 0.4em;" id="rebirthNote8" class="hidden">
+										<i style="color: rgb(9, 160, 230)">
+											You have discovered the Metaverse!
+										</i>
+										<i style="color: grey">
+											<br>
+											When you go to the Metaverse, you will lose everything that you have earned before. You will start from scratch, but over time you will become far superior. 
+											<span id="perkPointsGainText">You will gain <span style="color: rgb(217, 24, 119)"><span id="perkPointsGainDisplay"></span> Metaverse perk point</span>.</span>
+										</i>
+										<br>
+										<button class="w3-button button" style="margin-bottom: 0.4em; margin-top: 0.4em " onClick="rebirthFive()">Go to Metaverse</button>
 									</li>
 								</ul>
 							</div>
@@ -443,12 +466,14 @@
 						<div class="tab" id="darkMatter">
 							<div class="column">
 								<div class="panel w3-margin-left">
-									<div class="w3-button w3-bar-item tabButtonDarkMatter baritem w3-blue-gray" id="shopTabTabButton" onClick="setTabDarkMatter('shopTab')">Shop</div>
-									<div class="w3-button w3-bar-item tabButtonDarkMatter baritem" id="skillTreeTabTabButton" onClick="setTabDarkMatter('skillTreeTab')">Skills</div>
+									<div id="skillTreeTabTabButtonContainer" style="display: contents">
+										<div class="w3-button w3-bar-item tabButtonDarkMatter baritem w3-blue-gray" id="shopTabTabButton" onClick="setTabDarkMatter('shopTab')">Shop</div>
+										<div class="w3-button w3-bar-item tabButtonDarkMatter baritem" id="skillTreeTabTabButton" onClick="setTabDarkMatter('skillTreeTab')">Skills</div>
+									</div>
 								</div>
-								<div id="maincolumnSettings" class="panel w3-margin-left w3-margin-top w3-padding settings-main-column">
+								<div id="darkMatterMainColumn" class="panel w3-margin-left w3-margin-top w3-padding">
 									<div id="shopTab" class="tabDarkMatter">
-										<div class="panel w3-margin-left w3-margin-top w3-padding">
+										<div id="shopTabPage" class="panel w3-margin-left w3-margin-top w3-padding settings-tab-column">
 											<div class="text-caption" style="padding-top:0em">
 												<div class="text-caption"><span style="color: rgb(114, 83, 182)">Dark Matter: </span><span id="darkMatterShopDisplay"></span></div>
 											</div>
@@ -494,8 +519,8 @@
 										</div>
 									</div>
 									<div id="skillTreeTab" class="tabDarkMatter">
-										<div class="panel w3-margin-left w3-margin-top w3-padding">
-											<div class="text-caption" style="padding-top:0em">
+										<div id="skillTreePage" class="panel w3-margin-left w3-margin-top w3-padding settings-tab-column">
+											<div id="skillTreePageDarkMaterDisplay" class="text-caption" style="padding-top:0em">
 												<div class="text-caption"><span style="color: rgb(114, 83, 182)">Dark Matter: </span><span id="darkMatterSkillsDisplay"></span></div>
 											</div>
 											<div style="padding-top:2em">
@@ -508,14 +533,14 @@
 												<div class="text-caption dark-matter-title">Speed is life</div>
 												<div style="color:gray; padding-bottom:0.3em">
 													<button id="speedIsLife1" class="w3-button button" onclick="buySpeedOfLife(1)">Buy</button> -
-													Multiply <span style="color: rgb(204, 34, 219)">Time Warping</span> by <b>3x</b>,
-													but divide <span style="color: rgb(200, 0, 0)">Evil</span> gain by <b>2x</b>
+													Multiply <span style="color: rgb(204, 34, 219)">Time Warping</span> by <b>3x</b><span class="negative-effect">,
+													but divide <span style="color: rgb(200, 0, 0)">Evil</span> gain by <b>2x</b></span>
 												</div>
 												<div style="color: rgb(255, 255, 255); padding: 0.6em">OR</div>
 												<div style="color:gray; padding-bottom:0.3em">
 													<button id="speedIsLife2" class="w3-button button" onclick="buySpeedOfLife(2)">Buy</button> -
-													Multiply <span style="color: rgb(204, 34, 219)">Time Warping</span> by <b>7x</b>,
-													but divide <span style="color: rgb(24, 210, 217)">Essence</span> gain by <b>2x</b>
+													Multiply <span style="color: rgb(204, 34, 219)">Time Warping</span> by <b>7x</b><span class="negative-effect">,
+													but divide <span style="color: rgb(24, 210, 217)">Essence</span> gain by <b>2x</b></span>
 												</div>
 												<div id="speedIsLifeCost" style="color:gray; padding-bottom: 0.5em;">Cost: <b>100</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
 											</div>
@@ -523,14 +548,14 @@
 												<div class="text-caption dark-matter-title">Your greatest debt</div>
 												<div style="color:gray; padding-bottom:0.3em">
 													<button id="yourGreatestDebt1" class="w3-button button" onclick="buyYourGreatestDebt(1)">Buy</button> -
-													Multiply <span style="color:rgb(255, 204, 102)">all XP</span> gain by <b>500x</b>,
-													but divide <span style="color: lightgreen;">Income</span> by <b>10x</b>
+													Multiply <span style="color:rgb(255, 204, 102)">all XP</span> gain by <b>500x</b><span class="negative-effect">,
+													but divide <span style="color: lightgreen;">Income</span> by <b>10x</b></span>
 												</div>
 												<div style="color: rgb(255, 255, 255); padding: 0.6em">OR</div>
 												<div style="color:gray; padding-bottom:0.3em">
 													<button id="yourGreatestDebt2" class="w3-button button" onclick="buyYourGreatestDebt(2)">Buy</button> -
-													Multiply <span style="color: rgb(200, 0, 0)">Evil gain</span> by <b>100x</b>,
-													but divide <span style="color: lightgreen;">Income</span> by <b>2x</b>
+													Multiply <span style="color: rgb(200, 0, 0)">Evil gain</span> by <b>100x</b><span class="negative-effect">,
+													but divide <span style="color: lightgreen;">Income</span> by <b>2x</b></span>
 												</div>
 												<div id="yourGreatestDebtCost" style="color:gray; padding-bottom: 0.5em;">Cost: <b>1k</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
 											</div>
@@ -538,14 +563,14 @@
 												<div class="text-caption dark-matter-title">Essence collector</div>
 												<div style="color:gray; padding-bottom:0.3em">
 													<button id="essenceCollector1" class="w3-button button" onclick="buyEssenceCollector(1)">Buy</button> -
-													Multiply <span style="color: rgb(24, 210, 217)">Essence</span> gain by <b>500x</b>,
-													but divide <span style="color: rgb(200, 0, 0)">Evil</span> gain by <b>2x</b>
+													Multiply <span style="color: rgb(24, 210, 217)">Essence</span> gain by <b>500x</b><span class="negative-effect">,
+													but divide <span style="color: rgb(200, 0, 0)">Evil</span> gain by <b>2x</b></span>
 												</div>
 												<div style="color: rgb(255, 255, 255); padding: 0.6em">OR</div>
 												<div style="color:gray; padding-bottom:0.3em">
 													<button id="essenceCollector2" class="w3-button button" onclick="buyEssenceCollector(2)">Buy</button> -
-													Multiply <span style="color: rgb(24, 210, 217)">Essence</span> gain by <b>1000x</b>,
-													but divide <span style="color: lightgreen;">Income</span> by <b>25x</b>
+													Multiply <span style="color: rgb(24, 210, 217)">Essence</span> gain by <b>1000x</b><span class="negative-effect">,
+													but divide <span style="color: lightgreen;">Income</span> by <b>25x</b></span>
 												</div>
 												<div id="essenceCollectorCost" style="color:gray; padding-bottom: 0.5em;">Cost: <b>10k</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
 											</div>
@@ -553,14 +578,14 @@
 												<div class="text-caption dark-matter-title">Explosion of the universe</div>
 												<div style="color:gray; padding-bottom:0.3em">
 													<button id="explosionOfTheUniverse1" class="w3-button button" onclick="buyExplosionOfTheUniverse(1)">Buy</button> -
-													Multiply <span style="color:rgb(255, 204, 102)">all XP</span> gain by <b>1e100x</b>,
-													but divide <span style="color: rgb(24, 210, 217)">Essence</span> gain by <b>2x</b>
+													Multiply <span style="color:rgb(255, 204, 102)">all XP</span> gain by <b>1e100x</b><span class="negative-effect">,
+													but divide <span style="color: rgb(24, 210, 217)">Essence</span> gain by <b>2x</b></span>
 												</div>
 												<div style="color: rgb(255, 255, 255); padding: 0.6em">OR</div>
 												<div style="color:gray; padding-bottom:0.3em">
 													<button id="explosionOfTheUniverse2" class="w3-button button" onclick="buyExplosionOfTheUniverse(2)">Buy</button> -
-													Multiply <span style="color:rgb(255, 204, 102)">all XP</span> gain by <b>1e150x</b>,
-													but divide <span style="color: lightgreen;">Income</span> by <b>1e6x</b>
+													Multiply <span style="color:rgb(255, 204, 102)">all XP</span> gain by <b>1e150x</b><span class="negative-effect">,
+													but divide <span style="color: lightgreen;">Income</span> by <b>1e5x</b></span>
 												</div>
 												<div id="explosionOfTheUniverseCost" style="color:gray; padding-bottom: 0.5em;">Cost: <b>100k</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
 											</div>
@@ -568,16 +593,101 @@
 												<div class="text-caption dark-matter-title">Multiverse explorer</div>
 												<div style="color:gray; padding-bottom:0.3em">
 													<button id="multiverseExplorer1" class="w3-button button" onclick="buyMultiverseExplorer(1)">Buy</button> -
-													Multiply <span style="color: rgb(24, 210, 217)">Essence</span> gain by <b>5000x</b>,
-													but divide <span style="color: rgb(204, 34, 219)">Time Warping</span> by <b>1000x</b>
+													Multiply <span style="color: rgb(24, 210, 217)">Essence</span> gain by <b>5000x</b><span class="negative-effect">,
+													but divide <span style="color: rgb(204, 34, 219)">Time Warping</span> by <b>1000x</b></span>
 												</div>
 												<div style="color: rgb(255, 255, 255); padding: 0.6em">OR</div>
 												<div style="color:gray; padding-bottom:0.3em">
 													<button id="multiverseExplorer2" class="w3-button button" onclick="buyMultiverseExplorer(2)">Buy</button> -
-													Multiply <span style="color: rgb(24, 210, 217)">Essence</span> gain by <b>10000x</b>,
-													but divide <span style="color: rgb(114, 83, 182);">Dark Matter</span> gain by <b>100x</b>
+													Multiply <span style="color: rgb(24, 210, 217)">Essence</span> gain by <b>10000x</b><span class="negative-effect">,
+													but divide <span style="color: rgb(114, 83, 182);">Dark Matter</span> gain by <b>100x</b></span>
 												</div>
 												<div id="multiverseExplorerCost" style="color:gray; padding-bottom: 0.5em;">Cost: <b>100M</b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab" id="metaverse">
+							<div class="column">
+								<div class="panel w3-margin-left">
+									<div id="metaverseTabButtonContainer" style="display: contents">
+										<div class="w3-button w3-bar-item tabButtonMetaverse baritem w3-blue-gray" id="metaverseTab1TabButton" onClick="setTabMetaverse('metaverseTab1')">Altar</div>
+										<div class="w3-button w3-bar-item tabButtonMetaverse baritem" id="metaverseTab2TabButton" onClick="setTabMetaverse('metaverseTab2')">Perks</div>
+									</div>
+								</div>
+								<div id="maincolumnMetaverse" class="panel w3-margin-left w3-margin-top w3-padding">
+									<div id="metaverseTab1" class="tabMetaverse">
+										<div id="metaversePage1" class="panel w3-margin-left w3-margin-top w3-padding settings-tab-column">
+											<div class="text-caption" style="padding-top:0em">
+												<div class="text-caption"><span style="color: rgb(24, 210, 217)"><b>Welcome to Metaverse!</b></span></div>
+												<div style="color:gray; padding-bottom: 0.3em;">Lifespan is now Infinity.</div>
+											</div>
+											<div style="padding-top:0em">
+												<div style="color:gray; padding-bottom: 0.3em;">The more hypercubes you have, the more sacrifice opportunities will open up.</div>
+											</div>
+											<div style="padding-top:1em">
+												<div class="text-caption"><span style="color: rgb(9, 160, 230)">Hypercubes:</span> <span id="hypercubesMetaDisplay"></span></div>
+											</div>
+											<div id="IncreaseHypercubeGainAltar" style="padding-top:2em">
+												<div class="text-caption metaverse-title">Increase Hypercube Gain</div>
+												<div style="color:gray; padding-bottom: 0.3em;">Current gain: <b id="hypercubeGain"></b> / s</div>
+												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="hypercubeGainCost"></b> <span style="color: rgb(9, 160, 230)">Hypercubes</span></div>
+												<button class="w3-button button" id="hypercubeGainBuyButton" onclick="buyHypercubeGain()">Sacrifice</button>
+											</div>
+											<div id="ReduceBoostCooldownAltar" style="padding-top:2em">
+												<div class="text-caption metaverse-title">Reduce Boost Cooldown</div>
+												<div style="color:gray; padding-bottom: 0.3em;">Current cooldown: <b id="reduceBoostCooldown"></b></div>
+												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="reduceBoostCooldownCost"></b> <span style="color: rgb(9, 160, 230)">Hypercubes</span></div>
+												<button class="w3-button button" id="reduceBoostCooldownBuyButton" onclick="buyReduceBoostCooldown()">Sacrifice</button>
+											</div>
+											<div id="IncreaseBoostDurationAltar" style="padding-top:2em">
+												<div class="text-caption metaverse-title">Increase Boost Duration</div>
+												<div style="color:gray; padding-bottom: 0.3em;">Current duration: <b id="boostDuration"></b></div>
+												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="boostDurationCost"></b> <span style="color: rgb(9, 160, 230)">Hypercubes</span></div>
+												<button class="w3-button button" id="boostDurationBuyButton" onclick="buyBoostDuration()">Sacrifice</button>
+											</div>
+											<div id="EvilAltar" style="padding-top:2em">
+												<div class="text-caption metaverse-title">Gain evil at new transcension</div>
+												<div style="color:gray; padding-bottom: 0.3em;">Current gain: <b id="evilTranGain"></b> <span style="color: rgb(200, 0, 0)">Evil</span></div>
+												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="evilTranCost"></b> <span style="color: rgb(9, 160, 230)">Hypercubes</span></div>
+												<button class="w3-button button" id="evilTranBuyButton" onclick="buyEvilTran()">Sacrifice</button>
+											</div>
+											<div id="EssenceAltar" style="padding-top:2em">
+												<div class="text-caption metaverse-title">Essence gain multiplier</div>
+												<div style="color:gray; padding-bottom: 0.3em;">Current multiplier: x<b id="essenceMultGain"></b> <span style="color: rgb(24, 210, 217)">Essence</span></div>
+												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="essenceMultCost"></b> <span style="color: rgb(9, 160, 230)">Hypercubes</span></div>
+												<button class="w3-button button" id="essenceMultButton" onclick="buyEssenceMult()">Sacrifice</button>
+											</div>
+											<div id="ChallengeAltar" style="padding-top:2em">
+												<div class="text-caption metaverse-title">Challenges are not reset on collapse</div>
+												<div style="color:gray; padding-bottom: 0.3em;"><span style="color: rgb(10, 238, 43)"><b id="challengeAltarState"></b></span></div>
+												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="challengeAltarCost"></b> <span style="color: rgb(9, 160, 230)">Hypercubes</span></div>
+												<button class="w3-button button" id="challengeAltarButton" onclick="buyChallengeAltar()">Sacrifice</button>
+											</div>
+											<div id="DarkMaterAltar" style="padding-top:2em">
+												<div class="text-caption metaverse-title">Dark Mater gain multiplier</div>
+												<div style="color:gray; padding-bottom: 0.3em;">Current multiplier: x<b id="darkMaterMultGain"></b> <span style="color: rgb(114, 83, 182)">Dark Matter</span></div>
+												<div style="color:gray; padding-bottom: 0.5em;">Cost: <b id="darkMaterMultCost"></b> <span style="color: rgb(9, 160, 230)">Hypercubes</span></div>
+												<button class="w3-button button" id="darkMaterMultButton" onclick="buyDarkMaterMult()">Sacrifice</button>
+											</div>
+										</div>
+									</div>
+									<div id="metaverseTab2" class="tabMetaverse">
+										<div id="metaversePage2" class="panel w3-margin-left w3-margin-top w3-padding settings-tab-column">
+											<div class="text-caption" style="padding-top:0em; padding-left:1em;">
+												<div class="text-caption"><span style="color: rgb(217, 24, 119)"><b>Metaverse Perks</b></span></div>
+											</div>											
+											<div style="padding-top:1em">
+												<div class="text-caption" style="color: gray; padding-bottom: 0.3em; padding-left: 1em;">You can freely activate and deactivate perks for the points you have.</div>
+											</div>
+											<div class="text-caption" style="padding-top:2em; padding-left:1em;">You have <b><span id="perkPointDisplay" style="color: rgb(217, 24, 119)"></span></b> unspent Metaverse perk points. Total points: <b><span id="totalPerkPointDisplay" style="color: rgb(217, 24, 119)"></span></b>.</div>
+
+											<div id="perksLayout" class="perk-grid" style="padding-top:2em">
+												<template class="perkItem">
+													<button class="perk"><div class="perkName"></div><div style="font-size: smaller;">Cost: <span class="perkCost">1</span> MPP</div></button>
+												</template>
 											</div>
 										</div>
 									</div>
@@ -718,6 +828,13 @@
 													<li>Your fastest collapse is in <span id="rebirthFourFastestDisplay"></span>.</li>
 												</ul>
 											</div>
+											<div id="statsRebirth5" class="hidden">
+												<ul>
+													<li>You traveled to the Metaverse <span id="rebirthFiveCountDisplay"></span> times.</li>
+													<li>You have spent <span id="rebirthFiveTimeDisplay"></span> in this Metaverse.</li>
+													<li>Your fastest Metaverse is in <span id="rebirthFiveFastestDisplay"></span>.</li>
+												</ul>
+											</div>
 											<div id="statsChallenges">
 												<ul>
 													<li id="challengeStat1">Challenge 1 Reward: Multiplies happiness by x<span id="challengeHappinessBuffDisplay"></span>.</li>
@@ -725,15 +842,14 @@
 													<li id="challengeStat3">Challenge 3 Reward: Multiplies time warping by x<span id="challengeTimewarpingBuffDisplay"></span>.</li>
 													<li id="challengeStat4">Challenge 4 Reward: Multiplies essence gain by x<span id="challengeEssenceGainBuffDisplay"></span>.</li>
 													<li id="challengeStat5">Challenge 5 Reward: Multiplies evil gain by x<span id="challengeEvilGainBuffDisplay"></span>.</li>
+													<li id="challengeStat6">Challenge 6 Reward: Multiplies dark mater gain by x<span id="challengeDarkMaterGainBuffDisplay"></span>.</li>
 												</ul>
 											</div>
 										</div>
 									</div>
 									<div id="changelogTab" class="tabSettings">
 										<div id="changelogPage" style="flex: 1; margin-left: 0.5em;">
-											<pre id="changelog">
-
-                                        </pre>
+											<pre id="changelog"></pre>
 										</div>
 									</div>
 								</div>
@@ -750,6 +866,7 @@
 		<script type="text/javascript" src="js/classes.js"></script>
 		<script type="text/javascript" src="js/challenges.js"></script>
 		<script type="text/javascript" src="js/dark_matter.js"></script>
+		<script type="text/javascript" src="js/metaverse.js"></script>
 		<script type="text/javascript" src="js/tooltips.js"></script>
 		<script type="text/javascript" src="js/main.js"></script>
 	</body>

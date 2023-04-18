@@ -8,6 +8,8 @@ function initializeUI() {
     createAllRows(itemCategories, "itemTable")
     createAllRows(milestoneCategories, "milestoneTable")
 
+    createPerks(Object.keys(gameData.perks), "perksLayout")
+
     setLayout(peekSettingFromSave("layout"))
     setFontSize(peekSettingFromSave("fontSize"))
     setNotation(peekSettingFromSave("numberNotation"))
@@ -67,6 +69,9 @@ function updateUI() {
     if (currentTab == Tab.DARK_MATTER)
         renderDarkMatter()
 
+    if (currentTab == Tab.METAVERSE)
+        renderMetaverse()
+
     if (currentTab == Tab.SETTINGS)
         renderSettings()
 }
@@ -110,6 +115,7 @@ function renderSideBar() {
             : (gameData.boost_cooldown <= 0 ? "Ready!" : "Cooldown: " + formatTime(gameData.boost_cooldown))
     document.getElementById("boostButton").disabled = !canApplyBoost()
     document.getElementById("pauseButton").textContent = gameData.paused ? "Play" : "Pause"
+    document.getElementById("boostPanel").hidden = gameData.rebirthFiveCount == 0
 
     formatCoins(gameData.coins, document.getElementById("coinDisplay"))
     setSignDisplay()
@@ -136,6 +142,17 @@ function renderSideBar() {
     document.getElementById("timeWarping").hidden = (getUnpausedGameSpeed() / baseGameSpeed) <= 1
     document.getElementById("timeWarpingDisplay").textContent = "x" + format(getUnpausedGameSpeed() / baseGameSpeed, 2)
 
+    document.getElementById("hypercubesDisplay").textContent = formatTreshold(gameData.hypercubes)
+
+    if (getMetaversePerkPointsGain() == 0)
+        document.getElementById("perkPointsGainText").hidden = true
+    else
+        document.getElementById("perkPointsGainText").hidden = false
+
+    document.getElementById("perkPointsGainDisplay").textContent = formatTreshold(getMetaversePerkPointsGain())
+    document.getElementById("metaversePerkPointsGainButtonDisplay").textContent = "+" + formatTreshold(getMetaversePerkPointsGain())
+
+
     // Embrace evil indicator
     const embraceEvilButton = document.getElementById("rebirthButton2").querySelector(".button")
     embraceEvilButton.style.background = isNextDarkMagicSkillInReach() ? (gameData.settings.theme == 0 ? "#f0b5b5" : "#4B0317") : ""
@@ -148,7 +165,7 @@ function renderSideBar() {
     document.getElementById("rebirthButton1").hidden = gameData.requirements["Almighty Eye"].isCompleted()
 
     // Challenges
-    document.getElementById("challengeName").textContent = getFormattedCurrentChallengeName()
+    document.getElementById("challengeName").textContent = getFormattedTitle(gameData.active_challenge)
 
     if (gameData.active_challenge == "") {
         document.getElementById("challengeTitle").hidden = true
@@ -301,7 +318,7 @@ function renderShop() {
 }
 
 function renderChallenges() {
-    document.getElementById("activeChallengeName").textContent = getFormattedCurrentChallengeName()
+    document.getElementById("activeChallengeName").textContent = getFormattedTitle(gameData.active_challenge)
 
     if (gameData.active_challenge == "") {
         document.getElementById("exitChallengeDiv").hidden = true
@@ -387,6 +404,60 @@ function renderDarkMaterShopButton(elemName, condition) {
     document.getElementById(elemName).disabled = !condition    
 }
 
+function renderMetaverse() {
+    document.getElementById("hypercubesMetaDisplay").textContent = format(gameData.hypercubes)
+
+    document.getElementById("reduceBoostCooldown").textContent = formatTime(getBoostCooldownSeconds())
+    document.getElementById("reduceBoostCooldownCost").textContent = format(reduceBoostCooldownCost())
+    document.getElementById("reduceBoostCooldownBuyButton").disabled = !canBuyReduceBoostCooldown()
+
+    document.getElementById("boostDuration").textContent = formatTime(getBoostTimeSeconds())
+    document.getElementById("boostDurationCost").textContent = format(boostDurationCost())
+    document.getElementById("boostDurationBuyButton").disabled = !canBuyBoostDuration()
+
+    document.getElementById("hypercubeGain").textContent = format(getHypercubeGeneration() * getGameSpeed(),2)
+    document.getElementById("hypercubeGainCost").textContent = format(hypercubeGainCost())
+    document.getElementById("hypercubeGainBuyButton").disabled = !canBuyHypercubeGain()
+
+    document.getElementById("evilTranGain").textContent = format(evilTranGain(), 2)
+    document.getElementById("evilTranCost").textContent = format(evilTranCost())
+    document.getElementById("evilTranBuyButton").disabled = !canBuyEvilTran()
+
+    document.getElementById("essenceMultGain").textContent = format(essenceMultGain(), 2)
+    document.getElementById("essenceMultCost").textContent = format(essenceMultCost())
+    document.getElementById("essenceMultButton").disabled = !canBuyEssenceMult()
+
+    document.getElementById("challengeAltarCost").textContent = format(challengeAltarCost())
+    document.getElementById("challengeAltarState").textContent = gameData.metaverse.challenge_altar == 0 ? "" : "Active"
+    document.getElementById("challengeAltarButton").disabled = !canBuyChallengeAltar()
+    if (gameData.metaverse.challenge_altar == 0)
+        document.getElementById("challengeAltarButton").classList.remove("hidden")
+    else
+        document.getElementById("challengeAltarButton").classList.add("hidden")
+
+    document.getElementById("darkMaterMultGain").textContent = format(darkMaterMultGain(), 2)
+    document.getElementById("darkMaterMultCost").textContent = format(darkMaterMultCost())
+    document.getElementById("darkMaterMultButton").disabled = !canBuyDarkMaterMult()
+
+    // Perks
+    document.getElementById("perkPointDisplay").textContent = formatTreshold(gameData.perks_points)
+    document.getElementById("totalPerkPointDisplay").textContent = formatTreshold(getTotalPerkPoints())
+
+    renderPerks()
+}
+
+function renderPerks() {
+    for (const key of Object.keys(gameData.perks)) {
+        
+        const button = document.getElementById("id" + key)
+
+        if (gameData.perks[key] == 0)
+            button.classList.remove("active-perk")
+        else
+            button.classList.add("active-perk")
+    }
+}
+
 function renderDarkMatter() {
     // Display currency
     document.getElementById("darkMatterShopDisplay").textContent = format(gameData.dark_matter)
@@ -441,6 +512,12 @@ function renderDarkMatter() {
 
     renderSkillTreeButton(document.getElementById("multiverseExplorer1"), gameData.dark_matter_shop.multiverse_explorer != 0, gameData.dark_matter_shop.multiverse_explorer == 1, gameData.dark_matter >= 100000000)
     renderSkillTreeButton(document.getElementById("multiverseExplorer2"), gameData.dark_matter_shop.multiverse_explorer != 0, gameData.dark_matter_shop.multiverse_explorer == 2, gameData.dark_matter >= 100000000)
+
+    const effects = document.getElementsByClassName("negative-effect")
+    for (const effect of effects) {
+        effect.hidden = (gameData.perks.super_dark_mater_skills == 1)
+    }
+
 }
 
 function renderSettings() {
@@ -474,20 +551,28 @@ function renderSettings() {
     else
         document.getElementById("statsRebirth4").classList.add("hidden")
 
+    if (gameData.rebirthFiveCount > 0)
+        document.getElementById("statsRebirth5").classList.remove("hidden")
+    else
+        document.getElementById("statsRebirth5").classList.add("hidden")
+
     document.getElementById("rebirthOneCountDisplay").textContent = gameData.rebirthOneCount
     document.getElementById("rebirthTwoCountDisplay").textContent = gameData.rebirthTwoCount
     document.getElementById("rebirthThreeCountDisplay").textContent = gameData.rebirthThreeCount
     document.getElementById("rebirthFourCountDisplay").textContent = gameData.rebirthFourCount
+    document.getElementById("rebirthFiveCountDisplay").textContent = gameData.rebirthFiveCount
 
     document.getElementById("rebirthOneTimeDisplay").textContent = formatTime(gameData.rebirthOneTime, true)
     document.getElementById("rebirthTwoTimeDisplay").textContent = formatTime(gameData.rebirthTwoTime, true)
     document.getElementById("rebirthThreeTimeDisplay").textContent = formatTime(gameData.rebirthThreeTime, true)
     document.getElementById("rebirthFourTimeDisplay").textContent = formatTime(gameData.rebirthFourTime, true)
+    document.getElementById("rebirthFiveTimeDisplay").textContent = formatTime(gameData.rebirthFiveTime, true)
 
     document.getElementById("rebirthOneFastestDisplay").textContent = formatTime(gameData.stats.fastest1, true)
     document.getElementById("rebirthTwoFastestDisplay").textContent = formatTime(gameData.stats.fastest2, true)
     document.getElementById("rebirthThreeFastestDisplay").textContent = formatTime(gameData.stats.fastest3, true)
     document.getElementById("rebirthFourFastestDisplay").textContent = formatTime(gameData.stats.fastest4, true)
+    document.getElementById("rebirthFiveFastestDisplay").textContent = formatTime(gameData.stats.fastest5, true)
 
     // Gain Stats
     document.getElementById("evilPerSecondDisplay").textContent = format(gameData.stats.EvilPerSecond, 3)
@@ -504,12 +589,14 @@ function renderSettings() {
     document.getElementById("challengeStat3").hidden = gameData.challenges.time_does_not_fly == 0
     document.getElementById("challengeStat4").hidden = gameData.challenges.dance_with_the_devil == 0
     document.getElementById("challengeStat5").hidden = gameData.challenges.legends_never_die == 0
+    document.getElementById("challengeStat6").hidden = gameData.challenges.the_darkest_time == 0
 
     document.getElementById("challengeHappinessBuffDisplay").textContent = format(getChallengeBonus("an_unhappy_life"), 2)
     document.getElementById("challengeIncomeBuffDisplay").textContent = format(getChallengeBonus("rich_and_the_poor"), 2)
     document.getElementById("challengeTimewarpingBuffDisplay").textContent = format(getChallengeBonus("time_does_not_fly"), 2)
     document.getElementById("challengeEssenceGainBuffDisplay").textContent = format(getChallengeBonus("dance_with_the_devil"), 2)
     document.getElementById("challengeEvilGainBuffDisplay").textContent = format(getChallengeBonus("legends_never_die"), 2)
+    document.getElementById("challengeDarkMaterGainBuffDisplay").textContent = format(getChallengeBonus("the_darkest_time"), 2)
 }
 
 function renderRequirements() {
@@ -650,12 +737,14 @@ function updateRequiredRows(data, categoryType) {
             const evilElement = requiredRow.querySelector(".evil")
             const essenceElement = requiredRow.querySelector(".essence")
             const darkMatterElement = requiredRow.querySelector(".darkMatter")
+            const hypercubeElement = requiredRow.querySelector(".hypercube")
 
             coinElement.classList.add("hiddenTask")
             levelElement.classList.add("hiddenTask")
             evilElement.classList.add("hiddenTask")
             essenceElement.classList.add("hiddenTask")
             darkMatterElement.classList.add("hiddenTask")
+            hypercubeElement.classList.add("hiddenTask")
 
             let finalText = ""
             if (data == gameData.taskData) {
@@ -668,6 +757,11 @@ function updateRequiredRows(data, categoryType) {
                 } else if (requirementObject instanceof DarkMatterRequirement) {
                     darkMatterElement.classList.remove("hiddenTask")
                     darkMatterElement.textContent = format(requirements[0].requirement) + " Dark Matter"
+                } else if (requirementObject instanceof MetaverseRequirement) {
+
+                } else if (requirementObject instanceof HypercubeRequirement) {
+                    hypercubeElement.classList.remove("hiddenTask")
+                    hypercubeElement.textContent = format(requirements[0].requirement) + " hypercubes"
                 } else if (requirementObject instanceof AgeRequirement) {
                     essenceElement.classList.remove("hiddenTask")
                     essenceElement.textContent = "Age " + format(requirements[0].requirement)
@@ -797,6 +891,40 @@ function setLayout(id) {
         document.getElementById("shop").appendChild(document.getElementById("itemPage"))
     }
 
+    // dark matter layout
+    if (id == 0) {
+        document.getElementById("skillTreeTabTabButtonContainer").classList.add("hidden")
+        document.getElementById("shopTab").appendChild(document.getElementById("skillTreePage"))
+        setTabDarkMatter("shopTab")
+
+        document.getElementById("darkMatterMainColumn").classList.remove("settings-main-column")
+        document.getElementById("skillTreePageDarkMaterDisplay").style.visibility = "hidden"
+    }
+    else {
+        document.getElementById("skillTreeTabTabButtonContainer").classList.remove("hidden")
+        document.getElementById("skillTreeTab").appendChild(document.getElementById("skillTreePage"))
+
+        document.getElementById("darkMatterMainColumn").classList.add("settings-main-column")
+
+        document.getElementById("skillTreePageDarkMaterDisplay").style.visibility = "visible"
+    }
+
+    // metaverse layout
+
+    if (id == 0) {
+        document.getElementById("metaverseTabButtonContainer").classList.add("hidden")
+        document.getElementById("metaverseTab1").appendChild(document.getElementById("metaversePage2"))
+        setTabMetaverse("metaverseTab1")
+
+        document.getElementById("maincolumnMetaverse").classList.remove("settings-main-column")
+    }
+    else {
+        document.getElementById("metaverseTabButtonContainer").classList.remove("hidden")
+        document.getElementById("metaverseTab2").appendChild(document.getElementById("metaversePage2"))
+
+        document.getElementById("maincolumnMetaverse").classList.add("settings-main-column")     
+    }
+
     selectElementInGroup("Layout", id == 0 ? 1 : 0)
 }
 
@@ -881,6 +1009,7 @@ const Tab = Object.freeze({
     MILESTONES: "milestones",
     REBIRTH: "rebirth",
     DARK_MATTER: "darkMatter",
+    METAVERSE: "metaverse",
     SETTINGS: "settings"
 })
 
@@ -946,6 +1075,46 @@ function setTabDarkMatter(tab) {
     }
     element.classList.add("w3-blue-gray")
 }
+
+function setTabMetaverse(tab) {
+    const element = document.getElementById(tab + "TabButton")
+
+    const tabs = Array.prototype.slice.call(document.getElementsByClassName("tabMetaverse"))
+    tabs.forEach(function (tab) {
+        tab.style.display = "none"
+    })
+    document.getElementById(tab).style.display = "flex"
+
+    const tabButtons = document.getElementsByClassName("tabButtonMetaverse")
+    for (const tabButton of tabButtons) {
+        tabButton.classList.remove("w3-blue-gray")
+    }
+    element.classList.add("w3-blue-gray")
+}
+
+
+
+function createPerks(perkList, perkLayoutName) {
+    const buttonTemplate = document.getElementsByClassName("perkItem")
+    const perksLayout = document.getElementById(perkLayoutName)
+    for (const perkName of perkList) {
+        const perk = createPerk(buttonTemplate, perkName)
+        perksLayout.appendChild(perk)
+    }
+}
+
+function createPerk(template, name) {
+    const button = template[0].content.firstElementChild.cloneNode(true)
+    button.getElementsByClassName("perkName")[0].textContent = getFormattedTitle(name)
+    button.getElementsByClassName("perkCost")[0].textContent = getPerkCost(name)
+    button.id = "id" + removeSpaces(removeStrangeCharacters(name))
+    button.onclick = () => { buyPerk(name) } 
+    
+
+    return button
+}
+
+
 
 // Keyboard shortcuts + Loadouts ( courtesy of Pseiko )
 function changeTab(direction){
