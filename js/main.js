@@ -328,7 +328,8 @@ milestoneBaseData = {
 
     "Strong Hope": { name: "Strong Hope", expense: 1e70, tier: 37, description: "Faint Hope does not reset on transcend or collapse" },
     "Ruler of the Metaverse": { name: "Ruler of the Metaverse", expense: 1e85, tier: 38, description: "Unlocks Metaverse Perks" },
-    "The End": { name: "The End", expense: 1e300, tier: 38, description: "The End" },
+    "A New Hope": { name: "A New Hope", expense: 1e90, tier: 39, description: "Faint Hope always at maximum" },
+    "The End": { name: "The End", expense: 1e300, tier: 99, description: "The End" },
 }
 
 const jobCategories = {
@@ -359,7 +360,7 @@ const milestoneCategories = {
     "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcendent Master", "Eternal Time", "Hell Portal", "Inferno", "God's Blessings", "Faint Hope"],
     "Heroic Milestones": ["New Beginning", "Rise of Great Heroes", "Lazy Heroes", "Dirty Heroes", "Angry Heroes", "Tired Heroes", "Scared Heroes", "Good Heroes", "Funny Heroes", "Beautiful Heroes", "Awesome Heroes", "Furious Heroes", "Superb Heroes", "A new beginning"],
     "Dark Milestones": ["Mind Control", "Galactic Emperor", "Dark Matter Harvester", "A Dark Era", "Dark Orbiter", "Dark Matter Mining", "The new gold", "The Devil inside you", "Strange Magic", "Speed speed speed", "Life is valueable", "Dark Matter Millionaire", "The new Dark Matter"],
-    "Metaverse Milestones": ["Strong Hope", "Ruler of the Metaverse", "The End"],
+    "Metaverse Milestones": ["Strong Hope", "Ruler of the Metaverse", "A New Hope", "The End"],
 }
 
 function getPreviousTaskInCategory(task) {
@@ -647,8 +648,12 @@ function setCustomEffects() {
     const faintHope = gameData.milestoneData["Faint Hope"]
     faintHope.getEffect = function () {
         var mult = 1
-        if (gameData.requirements["Speed speed speed"].isCompleted()) {
-            mult = 7.5275 * Math.exp(0.0053 * (gameData.requirements["Strong Hope"].isCompleted() ? gameData.rebirthFiveTime : gameData.rebirthThreeTime)) * (Math.log(getUnpausedGameSpeed()) / Math.log(2))
+        if (gameData.requirements["A New Hope"].isCompleted()) { 
+            mult = softcap(1e308, 10000000, 0.01)
+        }
+        else if (gameData.requirements["Speed speed speed"].isCompleted()) {
+            mult = 7.5275 * Math.exp(0.0053 * (gameData.requirements["Strong Hope"].isCompleted() ? gameData.rebirthFiveTime
+                : gameData.rebirthThreeTime)) * (Math.log(getUnpausedGameSpeed()) / Math.log(2))
             if (mult == Infinity)
                 mult = 1e308
             mult = softcap(mult, 10000000, 0.01)
@@ -921,11 +926,15 @@ function forceAutobuy() {
 }
 
 function setCurrentProperty(propertyName) {
+    if (gameData.paused)
+        return
     autoBuyEnabled = false
     gameData.currentProperty = gameData.itemData[propertyName]
 }
 
 function setMisc(miscName) {
+    if (gameData.paused)
+        return
     autoBuyEnabled = false
     const misc = gameData.itemData[miscName]
     if (gameData.currentMisc.includes(misc)) {
@@ -1329,8 +1338,10 @@ function applyMilestones() {
 }
 
 function rebirthReset(set_tab_to_jobs = true) {
-    if (set_tab_to_jobs)
-        setTab("jobs")
+    if (set_tab_to_jobs) {
+        if (!(gameData.rebirthFiveCount > 0 && gameData.settings.selectedTab == Tab.METAVERSE))
+            setTab("jobs")
+    }
 
     gameData.coins = 0
     gameData.days = 365 * 14

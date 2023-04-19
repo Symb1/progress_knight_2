@@ -447,14 +447,38 @@ function renderMetaverse() {
 }
 
 function renderPerks() {
+    const total_mpp = getTotalPerkPoints()
+    let hide_next = false
+    let index = 0
+
     for (const key of Object.keys(gameData.perks)) {
         
         const button = document.getElementById("id" + key)
 
-        if (gameData.perks[key] == 0)
-            button.classList.remove("active-perk")
-        else
-            button.classList.add("active-perk")
+        if (hide_next)
+            button.classList.add("hidden")
+        else {
+            button.classList.remove("hidden")
+
+            if (gameData.perks[key] == 0)
+                button.classList.remove("active-perk")
+            else
+                button.classList.add("active-perk")
+
+            const perk_cost = getPerkCost(key)
+
+            if (total_mpp >= perk_cost) {
+                button.getElementsByClassName("perkName")[0].textContent = getFormattedTitle(key)
+                button.classList.remove("perk-locked")
+            }
+            else {
+                button.getElementsByClassName("perkName")[0].textContent = "LOCKED"
+                button.classList.add("perk-locked")
+                if (index % 2 == 1)
+                    hide_next = true
+            }
+        }
+        index++
     }
 }
 
@@ -517,7 +541,6 @@ function renderDarkMatter() {
     for (const effect of effects) {
         effect.hidden = (gameData.perks.super_dark_mater_skills == 1)
     }
-
 }
 
 function renderSettings() {
@@ -857,9 +880,6 @@ function setLayout(id) {
         document.getElementById("skillsTabButton").classList.add("hidden")
         document.getElementById("shopTabButton").classList.add("hidden")
 
-        document.getElementById("dummyPage1").classList.remove("hidden")
-        document.getElementById("dummyPage2").classList.remove("hidden")
-
         document.getElementById("skills").classList.add("hidden")
         document.getElementById("shop").classList.add("hidden")
 
@@ -874,9 +894,6 @@ function setLayout(id) {
     } else {
         document.getElementById("skillsTabButton").classList.remove("hidden")
         document.getElementById("shopTabButton").classList.remove("hidden")
-
-        document.getElementById("dummyPage1").classList.add("hidden")
-        document.getElementById("dummyPage2").classList.add("hidden")
 
         document.getElementById("skills").classList.remove("hidden")
         document.getElementById("shop").classList.remove("hidden")
@@ -893,18 +910,18 @@ function setLayout(id) {
 
     // dark matter layout
     if (id == 0) {
-        document.getElementById("skillTreeTabTabButtonContainer").classList.add("hidden")
+        document.getElementById("tabcolumnDarkMater").classList.add("hidden")
         document.getElementById("shopTab").appendChild(document.getElementById("skillTreePage"))
         setTabDarkMatter("shopTab")
 
-        document.getElementById("darkMatterMainColumn").classList.remove("settings-main-column")
+        document.getElementById("maincolumnDarkMatter").classList.remove("settings-main-column")
         document.getElementById("skillTreePageDarkMaterDisplay").style.visibility = "hidden"
     }
     else {
-        document.getElementById("skillTreeTabTabButtonContainer").classList.remove("hidden")
+        document.getElementById("tabcolumnDarkMater").classList.remove("hidden")
         document.getElementById("skillTreeTab").appendChild(document.getElementById("skillTreePage"))
 
-        document.getElementById("darkMatterMainColumn").classList.add("settings-main-column")
+        document.getElementById("maincolumnDarkMatter").classList.add("settings-main-column")
 
         document.getElementById("skillTreePageDarkMaterDisplay").style.visibility = "visible"
     }
@@ -912,14 +929,14 @@ function setLayout(id) {
     // metaverse layout
 
     if (id == 0) {
-        document.getElementById("metaverseTabButtonContainer").classList.add("hidden")
+        document.getElementById("tabcolumnMetaverse").classList.add("hidden")
         document.getElementById("metaverseTab1").appendChild(document.getElementById("metaversePage2"))
         setTabMetaverse("metaverseTab1")
 
         document.getElementById("maincolumnMetaverse").classList.remove("settings-main-column")
     }
     else {
-        document.getElementById("metaverseTabButtonContainer").classList.remove("hidden")
+        document.getElementById("tabcolumnMetaverse").classList.remove("hidden")
         document.getElementById("metaverseTab2").appendChild(document.getElementById("metaversePage2"))
 
         document.getElementById("maincolumnMetaverse").classList.add("settings-main-column")     

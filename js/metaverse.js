@@ -177,7 +177,7 @@ function getPerkCost(perkName) {
         case "super_dark_mater_skills":
             return 5
         case "save_challenges":
-            return 5
+            return 6
         case "auto_sacrifice":
             return 8
         case "double_perk_points_gain":
@@ -219,4 +219,12 @@ function getTotalPerkPoints() {
             total += getPerkCost(key)
     }
     return total
+}
+
+function collectPerkPoints(value) {
+    for (const key of Object.keys(gameData.perks)) {
+        if (gameData.perks[key] == value) {
+            buyPerk(key)
+        }        
+    }
 }
