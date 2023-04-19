@@ -184,7 +184,7 @@ function renderJobs() {
         let task = gameData.taskData[key]
         if (!(task instanceof Job)) continue
 
-        const row = getTaskRowByName(task.name)
+        const row = getRowByName(task.name)
 
         row.querySelector(".level").textContent = formatLevel(task.level)
         row.querySelector(".xpGain").textContent = task.getXpGainFormatted()
@@ -241,7 +241,7 @@ function renderSkills() {
 
         if (!(task instanceof Skill)) continue
 
-        const row = getTaskRowByName(task.name)
+        const row = getRowByName(task.name)
 
         row.querySelector(".level").textContent = formatLevel(task.level)
         row.querySelector(".xpGain").textContent = task.getXpGainFormatted()
@@ -296,7 +296,7 @@ function renderSkills() {
 function renderShop() {
     for (const key in gameData.itemData) {
         const item = gameData.itemData[key]
-        const row = getTaskRowByName(item.name)
+        const row = getRowByName(item.name)
         const button = row.querySelector(".button")
         button.disabled = gameData.coins < item.getExpense()
         const name = button.querySelector(".name")
@@ -385,7 +385,7 @@ function renderChallenges() {
 function renderMilestones() {
     for (const key in gameData.milestoneData) {
         const milestone = gameData.milestoneData[key]
-        const row = getTaskRowByName(milestone.name)
+        const row = getRowByName(milestone.name)
         row.querySelector(".essence").textContent = format(milestone.expense)
 
 
@@ -440,13 +440,15 @@ function renderMetaverse() {
     document.getElementById("darkMaterMultButton").disabled = !canBuyDarkMaterMult()
 
     // Perks
-    document.getElementById("perkPointDisplay").textContent = formatTreshold(gameData.perks_points)
-    document.getElementById("totalPerkPointDisplay").textContent = formatTreshold(getTotalPerkPoints())
-
     renderPerks()
 }
 
 function renderPerks() {
+    document.getElementById("perkPointDisplay").textContent = formatTreshold(gameData.perks_points)
+    document.getElementById("totalPerkPointDisplay").textContent = formatTreshold(getTotalPerkPoints())
+
+
+    // PerkButtons
     const total_mpp = getTotalPerkPoints()
     let hide_next = false
     let index = 0
@@ -915,15 +917,15 @@ function setLayout(id) {
         setTabDarkMatter("shopTab")
 
         document.getElementById("maincolumnDarkMatter").classList.remove("settings-main-column")
-        document.getElementById("skillTreePageDarkMaterDisplay").style.visibility = "hidden"
+        document.getElementById("skillTreePageDarkMaterTitle").textContent = "Dark Matter Skills"
     }
     else {
         document.getElementById("tabcolumnDarkMater").classList.remove("hidden")
         document.getElementById("skillTreeTab").appendChild(document.getElementById("skillTreePage"))
 
         document.getElementById("maincolumnDarkMatter").classList.add("settings-main-column")
+        document.getElementById("skillTreePageDarkMaterTitle").textContent = "Dark Matter: "
 
-        document.getElementById("skillTreePageDarkMaterDisplay").style.visibility = "visible"
     }
 
     // metaverse layout
@@ -999,22 +1001,11 @@ function setSignDisplay() {
     }
 }
 
-function getTaskQuerySelector(taskName) {
-    const task = gameData.taskData[taskName]
-    return "#row" + removeSpaces(removeStrangeCharacters(task.name))
+function getQuerySelector(taskName) {    
+    return "#row" + removeSpaces(removeStrangeCharacters(taskName))
 }
 
-function getItemQuerySelector(itemName) {
-    const item = gameData.itemData[itemName]
-    return "#row" + removeSpaces(removeStrangeCharacters(item.name))
-}
-
-function getMilestoneQuerySelector(milestoneName) {
-    const milestone = gameData.milestoneData[milestoneName]
-    return "#row" + removeSpaces(removeStrangeCharacters(milestone.name))
-}
-
-function getTaskRowByName(name) {
+function getRowByName(name) {
     return document.getElementById("row" + removeSpaces(removeStrangeCharacters(name)))
 }
 
@@ -1109,8 +1100,6 @@ function setTabMetaverse(tab) {
     element.classList.add("w3-blue-gray")
 }
 
-
-
 function createPerks(perkList, perkLayoutName) {
     const buttonTemplate = document.getElementsByClassName("perkItem")
     const perksLayout = document.getElementById(perkLayoutName)
@@ -1125,13 +1114,10 @@ function createPerk(template, name) {
     button.getElementsByClassName("perkName")[0].textContent = getFormattedTitle(name)
     button.getElementsByClassName("perkCost")[0].textContent = getPerkCost(name)
     button.id = "id" + removeSpaces(removeStrangeCharacters(name))
-    button.onclick = () => { buyPerk(name) } 
-    
+    button.onclick = () => { buyPerk(name) }    
 
     return button
 }
-
-
 
 // Keyboard shortcuts + Loadouts ( courtesy of Pseiko )
 function changeTab(direction){

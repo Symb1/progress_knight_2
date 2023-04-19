@@ -19,7 +19,7 @@
 		</div>
 		<div id="row" class="row">
 			<div id="info" class="panel w3-padding quick-bar" style="width:20em">
-				<div id="challengeTitle" class="challenge-title">
+				<div id="challengeTitle" class="challenge-title" hidden="hidden">
 					In challenge: <span id="challengeName"></span>
 				</div>
 				<div class="text-caption" id="errorInfo" hidden="hidden">
@@ -269,7 +269,7 @@
 						<div class="tab hidden" id="shop">
 						</div>
 					</div>
-					<div class="tab column" id="challenges">
+					<div class="tab column" style="display:none" id="challenges">
 						<div id="tabcolumnChallenges" class="panel w3-margin-left" style="display: contents">
 						</div>
 						<div id="maincolumnChallenges" class="panel w3-margin-left w3-margin-top">
@@ -343,7 +343,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="tab column" id="milestones">
+					<div class="tab column" style="display:none" id="milestones">
 						<div id="maincolumnMilestones" class="panel">
 							<div id="milestonesTab1" class="tabMilestones">
 								<div id="milestonePage" class="panel page-column">
@@ -353,8 +353,8 @@
 							</div>
 						</div>
 					</div>
-					<div class="tab column" id="rebirth">
-						<div id="tabButtonsRebirth" class="panel" style="display: flex">							
+					<div class="tab column" style="display:none" id="rebirth">
+						<div id="tabButtonsRebirth" class="panel" style="display: flex">
 						</div>
 						<div id="maincolumnRebirth" class="panel">
 							<div id="rebirthTab1" class="tabRebirth">
@@ -452,7 +452,7 @@
 											</i>
 											<i style="color: grey">
 												<br>
-												If you decide to <b>collapse the universe</b>, all of your levels, coins, max levels, evil, and <b>essence</b> will be reset. You will be reborn as a fresh slate in a new universe, with no memory of milestones and challenges from any of your past selves. In exchange, you will unlock a third new line of skills and gain 
+												If you decide to <b>collapse the universe</b>, all of your levels, coins, max levels, evil, and <b>essence</b> will be reset. You will be reborn as a fresh slate in a new universe, with no memory of milestones and challenges from any of your past selves. In exchange, you will unlock a third new line of skills and gain
 												<i class="color-dark-mater">
 													<b><span id="darkMatterGainDisplay"></span> Dark Matter</b>,
 												</i>
@@ -478,7 +478,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="tab column" id="darkMatter">
+					<div class="tab column" style="display:none" id="darkMatter">
 						<div id="tabcolumnDarkMater" class="panel w3-margin-left" style="display: flex">
 							<div class="w3-button w3-bar-item tabButtonDarkMatter baritem w3-blue-gray" id="shopTabTabButton" onClick="setTabDarkMatter('shopTab')">Shop</div>
 							<div class="w3-button w3-bar-item tabButtonDarkMatter baritem" id="skillTreeTabTabButton" onClick="setTabDarkMatter('skillTreeTab')">Skills</div>
@@ -533,7 +533,7 @@
 							<div id="skillTreeTab" class="tabDarkMatter">
 								<div id="skillTreePage" class="panel page-column w3-padding">
 									<div id="skillTreePageDarkMaterDisplay" class="text-caption" style="padding-top:0em">
-										<div class="text-caption"><span class="color-dark-mater">Dark Matter: </span><span id="darkMatterSkillsDisplay"></span></div>
+										<div class="text-caption"><span class="color-dark-mater" id="skillTreePageDarkMaterTitle">Dark Matter: </span><span id="darkMatterSkillsDisplay"></span></div>
 									</div>
 									<div style="padding-top:2em">
 										<div style="color:gray; padding-bottom:0.3em">
@@ -640,7 +640,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="tab column" id="metaverse">
+					<div class="tab column" style="display:none" id="metaverse">
 						<div id="tabcolumnMetaverse" class="panel w3-margin-left" style="display: flex">
 							<div class="w3-button w3-bar-item tabButtonMetaverse baritem w3-blue-gray" id="metaverseTab1TabButton" onClick="setTabMetaverse('metaverseTab1')">Altar</div>
 							<div class="w3-button w3-bar-item tabButtonMetaverse baritem" id="metaverseTab2TabButton" onClick="setTabMetaverse('metaverseTab2')">Perks</div>
@@ -711,7 +711,7 @@
 									<div style="padding-top:1em">
 										<div class="text-caption" style="padding-left: 1em;">You have <b><span id="perkPointDisplay" class="color-perk-points"></span></b> unspent Metaverse perk points. Total points: <b><span id="totalPerkPointDisplay" class="color-perk-points"></span></b>.</div>
 										<div class="text-caption" style="padding-left: 1em;">You can freely activate and deactivate perks for the points you have.</div>
-									</div>									
+									</div>
 									<div style="border-bottom: 0.1em solid rgb(217, 24, 119); padding-top: 2em;"></div>
 									<div id="perksLayout" class="perk-grid" style="padding-top:0em">
 										<template class="perkItem">
@@ -727,7 +727,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="tab column" id="settings">
+					<div class="tab column" style="display:none" id="settings">
 						<div id="tabcolumnSettings" class="panel w3-padding page-column">
 							<div class="w3-button w3-bar-item tabButtonSettings baritem w3-blue-gray" id="settingsTabTabButton" onClick="setTabSettings('settingsTab')">Settings</div>
 							<div class="w3-button w3-bar-item tabButtonSettings baritem" id="statsTabTabButton" onClick="setTabSettings('statsTab')">Stats</div>
@@ -889,15 +889,17 @@
 				</div>
 			</div>
 		</div>
-		<script type="text/javascript" src="js/utils.js"></script>
-		<script type="text/javascript" src="js/ui.js"></script>
-		<script type="text/javascript" src="js/math.js"></script>
-		<script type="text/javascript" src="js/HackTimer.js"></script>
-		<script type="text/javascript" src="js/classes.js"></script>
-		<script type="text/javascript" src="js/challenges.js"></script>
-		<script type="text/javascript" src="js/dark_matter.js"></script>
-		<script type="text/javascript" src="js/metaverse.js"></script>
-		<script type="text/javascript" src="js/tooltips.js"></script>
-		<script type="text/javascript" src="js/main.js"></script>
+	</div>
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/ui.js"></script>
+	<script type="text/javascript" src="js/math.js"></script>
+	<script type="text/javascript" src="js/HackTimer.js"></script>
+	<script type="text/javascript" src="js/classes.js"></script>
+	<script type="text/javascript" src="js/challenges.js"></script>
+	<script type="text/javascript" src="js/dark_matter.js"></script>
+	<script type="text/javascript" src="js/metaverse.js"></script>
+	<script type="text/javascript" src="js/tooltips.js"></script>
+	<script type="text/javascript" src="js/data.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>

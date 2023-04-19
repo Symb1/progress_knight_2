@@ -6,442 +6,6 @@ onerror = () => {
     }, 30 * 1000)
 }
 
-var gameData = {
-    taskData: {},
-    itemData: {},
-    milestoneData: {},
-
-    coins: 0,
-    days: 365 * 14,
-    totalDays: 0,
-    evil: 0,
-    essence: 0,
-    dark_matter: 0,
-    dark_orbs: 0,
-    hypercubes: 0,
-    perks_points: 0,
-    perks: {
-        auto_dark_orb: 0,
-        auto_dark_shop: 0,
-        auto_boost: 0,
-        instant_evil: 0,
-        instant_essence: 0,
-        hypercube_boost: 0,
-        super_dark_mater_skills: 0,
-        save_challenges: 0,
-        auto_sacrifice: 0,
-        double_perk_points_gain: 0,
-        instant_dark_matter: 0,
-        keep_dark_mater_skills: 0,
-        hyper_speed: 0,
-        the_last_of_us: 0,
-
-
-    },
-
-
-    paused: false,
-    timeWarpingEnabled: true,
-
-    rebirthOneCount: 0,
-    rebirthOneTime: 0,
-    rebirthTwoCount: 0,
-    rebirthTwoTime: 0,
-    rebirthThreeCount: 0,
-    rebirthThreeTime: 0,
-    rebirthFourCount: 0,
-    rebirthFourTime: 0,
-    rebirthFiveCount: 0,
-    rebirthFiveTime: 0,
-
-    currentJob: null,
-    currentProperty: null,
-    currentMisc: null,
-
-    settings: {
-        stickySidebar: true,
-        theme: 1,
-        currencyNotation: 0,
-        numberNotation: 1,
-        layout: 1,
-        fontSize: 3,
-        selectedTab: 'jobs'
-    },
-    stats: {
-        startDate: new Date(),
-        fastest1: null,
-        fastest2: null,
-        fastest3: null,
-        fastest4: null,
-        fastestGame: null,
-        EvilPerSecond: 0,
-        maxEvilPerSecond: 0,
-        maxEvilPerSecondRt: 0,
-        EssencePerSecond: 0,
-        maxEssencePerSecond: 0,
-        maxEssencePerSecondRt: 0,
-    },
-    active_challenge: "",
-    challenges: {
-        an_unhappy_life: 0,
-        rich_and_the_poor: 0,
-        time_does_not_fly: 0,
-        dance_with_the_devil: 0,
-        legends_never_die: 0,
-        the_darkest_time: 0,
-    },
-    dark_matter_shop: {
-        // Upgradables.
-        dark_orb_generator: 0,
-        a_deal_with_the_chairman: 0,
-        a_gift_from_god: 0,
-        life_coach: 0,
-        gotta_be_fast: 0,
-
-        // Permanent unlocks
-        a_miracle: false,
-
-        // SKill tree
-        speed_is_life: 0,
-        your_greatest_debt: 0,
-        essence_collector: 0,
-        explosion_of_the_universe: 0,
-        multiverse_explorer: 0,
-    },
-    metaverse: {
-        boost_cooldown_modifier: 1,
-        boost_timer_modifier: 1,
-        boost_warp_modifier: 100,
-        hypercube_gain_modifier: 1,
-        evil_tran_gain: 0,
-        essence_gain_modifier: 0,
-        challenge_altar: 0,
-        dark_mater_gain_modifer: 0,
-    },
-
-    realtime: 0.0,
-    realtimeRun: 0.0,
-
-    // new 3.0 stuff    
-    boost_cooldown: 0.0,
-    boost_timer: 0.0,
-    boost_active: false,
-}
-
-var tempData = {}
-
-var autoBuyEnabled = true
-
-const updateSpeed = 20
-const baseLifespan = 365 * 70
-const baseGameSpeed = 4
-const heroIncomeMult = 2500000000000000000
-
-const permanentUnlocks = ["Quick task display", "Dark Matter", "Dark Matter Skills", "Dark Matter Skills2", "Challenges", "Metaverse", , "Metaverse Perks", "Metaverse Perks Button"]
-const metaverseUnlocks = ["Reduce Boost Cooldown", "Increase Boost Duration", "Increase Hypercube Gain", "Gain evil at new transcension",
-    "Essence gain multiplier", "Challenges are not reset", "Dark Mater gain multiplier"]
-
-const jobBaseData = {
-    "Beggar": { name: "Beggar", maxXp: 50, income: 5, heroxp: 36 },
-    "Farmer": {name: "Farmer", maxXp: 100, income: 9, heroxp: 37 },
-    "Fisherman": { name: "Fisherman", maxXp: 200, income: 15, heroxp: 38 },
-    "Miner": { name: "Miner", maxXp: 400, income: 40, heroxp: 39 },
-    "Blacksmith": { name: "Blacksmith", maxXp: 800, income: 80, heroxp: 40 },
-    "Merchant": { name: "Merchant", maxXp: 1600, income: 150, heroxp: 41 },
-
-    "Squire": { name: "Squire", maxXp: 42, income: 5, heroxp: 51 },
-    "Footman": { name: "Footman", maxXp: 1000, income: 50, heroxp: 52 },
-    "Veteran footman": { name: "Veteran footman", maxXp: 10000, income: 120, heroxp: 53 },
-    "Centenary": { name: "Centenary", maxXp: 100000, income: 300, heroxp: 54 },
-    "Knight": { name: "Knight", maxXp: 1000000, income: 1000, heroxp: 63 },
-    "Veteran Knight": { name: "Veteran Knight", maxXp: 7500000, income: 3000, heroxp: 63 },
-    "Holy Knight": { name: "Holy Knight", maxXp: 40000000, income: 5000, heroxp: 64 },
-    "Lieutenant General": { name: "Lieutenant General", maxXp: 150000000, income: 50000, heroxp: 77 },
-
-    "Student": { name: "Student", maxXp: 100000, income: 100, heroxp: 79 },
-    "Apprentice Mage": { name: "Apprentice Mage", maxXp: 1000000, income: 1000, heroxp: 82 },
-    "Adept Mage": { name: "Adept Mage", maxXp: 10000000, income: 9500, heroxp: 82 },
-    "Master Wizard": { name: "Master Wizard", maxXp: 100000000, income: 70000, heroxp: 95 },
-    "Archmage": { name: "Archmage", maxXp: 10000000000, income: 350000, heroxp: 95 },
-    "Chronomancer": { name: "Chronomancer", maxXp: 2000000000000, income: 1000000, heroxp: 95 },
-    "Chairman": { name: "Chairman", maxXp: 20000000000000, income: 10000000, heroxp: 106 },
-    "Imperator": { name: "Imperator", maxXp: 9000000000000000, income: 60000000, heroxp: 129 },
-
-    "Corrupted": { name: "Corrupted", maxXp: 100000000000000, income: 25000000, heroxp: 131 },
-    "Void Slave": { name: "Void Slave", maxXp: 650000000000000, income: 200000000, heroxp: 134 },
-    "Void Fiend": { name: "Void Fiend", maxXp: 18000000000000000, income: 600000000, heroxp: 237 },
-    "Abyss Anomaly": { name: "Abyss Anomaly", maxXp: 18000000000000000, income: 1200000000, heroxp: 237 },
-    "Void Wraith": { name: "Void Wraith", maxXp: 180000000000000000, income: 5000000000, heroxp: 238 },
-    "Void Reaver": { name: "Void Reaver", maxXp: 2600000000000000000, income: 25000000000, heroxp: 238 },
-    "Void Lord": { name: "Void Lord", maxXp: 28000000000000000000, income: 100000000000, heroxp: 238 },
-    "Abyss God": { name: "Abyss God", maxXp: 400000000000000000000, income: 1000000000000, heroxp: 250 },
-    "Eternal Wanderer": { name: "Eternal Wanderer", maxXp: 55000000000000000000, income: 1000000000000, heroxp: 250 },
-
-    "Nova": { name: "Nova", maxXp: 51000000000000000000, income: 3000000000000, heroxp: 250 },
-    "Sigma Proioxis": { name: "Sigma Proioxis", maxXp: 500000000000000000000, income: 25000000000000, heroxp: 260 },
-    "Acallaris": { name: "Acallaris", maxXp: 50000000000000000000000, income: 215000000000000, heroxp: 263 },
-    "One Above All": { name: "One Above All", maxXp: 5000000000000000000000000000, income: 25000000000000000, heroxp: 265 },
-}
-
-const skillBaseData = {
-    "Concentration": { name: "Concentration", maxXp: 100, heroxp: 36, effect: 0.01, description: "Skill XP"},
-    "Productivity": { name: "Productivity", maxXp: 100, heroxp: 37, effect: 0.01, description: "Hero XP"},
-    "Bargaining": { name: "Bargaining", maxXp: 100, heroxp: 38, effect: -0.01, description: "Reduced Expenses"},
-    "Meditation": { name: "Meditation", maxXp: 100, heroxp: 39, effect: 0.01, description: "Happiness"},
-
-    "Strength": { name: "Strength", maxXp: 100, heroxp: 40, effect: 0.01, description: "Military Pay"},
-    "Battle Tactics": { name: "Battle Tactics", maxXp: 100, heroxp: 41, effect: 0.01, description: "Military XP"},
-    "Muscle Memory": { name: "Muscle Memory", maxXp: 100, heroxp: 42, effect: 0.01, description: "Strength XP"},
-
-    "Mana Control": { name: "Mana Control", maxXp: 100, heroxp: 46, effect: 0.01, description: "T.A.A. XP"},
-    "Life Essence": { name: "Life Essence", maxXp: 100, heroxp: 82, effect: 0.01, description: "Longer Lifespan"},
-    "Time Warping": { name: "Time Warping", maxXp: 100, heroxp: 82, effect: 0.01, description: "Gamespeed"},
-    "Astral Body": { name: "Astral Body", maxXp: 100, heroxp: 100, effect: 0.0035, description: "Longer lifespan"},
-    "Temporal Dimension": { name: "Temporal Dimension", maxXp: 100, heroxp: 115, effect: 0.006, description: "Gamespeed"},
-    "All Seeing Eye": { name: "All Seeing Eye", maxXp: 100, heroxp: 120, effect: 0.0027, description: "T.A.A Pay"},
-    "Brainwashing": { name: "Brainwashing", maxXp: 100, heroxp: 145, effect: -0.01, description: "Reduced Expenses"},
-
-    "Dark Influence": { name: "Dark Influence", maxXp: 100, heroxp: 155, effect: 0.01, description: "All XP"},
-    "Evil Control": { name: "Evil Control", maxXp: 100, heroxp: 156, effect: 0.01, description: "Evil Gain"},
-    "Intimidation": { name: "Intimidation", maxXp: 100, heroxp: 157, effect: -0.01, description: "Reduced Expenses" },
-    "Demon Training": { name: "Demon Training", maxXp: 100, heroxp: 174, effect: 0.01, description: "All XP"},
-    "Blood Meditation": { name: "Blood Meditation", maxXp: 100, heroxp: 176, effect: 0.01, description: "Evil Gain"},
-    "Demon's Wealth": { name: "Demon's Wealth", maxXp: 100, heroxp: 178, effect: 0.002, description: "Hero Pay"},
-    "Dark Knowledge": { name: "Dark Knowledge", maxXp: 100, heroxp: 180, effect: 0.003, description: "Hero XP" },
-
-    "Void Influence": { name: "Void Influence", maxXp: 100, heroxp: 206, effect: 0.0028, description: "All XP"},
-    "Time Loop": { name: "Time Loop", maxXp: 100, heroxp: 207, effect: 0.001, description: "Gamespeed"},
-    "Evil Incarnate": { name: "Evil Incarnate", maxXp: 100, heroxp: 208, effect: 0.01, description: "Skill XP" },
-    "Absolute Wish": { name: "Absolute Wish", maxXp: 100, heroxp: 198, effect: 0.005, description: "Evil Gain" },
-    "Void Amplification": { name: "Void Amplification", maxXp: 100, heroxp: 251, effect: 0.01, description: "The Void XP" },
-    "Mind Release": { name: "Mind Release", maxXp: 100, heroxp: 251, effect: 0.0006, description: "Increased Happiness" },
-    "Ceaseless Abyss": { name: "Ceaseless Abyss", maxXp: 100, heroxp: 251, effect: 0.000585, description: "Longer Lifespan" },
-    "Void Symbiosis": { name: "Void Symbiosis", maxXp: 100, heroxp: 253, effect: 0.0015, description: "Skill XP" },
-    "Void Embodiment": { name: "Void Embodiment", maxXp: 100, heroxp: 258, effect: 0.0025, description: "Evil Gain" },
-    "Abyss Manipulation": { name: "Abyss Manipulation", maxXp: 100, heroxp: 266, effect: -0.01, description: "Reduced Expenses" },
-
-    "Cosmic Longevity": { name: "Cosmic Longevity", maxXp: 100, heroxp: 266, effect: 0.0015, description: "Longer Lifespan" },
-    "Cosmic Recollection": { name: "Cosmic Recollection", maxXp: 100, heroxp: 272, effect: 0.00065, description: "Max Lvl Multiplier" },
-    "Essence Collector": { name: "Essence Collector", maxXp: 100, heroxp: 288, effect: 0.01, description: "Essence Gain" },
-    "Galactic Command": { name: "Galactic Command", maxXp: 100, heroxp: 290, effect: -0.01, description: "Reduced Expenses" },
-
-    "Yin Yang": { name: "Yin Yang", maxXp: 100, heroxp: 290, effect: 0.020, description: "Essence + Evil Gain" },
-    "Parallel Universe": { name: "Parallel Universe", maxXp: 100, heroxp: 300, effect: 0.02, description: "All XP"},
-    "Higher Dimensions": { name: "Higher Dimensions", maxXp: 100, heroxp: 300, effect: 0.001, description: "Longer Lifespan" },
-    "Epiphany": { name: "Epiphany", maxXp: 100, heroxp: 280, effect: 0.012, description: "Galactic Council XP"},
-
-    "Dark Prince": { name: "Dark Prince", maxXp: 100, heroxp: 350, effect: 0.01, description: "Skill XP"},
-    "Dark Ruler": { name: "Dark Ruler", maxXp: 100, heroxp: 375, effect: 0.0000015, description: "Dark Matter Gain"},
-    "Immortal Ruler": { name: "Immortal Ruler", maxXp: 100, heroxp: 425, effect: 0.01, description: "All XP"},
-    "Dark Magician": { name: "Dark Magician", maxXp: 100, heroxp: 475, effect: 0.0000025, description: "Essence Gain"},
-    "Universal Ruler": { name: "Universal Ruler", maxXp: 100, heroxp: 500, effect: 1, description: "Magic XP"},
-    "Blinded By Darkness": { name: "Blinded By Darkness", maxXp: 100, heroxp: 550, effect: 1, description: "All XP"},
-}
-
-const itemBaseData = {
-    "Homeless": {name: "Homeless", expense: 0, effect: 1, heromult: 2, heroeffect: 2e6},
-    "Tent": { name: "Tent", expense: 15, effect: 1.4, heromult: 2, heroeffect: 2e7 },
-    "Wooden Hut": { name: "Wooden Hut", expense: 100, effect: 2, heromult: 3, heroeffect: 2e8 },
-    "Cottage": { name: "Cottage", expense: 750, effect: 3.5, heromult: 3, heroeffect: 2e9 },
-    "House": { name: "House", expense: 3000, effect: 6, heromult: 4, heroeffect: 2e10 },
-    "Large House": { name: "Large House", expense: 25000, effect: 12, heromult: 4, heroeffect: 2e11 },
-    "Small Palace": { name: "Small Palace", expense: 300000, effect: 25, heromult: 5, heroeffect: 2e12 },
-    "Grand Palace": { name: "Grand Palace", expense: 5000000, effect: 60, heromult: 5, heroeffect: 2e13 },
-    "Town Ruler": { name: "Town Ruler", expense: 35000000, effect: 120, heromult: 6, heroeffect: 2e15 },
-    "City Ruler": { name: "City Ruler", expense: 1100000000, effect: 500, heromult: 7, heroeffect: 2e17 },
-    "Nation Ruler": { name: "Nation Ruler", expense: 13000000000, effect: 1200, heromult: 8, heroeffect: 2e19 },
-    "Pocket Dimension": { name: "Pocket Dimension", expense: 49000000000, effect: 5000, heromult: 9, heroeffect: 2e22 },
-    "Void Realm": { name: "Void Realm", expense: 121000000000, effect: 15000, heromult: 10, heroeffect: 2e25 },
-    "Void Universe": { name: "Void Universe", expense: 2000000000000, effect: 30000, heromult: 11, heroeffect: 2e28 },
-    "Astral Realm": { name: "Astral Realm", expense: 160000000000000, effect: 150000, heromult: 12, heroeffect: 2e31 },
-    "Galactic Throne": { name: "Galactic Throne", expense: 5000000000000000, effect: 300000, heromult: 13, heroeffect: 2e35 },
-    "Spaceship": { name: "Spaceship", expense: 1000000000000000000, effect: 1500000, heromult: 15, heroeffect: 5e42 },
-    "Planet": { name: "Planet", expense: 1e22, effect: 5000000, heromult: 16, heroeffect: 5e46 },
-    "Ringworld": { name: "Ringworld", expense: 1e24, effect: 50000000, heromult: 17, heroeffect: 5e49 },
-    "Stellar Neighborhood": { name: "Stellar Neighborhood", expense: 1e27, effect: 60000000, heromult: 17, heroeffect: 6e49 },
-    "Galaxy": { name: "Galaxy", expense: 1e30, effect: 75000000, heromult: 18, heroeffect: 7.5e49 },
-    "Supercluster": { name: "Supercluster", expense: 1e33, effect: 100000000, heromult: 20, heroeffect: 1e50 },
-    "Galaxy Filament": { name: "Galaxy Filament", expense: 1e36, effect: 1000000000, heromult: 25, heroeffect: 1e52 },
-    "Observable Universe": { name: "Observable Universe", expense: 1e39, effect: 10000000000, heromult: 30, heroeffect: 1e54 },
-
-    "Book": { name: "Book", expense: 10, effect: 1.5, description: "Skill XP", heromult: 2 },
-    "Dumbbells": { name: "Dumbbells", expense: 50, effect: 1.5, description: "Strength XP", heromult: 2 },
-    "Personal Squire": { name: "Personal Squire", expense: 200, effect: 2, description: "Hero XP", heromult: 3 },
-    "Steel Longsword": { name: "Steel Longsword", expense: 1000, effect: 2, description: "Military XP", heromult: 3 },
-    "Butler": { name: "Butler", expense: 7500, effect: 1.5, description: "Happiness", heromult: 4 },
-    "Sapphire Charm": { name: "Sapphire Charm", expense: 50000, effect: 3, description: "Magic XP", heromult:4 },
-    "Study Desk": { name: "Study Desk", expense: 1000000, effect: 2, description: "Skill XP", heromult: 5 },
-    "Library": { name: "Library", expense: 10000000, effect: 2, description: "Skill XP", heromult: 5 },
-    "Observatory": { name: "Observatory", expense: 140000000, effect: 5, description: "Magic XP", heromult: 6 },
-    "Mind's Eye": { name: "Mind's Eye", expense: 3250000000, effect: 10, description: "Fundamentals XP", heromult: 8 },
-    "Void Necklace": { name: "Void Necklace", expense: 28050000000, effect: 3, description: "Void Manipulation XP", heromult: 10 },
-    "Void Armor": { name: "Void Armor", expense: 197050000000, effect: 3, description: "The Void XP", heromult: 10 },
-    "Void Blade": { name: "Void Blade", expense: 502050000000, effect: 3, description: "Skill XP", heromult: 11 },
-    "Void Orb": { name: "Void Orb", expense: 1202050000000, effect: 3, description: "Void Manipulation XP", heromult: 11 },
-    "Void Dust": { name: "Void Dust", expense: 25002050000000, effect: 3, description: "The Void XP", heromult: 12 },
-    "Celestial Robe": { name: "Celestial Robe", expense: 300002050000000, effect: 5, description: "Galactic Council XP", heromult: 12 },
-    "Universe Fragment": { name: "Universe Fragment", expense: 18500002050000000, effect: 3, description: "Skill XP", heromult: 13 },
-    "Multiverse Fragment": { name: "Multiverse Fragment", expense: 200500002050000000, effect: 5, description: "Happiness", heromult: 15 },
-    "Stairway to heaven": { name: "Stairway to heaven", expense: 1e38, effect: 10, description: "Happiness", heromult: 30 },
-    "Highway to hell": { name: "Highway to hell", expense: 1e42, effect: 10, description: "Evil Gain", heromult: 30 },
-}
-
-milestoneBaseData = {
-    "Magic Eye": { name: "Magic Eye", expense: 5000, tier: 1, description: "Automatically gain max levels at age 65" },
-    "Almighty Eye": { name: "Almighty Eye", expense: 15000, tier: 2, description: "Automatically gain max levels" },
-    "Deal with the Devil": { name: "Deal with the Devil", expense: 30000, tier: 3, description: "Passively gain a small amount of Evil" },
-    "Transcendent Master": { name: "Transcendent Master", expense: 50000, tier: 4, description: "Essence gain" },
-    "Eternal Time": { name: "Eternal Time", expense: 75000, tier: 5, description: "x2 Time Warping" },
-    "Hell Portal": { name: "Hell Portal", expense: 120000, tier: 6, description: "Passively gain a huge amount of Evil" },
-    "Inferno": { name: "Inferno", expense: 170000, tier: 7, description: "x5 Evil gain" },
-    "God's Blessings": { name: "God's Blessings", expense: 250000, tier: 8, description: "x10M Happiness" },
-    "Faint Hope": { name: "Faint Hope", expense: 400000, tier: 9, description: "Essence gain (increases over time, influenced by time warping)" },
-    "New Beginning": { name: "New Beginning", expense: 5000000, tier: 10, description: "Heroic jobs, skills and items are unlocked" },
-
-    "Rise of Great Heroes": { name: "Rise of Great Heroes", expense: 10000000, tier: 11, description: "Essence gain + x10000 Hero XP" },
-    "Lazy Heroes": { name: "Lazy Heroes", expense: 20000000, tier: 12, description: "Hero XP", effect : 1e12},
-    "Dirty Heroes": { name: "Dirty Heroes", expense: 30000000, tier: 13, description: "Hero XP", effect : 1e15 },
-    "Angry Heroes": { name: "Angry Heroes", expense: 50000000, tier: 14, description: "Hero XP", effect : 1e15 },
-    "Tired Heroes": { name: "Tired Heroes", expense: 100000000, tier: 15, description: "Hero XP", effect : 1e15 },
-    "Scared Heroes": { name: "Scared Heroes", expense: 150000000, tier: 16, description: "Hero XP", effect : 1e15 },
-    "Good Heroes": { name: "Good Heroes", expense: 200000000, tier: 17, description: "Hero XP", effect : 1e15 },
-    "Funny Heroes": { name: "Funny Heroes", expense: 300000000, tier: 18, description: "Hero XP", effect : 1e25 },
-    "Beautiful Heroes": { name: "Beautiful Heroes", expense: 400000000, tier: 19, description: "Hero XP", effect : 1e50 },
-    "Awesome Heroes": { name: "Awesome Heroes", expense: 500000000, tier: 20, description: "Hero XP", effect : 1e10 },
-    "Furious Heroes": { name: "Furious Heroes", expense: 750000000, tier: 21, description: "Hero XP", effect : 1e18 },
-    "Superb Heroes": { name: "Superb Heroes", expense: 10000000000, tier: 22, description: "Hero XP", effect : 1e3 },
-    "A new beginning": { name: "A new beginning", expense: 5e10, tier: 23, description: "Unlocks Dark Matter" },
-
-    "Mind Control": { name: "Mind Control", expense: 1e13, tier: 24, description: "Makes Hell Portal even stronger" },
-    "Galactic Emperor": { name: "Galactic Emperor", expense: 1e15, tier: 25, description: "Passively gain a small amount of Essence" },
-    "Dark Matter Harvester": { name: "Dark Matter Harvester", expense: 1e17, tier: 26, description: "Multiply Dark Matter gain by 10x" },
-    "A Dark Era": { name: "A Dark Era", expense: 1e20, tier: 27, description: "Unlocks Dark Matter Skills" },
-    "Dark Orbiter": { name: "Dark Orbiter", expense: 1e22, tier: 28, description: "Multiply Dark Orb gain by 1e10x" },
-    "Dark Matter Mining": { name: "Dark Matter Mining", expense: 1e25, tier: 29, description: "Multiply Dark Matter gain by 3x" },
-    "The new gold": { name: "The new gold", expense: 1e30, tier: 30, description: "Multiply Essence gain by 1000x" },
-    "The Devil inside you": { name: "The Devil inside you", expense: 1e35, tier: 31, description: "Multiply Evil gain by 1e15x" },
-    "Strange Magic": { name: "Strange Magic", expense: 1e40, tier: 32, description: "Multiply Darkness xp gain by 1e50x" },
-    "Speed speed speed": { name: "Speed speed speed", expense: 1e45, tier: 33, description: "Multiply Time Warping and Lifespan by 1000x. Heavily boosts Faint Hope" },
-    "Life is valueable": { name: "Life is valueable", expense: 1e50, tier: 34, description: "Multiply your lifespan by 1e5x. New challenge unlocked. Dark Matter boosts essence gain." },
-    "Dark Matter Millionaire": { name: "Dark Matter Millionaire", expense: 1e55, tier: 35, description: "Multiply Dark Matter gain by 500x" },
-    "The new Dark Matter": { name: "The new Dark Matter", expense: 1e60, tier: 36, description: "Unlocks Metaverse" },
-
-    "Strong Hope": { name: "Strong Hope", expense: 1e70, tier: 37, description: "Faint Hope does not reset on transcend or collapse" },
-    "Ruler of the Metaverse": { name: "Ruler of the Metaverse", expense: 1e85, tier: 38, description: "Unlocks Metaverse Perks" },
-    "A New Hope": { name: "A New Hope", expense: 1e90, tier: 39, description: "Faint Hope always at maximum" },
-    "The End": { name: "The End", expense: 1e300, tier: 99, description: "The End" },
-}
-
-const jobCategories = {
-    "Common work"            : ["Beggar", "Farmer", "Fisherman", "Miner", "Blacksmith", "Merchant"],
-    "Military"               : ["Squire", "Footman", "Veteran footman", "Centenary", "Knight", "Veteran Knight", "Holy Knight", "Lieutenant General"],
-    "The Arcane Association" : ["Student", "Apprentice Mage", "Adept Mage", "Master Wizard", "Archmage", "Chronomancer", "Chairman", "Imperator"],
-    "The Void"               : ["Corrupted", "Void Slave", "Void Fiend", "Abyss Anomaly", "Void Wraith", "Void Reaver", "Void Lord", "Abyss God"],
-    "Galactic Council"       : ["Eternal Wanderer", "Nova", "Sigma Proioxis", "Acallaris", "One Above All"]
-}
-
-const skillCategories = {
-    "Fundamentals"           : ["Concentration", "Productivity", "Bargaining", "Meditation"],
-    "Combat"                 : ["Strength", "Battle Tactics", "Muscle Memory"],
-    "Magic"                  : ["Mana Control", "Life Essence", "Time Warping", "Astral Body", "Temporal Dimension", "All Seeing Eye", "Brainwashing"],
-    "Dark Magic"             : ["Dark Influence", "Evil Control", "Intimidation", "Demon Training", "Blood Meditation", "Demon's Wealth", "Dark Knowledge", "Void Influence", "Time Loop", "Evil Incarnate"],
-    "Void Manipulation"      : ["Absolute Wish", "Void Amplification", "Mind Release", "Ceaseless Abyss", "Void Symbiosis", "Void Embodiment", "Abyss Manipulation"],
-    "Celestial Powers"       : ["Cosmic Longevity", "Cosmic Recollection", "Essence Collector", "Galactic Command"],
-    "Almightiness"           : ["Yin Yang", "Parallel Universe", "Higher Dimensions", "Epiphany"],
-    "Darkness"               : ["Dark Prince", "Dark Ruler", "Immortal Ruler", "Dark Magician", "Universal Ruler", "Blinded By Darkness"]
-}
-
-const itemCategories = {
-    "Properties": ["Homeless", "Tent", "Wooden Hut", "Cottage", "House", "Large House", "Small Palace", "Grand Palace", "Town Ruler", "City Ruler", "Nation Ruler", "Pocket Dimension", "Void Realm", "Void Universe", "Astral Realm", "Galactic Throne", "Spaceship", "Planet", "Ringworld", "Stellar Neighborhood", "Galaxy", "Supercluster", "Galaxy Filament", "Observable Universe"],
-    "Misc": ["Book", "Dumbbells", "Personal Squire", "Steel Longsword", "Butler", "Sapphire Charm", "Study Desk", "Library", "Observatory", "Mind's Eye", "Void Necklace", "Void Armor", "Void Blade", "Void Orb", "Void Dust", "Celestial Robe", "Universe Fragment", "Multiverse Fragment", "Stairway to heaven", "Highway to hell"]
-}
-
-const milestoneCategories = {
-    "Essence Milestones": ["Magic Eye", "Almighty Eye", "Deal with the Devil", "Transcendent Master", "Eternal Time", "Hell Portal", "Inferno", "God's Blessings", "Faint Hope"],
-    "Heroic Milestones": ["New Beginning", "Rise of Great Heroes", "Lazy Heroes", "Dirty Heroes", "Angry Heroes", "Tired Heroes", "Scared Heroes", "Good Heroes", "Funny Heroes", "Beautiful Heroes", "Awesome Heroes", "Furious Heroes", "Superb Heroes", "A new beginning"],
-    "Dark Milestones": ["Mind Control", "Galactic Emperor", "Dark Matter Harvester", "A Dark Era", "Dark Orbiter", "Dark Matter Mining", "The new gold", "The Devil inside you", "Strange Magic", "Speed speed speed", "Life is valueable", "Dark Matter Millionaire", "The new Dark Matter"],
-    "Metaverse Milestones": ["Strong Hope", "Ruler of the Metaverse", "A New Hope", "The End"],
-}
-
-function getPreviousTaskInCategory(task) {
-    var prev = ""
-    for (const category in jobCategories) {
-        for (job of jobCategories[category]) {
-            if (job == task)
-                return prev
-            prev = job
-        }
-    }
-
-    prev = ""
-    for (const category in skillCategories) {
-        for (skill of skillCategories[category]) {
-            if (skill == task)
-                return prev
-            prev = skill
-        }
-    }
-    return prev
-}
-
-const headerRowColors = {
-    "Common work": "#55a630",
-    "Military": "#e63946",
-    "The Arcane Association": "#C71585",
-    "The Void": "#762B91",
-    "Galactic Council": "#D5C010",
-    "Fundamentals": "#55a630",
-    "Combat": "#e63946",
-    "Magic": "#C71585",
-    "Dark Magic": "#73000f",
-    "Almightiness": "#18d2d9",
-    "Darkness": "#8c6a0b",
-    "Void Manipulation": "#762B91",
-    "Celestial Powers": "#D5C010",
-    "Properties_Auto": "#21cc5e",
-    "Misc_Auto": "#f54546",
-    "Properties": "#219ebc",
-    "Misc": "#b56576",
-    "Essence Milestones": "#0066ff",
-    "Heroic Milestones": "#ff6600",
-    "Dark Milestones": "#873160",
-    "Metaverse Milestones": "#09a0e6",
-}
-
-const headerRowTextColors = {
-    "Common work": "darkblue",
-    "Military": "purple",
-    "The Arcane Association": "magenta",
-    "The Void": "white",
-    "Galactic Council": "purple",
-    "Fundamentals": "purple",
-    "Combat": "pink",
-    "Magic": "purple",
-    "Dark Magic": "pink",
-    "Almightiness": "purple",
-    "Darkness": "gold",
-    "Void Manipulation": "white",
-    "Celestial Powers": "purple",
-    "Properties_Auto": "purple",
-    "Misc_Auto": "purple",
-    "Properties": "purple",
-    "Misc": "purple",
-    "Essence Milestones": "purple",
-    "Heroic Milestones": "purple",
-    "Dark Milestones": "purple",
-    "Metaverse Milestones": "purple",
-}
-
-function getBindedTaskEffect(taskName) {
-    const task = gameData.taskData[taskName]
-    return task.getEffect.bind(task)
-}
-
-function getBindedItemEffect(itemName) {
-    const item = gameData.itemData[itemName]
-    return item.getEffect.bind(item)
-}
-
 function addMultipliers() {
     for (const taskName in gameData.taskData) {
         const task = gameData.taskData[taskName]
@@ -1292,7 +856,7 @@ function rebirthFive() {
     gameData.metaverse.challenge_altar = 0
     gameData.metaverse.dark_mater_gain_modifer = 0    
 
-    rebirthReset()
+    rebirthReset(false)
 
     for (const taskName in gameData.taskData) {
         const task = gameData.taskData[taskName]
@@ -1550,9 +1114,7 @@ function replaceSaveDict(dict, saveDict) {
         if (!(key in saveDict)) {
             saveDict[key] = dict[key]
         } else if (dict == gameData.requirements) {
-            if (saveDict[key].type != tempData["requirements"][key].type) {
-                saveDict[key] = tempData["requirements"][key]
-            }
+            saveDict[key] = tempData["requirements"][key]
         }
     }
 
@@ -1625,6 +1187,12 @@ function loadGameData() {
             if (gameData.dark_orbs == null || isNaN(gameData.dark_matter) || isNaN(gameData.dark_orbs))
                 gameData.dark_orbs = 0
 
+            if (gameData.hypercubes == null || isNaN(gameData.hypercubes))
+                gameData.hypercubes = 0
+
+            if (gameData.perks_points == null || isNaN(gameData.perks_points))
+                gameData.perks_points = 0
+
             if (gameData.settings.theme == null) {
                 gameData.settings.theme = 1
             }
@@ -1673,7 +1241,6 @@ function update(needUpdateUI = true) {
     increaseCoins()
 
     gameData.dark_orbs += applySpeed(getDarkOrbGeneration())
-
     gameData.hypercubes += applySpeed(getHypercubeGeneration())
 
     applyMilestones()
@@ -1832,247 +1399,15 @@ function isNextDarkMagicSkillInReach() {
 createGameObjects(gameData.taskData, jobBaseData)
 createGameObjects(gameData.taskData, skillBaseData)
 createGameObjects(gameData.itemData, itemBaseData)
-createGameObjects(gameData.milestoneData, milestoneBaseData)
+//createGameObjects(gameData.milestoneData, milestoneBaseData)
 
-gameData.settings.theme = peekSettingFromSave("theme")
+//gameData.settings.theme = peekSettingFromSave("theme")
 
 gameData.currentJob = gameData.taskData["Beggar"]
 gameData.currentProperty = gameData.itemData["Homeless"]
 gameData.currentMisc = []
 
-gameData.requirements = {
-    // Categories
-    "The Arcane Association": new TaskRequirement([removeSpaces(".The Arcane Association")], [{task: "Concentration", requirement: 200}, {task: "Meditation", requirement: 200}]),
-    "Galactic Council": new AgeRequirement([removeSpaces(".Galactic Council")], [{requirement: 10000}]),
-    "The Void": new AgeRequirement([removeSpaces(".The Void")], [{requirement: 1000}]),
-    "Void Manipulation": new AgeRequirement([removeSpaces(".Void Manipulation")], [{requirement: 1000}]),
-    "Celestial Powers": new AgeRequirement([removeSpaces(".Celestial Powers")], [{requirement: 10000}]),
-    "Dark Magic": new EvilRequirement([removeSpaces(".Dark Magic")], [{requirement: 1}]),
-    "Almightiness": new EssenceRequirement([".Almightiness"], [{requirement: 1}]),
-    "Darkness": new DarkMatterRequirement([".Darkness"], [{requirement: 1}]),
-    "Heroic Milestones": new EssenceRequirement([removeSpaces(".Heroic Milestones")], [{requirement: 400000}]),
-    "Dark Milestones": new EssenceRequirement([removeSpaces(".Dark Milestones")], [{ requirement: 5e10 }]),
-    "Metaverse Milestones": new EssenceRequirement([removeSpaces(".Metaverse Milestones")], [{ requirement: 1e60 }]),
-
-    // Rebirth items
-    "Rebirth tab": new AgeRequirement(["#rebirthTabButton"], [{requirement: 25}]),
-    "Rebirth note 1": new AgeRequirement(["#rebirthNote1"], [{requirement: 45}]),
-    "Rebirth note 2": new AgeRequirement(["#rebirthNote2"], [{requirement: 65}]),
-    "Rebirth note 3": new AgeRequirement(["#rebirthNote3"], [{requirement: 200}]),
-    "Rebirth note 4": new AgeRequirement(["#rebirthNote4"], [{requirement: 1000}]),
-    "Rebirth note 5": new AgeRequirement(["#rebirthNote5"], [{requirement: 10000}]),
-    "Rebirth note 6": new TaskRequirement(["#rebirthNote6"], [{ task: "Cosmic Recollection", requirement: 1 }]),
-    "Rebirth note 7": new EssenceRequirement(["#rebirthNote7"], [{ requirement: 5e10 }]),
-    "Rebirth note 8": new EssenceRequirement(["#rebirthNote8"], [{ requirement: 1e60 }]),
-
-    "Rebirth button 1": new AgeRequirement(["#rebirthButton1"], [{ requirement: 65 }]),
-    "Rebirth button 2": new AgeRequirement(["#rebirthButton2"], [{ requirement: 200 }]),
-    "Rebirth button 3": new TaskRequirement(["#rebirthButton3"], [{ task: "Cosmic Recollection", requirement: 1 }]),
-    "Rebirth button 4": new EssenceRequirement(["#rebirthButton4"], [{ requirement: 5e10 }]),
-    "Rebirth button 5": new EssenceRequirement(["#rebirthButton5"], [{ requirement: 1e85 }]),
-
-    "Rebirth stats evil": new AgeRequirement(["#statsEvilGain"], [{ requirement: 200 }]),
-    "Rebirth stats essence": new TaskRequirement(["#statsEssenceGain"], [{ task: "Cosmic Recollection", requirement: 1 }]),
-
-    // Sidebar items
-    "Quick task display": new AgeRequirement(["#quickTaskDisplay"], [{requirement: 20}]),
-    "Evil info": new EvilRequirement(["#evilInfo"], [{requirement: 1}]),
-    "Essence info": new EssenceRequirement(["#essenceInfo"], [{requirement: 1}]),
-    "Dark Matter info": new DarkMatterRequirement(["#darkMatterInfo"], [{requirement: 1}]),
-    "Dark Orbs info": new DarkOrbsRequirement(["#darkOrbsInfo"], [{ requirement: 1 }]),
-    "Hypercubes info": new HypercubeRequirement(["#hypercubesInfo"], [{ requirement: 1 }]),
-
-    // Common work
-    "Beggar": new TaskRequirement([getTaskQuerySelector("Beggar")], []),
-    "Farmer": new TaskRequirement([getTaskQuerySelector("Farmer")], [{task: "Beggar", requirement: 10}]),
-    "Fisherman": new TaskRequirement([getTaskQuerySelector("Fisherman")], [{task: "Farmer", requirement: 10}]),
-    "Miner": new TaskRequirement([getTaskQuerySelector("Miner")], [{task: "Strength", requirement: 10}, {task: "Fisherman", requirement: 10}]),
-    "Blacksmith": new TaskRequirement([getTaskQuerySelector("Blacksmith")], [{task: "Strength", requirement: 30}, {task: "Miner", requirement: 10}]),
-    "Merchant": new TaskRequirement([getTaskQuerySelector("Merchant")], [{task: "Bargaining", requirement: 50}, {task: "Blacksmith", requirement: 10}]),
-
-    // Military
-    "Squire": new TaskRequirement([getTaskQuerySelector("Squire")], [{task: "Strength", requirement: 5}]),
-    "Footman": new TaskRequirement([getTaskQuerySelector("Footman")], [{task: "Strength", requirement: 20}, {task: "Squire", requirement: 10}]),
-    "Veteran footman": new TaskRequirement([getTaskQuerySelector("Veteran footman")], [{task: "Battle Tactics", requirement: 40}, {task: "Footman", requirement: 10}]),
-    "Centenary": new TaskRequirement([getTaskQuerySelector("Centenary")], [{task: "Strength", requirement: 100}, {task: "Veteran footman", requirement: 10}]),
-    "Knight": new TaskRequirement([getTaskQuerySelector("Knight")], [{task: "Battle Tactics", requirement: 150}, {task: "Centenary", requirement: 10}]),
-    "Veteran Knight": new TaskRequirement([getTaskQuerySelector("Veteran Knight")], [{task: "Strength", requirement: 300}, {task: "Knight", requirement: 10}]),
-    "Holy Knight": new TaskRequirement([getTaskQuerySelector("Holy Knight")], [{task: "Mana Control", requirement: 500}, {task: "Veteran Knight", requirement: 10}]),
-    "Lieutenant General": new TaskRequirement([getTaskQuerySelector("Lieutenant General")], [{task: "Mana Control", requirement: 1000}, {task: "Battle Tactics", requirement: 1000}, {task: "Holy Knight", requirement: 10}]),
-
-    // The Arcane Association
-    "Student": new TaskRequirement([getTaskQuerySelector("Student")], [{task: "Concentration", requirement: 200}, {task: "Meditation", requirement: 200}]),
-    "Apprentice Mage": new TaskRequirement([getTaskQuerySelector("Apprentice Mage")], [{task: "Mana Control", requirement: 400}, {task: "Student", requirement: 10}]),
-    "Adept Mage": new TaskRequirement([getTaskQuerySelector("Adept Mage")], [{task: "Mana Control", requirement: 700}, {task: "Apprentice Mage", requirement: 10}]),
-    "Master Wizard": new TaskRequirement([getTaskQuerySelector("Master Wizard")], [{task: "Mana Control", requirement: 1000}, {task: "Adept Mage", requirement: 10}]),
-    "Archmage": new TaskRequirement([getTaskQuerySelector("Archmage")], [{task: "Mana Control", requirement: 1200}, {task: "Master Wizard", requirement: 10}]),
-    "Chronomancer": new TaskRequirement([getTaskQuerySelector("Chronomancer")], [{task: "Mana Control", requirement: 1500}, {task: "Meditation", requirement: 1500}, {task: "Archmage", requirement: 25}]),
-    "Chairman": new TaskRequirement([getTaskQuerySelector("Chairman")], [{task: "Mana Control", requirement: 2000}, {task: "Productivity", requirement: 2000}, {task: "Chronomancer", requirement: 50}]),
-    "Imperator": new TaskRequirement([getTaskQuerySelector("Imperator")], [{ task: "All Seeing Eye", requirement: 3000, herequirement:650}, {task: "Concentration", requirement: 3000},  {task: "Chairman", requirement: 666}]),
-
-    // The Void
-    "Corrupted": new AgeRequirement([getTaskQuerySelector("Corrupted")], [{requirement: 1000}]),
-    "Void Slave": new TaskRequirement([getTaskQuerySelector("Void Slave")], [{task: "Corrupted", requirement: 30}]),
-    "Void Fiend": new TaskRequirement([getTaskQuerySelector("Void Fiend")], [{ task: "Brainwashing", requirement: 3000 }, { task: "Void Slave", requirement: 200 }]),
-    "Abyss Anomaly": new TaskRequirement([getTaskQuerySelector("Abyss Anomaly")], [{ task: "Mind Release", requirement: 3000, herequirement: 100 }, { task: "Void Fiend", requirement: 200, herequirement: 100 }]),
-    "Void Wraith": new TaskRequirement([getTaskQuerySelector("Void Wraith")], [{ task: "Temporal Dimension", requirement: 3400 }, { task: "Abyss Anomaly", requirement: 300, herequirement: 180 }]),
-    "Void Reaver": new TaskRequirement([getTaskQuerySelector("Void Reaver")], [{ task: "Void Amplification", requirement: 3400, herequirement: 180 }, { task: "Void Wraith", requirement: 250, herequirement: 125 }]),
-    "Void Lord": new TaskRequirement([getTaskQuerySelector("Void Lord")], [{ task: "Void Symbiosis", requirement: 3800, herequirement: 200 }, { task: "Void Reaver", requirement: 150 }]),
-    "Abyss God": new TaskRequirement([getTaskQuerySelector("Abyss God")], [{ task: "Void Embodiment", requirement: 4700, herequirement: 300 }, { task: "Void Lord", requirement: 750, herequirement : 125 }]),
-
-    // Galactic Council
-    "Eternal Wanderer": new AgeRequirement([getTaskQuerySelector("Eternal Wanderer")], [{ requirement: 10000 }]),
-    "Nova": new TaskRequirement([getTaskQuerySelector("Nova")], [{ task: "Eternal Wanderer", requirement: 15 }, { task: "Cosmic Longevity", requirement: 4000, herequirement: 180 }]),
-    "Sigma Proioxis": new TaskRequirement([getTaskQuerySelector("Sigma Proioxis")], [{ task: "Nova", requirement: 200 }, { task: "Cosmic Recollection", requirement: 4500, herequirement: 350 }]),
-    "Acallaris": new TaskRequirement([getTaskQuerySelector("Acallaris")], [{ task: "Galactic Command", requirement: 5000, herequirement: 250 }, { task: "Sigma Proioxis", requirement: 1000, herequirement: 480 }]),
-    "One Above All": new TaskRequirement([getTaskQuerySelector("One Above All")], [{ task: "Meditation", requirement: 6300 }, { task: "Acallaris", requirement: 1400, herequirement: 500 }]),
-
-    // Fundamentals
-    "Concentration": new TaskRequirement([getTaskQuerySelector("Concentration")], []),
-    "Productivity": new TaskRequirement([getTaskQuerySelector("Productivity")], [{task: "Concentration", requirement: 5}]),
-    "Bargaining": new TaskRequirement([getTaskQuerySelector("Bargaining")], [{task: "Concentration", requirement: 20}]),
-    "Meditation": new TaskRequirement([getTaskQuerySelector("Meditation")], [{task: "Concentration", requirement: 30}, {task: "Productivity", requirement: 20}]),
-
-    // Combat
-    "Strength": new TaskRequirement([getTaskQuerySelector("Strength")], []),
-    "Battle Tactics": new TaskRequirement([getTaskQuerySelector("Battle Tactics")], [{task: "Concentration", requirement: 20}]),
-    "Muscle Memory": new TaskRequirement([getTaskQuerySelector("Muscle Memory")], [{task: "Concentration", requirement: 30}, {task: "Strength", requirement: 30}]),
-
-    // Magic
-    "Mana Control": new TaskRequirement([getTaskQuerySelector("Mana Control")], [{task: "Concentration", requirement: 200}, {task: "Meditation", requirement: 200}]),
-    "Life Essence": new TaskRequirement([getTaskQuerySelector("Life Essence")], [{task: "Apprentice Mage", requirement: 10}]),
-    "Time Warping": new TaskRequirement([getTaskQuerySelector("Time Warping")], [{task: "Adept Mage", requirement: 10}]),
-    "Astral Body": new TaskRequirement([getTaskQuerySelector("Astral Body")], [{task: "Archmage", requirement: 10}]),
-    "Temporal Dimension": new TaskRequirement([getTaskQuerySelector("Temporal Dimension")], [{task: "Chronomancer", requirement: 25}]),
-    "All Seeing Eye": new TaskRequirement([getTaskQuerySelector("All Seeing Eye")], [{task: "Mana Control", requirement: 2350}, {task: "Chairman", requirement: 100}]),
-    "Brainwashing": new TaskRequirement([getTaskQuerySelector("Brainwashing")], [{task: "Imperator", requirement: 100}]),
-
-    // Dark Magic
-    "Dark Influence": new EvilRequirement([getTaskQuerySelector("Dark Influence")], [{requirement: 1}]),
-    "Evil Control": new EvilRequirement([getTaskQuerySelector("Evil Control")], [{requirement: 1}]),
-    "Intimidation": new EvilRequirement([getTaskQuerySelector("Intimidation")], [{requirement: 1}]),
-    "Demon Training": new EvilRequirement([getTaskQuerySelector("Demon Training")], [{requirement: 20}]),
-    "Blood Meditation": new EvilRequirement([getTaskQuerySelector("Blood Meditation")], [{requirement: 50}]),
-    "Demon's Wealth": new EvilRequirement([getTaskQuerySelector("Demon's Wealth")], [{requirement: 500}]),
-    "Dark Knowledge": new EvilRequirement([getTaskQuerySelector("Dark Knowledge")], [{requirement: 5000}]),
-    "Void Influence": new EvilRequirement([getTaskQuerySelector("Void Influence")], [{requirement: 50000}]),
-    "Time Loop": new EvilRequirement([getTaskQuerySelector("Time Loop")], [{requirement: 2500000}]),
-    "Evil Incarnate": new EvilRequirement([getTaskQuerySelector("Evil Incarnate")], [{requirement: 1000000000}]),
-
-    // Void Manipulation
-    "Absolute Wish": new TaskRequirement([getTaskQuerySelector("Absolute Wish")], [{task: "Void Slave", requirement: 25}, {task: "Chairman", requirement: 300}]),
-    "Void Amplification": new TaskRequirement([getTaskQuerySelector("Void Amplification")], [{ task: "Void Slave", requirement: 100 }, { task: "Absolute Wish", requirement: 3000, herequirement: 1700 }]),
-    "Mind Release": new TaskRequirement([getTaskQuerySelector("Mind Release")], [{ task: "Void Amplification", requirement: 3000, herequirement: 100 }]),
-    "Ceaseless Abyss": new TaskRequirement([getTaskQuerySelector("Ceaseless Abyss")], [{ task: "Void Influence", requirement: 4000, herequirement: 1950 }, { task: "Abyss Anomaly", requirement: 50 }]),
-    "Void Symbiosis": new TaskRequirement([getTaskQuerySelector("Void Symbiosis")], [{ task: "Ceaseless Abyss", requirement: 3500, herequirement: 220 }, { task: "Void Reaver", requirement: 50 }]),
-    "Void Embodiment": new TaskRequirement([getTaskQuerySelector("Void Embodiment")], [{ task: "Dark Influence", requirement: 4600, herequirement: 3700 }, { task: "Void Lord", requirement: 50 }]),
-    "Abyss Manipulation": new TaskRequirement([getTaskQuerySelector("Abyss Manipulation")], [{ task: "Abyss God", requirement: 350, herequirement: 200 }, { task: "Dark Influence", requirement: 6000, herequirement: 4100 }, { task: "Void Influence", requirement: 6000, herequirement: 2600 }]),
-
-    // Celestial Powers
-    "Cosmic Longevity": new TaskRequirement([getTaskQuerySelector("Cosmic Longevity")], [{task: "Eternal Wanderer", requirement: 1}]),
-    "Cosmic Recollection": new TaskRequirement([getTaskQuerySelector("Cosmic Recollection")], [{ task: "Nova", requirement: 50 }, { task: "Meditation", requirement: 4200 }, { task: "Mind Release", requirement: 900 }]),
-    "Essence Collector": new TaskRequirement([getTaskQuerySelector("Essence Collector")], [{ task: "Sigma Proioxis", requirement: 500, herequirement: 360 }, { task: "Absolute Wish", requirement: 4900, herequirement: 2900 }, { task: "Dark Knowledge", requirement: 6300, herequirement: 3400 }]),
-    "Galactic Command": new TaskRequirement([getTaskQuerySelector("Galactic Command")], [{ task: "Essence Collector", requirement: 5000, herequirement: 210 }, { task: "Bargaining", requirement: 5000 }]),
-
-    // Essence
-    "Yin Yang": new EssenceRequirement([getTaskQuerySelector("Yin Yang")], [{requirement: 1}]),
-    "Parallel Universe": new EssenceRequirement([getTaskQuerySelector("Parallel Universe")], [{requirement: 1}]),
-    "Higher Dimensions": new EssenceRequirement([getTaskQuerySelector("Higher Dimensions")], [{requirement: 10000}]),
-    "Epiphany": new EssenceRequirement([getTaskQuerySelector("Epiphany")], [{requirement: 30000}]),
-
-    // Darkness
-    "Dark Prince": new DarkMatterRequirement([getTaskQuerySelector("Dark Prince")], [{requirement: 3}]),
-    "Dark Ruler": new DarkMatterRequirement([getTaskQuerySelector("Dark Ruler")], [{requirement: 10}]),
-    "Immortal Ruler": new DarkMatterRequirement([getTaskQuerySelector("Immortal Ruler")], [{requirement: 25}]),
-    "Dark Magician": new DarkMatterRequirement([getTaskQuerySelector("Dark Magician")], [{requirement: 100}]),
-    "Universal Ruler": new DarkMatterRequirement([getTaskQuerySelector("Universal Ruler")], [{requirement: 1e3}]),
-    "Blinded By Darkness": new DarkMatterRequirement([getTaskQuerySelector("Blinded By Darkness")], [{requirement: 1e4}]),
-
-    // Properties
-    "Homeless": new CoinRequirement([getItemQuerySelector("Homeless")], [{requirement: 0}]),
-    "Tent": new CoinRequirement([getItemQuerySelector("Tent")], [{requirement: 0}]),
-    "Wooden Hut": new CoinRequirement([getItemQuerySelector("Wooden Hut")], [{requirement: gameData.itemData["Wooden Hut"].getExpense() * 100}]),
-    "Cottage": new CoinRequirement([getItemQuerySelector("Cottage")], [{requirement: gameData.itemData["Cottage"].getExpense() * 100}]),
-    "House": new CoinRequirement([getItemQuerySelector("House")], [{requirement: gameData.itemData["House"].getExpense() * 100}]),
-    "Large House": new CoinRequirement([getItemQuerySelector("Large House")], [{requirement: gameData.itemData["Large House"].getExpense() * 100}]),
-    "Small Palace": new CoinRequirement([getItemQuerySelector("Small Palace")], [{requirement: gameData.itemData["Small Palace"].getExpense() * 100}]),
-    "Grand Palace": new CoinRequirement([getItemQuerySelector("Grand Palace")], [{requirement: gameData.itemData["Grand Palace"].getExpense() * 100}]),
-    "Town Ruler": new CoinRequirement([getItemQuerySelector("Town Ruler")], [{requirement: gameData.itemData["Town Ruler"].getExpense() * 100}]),
-    "City Ruler": new CoinRequirement([getItemQuerySelector("City Ruler")], [{requirement: gameData.itemData["City Ruler"].getExpense() * 100}]),
-    "Nation Ruler": new CoinRequirement([getItemQuerySelector("Nation Ruler")], [{requirement: gameData.itemData["Nation Ruler"].getExpense() * 100}]),
-    "Pocket Dimension": new CoinRequirement([getItemQuerySelector("Pocket Dimension")], [{requirement: gameData.itemData["Pocket Dimension"].getExpense() * 100}]),
-    "Void Realm": new CoinRequirement([getItemQuerySelector("Void Realm")], [{requirement: gameData.itemData["Void Realm"].getExpense() * 100}]),
-    "Void Universe": new CoinRequirement([getItemQuerySelector("Void Universe")], [{requirement: gameData.itemData["Void Universe"].getExpense() * 100}]),
-    "Astral Realm": new CoinRequirement([getItemQuerySelector("Astral Realm")], [{requirement: gameData.itemData["Astral Realm"].getExpense() * 100}]),
-    "Galactic Throne": new CoinRequirement([getItemQuerySelector("Galactic Throne")], [{ requirement: gameData.itemData["Galactic Throne"].getExpense() * 100 }]),
-    "Spaceship": new CoinRequirement([getItemQuerySelector("Spaceship")], [{ requirement: gameData.itemData["Spaceship"].getExpense() * 100 }]),
-    "Planet": new CoinRequirement([getItemQuerySelector("Planet")], [{ requirement: gameData.itemData["Planet"].getExpense() * 100 }]),
-    "Ringworld": new CoinRequirement([getItemQuerySelector("Ringworld")], [{ requirement: gameData.itemData["Ringworld"].getExpense() * 100 }]),
-    "Stellar Neighborhood": new CoinRequirement([getItemQuerySelector("Stellar Neighborhood")], [{ requirement: gameData.itemData["Stellar Neighborhood"].getExpense(true) * 100 }]),
-    "Galaxy": new CoinRequirement([getItemQuerySelector("Galaxy")], [{ requirement: gameData.itemData["Galaxy"].getExpense(true) * 1e5 }]),
-    "Supercluster": new CoinRequirement([getItemQuerySelector("Supercluster")], [{ requirement: gameData.itemData["Supercluster"].getExpense(true) * 1e8 }]),
-    "Galaxy Filament": new CoinRequirement([getItemQuerySelector("Galaxy Filament")], [{ requirement: gameData.itemData["Galaxy Filament"].getExpense(true) * 1e10 }]),
-    "Observable Universe": new CoinRequirement([getItemQuerySelector("Observable Universe")], [{ requirement: gameData.itemData["Observable Universe"].getExpense(true) * 1e14 }]),
-
-    // Misc
-    "Book": new CoinRequirement([getItemQuerySelector("Book")], [{requirement: 0}]),
-    "Dumbbells": new CoinRequirement([getItemQuerySelector("Dumbbells")], [{requirement: gameData.itemData["Dumbbells"].getExpense() * 100}]),
-    "Personal Squire": new CoinRequirement([getItemQuerySelector("Personal Squire")], [{requirement: gameData.itemData["Personal Squire"].getExpense() * 100}]),
-    "Steel Longsword": new CoinRequirement([getItemQuerySelector("Steel Longsword")], [{requirement: gameData.itemData["Steel Longsword"].getExpense() * 100}]),
-    "Butler": new CoinRequirement([getItemQuerySelector("Butler")], [{requirement: gameData.itemData["Butler"].getExpense() * 100}]),
-    "Sapphire Charm": new CoinRequirement([getItemQuerySelector("Sapphire Charm")], [{requirement: gameData.itemData["Sapphire Charm"].getExpense() * 100}]),
-    "Study Desk": new CoinRequirement([getItemQuerySelector("Study Desk")], [{requirement: gameData.itemData["Study Desk"].getExpense() * 100}]),
-    "Library": new CoinRequirement([getItemQuerySelector("Library")], [{requirement: gameData.itemData["Library"].getExpense() * 100}]),
-    "Observatory": new CoinRequirement([getItemQuerySelector("Observatory")], [{requirement: gameData.itemData["Observatory"].getExpense() * 100}]),
-    "Mind's Eye": new CoinRequirement([getItemQuerySelector("Mind's Eye")], [{requirement: gameData.itemData["Mind's Eye"].getExpense() * 100}]),
-    "Void Necklace": new CoinRequirement([getItemQuerySelector("Void Necklace")], [{requirement: gameData.itemData["Void Necklace"].getExpense() * 100}]),
-    "Void Armor": new CoinRequirement([getItemQuerySelector("Void Armor")], [{requirement: gameData.itemData["Void Armor"].getExpense() * 100}]),
-    "Void Blade": new CoinRequirement([getItemQuerySelector("Void Blade")], [{requirement: gameData.itemData["Void Blade"].getExpense() * 100}]),
-    "Void Orb": new CoinRequirement([getItemQuerySelector("Void Orb")], [{requirement: gameData.itemData["Void Orb"].getExpense() * 100}]),
-    "Void Dust": new CoinRequirement([getItemQuerySelector("Void Dust")], [{requirement: gameData.itemData["Void Dust"].getExpense() * 100}]),
-    "Celestial Robe": new CoinRequirement([getItemQuerySelector("Celestial Robe")], [{requirement: gameData.itemData["Celestial Robe"].getExpense() * 100}]),
-    "Universe Fragment": new CoinRequirement([getItemQuerySelector("Universe Fragment")], [{requirement: gameData.itemData["Universe Fragment"].getExpense() * 100}]),
-    "Multiverse Fragment": new CoinRequirement([getItemQuerySelector("Multiverse Fragment")], [{ requirement: gameData.itemData["Multiverse Fragment"].getExpense() * 100 }]),
-    "Stairway to heaven": new CoinRequirement([getItemQuerySelector("Stairway to heaven")], [{ requirement: gameData.itemData["Stairway to heaven"].getExpense() * 100 }]),
-    "Highway to hell": new CoinRequirement([getItemQuerySelector("Highway to hell")], [{ requirement: gameData.itemData["Highway to hell"].getExpense() * 100 }]),
-
-    // Milestones
-    "Milestones": new EssenceRequirement(["#milestonesTabButton"], [{ requirement: 1 }]),
-
-    // Dark Matter
-    "Dark Matter": new DarkMatterRequirement(["#darkMatterTabButton"], [{ requirement: 1 }]),
-    "Dark Matter Skills": new EssenceRequirement(["#skillTreeTabTabButton"], [{ requirement: 1e20 }]),
-    "Dark Matter Skills2": new EssenceRequirement(["#skillTreePage"], [{ requirement: 1e20 }]),
-
-    // Challenges
-    "Challenges": new EvilRequirement(["#challengesTabButton"], [{ requirement: 10000 }]),
-    "Challenge_an_unhappy_life": new EvilRequirement(["#anUnhappyLifeChallenge"], [{ requirement: 10000 }]),
-    "Challenge_the_rich_and_the_poor": new EvilRequirement(["#theRichAndThePoorChallenge"], [{ requirement: 1000000 }]),
-    "Challenge_time_does_not_fly": new EssenceRequirement(["#timeDoesNotFlyChallenge"], [{ requirement: 10000 }]),
-    "Challenge_dance_with_the_devil": new EssenceRequirement(["#danceWithTheDevilChallenge"], [{ requirement: 1e6 }]),
-    "Challenge_legends_never_die": new EssenceRequirement(["#legendsNeverDieChallenge"], [{ requirement: 2.5e7 }]),
-    "Challenge_the_darkest_time": new EssenceRequirement(["#theDarkestTimeChallenge"], [{ requirement: 1e50 }]),
-
-    // Metaverse Altars
-    "Metaverse": new MetaverseRequirement(["#metaverseTabButton"], [{ requirement: 1 }]),
-    "Increase Hypercube Gain": new HypercubeRequirement(["#IncreaseHypercubeGainAltar"], [{ requirement: 400 }]),
-    "Reduce Boost Cooldown": new HypercubeRequirement(["#ReduceBoostCooldownAltar"], [{ requirement: 500 }]),    
-    "Increase Boost Duration": new HypercubeRequirement(["#IncreaseBoostDurationAltar"], [{ requirement: 2500 }]),
-    "Gain evil at new transcension": new HypercubeRequirement(["#EvilAltar"], [{ requirement: 50000000 }]),
-    "Essence gain multiplier": new HypercubeRequirement(["#EssenceAltar"], [{ requirement: 500000000 }]),
-    "Challenges are not reset": new HypercubeRequirement(["#ChallengeAltar"], [{ requirement: 1e15 }]),
-    "Dark Mater gain multiplier": new HypercubeRequirement(["#DarkMaterAltar"], [{ requirement: 1e17 }]),
-
-    // Metaverse Perks
-    "Metaverse Perks": new PerkPointRequirement(["#metaversePage2"], [{ requirement: 1 }]),
-    "Metaverse Perks Button": new PerkPointRequirement(["#metaverseTab2TabButton"], [{ requirement: 1 }]),
-}
-
-for (const key in milestoneBaseData) {
-    const milestone = gameData.milestoneData[key]
-    gameData.requirements[milestone.name] = new EssenceRequirement([getMilestoneQuerySelector(milestone.name)],
-        [{ requirement: milestone.expense }])
-}
+gameData.requirements = requirementsBaseData
 
 tempData["requirements"] = {}
 for (const key in gameData.requirements) {
@@ -2080,12 +1415,19 @@ for (const key in gameData.requirements) {
     tempData["requirements"][key] = requirement
 }
 
-initializeUI()
-
 loadGameData()
 
 gameData.milestoneData = {}
 createGameObjects(gameData.milestoneData, milestoneBaseData)
+
+for (const key in milestoneBaseData) {
+    const milestone = gameData.milestoneData[key]
+    gameData.requirements[milestone.name] = new EssenceRequirement([getQuerySelector(milestone.name)],
+        [{ requirement: milestone.expense }])
+}
+
+
+initializeUI()
 
 setCustomEffects()
 addMultipliers()
