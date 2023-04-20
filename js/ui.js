@@ -636,10 +636,8 @@ function renderRequirements() {
         for (const element of requirement.elements) {
             if (requirement.isCompleted()) {
                 element.classList.remove("hidden")
-                element.hidden = false
             } else {
                 element.classList.add("hidden")
-                element.hidden = true
             }
         }
     }
@@ -1230,14 +1228,12 @@ window.addEventListener('keydown', function(e) {
             rebirthFive()
     }
 
-    if (e.ctrlKey) {
-        switch (e.key) {
-            case "1": toggleChallenge("an_unhappy_life"); break
-            case "2": toggleChallenge("the_rich_and_the_poor"); break
-            case "3": toggleChallenge("time_does_not_fly"); break
-            case "4": toggleChallenge("dance_with_the_devil"); break
-            case "5": toggleChallenge("legends_never_die"); break
-            case "6": toggleChallenge("the_darkest_time"); break
-        }
-    }    
+    switch (e.key) {
+        case "1": toggleChallenge("an_unhappy_life"); break
+        case "2": toggleChallenge("rich_and_the_poor"); break
+        case "3": toggleChallenge("time_does_not_fly"); break
+        case "4": toggleChallenge("dance_with_the_devil"); break
+        case "5": toggleChallenge("legends_never_die"); break
+        case "6": toggleChallenge("the_darkest_time"); break
+    }  
 });
