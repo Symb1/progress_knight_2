@@ -154,8 +154,8 @@ function buyDarkMaterMult() {
 // perks
 
 function getMetaversePerkPointsGain() {
-    if (gameData.essence >= 1e85)
-        return (gameData.perks.double_perk_points_gain == 1 ? 2 : 1) * (Math.floor(Math.log10(gameData.essence)) - 84)
+    if (gameData.essence >= 1e90)
+        return (gameData.perks.double_perk_points_gain == 1 ? 2 : 1) * (Math.floor(Math.log10(gameData.essence)) - 89)
 
     return 0
 }
@@ -240,4 +240,10 @@ function collectPerkPoints(value) {
             buyPerk(key)
         }        
     }
+}
+
+function getBoostCooldownString() {
+    return gameData.boost_active
+        ? "Active: " + formatTime(gameData.boost_timer)
+        : (gameData.boost_cooldown <= 0 ? "Ready!" : "Cooldown: " + formatTime(gameData.boost_cooldown))
 }

@@ -470,3 +470,17 @@ button:focus {
 .color-income {
     color: lightgreen;
 }
+
+.perk-boost {
+    margin: 0;
+    padding: 0.2em 0.5em 1em 0.5em;
+    height: 2em;
+}
+
+.perk-boost-cooldown, .perk-boost-cooldown:hover {
+    background-color: #066182;
+}
+
+.perk-boost-active, .perk-boost-active:hover {
+    background-color: #02bb11;
+}

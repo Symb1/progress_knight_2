@@ -714,7 +714,7 @@ function rebirthThree() {
 function rebirthFour() {
     gameData.rebirthFourCount += 1
     gameData.essence = 0
-    gameData.evil = evilTranGain()
+    gameData.evil = 0
     gameData.dark_matter += getDarkMatterGain()
 
     if (gameData.metaverse.challenge_altar == 0 && gameData.perks.save_challenges == 0)  {
@@ -814,7 +814,10 @@ function applyMilestones() {
         (gameData.requirements["Almighty Eye"].isCompleted())){
         for (taskName in gameData.taskData) {
             const task = gameData.taskData[taskName]
-            if (task.level > task.maxLevel) task.maxLevel = task.level
+            const effect = gameData.taskData["Cosmic Recollection"].getEffect()
+            const maxlevel = Math.floor(task.level * (effect == 0 ? 1 : effect))
+            if (maxlevel > task.maxLevel)
+                task.maxLevel = maxlevel
         }
     }
 
@@ -846,9 +849,18 @@ function applyMilestones() {
 
 function rebirthReset(set_tab_to_jobs = true) {
     if (set_tab_to_jobs) {
-       // if (gameData.settings.selectedTab == Tab.METAVERSE && gameData.perks.)
+        // if (gameData.settings.selectedTab == Tab.METAVERSE && gameData.perks.)
 
-        setTab("jobs")
+        if (gameData.settings.selectedTab == Tab.METAVERSE && gameData.hypercubes > 0
+            || gameData.settings.selectedTab == Tab.CHALLENGES && gameData.evil > 10000
+            || gameData.settings.selectedTab == Tab.MILESTONES && gameData.essence > 0
+            || gameData.settings.selectedTab == Tab.DARK_MATTER && gameData.dark_matter > 0
+            || gameData.settings.selectedTab == Tab.REBIRTH
+        ) {
+            // do not switch tab
+        }
+        else
+            setTab("jobs")
     }
 
     gameData.coins = 0
@@ -1058,7 +1070,9 @@ function replaceSaveDict(dict, saveDict) {
         if (!(key in saveDict)) {
             saveDict[key] = dict[key]
         } else if (dict == gameData.requirements) {
-            saveDict[key] = tempData["requirements"][key]
+            if (saveDict[key].type != tempData["requirements"][key].type) {
+                saveDict[key] = tempData["requirements"][key]
+            }
         }
     }
 

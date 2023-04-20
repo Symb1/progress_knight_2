@@ -88,27 +88,25 @@ function getDarkOrbGeneration() {
 function getTaaAndMagicXpGain() {
     if (gameData.active_challenge == "the_darkest_time") return 1
 
-    return Math.pow(3, gameData.dark_matter_shop.a_deal_with_the_chairman)
+    return Math.pow(4, gameData.dark_matter_shop.a_deal_with_the_chairman)
 }
 
 function getAGiftFromGodEssenceGain() {
     if (gameData.active_challenge == "the_darkest_time") return 1
 
-    return Math.pow(2, gameData.dark_matter_shop.a_gift_from_god)
+    return Math.pow(2.1, gameData.dark_matter_shop.a_gift_from_god)
 }
 
 function getLifeCoachIncomeGain() {
     if (gameData.active_challenge == "the_darkest_time") return 1
 
-    if (gameData.dark_matter_shop.life_coach > 30)
-        return 1e30 * Math.pow(2, gameData.dark_matter_shop.life_coach - 30)
-    return Math.pow(10, gameData.dark_matter_shop.life_coach)
+    return Math.pow(14, gameData.dark_matter_shop.life_coach)
 }
 
 function getGottaBeFastGain() {
     if (gameData.active_challenge == "the_darkest_time") return 1
 
-    return 1 + 0.05 * gameData.dark_matter_shop.gotta_be_fast
+    return 1 + 0.2 * gameData.dark_matter_shop.gotta_be_fast
 }
 
 function getAMiracleCost() {

@@ -21,6 +21,14 @@
 			<div id="info" class="panel w3-padding quick-bar" style="width:20em">
 				<div id="challengeTitle" class="challenge-title" hidden="hidden">
 					In challenge: <span id="challengeName"></span>
+					<div style="padding-top:0.3em">
+						<div class="sidebarChallengeReward an_unhappy_life hidden"><span class="color-happiness">Happiness</span> x<span id="sidebarCurrentChallengeBuff1"></span> / x<span id="sidebarChallengeBuff1"></span></div>
+						<div class="sidebarChallengeReward rich_and_the_poor hidden"><span class="color-income">Income</span> x<span id="sidebarCurrentChallengeBuff2"></span> / x<span id="sidebarChallengeBuff2"></span></div>
+						<div class="sidebarChallengeReward time_does_not_fly hidden"><span class="color-time-warping">Time Warping</span> x<span id="sidebarCurrentChallengeBuff3"></span> / x<span id="sidebarChallengeBuff3"></span></div>
+						<div class="sidebarChallengeReward dance_with_the_devil hidden"><span class="color-essence">Essence</span> x<span id="sidebarCurrentChallengeBuff4"></span> / x<span id="sidebarChallengeBuff4"></span></div>
+						<div class="sidebarChallengeReward legends_never_die hidden"><span class="color-evil">Evil</span> x<span id="sidebarCurrentChallengeBuff5"></span> / x<span id="sidebarChallengeBuff5"></span></div>
+						<div class="sidebarChallengeReward the_darkest_time hidden"><span class="color-dark-mater">Dark Mater</span> x<span id="sidebarCurrentChallengeBuff6"></span> / x<span id="sidebarChallengeBuff6"></span></div>
+					</div>
 				</div>
 				<div class="text-caption" id="errorInfo" hidden="hidden">
 					<div>⚠️ Oh no! It looks like something on the site broke.. If this issue persists, feel free to contact the developers.</div>
@@ -37,8 +45,8 @@
 				</div>
 				<button id="pauseButton" class="w3-button button sidebar-element" onClick="togglePause()">Pause</button>
 				<div id="boostPanel" class="sidebar-element" style="color: gray">
-					<button id="boostButton" class="w3-button button sidebar-element" onClick="applyBoost()">Boost</button>
-					<span id="boostCooldownDisplay">00:00</span>
+					<button id="boostButton" class="perk perk-boost" onClick="applyBoost()">Boost</button>
+					<span style="padding-left:0.4em" id="boostCooldownDisplay">00:00</span>
 				</div>
 				<div class="text-caption" id="coinDisplay">
 					<span></span>
@@ -281,18 +289,17 @@
 									<div>
 										<div style="color:rgb(240, 0, 0)">Starting a challenge will <b>reset</b> your coins, levels and max levels.</div>
 										<div>The more you advance in the challenge, the higher the reward.</div>
-										<div>Challenge rewards are always active, even in challenges.</div>
-										<div>You can press "1" to enter or exit challenge 1, etc.</div>
+										<div>Challenge rewards are always active, even in challenges.</div>										
 									</div>
 									<div id="exitChallengeDiv">
 										<p>Current challenge: <b><span id="activeChallengeName"></span></b></p>
 										<button class="w3-button button" onclick="exitChallenge()">Exit challenge</button>
-										<div id="currentChallengeReward1" class="an_unhappy_life hidden" style="display: inline; padding-left:1em">Current reward: Multiplies <span class="color-happiness">Happiness</span> by x<span id="currentChallengeHappinessBuff"></span></div>
-										<div id="currentChallengeReward2" class="rich_and_the_poor hidden" style="display: inline; padding-left:1em">Current reward: Multiplies <span class="color-income">Income</span> by x<span id="currentChallengeIncomeBuff"></span></div>
-										<div id="currentChallengeReward3" class="time_does_not_fly hidden" style="display: inline; padding-left:1em">Current reward: Multiplies <span class="color-time-warping">Time Warping</span> by x<span id="currentChallengeTimewarpingBuff"></span></div>
-										<div id="currentChallengeReward4" class="dance_with_the_devil hidden" style="display: inline; padding-left:1em">Current reward: Multiplies <span class="color-essence">Essence</span> gain by x<span id="currentChallengeEssenceGainBuff"></span></div>
-										<div id="currentChallengeReward5" class="legends_never_die hidden" style="display: inline; padding-left:1em">Current reward: Multiplies <span class="color-evil">Evil</span> gain by x<span id="currentChallengeEvilGainBuff"></span></div>
-										<div id="currentChallengeReward6" class="the_darkest_time hidden" style="display: inline; padding-left:1em">Current reward: Multiplies <span class="color-dark-mater">Dark Mater</span> gain by x<span id="currentChallengeDarkMatterGainBuff"></span></div>
+										<div class="currentChallengeReward an_unhappy_life hidden" style="display: inline; padding-left:1em">Current reward: Multiplies <span class="color-happiness">Happiness</span> by x<span id="currentChallengeBuff1"></span></div>
+										<div class="currentChallengeReward rich_and_the_poor hidden" style="display: inline; padding-left:1em">Current reward: Multiplies <span class="color-income">Income</span> by x<span id="currentChallengeBuff2"></span></div>
+										<div class="currentChallengeReward time_does_not_fly hidden" style="display: inline; padding-left:1em">Current reward: Multiplies <span class="color-time-warping">Time Warping</span> by x<span id="currentChallengeBuff3"></span></div>
+										<div class="currentChallengeReward dance_with_the_devil hidden" style="display: inline; padding-left:1em">Current reward: Multiplies <span class="color-essence">Essence</span> gain by x<span id="currentChallengeBuff4"></span></div>
+										<div class="currentChallengeReward legends_never_die hidden" style="display: inline; padding-left:1em">Current reward: Multiplies <span class="color-evil">Evil</span> gain by x<span id="currentChallengeBuff5"></span></div>
+										<div class="currentChallengeReward the_darkest_time hidden" style="display: inline; padding-left:1em">Current reward: Multiplies <span class="color-dark-mater">Dark Mater</span> gain by x<span id="currentChallengeBuff6"></span></div>
 									</div>
 									<div id="anUnhappyLifeChallenge" style="padding-top:2em">
 										<div class="text-caption challenge-title">1. An unhappy life</div>
@@ -364,7 +371,7 @@
 							<div id="rebirthTab1" class="tabRebirth">
 								<div id="rebirthPage" class="panel page-column">
 									<ul>
-										<li>
+										<li id="rebirthNote0" class="hidden">
 											You stumble across a strange looking amulet on your 25th birthday. It does not look like
 											it has any worth on the market given that it's made from cheap-looking copper. However, you
 											feel a weird urge to keep the amulet, so you slip it into your pocket for safekeeping.
@@ -663,6 +670,10 @@
 									<div style="padding-top:1em">
 										<div class="text-caption"><span class="color-hypercubes">Hypercubes:</span> <span id="hypercubesMetaDisplay"></span></div>
 									</div>
+									<div style="padding-top:1em">
+										<button id="boostMetaButton" class="perk perk-boost" onclick="applyBoost()"> Boost </button>
+										<span id="boostCooldownMetaDisplay">00:00</span>
+									</div>
 									<div id="IncreaseHypercubeGainAltar" style="padding-top:2em">
 										<div class="text-caption metaverse-title">Increase Hypercube Gain</div>
 										<div style="color:gray; padding-bottom: 0.3em;">Current gain: <b id="hypercubeGain"></b> / s</div>
@@ -804,12 +815,12 @@
 											<div style="margin-bottom: 8px;">
 												<div>Arrow Keys - Menu navigation</div>
 												<div>Spacebar - Pause</div>
-												<div id="keyChallenge" class="hidden">1 - Enter / Exit Challenge 1, etc</div>
+												<div id="key1" class="hidden">q - Touch the eye</div>
 												<div id="key2" class="hidden">e - Embrace evil</div>
 												<div id="key3" class="hidden">t - Transcend</div>
-												<div id="key4" class="hidden">c - Collapse the universe</div>
+												<div id="key4" class="hidden">u - Collapse the universe</div>
 												<div id="key5" class="hidden">g - Go to Metaverse</div>
-
+												<div id="keyChallenge" class="hidden">1 - Enter / Exit Challenge 1, etc</div>
 											</div>
 										</li>
 										<li>

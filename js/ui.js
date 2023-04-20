@@ -109,13 +109,10 @@ function renderSideBar() {
     document.getElementById("ageDisplay").textContent = formatAge(gameData.days)
     document.getElementById("lifespanDisplay").textContent = formatWhole(daysToYears(getLifespan()))
     document.getElementById("realtimeDisplay").textContent = formatTime(gameData.realtime)
-    document.getElementById("boostCooldownDisplay").textContent =
-        gameData.boost_active
-        ? "Boost: " + formatTime(gameData.boost_timer)
-            : (gameData.boost_cooldown <= 0 ? "Ready!" : "Cooldown: " + formatTime(gameData.boost_cooldown))
-    document.getElementById("boostButton").disabled = !canApplyBoost()
+    document.getElementById("boostCooldownDisplay").textContent = getBoostCooldownString()            
     document.getElementById("pauseButton").textContent = gameData.paused ? "Play" : "Pause"
     document.getElementById("boostPanel").hidden = gameData.rebirthFiveCount == 0
+    renderBoostButton("boostButton")
 
     formatCoins(gameData.coins, document.getElementById("coinDisplay"))
     setSignDisplay()
@@ -144,7 +141,7 @@ function renderSideBar() {
 
     document.getElementById("hypercubesDisplay").textContent = formatTreshold(gameData.hypercubes)
 
-    if (getMetaversePerkPointsGain() == 0)
+    if (gameData.rebirthFiveCount == 0)
         document.getElementById("perkPointsGainText").hidden = true
     else
         document.getElementById("perkPointsGainText").hidden = false
@@ -173,6 +170,9 @@ function renderSideBar() {
     } else {
         document.getElementById("challengeTitle").hidden = false
         document.getElementById("info").classList.add("challenge")
+        // challenge reward
+        renderCurrentChallengeReward("sidebarChallengeReward")
+        renderCurrentChallengeRewardValue(true)
     }
 
     if (getDarkMatter() == 0)
@@ -336,22 +336,12 @@ function renderChallenges() {
             const element = document.getElementById("challengeButton" + i)
             if (element != null)
                 element.classList.add("hidden")
-
-            const elementReward = document.getElementById("currentChallengeReward" + i)
-            if (elementReward != null) {
-                if (elementReward.classList.contains(gameData.active_challenge)) {
-                    elementReward.classList.remove("hidden")
-
-                    if (getChallengeBonus(gameData.active_challenge, true) > getChallengeBonus(gameData.active_challenge))
-                        elementReward.classList.add("reward")
-                    else
-                        elementReward.classList.remove("reward")
-                }
-                else
-                    elementReward.classList.add("hidden")
-            }
         }
+
+        renderCurrentChallengeReward("currentChallengeReward")
     }
+
+    //TODO (indomit)
 
     document.getElementById("challengeGoal1").textContent = format(getChallengeGoal("an_unhappy_life"))
     formatCoins(getChallengeGoal("rich_and_the_poor"), document.getElementById("challengeGoal2"))
@@ -367,12 +357,7 @@ function renderChallenges() {
     document.getElementById("challengeReward5").hidden = gameData.challenges.legends_never_die == 0
     document.getElementById("challengeReward6").hidden = gameData.challenges.the_darkest_time == 0
 
-    document.getElementById("currentChallengeHappinessBuff").textContent = format(getChallengeBonus("an_unhappy_life", true), 2)
-    document.getElementById("currentChallengeIncomeBuff").textContent = format(getChallengeBonus("rich_and_the_poor", true), 2)
-    document.getElementById("currentChallengeTimewarpingBuff").textContent = format(getChallengeBonus("time_does_not_fly", true), 2)
-    document.getElementById("currentChallengeEssenceGainBuff").textContent = format(getChallengeBonus("dance_with_the_devil", true), 2)
-    document.getElementById("currentChallengeEvilGainBuff").textContent = format(getChallengeBonus("legends_never_die", true), 2)
-    document.getElementById("currentChallengeDarkMatterGainBuff").textContent = format(getChallengeBonus("the_darkest_time", true), 2)
+    renderCurrentChallengeRewardValue()
 
     document.getElementById("challengeHappinessBuff").textContent = format(getChallengeBonus("an_unhappy_life"), 2)
     document.getElementById("challengeIncomeBuff").textContent = format(getChallengeBonus("rich_and_the_poor"), 2)
@@ -381,6 +366,32 @@ function renderChallenges() {
     document.getElementById("challengeEvilGainBuff").textContent = format(getChallengeBonus("legends_never_die"), 2)
     document.getElementById("challengeDarkMatterGainBuff").textContent = format(getChallengeBonus("the_darkest_time"), 2)
 }
+
+function renderCurrentChallengeReward(blockclass) {
+    const elements = document.getElementsByClassName(blockclass)
+    for (const elementReward of elements) {
+        if (elementReward.classList.contains(gameData.active_challenge)) {
+            elementReward.classList.remove("hidden")
+
+            if (getChallengeBonus(gameData.active_challenge, true) > getChallengeBonus(gameData.active_challenge))
+                elementReward.classList.add("reward")
+            else
+                elementReward.classList.remove("reward")
+        }
+        else
+            elementReward.classList.add("hidden")
+    }
+}
+
+function renderCurrentChallengeRewardValue(side_bar = false) {
+
+    for (var i = 1; i <= Object.keys(gameData.challenges).length; i++) {
+        document.getElementById((side_bar ? "sidebarC" : "c") + "urrentChallengeBuff" + i).textContent = format(getChallengeBonus(i, true), 2)
+        if (side_bar)
+            document.getElementById("sidebarChallengeBuff" + i).textContent = format(getChallengeBonus(i), 2)
+    }    
+}
+
 
 function renderMilestones() {
     for (const key in milestoneData) {
@@ -404,8 +415,34 @@ function renderDarkMaterShopButton(elemName, condition) {
     document.getElementById(elemName).disabled = !condition    
 }
 
+function renderBoostButton(elemName) {
+    // render boost button to look nicier :)
+    const boostButton = document.getElementById(elemName)
+    if (gameData.boost_active) {
+        // active
+        boostButton.classList.add("perk-boost-active")
+        boostButton.classList.remove("perk-boost-cooldown")
+    }
+    else if (gameData.boost_cooldown <= 0) {
+        // ready
+        boostButton.classList.remove("perk-boost-active")
+        boostButton.classList.remove("perk-boost-cooldown")
+    }
+    else {
+        // cooldown
+        boostButton.classList.add("perk-boost-cooldown")
+        boostButton.classList.remove("perk-boost-active")
+    }
+
+    boostButton.disabled = !canApplyBoost()
+}
+
 function renderMetaverse() {
+
+    renderBoostButton("boostMetaButton")
+
     document.getElementById("hypercubesMetaDisplay").textContent = format(gameData.hypercubes)
+    document.getElementById("boostCooldownMetaDisplay").textContent = getBoostCooldownString()  
 
     document.getElementById("reduceBoostCooldown").textContent = formatTime(getBoostCooldownSeconds())
     document.getElementById("reduceBoostCooldownCost").textContent = format(reduceBoostCooldownCost())
@@ -1195,45 +1232,56 @@ function toggleChallenge(challengeName) {
     }
     else if (gameData.active_challenge == challengeName)
         exitChallenge()
+    else {
+        exitChallenge()
+        if (gameData.requirements["Challenge_" + challengeName].isCompleted())
+            enterChallenge(challengeName)
+    }
 }
 
-window.addEventListener('keydown', function(e) {
-    if (e.key == " " && !e.repeat ) {
-        togglePause()
-        if (e.target == document.body) {
-            e.preventDefault();
+window.addEventListener('keydown', function (e) {
+    if (!e.ctrlKey && !e.shiftKey && !e.altKey) {
+        if (e.key == " " && !e.repeat) {
+            togglePause()
+            if (e.target == document.body) {
+                e.preventDefault();
+            }
+        }
+        if (e.key == "ArrowRight") changeTab(1)
+        if (e.key == "ArrowLeft") changeTab(-1)
+
+        if (e.key == "q") {
+            if (gameData.requirements["Rebirth button 1"].isCompleted())
+                rebirthOne()
+        }
+
+        if (e.key == "e") {
+            if (gameData.requirements["Rebirth button 2"].isCompleted())
+                rebirthTwo()
+        }
+
+        if (e.key == "t") {
+            if (gameData.requirements["Rebirth button 3"].isCompleted())
+                rebirthThree()
+        }
+
+        if (e.key == "u") {
+            if (gameData.requirements["Rebirth button 4"].isCompleted())
+                rebirthFour()
+        }
+
+        if (e.key == "g") {
+            if (gameData.requirements["Rebirth button 5"].isCompleted())
+                rebirthFive()
+        }
+
+        switch (e.key) {
+            case "1": toggleChallenge("an_unhappy_life"); break
+            case "2": toggleChallenge("rich_and_the_poor"); break
+            case "3": toggleChallenge("time_does_not_fly"); break
+            case "4": toggleChallenge("dance_with_the_devil"); break
+            case "5": toggleChallenge("legends_never_die"); break
+            case "6": toggleChallenge("the_darkest_time"); break
         }
     }
-    if (e.key=="ArrowRight") changeTab(1)
-    if (e.key == "ArrowLeft") changeTab(-1)
-
-
-    if (e.key == "e") {
-        if (gameData.requirements["Rebirth button 2"].isCompleted())
-            rebirthTwo()
-    }
-
-    if (e.key == "t") {
-        if (gameData.requirements["Rebirth button 3"].isCompleted())
-            rebirthThree()
-    }
-
-    if (e.key == "c") {
-        if (gameData.requirements["Rebirth button 4"].isCompleted())
-            rebirthFour()
-    }
-
-    if (e.key == "g") {
-        if (gameData.requirements["Rebirth button 5"].isCompleted())
-            rebirthFive()
-    }
-
-    switch (e.key) {
-        case "1": toggleChallenge("an_unhappy_life"); break
-        case "2": toggleChallenge("rich_and_the_poor"); break
-        case "3": toggleChallenge("time_does_not_fly"); break
-        case "4": toggleChallenge("dance_with_the_devil"); break
-        case "5": toggleChallenge("legends_never_die"); break
-        case "6": toggleChallenge("the_darkest_time"); break
-    }  
 });

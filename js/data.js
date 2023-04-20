@@ -126,7 +126,7 @@ const baseLifespan = 365 * 70
 const baseGameSpeed = 4
 const heroIncomeMult = 2.5e18
 
-const permanentUnlocks = ["Quick task display", "Dark Matter", "Dark Matter Skills", "Dark Matter Skills2", "Challenges", "Metaverse", , "Metaverse Perks", "Metaverse Perks Button"]
+const permanentUnlocks = ["Quick task display", "Rebirth tab", "Dark Matter", "Dark Matter Skills", "Dark Matter Skills2", "Metaverse", "Metaverse Perks", "Metaverse Perks Button"]
 const metaverseUnlocks = ["Reduce Boost Cooldown", "Increase Boost Duration", "Increase Hypercube Gain", "Gain evil at new transcension",
     "Essence gain multiplier", "Challenges are not reset", "Dark Mater gain multiplier"]
 
@@ -251,33 +251,33 @@ const itemBaseData = {
     "Ringworld": { name: "Ringworld", expense: 1e24, effect: 50000000, heromult: 17, heroeffect: 5e49 },
 
     // Heroic only
-    "Stellar Neighborhood": { name: "Stellar Neighborhood", expense: 1e27, effect: 60000000, heromult: 17, heroeffect: 6e49 },
+    "Stellar Neighborhood": { name: "Stellar Neighborhood", expense: 1e27, effect: 60000000, heromult: 17, heroeffect: 6e49,  },
     "Galaxy": { name: "Galaxy", expense: 1e30, effect: 75000000, heromult: 18, heroeffect: 7.5e49 },
     "Supercluster": { name: "Supercluster", expense: 1e33, effect: 100000000, heromult: 20, heroeffect: 1e50 },
     "Galaxy Filament": { name: "Galaxy Filament", expense: 1e36, effect: 1000000000, heromult: 25, heroeffect: 1e52 },
     "Observable Universe": { name: "Observable Universe", expense: 1e39, effect: 10000000000, heromult: 30, heroeffect: 1e54 },
 
     // Misc
-    "Book": { name: "Book", expense: 10, effect: 1.5, description: "Skill XP", heromult: 2 },
-    "Dumbbells": { name: "Dumbbells", expense: 50, effect: 1.5, description: "Strength XP", heromult: 2 },
-    "Personal Squire": { name: "Personal Squire", expense: 200, effect: 2, description: "Hero XP", heromult: 3 },
-    "Steel Longsword": { name: "Steel Longsword", expense: 1000, effect: 2, description: "Military XP", heromult: 3 },
-    "Butler": { name: "Butler", expense: 7500, effect: 1.5, description: "Happiness", heromult: 4 },
-    "Sapphire Charm": { name: "Sapphire Charm", expense: 50000, effect: 3, description: "Magic XP", heromult: 4 },
-    "Study Desk": { name: "Study Desk", expense: 1000000, effect: 2, description: "Skill XP", heromult: 5 },
-    "Library": { name: "Library", expense: 1e7, effect: 2, description: "Skill XP", heromult: 5 },
-    "Observatory": { name: "Observatory", expense: 1.4e8, effect: 5, description: "Magic XP", heromult: 6 },
-    "Mind's Eye": { name: "Mind's Eye", expense: 3.25e9, effect: 10, description: "Fundamentals XP", heromult: 8 },
-    "Void Necklace": { name: "Void Necklace", expense: 2.8e10, effect: 3, description: "Void Manipulation XP", heromult: 10 },
-    "Void Armor": { name: "Void Armor", expense: 1.97e11, effect: 3, description: "The Void XP", heromult: 10 },
-    "Void Blade": { name: "Void Blade", expense: 5e11, effect: 3, description: "Skill XP", heromult: 11 },
-    "Void Orb": { name: "Void Orb", expense: 1.2e12, effect: 3, description: "Void Manipulation XP", heromult: 11 },
-    "Void Dust": { name: "Void Dust", expense: 2.5e13, effect: 3, description: "The Void XP", heromult: 12 },
-    "Celestial Robe": { name: "Celestial Robe", expense: 3e14, effect: 5, description: "Galactic Council XP", heromult: 12 },
-    "Universe Fragment": { name: "Universe Fragment", expense: 1.85e16, effect: 3, description: "Skill XP", heromult: 13 },
-    "Multiverse Fragment": { name: "Multiverse Fragment", expense: 2e17, effect: 5, description: "Happiness", heromult: 15 },
-    "Stairway to heaven": { name: "Stairway to heaven", expense: 1e38, effect: 10, description: "Happiness", heromult: 30 },
-    "Highway to hell": { name: "Highway to hell", expense: 1e42, effect: 10, description: "Evil Gain", heromult: 30 },
+    "Book": { name: "Book", expense: 10, effect: 1.5, description: "Skill XP", heromult: 2, heroeffect: 10 },
+    "Dumbbells": { name: "Dumbbells", expense: 50, effect: 1.5, description: "Strength XP", heromult: 2, heroeffect: 10 },
+    "Personal Squire": { name: "Personal Squire", expense: 200, effect: 2, description: "Hero XP", heromult: 3, heroeffect: 10 },
+    "Steel Longsword": { name: "Steel Longsword", expense: 1000, effect: 2, description: "Military XP", heromult: 3, heroeffect: 10 },
+    "Butler": { name: "Butler", expense: 7500, effect: 1.5, description: "Happiness", heromult: 4, heroeffect: 10 },
+    "Sapphire Charm": { name: "Sapphire Charm", expense: 50000, effect: 3, description: "Magic XP", heromult: 4, heroeffect: 10 },
+    "Study Desk": { name: "Study Desk", expense: 1000000, effect: 2, description: "Skill XP", heromult: 5, heroeffect: 10 },
+    "Library": { name: "Library", expense: 1e7, effect: 2, description: "Skill XP", heromult: 5, heroeffect: 10 },
+    "Observatory": { name: "Observatory", expense: 1.4e8, effect: 5, description: "Magic XP", heromult: 6, heroeffect: 10 },
+    "Mind's Eye": { name: "Mind's Eye", expense: 3.25e9, effect: 10, description: "Fundamentals XP", heromult: 8, heroeffect: 10 },
+    "Void Necklace": { name: "Void Necklace", expense: 2.8e10, effect: 3, description: "Void Manipulation XP", heromult: 10, heroeffect: 10 },
+    "Void Armor": { name: "Void Armor", expense: 1.97e11, effect: 3, description: "The Void XP", heromult: 10, heroeffect: 10 },
+    "Void Blade": { name: "Void Blade", expense: 5e11, effect: 3, description: "Skill XP", heromult: 11, heroeffect: 10 },
+    "Void Orb": { name: "Void Orb", expense: 1.2e12, effect: 3, description: "Void Manipulation XP", heromult: 11, heroeffect: 10 },
+    "Void Dust": { name: "Void Dust", expense: 2.5e13, effect: 3, description: "The Void XP", heromult: 12, heroeffect: 10 },
+    "Celestial Robe": { name: "Celestial Robe", expense: 3e14, effect: 5, description: "Galactic Council XP", heromult: 12, heroeffect: 10 },
+    "Universe Fragment": { name: "Universe Fragment", expense: 1.85e16, effect: 3, description: "Skill XP", heromult: 13, heroeffect: 1000000 },
+    "Multiverse Fragment": { name: "Multiverse Fragment", expense: 2e17, effect: 5, description: "Happiness", heromult: 15, heroeffect: 1000000 },
+    "Stairway to heaven": { name: "Stairway to heaven", expense: 1e38, effect: 10, description: "Happiness", heromult: 30, heroeffect: 1000000 },
+    "Highway to hell": { name: "Highway to hell", expense: 1e42, effect: 10, description: "Evil Gain", heromult: 30, heroeffect: 1000000 },
 }
 
 const requirementsBaseData = {
@@ -296,6 +296,7 @@ const requirementsBaseData = {
 
     // Rebirth items
     "Rebirth tab": new AgeRequirement(["#rebirthTabButton"], [{ requirement: 25 }]),
+    "Rebirth note 0": new AgeRequirement(["#rebirthNote0"], [{ requirement: 25 }]),
     "Rebirth note 1": new AgeRequirement(["#rebirthNote1"], [{ requirement: 45 }]),
     "Rebirth note 2": new AgeRequirement(["#rebirthNote2"], [{ requirement: 65 }]),
     "Rebirth note 3": new AgeRequirement(["#rebirthNote3"], [{ requirement: 200 }]),
@@ -309,7 +310,7 @@ const requirementsBaseData = {
     "Rebirth button 2": new AgeRequirement(["#rebirthButton2"], [{ requirement: 200 }]),
     "Rebirth button 3": new TaskRequirement(["#rebirthButton3"], [{ task: "Cosmic Recollection", requirement: 1 }]),
     "Rebirth button 4": new EssenceRequirement(["#rebirthButton4"], [{ requirement: 5e10 }]),
-    "Rebirth button 5": new EssenceRequirement(["#rebirthButton5"], [{ requirement: 1e85 }]),
+    "Rebirth button 5": new EssenceRequirement(["#rebirthButton5"], [{ requirement: 1e90 }]),
 
     "Rebirth stats evil": new AgeRequirement(["#statsEvilGain"], [{ requirement: 200 }]),
     "Rebirth stats essence": new TaskRequirement(["#statsEssenceGain"], [{ task: "Cosmic Recollection", requirement: 1 }]),
@@ -511,10 +512,11 @@ const requirementsBaseData = {
 
     // ShortKeyInfo
     "keyChallenge": new EvilRequirement(["#keyChallenge"], [{ requirement: 10000 }]),
+    "key1": new AgeRequirement(["#key1"], [{ requirement: 65 }]),
     "key2": new AgeRequirement(["#key2"], [{ requirement: 200 }]),
     "key3": new TaskRequirement(["#key3"], [{ task: "Cosmic Recollection", requirement: 1 }]),
     "key4": new EssenceRequirement(["#key4"], [{ requirement: 5e10 }]),
-    "key5": new EssenceRequirement(["#key5"], [{ requirement: 1e85 }]),
+    "key5": new EssenceRequirement(["#key5"], [{ requirement: 1e90 }]),
 
 }
 

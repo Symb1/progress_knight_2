@@ -41,8 +41,11 @@ const milestoneBaseData = {
     "The new Dark Matter": { name: "The new Dark Matter", expense: 1e60, tier: 36, description: "Unlocks Metaverse" },
 
     "Strong Hope": { name: "Strong Hope", expense: 1e70, tier: 37, description: "Faint Hope does not reset on transcend or collapse" },
-    "Ruler of the Metaverse": { name: "Ruler of the Metaverse", expense: 1e85, tier: 38, description: "Unlocks Metaverse Perks" },
-    "A New Hope": { name: "A New Hope", expense: 1e90, tier: 39, description: "Faint Hope always at maximum" },
+
+    // 1e80 for helping get to 1e90
+
+    "Ruler of the Metaverse": { name: "Ruler of the Metaverse", expense: 1e90, tier: 38, description: "Unlocks Metaverse Perks" },
+    "A New Hope": { name: "A New Hope", expense: 1e95, tier: 39, description: "Faint Hope always at maximum" },
     "The End": { name: "The End", expense: 1e300, tier: 99, description: "The End" },
 }
 

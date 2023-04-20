@@ -141,7 +141,7 @@ function formatTime(sec_num, show_ms = false) {
     if (hours < 10) hours = "0" + hours
     if (minutes < 10) minutes = "0" + minutes
     if (seconds < 10) seconds = "0" + seconds
-    return hours + ':' + minutes + ':' + seconds + mss
+    return (sec_num > 3600 ? hours + ':' : "") + minutes + ':' + seconds + mss
 }
 
 function formatTreshold(number, decimals = 1, treshold = 100000) {

@@ -45,43 +45,43 @@ function setChallengeProgress() {
 }
 
 function getChallengeBonus(challenge_name, current = false) {
-    if (challenge_name == "an_unhappy_life") {
+    if (challenge_name == "an_unhappy_life" || challenge_name == 1) {
         return softcap(Math.pow((current ? getHappiness() : gameData.challenges.an_unhappy_life) + 1, 0.31), 500, 0.45)
     }
-    if (challenge_name == "rich_and_the_poor") {
+    if (challenge_name == "rich_and_the_poor" || challenge_name == 2) {
         return softcap(Math.pow((current ? getIncome() : gameData.challenges.rich_and_the_poor) + 1, 0.25), 25, 0.55)
     }
-    if (challenge_name == "time_does_not_fly") {
+    if (challenge_name == "time_does_not_fly" || challenge_name == 3) {
         return softcap(Math.pow((current ? getUnpausedGameSpeed() / baseGameSpeed : gameData.challenges.time_does_not_fly) + 1, 0.055), 2)
     }
-    if (challenge_name == "dance_with_the_devil") {
+    if (challenge_name == "dance_with_the_devil" || challenge_name == 4) {
         return softcap(Math.pow((current ? Math.max(0, getEvilGain() - 10) : gameData.challenges.dance_with_the_devil) + 1, 0.09), 2, 0.75)
     }
-    if (challenge_name == "legends_never_die") {
+    if (challenge_name == "legends_never_die" || challenge_name == 5) {
         return softcap(Math.pow((current ? getChallengeTaskGoalProgress("Chairman") : gameData.challenges.legends_never_die) + 1, 0.85), 25, 0.6)
     }
-    if (challenge_name == "the_darkest_time") {
+    if (challenge_name == "the_darkest_time" || challenge_name == 6) {
         return softcap(Math.pow((current ? getChallengeTaskGoalProgress("Sigma Proioxis") / 100.0 : gameData.challenges.the_darkest_time) + 1, 0.85), 25, 0.6)
     }
 }
 
 function getChallengeGoal(challenge_name) {
-    if (challenge_name == "an_unhappy_life") {
+    if (challenge_name == "an_unhappy_life" || challenge_name == 1) {
         return gameData.challenges.an_unhappy_life + 1
     }
-    if (challenge_name == "rich_and_the_poor") {
+    if (challenge_name == "rich_and_the_poor" || challenge_name == 2) {
         return gameData.challenges.rich_and_the_poor + 1
     }
-    if (challenge_name == "time_does_not_fly") {
+    if (challenge_name == "time_does_not_fly" || challenge_name == 3) {
         return Math.max(1, gameData.challenges.time_does_not_fly + 0.1)
     }
-    if (challenge_name == "dance_with_the_devil") {
+    if (challenge_name == "dance_with_the_devil" || challenge_name == 4) {
         return gameData.challenges.dance_with_the_devil + 10.1
     }
-    if (challenge_name == "legends_never_die") {
+    if (challenge_name == "legends_never_die" || challenge_name == 5) {
         return gameData.challenges.legends_never_die + 1
     }
-    if (challenge_name == "the_darkest_time") {
+    if (challenge_name == "the_darkest_time" || challenge_name == 6) {
         return gameData.challenges.the_darkest_time + 1
     }
 }

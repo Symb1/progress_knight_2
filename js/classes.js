@@ -189,10 +189,7 @@ class Item {
             if (itemCategories["Misc"].includes(this.name))
             {
                 if (gameData.currentMisc.includes(this)) {
-                    effect *= 10
-                    if (this.name == "Universe Fragment" || this.name == "Multiverse Fragment" || this.name == "Stairway to heaven"
-                        || this.name == "Highway to hell")
-                        effect *= 100000
+                    effect *= this.baseData.heroeffect                    
                 }
             }
 
@@ -215,10 +212,7 @@ class Item {
 
         if (this.isHero) {
             if (itemCategories["Misc"].includes(this.name)) {
-                effect *= 10
-                if (this.name == "Universe Fragment" || this.name == "Multiverse Fragment" || this.name == "Stairway to heaven"
-                    || this.name == "Highway to hell")
-                    effect *= 100000
+                effect *= this.baseData.heroeffect
             }
 
             if (itemCategories["Properties"].includes(this.name)) {
