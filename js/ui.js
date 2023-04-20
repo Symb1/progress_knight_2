@@ -821,10 +821,8 @@ function updateRequiredRows(data, categoryType) {
             let effectText = ""
             if (data == gameData.taskData) {
                 const task = gameData.taskData[nextEntity.name]
-                if (task.baseData.description != null) {
-                    effectElement.classList.remove("hiddenTask")
-                    effectValueElement.textContent = task.baseData.description
-                }
+                effectElement.classList.remove("hiddenTask")
+                effectValueElement.textContent = task.baseData.description != null ? task.baseData.description : "Income"
 
                 if (requirementObject instanceof EvilRequirement) {
                     evilElement.classList.remove("hiddenTask")                    
@@ -860,11 +858,9 @@ function updateRequiredRows(data, categoryType) {
                 formatCoins(requirements[0].requirement, coinElement)
 
                 const item = gameData.itemData[nextEntity.name]
-                if (item.baseData.description != null) {
-                    effectElement.classList.remove("hiddenTask")
-                    effectValueElement.textContent = item.baseData.description
-                }
-
+                
+                effectElement.classList.remove("hiddenTask")
+                effectValueElement.textContent = item.baseData.description != null ? item.baseData.description : "Happiness"
             }
             else if (data == milestoneData) {
                 essenceElement.classList.remove("hiddenTask")
