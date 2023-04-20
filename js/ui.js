@@ -636,8 +636,10 @@ function renderRequirements() {
         for (const element of requirement.elements) {
             if (requirement.isCompleted()) {
                 element.classList.remove("hidden")
+                element.hidden = false
             } else {
                 element.classList.add("hidden")
+                element.hidden = true
             }
         }
     }
@@ -1188,6 +1190,15 @@ function changeTab(direction){
     setTab(tabs[targetTab].id)
 }
 
+function toggleChallenge(challengeName) {
+    if (gameData.active_challenge == "") {
+        if (gameData.requirements["Challenge_" + challengeName].isCompleted())
+            enterChallenge(challengeName)
+    }
+    else if (gameData.active_challenge == challengeName)
+        exitChallenge()
+}
+
 window.addEventListener('keydown', function(e) {
     if (e.key == " " && !e.repeat ) {
         togglePause()
@@ -1196,5 +1207,37 @@ window.addEventListener('keydown', function(e) {
         }
     }
     if (e.key=="ArrowRight") changeTab(1)
-    if (e.key=="ArrowLeft") changeTab(-1)
+    if (e.key == "ArrowLeft") changeTab(-1)
+
+
+    if (e.key == "e") {
+        if (gameData.requirements["Rebirth button 2"].isCompleted())
+            rebirthTwo()
+    }
+
+    if (e.key == "t") {
+        if (gameData.requirements["Rebirth button 3"].isCompleted())
+            rebirthThree()
+    }
+
+    if (e.key == "c") {
+        if (gameData.requirements["Rebirth button 4"].isCompleted())
+            rebirthFour()
+    }
+
+    if (e.key == "g") {
+        if (gameData.requirements["Rebirth button 5"].isCompleted())
+            rebirthFive()
+    }
+
+    if (e.ctrlKey) {
+        switch (e.key) {
+            case "1": toggleChallenge("an_unhappy_life"); break
+            case "2": toggleChallenge("the_rich_and_the_poor"); break
+            case "3": toggleChallenge("time_does_not_fly"); break
+            case "4": toggleChallenge("dance_with_the_devil"); break
+            case "5": toggleChallenge("legends_never_die"); break
+            case "6": toggleChallenge("the_darkest_time"); break
+        }
+    }    
 });

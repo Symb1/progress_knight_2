@@ -185,21 +185,11 @@ function getDarkMatterSkillIncome() {
         return 1
 
     let income = 1
-
-    switch (gameData.dark_matter_shop.your_greatest_debt) {
-        case 1:
-            income = 0.1
-            break
-        case 2:
-            income = 0.5
-            break
-        case 3:
-            income = 0.05
-            break
-    }
-
-    income *= [0, 1].includes(gameData.dark_matter_shop.essence_collector) ? 1 : 0.04
-    income *= [0, 1].includes(gameData.dark_matter_shop.explosion_of_the_universe) ? 1 : 0.00001
+    
+    income *= [1, 3].includes(gameData.dark_matter_shop.your_greatest_debt) ? 0.1 : 1
+    income *= [2, 3].includes(gameData.dark_matter_shop.your_greatest_debt) ? 0.5 : 1
+    income *= [2, 3].includes(gameData.dark_matter_shop.essence_collector) ? 0.04 : 1
+    income *= [2, 3].includes(gameData.dark_matter_shop.explosion_of_the_universe) ? 0.00001 : 1
 
     return income 
 
@@ -211,20 +201,10 @@ function getDarkMatterSkillTimeWarping() {
 
     let timewarping = 1
 
-    switch (gameData.dark_matter_shop.speed_is_life) {
-        case 1:
-            timewarping = 3
-            break
-        case 2:
-            timewarping = 7
-            break
-        case 3:
-            timewarping = 3*7
-            break
-    }
-
-    timewarping *= (gameData.perks.positive_dark_mater_skills == 1) ? 1
-        : ([1, 3].includes(gameData.dark_matter_shop.multiverse_explorer) ? 0.001 : 1)
+    timewarping *= [1, 3].includes(gameData.dark_matter_shop.speed_is_life) ? 3 : 1
+    timewarping *= [2, 3].includes(gameData.dark_matter_shop.speed_is_life) ? 7 : 1
+    timewarping *= [1, 3].includes(gameData.dark_matter_shop.multiverse_explorer) ?
+        (gameData.perks.positive_dark_mater_skills == 1 ? 1 : 0.001) : 1
 
     return timewarping
 }
@@ -238,7 +218,6 @@ function getDarkMatterSkillXP() {
     xp *= [1, 3].includes(gameData.dark_matter_shop.your_greatest_debt) ? 500 : 1
     xp *= [1, 3].includes(gameData.dark_matter_shop.explosion_of_the_universe) ? 1e100 : 1
     xp *= [2, 3].includes(gameData.dark_matter_shop.explosion_of_the_universe) ? 1e150 : 1
-
 
     return xp
 }
@@ -271,7 +250,6 @@ function getDarkMatterSkillEvil() {
     evil *= (gameData.perks.positive_dark_mater_skills == 0 && [1, 3].includes(gameData.dark_matter_shop.speed_is_life)) ? 0.5 : 1
     evil *= (gameData.perks.positive_dark_mater_skills == 0 && [1, 3].includes(gameData.dark_matter_shop.essence_collector)) ? 0.5 : 1
 
-
     return evil
 }
 function getDarkMatterSkillDarkMater() {
@@ -279,42 +257,4 @@ function getDarkMatterSkillDarkMater() {
         return 1
 
     return (gameData.perks.positive_dark_mater_skills == 0 && [2, 3].includes(gameData.dark_matter_shop.multiverse_explorer)) ? 0.01 : 1
-}
-
-
-
-
-
-
-
-
-function getDarkMaterSkillEffect(skill, positive) {
-    // no skill
-    if (gameData.dark_matter_shop[skill] == 0)
-        return 1
-
-    // negative effects turned off
-    if (!positive && gameData.perks.positive_dark_mater_skills == 1)
-        return 1
-
-    
-    switch (skill) {
-        case "speed_is_life":
-            switch (gameData.dark_matter_shop.speed_is_life) {
-                case 1:
-                    return 0.1
-                case 2:
-                    return 0.5
-                case 3:
-                    return 0.1 * 0.5
-            }
-        case "your_greatest_debt":
-            return 
-        case "essence_collector":
-            return 
-        case "explosion_of_the_universe":
-            return 
-        case "multiverse_explorer":
-            return         
-    }
 }

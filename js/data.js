@@ -508,6 +508,14 @@ const requirementsBaseData = {
     // Metaverse Perks
     "Metaverse Perks": new PerkPointRequirement(["#metaversePage2"], [{ requirement: 1 }]),
     "Metaverse Perks Button": new PerkPointRequirement(["#metaverseTab2TabButton"], [{ requirement: 1 }]),
+
+    // ShortKeyInfo
+    "keyChallenge": new EvilRequirement(["#keyChallenge"], [{ requirement: 10000 }]),
+    "key2": new AgeRequirement(["#key2"], [{ requirement: 200 }]),
+    "key3": new TaskRequirement(["#key3"], [{ task: "Cosmic Recollection", requirement: 1 }]),
+    "key4": new EssenceRequirement(["#key4"], [{ requirement: 5e10 }]),
+    "key5": new EssenceRequirement(["#key5"], [{ requirement: 1e85 }]),
+
 }
 
 const jobCategories = {
