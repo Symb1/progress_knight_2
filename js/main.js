@@ -13,7 +13,6 @@ function addMultipliers() {
         task.xpMultipliers = []
         if (task instanceof Job) task.incomeMultipliers = []
 
-        task.xpMultipliers.push(getGlobalXpBuff)
         task.xpMultipliers.push(task.getMaxLevelMultiplier.bind(task))
         task.xpMultipliers.push(getHappiness)
         task.xpMultipliers.push(getDarkMatterXpGain)
@@ -23,15 +22,7 @@ function addMultipliers() {
         task.xpMultipliers.push(getBindedTaskEffect("Parallel Universe"))
         task.xpMultipliers.push(getBindedTaskEffect("Immortal Ruler"))
         task.xpMultipliers.push(getBindedTaskEffect("Blinded By Darkness"))
-        task.xpMultipliers.push(() => {
-            if (gameData.active_challenge == "the_darkest_time")
-                return 1
-            if (gameData.dark_matter_shop.explosion_of_the_universe == 1)
-                return 1e100
-            if (gameData.dark_matter_shop.explosion_of_the_universe == 2)
-                return 1e150
-            return 1
-        })
+        task.xpMultipliers.push(getDarkMatterSkillXP)
 
         if (task instanceof Job) {
             task.incomeMultipliers.push(task.getLevelMultiplier.bind(task))
@@ -201,7 +192,7 @@ function setCustomEffects() {
         return unholyRecall.level * (unholyRecall.isHero ? 0.065 : 0.00065);
     }
 
-    const transcendentMaster = gameData.milestoneData["Transcendent Master"]
+    const transcendentMaster = milestoneData["Transcendent Master"]
     transcendentMaster.getEffect = function () {
         if (gameData.requirements["Transcendent Master"].isCompleted())
             return 1.5
@@ -209,7 +200,7 @@ function setCustomEffects() {
         return 1
     }
 
-    const faintHope = gameData.milestoneData["Faint Hope"]
+    const faintHope = milestoneData["Faint Hope"]
     faintHope.getEffect = function () {
         var mult = 1
         if (gameData.requirements["A New Hope"].isCompleted()) { 
@@ -234,7 +225,7 @@ function setCustomEffects() {
         return mult
     }
 
-    const riseOfGreatHeroes = gameData.milestoneData["Rise of Great Heroes"]
+    const riseOfGreatHeroes = milestoneData["Rise of Great Heroes"]
     riseOfGreatHeroes.getEffect = function () {
         var mult = 1
         if (gameData.requirements["Rise of Great Heroes"].isCompleted()) {
@@ -332,54 +323,30 @@ function getEvilGain() {
     const oblivionEmbodiment = gameData.taskData ["Void Embodiment"]
     const yingYang = gameData.taskData["Yin Yang"]
     const inferno = gameData.requirements["Inferno"].isCompleted() ? 5 : 1
-    let speedIsLife = gameData.dark_matter_shop.speed_is_life == 1 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.5) : 1
-    let yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 2 ? 100 : 1
-    let essenceCollector = gameData.dark_matter_shop.essence_collector == 1 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.5) : 1
-    if (gameData.active_challenge == "the_darkest_time") {
-        speedIsLife = 0.5
-        yourGreatestDebt = 1
-        essenceCollector = 0.5
-    }    
-
 
     const theDevilInsideYou = gameData.requirements["The Devil inside you"].isCompleted() ? 1e15 : 1
     const stairWayToHell = getBindedItemEffect("Highway to hell")
 
     return evilControl.getEffect() * bloodMeditation.getEffect() * absoluteWish.getEffect()
         * oblivionEmbodiment.getEffect() * yingYang.getEffect() * inferno * getChallengeBonus("legends_never_die")
-        * speedIsLife * yourGreatestDebt * essenceCollector * theDevilInsideYou * stairWayToHell()
+        * getDarkMatterSkillEvil() * theDevilInsideYou * stairWayToHell()
 }
 
 function getEssenceGain() {
     const essenceControl = gameData.taskData["Yin Yang"]
     const essenceCollector = gameData.taskData["Essence Collector"]
-    const transcendentMaster = gameData.milestoneData["Transcendent Master"]
-    const faintHope = gameData.milestoneData["Faint Hope"]
-    const rise = gameData.milestoneData["Rise of Great Heroes"]
+    const transcendentMaster = milestoneData["Transcendent Master"]
+    const faintHope = milestoneData["Faint Hope"]
+    const rise = milestoneData["Rise of Great Heroes"]
     const darkMagician = gameData.taskData["Dark Magician"]
-
-    let multiverseExplorer = gameData.dark_matter_shop.multiverse_explorer == 1 ? 5000
-        : (gameData.dark_matter_shop.multiverse_explorer == 2 ? 10000 : 1)
-    let speedIsLife = gameData.dark_matter_shop.speed_is_life == 2 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.5) : 1
-    let essenceCollectorSkillTree = gameData.dark_matter_shop.essence_collector == 1 ? 500
-        : (gameData.dark_matter_shop.essence_collector == 2 ? 1000 : 1)    
-    let explosionOfTheUniverse = gameData.dark_matter_shop.explosion_of_the_universe == 1 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.5) : 1
-
-    if (gameData.active_challenge == "the_darkest_time") {
-        speedIsLife = 0.5
-        essenceCollectorSkillTree = 1
-        explosionOfTheUniverse = 0.5
-        multiverseExplorer = 1
-    }
-
 
     const theNewGold = gameData.requirements["The new gold"].isCompleted() ? 1000 : 1
     const lifeIsValueable = gameData.requirements["Life is valueable"].isCompleted() ? gameData.dark_matter : 1
 
     return essenceControl.getEffect() * essenceCollector.getEffect() * transcendentMaster.getEffect()
         * faintHope.getEffect() * rise.getEffect() * getChallengeBonus("dance_with_the_devil")
-        * getAGiftFromGodEssenceGain() * darkMagician.getEffect() * speedIsLife * essenceCollectorSkillTree
-        * theNewGold * explosionOfTheUniverse * lifeIsValueable * multiverseExplorer * essenceMultGain()
+        * getAGiftFromGodEssenceGain() * darkMagician.getEffect() * getDarkMatterSkillEssence() 
+        * theNewGold * lifeIsValueable *  essenceMultGain()
 }
 
 function getDarkMatterGain() {
@@ -387,11 +354,8 @@ function getDarkMatterGain() {
     const darkMatterHarvester = gameData.requirements["Dark Matter Harvester"].isCompleted() ? 10 : 1
     const darkMatterMining = gameData.requirements["Dark Matter Mining"].isCompleted() ? 3 : 1
     const darkMatterMillionaire = gameData.requirements["Dark Matter Millionaire"].isCompleted() ? 500 : 1
-    let multiverseExplorer = gameData.dark_matter_shop.multiverse_explorer == 2 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.01) : 1
-    if (gameData.active_challenge == "the_darkest_time")
-        multiverseExplorer = 1
 
-    return 1 * darkRuler.getEffect() * darkMatterHarvester * darkMatterMining * darkMatterMillionaire * getChallengeBonus("the_darkest_time") * multiverseExplorer * darkMaterMultGain()
+    return 1 * darkRuler.getEffect() * darkMatterHarvester * darkMatterMining * darkMatterMillionaire * getChallengeBonus("the_darkest_time") * getDarkMatterSkillDarkMater() * darkMaterMultGain()
 }
 
 function getDarkMatter() {
@@ -425,15 +389,8 @@ function getUnpausedGameSpeed() {
     const speedSpeedSpeed = gameData.requirements["Speed speed speed"].isCompleted() ? 1000 : 1
 
     const timeWarpingSpeed = boostWarping * timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive * speedSpeedSpeed
-    let speedIsLife = gameData.dark_matter_shop.speed_is_life == 1 ? 3 : (gameData.dark_matter_shop.speed_is_life == 2 ? 7 : 1)    
-    if (gameData.active_challenge == "the_darkest_time") 
-        speedIsLife = 1    
 
-    let multiverseExplorer = gameData.dark_matter_shop.multiverse_explorer == 1 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.001) : 1
-    if (gameData.active_challenge == "the_darkest_time")
-        multiverseExplorer = 1    
-
-    const gameSpeed = baseGameSpeed * timeWarpingSpeed * getChallengeBonus("time_does_not_fly") * speedIsLife * getGottaBeFastGain() * multiverseExplorer
+    const gameSpeed = baseGameSpeed * timeWarpingSpeed * getChallengeBonus("time_does_not_fly") * getGottaBeFastGain() * getDarkMatterSkillTimeWarping() 
 
     return gameData.active_challenge == "time_does_not_fly" || gameData.active_challenge == "the_darkest_time" ? Math.pow(gameSpeed, 0.7) : gameSpeed
 }
@@ -542,13 +499,8 @@ function getNet() {
 function getIncome() {
     if (gameData.active_challenge == "the_darkest_time")
         return 0
-
-    const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 1 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.1)
-        : (gameData.dark_matter_shop.your_greatest_debt == 2 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.5) : 1)
-    const essenceCollector = gameData.dark_matter_shop.essence_collector == 2 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.04) : 1
-    const explosionOfTheUniverse = gameData.dark_matter_shop.explosion_of_the_universe == 2 ? (gameData.perks.super_dark_mater_skills == 1 ? 1 : 0.00001) : 1
-
-    return gameData.currentJob.getIncome() * yourGreatestDebt * essenceCollector * explosionOfTheUniverse
+    
+    return gameData.currentJob.getIncome() * getDarkMatterSkillIncome()
 }
 
 function getExpense() {
@@ -562,15 +514,6 @@ function getExpense() {
 
 function increaseCoins() {
     gameData.coins += applySpeed(getIncome())
-}
-
-function getGlobalXpBuff() {
-    if (gameData.active_challenge == "the_darkest_time")
-        return 1
-
-    const yourGreatestDebt = gameData.dark_matter_shop.your_greatest_debt == 1 ? 500 : 1    
-
-    return yourGreatestDebt
 }
 
 function autoPromote() {
@@ -856,7 +799,7 @@ function rebirthFive() {
     gameData.metaverse.challenge_altar = 0
     gameData.metaverse.dark_mater_gain_modifer = 0    
 
-    rebirthReset(false)
+    rebirthReset()
 
     for (const taskName in gameData.taskData) {
         const task = gameData.taskData[taskName]
@@ -903,8 +846,9 @@ function applyMilestones() {
 
 function rebirthReset(set_tab_to_jobs = true) {
     if (set_tab_to_jobs) {
-        if (!(gameData.rebirthFiveCount > 0 && gameData.settings.selectedTab == Tab.METAVERSE))
-            setTab("jobs")
+       // if (gameData.settings.selectedTab == Tab.METAVERSE && gameData.perks.)
+
+        setTab("jobs")
     }
 
     gameData.coins = 0
@@ -1157,6 +1101,11 @@ function loadGameData() {
                 console.log("Gave 1 free Dark Matter")
             }
 
+            // remove milestoneData from gameData
+            if ("milestoneData" in gameDataSave) {
+                delete gameDataSave["milestoneData"]                
+            }
+
             replaceSaveDict(gameData, gameDataSave)
             replaceSaveDict(gameData.requirements, gameDataSave.requirements)
             replaceSaveDict(gameData.taskData, gameDataSave.taskData)
@@ -1357,22 +1306,6 @@ function onFontButtonStopHover() {
     tooltip.classList.add("hidden")
 }
 
-function isNextMilestoneInReach() {
-    const totalEssence = gameData.essence + getEssenceGain()
-
-    for (const key in gameData.milestoneData) {
-        const requirementObject = gameData.requirements[key]
-
-        if (requirementObject instanceof EssenceRequirement) {
-            if (!requirementObject.isCompleted()) {
-                if (totalEssence >= requirementObject.requirements[0].requirement)
-                    return true
-            }
-        }
-    }
-    return false
-}
-
 function isNextDarkMagicSkillInReach() {
     const totalEvil = gameData.evil + getEvilGain()
 
@@ -1391,6 +1324,9 @@ function isNextDarkMagicSkillInReach() {
     return false
 }
 
+
+
+
 // Init
 
 // TODO(Thomas) The order sucks. Refactor this in the future.
@@ -1399,15 +1335,15 @@ function isNextDarkMagicSkillInReach() {
 createGameObjects(gameData.taskData, jobBaseData)
 createGameObjects(gameData.taskData, skillBaseData)
 createGameObjects(gameData.itemData, itemBaseData)
-//createGameObjects(gameData.milestoneData, milestoneBaseData)
-
-//gameData.settings.theme = peekSettingFromSave("theme")
+createGameObjects(milestoneData, milestoneBaseData)
 
 gameData.currentJob = gameData.taskData["Beggar"]
 gameData.currentProperty = gameData.itemData["Homeless"]
 gameData.currentMisc = []
 
 gameData.requirements = requirementsBaseData
+
+createMilestoneRequirements()
 
 tempData["requirements"] = {}
 for (const key in gameData.requirements) {
@@ -1416,16 +1352,6 @@ for (const key in gameData.requirements) {
 }
 
 loadGameData()
-
-gameData.milestoneData = {}
-createGameObjects(gameData.milestoneData, milestoneBaseData)
-
-for (const key in milestoneBaseData) {
-    const milestone = gameData.milestoneData[key]
-    gameData.requirements[milestone.name] = new EssenceRequirement([getQuerySelector(milestone.name)],
-        [{ requirement: milestone.expense }])
-}
-
 
 initializeUI()
 

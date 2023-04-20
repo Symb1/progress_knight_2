@@ -62,7 +62,7 @@ function updateUI() {
         renderChallenges()
 
     if (currentTab == Tab.MILESTONES) {
-        updateRequiredRows(gameData.milestoneData, milestoneCategories)
+        updateRequiredRows(milestoneData, milestoneCategories)
         renderMilestones()
     }
 
@@ -383,8 +383,8 @@ function renderChallenges() {
 }
 
 function renderMilestones() {
-    for (const key in gameData.milestoneData) {
-        const milestone = gameData.milestoneData[key]
+    for (const key in milestoneData) {
+        const milestone = milestoneData[key]
         const row = getRowByName(milestone.name)
         row.querySelector(".essence").textContent = format(milestone.expense)
 
@@ -487,7 +487,7 @@ function renderPerks() {
 function renderDarkMatter() {
     // Display currency
     document.getElementById("darkMatterShopDisplay").textContent = format(gameData.dark_matter)
-    document.getElementById("darkMatterSkillsDisplay").textContent = format(gameData.dark_matter)    
+    document.getElementById("darkMatterSkillsDisplay").textContent = gameData.settings.layout == 0 ? "" : format(gameData.dark_matter)    
     document.getElementById("darkOrbsShopDisplay").textContent = formatTreshold(gameData.dark_orbs)
 
     // Dark Matter Shop
@@ -524,24 +524,30 @@ function renderDarkMatter() {
     renderDarkMaterShopButton("lifeCoachBuyButton", canBuyLifeCoach())
 
     // Dark Matter Skill tree
-    renderSkillTreeButton(document.getElementById("speedIsLife1"), gameData.dark_matter_shop.speed_is_life != 0, gameData.dark_matter_shop.speed_is_life == 1, gameData.dark_matter >= 100)
-    renderSkillTreeButton(document.getElementById("speedIsLife2"), gameData.dark_matter_shop.speed_is_life != 0, gameData.dark_matter_shop.speed_is_life == 2, gameData.dark_matter >= 100)
+    renderSkillTreeButton(document.getElementById("speedIsLife1"), gameData.dark_matter_shop.speed_is_life != 0, [1, 3].includes(gameData.dark_matter_shop.speed_is_life), gameData.dark_matter >= 100)
+    renderSkillTreeButton(document.getElementById("speedIsLife2"), gameData.dark_matter_shop.speed_is_life != 0, [2, 3].includes(gameData.dark_matter_shop.speed_is_life), gameData.dark_matter >= 100)
 
-    renderSkillTreeButton(document.getElementById("yourGreatestDebt1"), gameData.dark_matter_shop.your_greatest_debt != 0, gameData.dark_matter_shop.your_greatest_debt == 1, gameData.dark_matter >= 1000)
-    renderSkillTreeButton(document.getElementById("yourGreatestDebt2"), gameData.dark_matter_shop.your_greatest_debt != 0, gameData.dark_matter_shop.your_greatest_debt == 2, gameData.dark_matter >= 1000)
+    renderSkillTreeButton(document.getElementById("yourGreatestDebt1"), gameData.dark_matter_shop.your_greatest_debt != 0, [1, 3].includes(gameData.dark_matter_shop.your_greatest_debt), gameData.dark_matter >= 1000)
+    renderSkillTreeButton(document.getElementById("yourGreatestDebt2"), gameData.dark_matter_shop.your_greatest_debt != 0, [2, 3].includes(gameData.dark_matter_shop.your_greatest_debt), gameData.dark_matter >= 1000)
 
-    renderSkillTreeButton(document.getElementById("essenceCollector1"), gameData.dark_matter_shop.essence_collector != 0, gameData.dark_matter_shop.essence_collector == 1, gameData.dark_matter >= 10000)
-    renderSkillTreeButton(document.getElementById("essenceCollector2"), gameData.dark_matter_shop.essence_collector != 0, gameData.dark_matter_shop.essence_collector == 2, gameData.dark_matter >= 10000)
+    renderSkillTreeButton(document.getElementById("essenceCollector1"), gameData.dark_matter_shop.essence_collector != 0, [1, 3].includes(gameData.dark_matter_shop.essence_collector), gameData.dark_matter >= 10000)
+    renderSkillTreeButton(document.getElementById("essenceCollector2"), gameData.dark_matter_shop.essence_collector != 0, [2, 3].includes(gameData.dark_matter_shop.essence_collector), gameData.dark_matter >= 10000)
 
-    renderSkillTreeButton(document.getElementById("explosionOfTheUniverse1"), gameData.dark_matter_shop.explosion_of_the_universe != 0, gameData.dark_matter_shop.explosion_of_the_universe == 1, gameData.dark_matter >= 100000)
-    renderSkillTreeButton(document.getElementById("explosionOfTheUniverse2"), gameData.dark_matter_shop.explosion_of_the_universe != 0, gameData.dark_matter_shop.explosion_of_the_universe == 2, gameData.dark_matter >= 100000)
+    renderSkillTreeButton(document.getElementById("explosionOfTheUniverse1"), gameData.dark_matter_shop.explosion_of_the_universe != 0, [1, 3].includes(gameData.dark_matter_shop.explosion_of_the_universe), gameData.dark_matter >= 100000)
+    renderSkillTreeButton(document.getElementById("explosionOfTheUniverse2"), gameData.dark_matter_shop.explosion_of_the_universe != 0, [2, 3].includes(gameData.dark_matter_shop.explosion_of_the_universe), gameData.dark_matter >= 100000)
 
-    renderSkillTreeButton(document.getElementById("multiverseExplorer1"), gameData.dark_matter_shop.multiverse_explorer != 0, gameData.dark_matter_shop.multiverse_explorer == 1, gameData.dark_matter >= 100000000)
-    renderSkillTreeButton(document.getElementById("multiverseExplorer2"), gameData.dark_matter_shop.multiverse_explorer != 0, gameData.dark_matter_shop.multiverse_explorer == 2, gameData.dark_matter >= 100000000)
+    renderSkillTreeButton(document.getElementById("multiverseExplorer1"), gameData.dark_matter_shop.multiverse_explorer != 0, [1, 3].includes(gameData.dark_matter_shop.multiverse_explorer), gameData.dark_matter >= 100000000)
+    renderSkillTreeButton(document.getElementById("multiverseExplorer2"), gameData.dark_matter_shop.multiverse_explorer != 0, [2, 3].includes(gameData.dark_matter_shop.multiverse_explorer), gameData.dark_matter >= 100000000)
 
     const effects = document.getElementsByClassName("negative-effect")
     for (const effect of effects) {
-        effect.hidden = (gameData.perks.super_dark_mater_skills == 1)
+        effect.hidden = (gameData.perks.positive_dark_mater_skills == 1)
+    }
+
+    // turn off OR
+    const ors = document.getElementsByClassName("darkMatterSkillOR")
+    for (const elem of ors) {
+        elem.hidden = (gameData.perks.both_dark_mater_skills == 1)
     }
 }
 
@@ -754,7 +760,7 @@ function updateRequiredRows(data, categoryType) {
             requiredRow.classList.add("hiddenTask")
         } else {
             requiredRow.classList.remove("hiddenTask")
-            const requirementObject = gameData.requirements[nextEntity.name]
+            const requirementObject = gameData.requirements[nextEntity.name]            
             const requirements = requirementObject.requirements
 
             const coinElement = requiredRow.querySelector(".coins")
@@ -763,6 +769,8 @@ function updateRequiredRows(data, categoryType) {
             const essenceElement = requiredRow.querySelector(".essence")
             const darkMatterElement = requiredRow.querySelector(".darkMatter")
             const hypercubeElement = requiredRow.querySelector(".hypercube")
+            const effectElement = requiredRow.querySelector(".effect")
+            const effectValueElement = requiredRow.querySelector(".effectValue")
 
             coinElement.classList.add("hiddenTask")
             levelElement.classList.add("hiddenTask")
@@ -770,12 +778,20 @@ function updateRequiredRows(data, categoryType) {
             essenceElement.classList.add("hiddenTask")
             darkMatterElement.classList.add("hiddenTask")
             hypercubeElement.classList.add("hiddenTask")
+            effectElement.classList.add("hiddenTask")
 
             let finalText = ""
+            let effectText = ""
             if (data == gameData.taskData) {
+                const task = gameData.taskData[nextEntity.name]
+                if (task.baseData.description != null) {
+                    effectElement.classList.remove("hiddenTask")
+                    effectValueElement.textContent = task.baseData.description
+                }
+
                 if (requirementObject instanceof EvilRequirement) {
-                    evilElement.classList.remove("hiddenTask")
-                    evilElement.textContent = format(requirements[0].requirement) + " evil"
+                    evilElement.classList.remove("hiddenTask")                    
+                    evilElement.textContent = format(requirements[0].requirement) + " evil"                   
                 } else if (requirementObject instanceof EssenceRequirement) {
                     essenceElement.classList.remove("hiddenTask")
                     essenceElement.textContent = format(requirements[0].requirement) + " essence"
@@ -805,10 +821,23 @@ function updateRequiredRows(data, categoryType) {
             else if (data == gameData.itemData) {
                 coinElement.classList.remove("hiddenTask")
                 formatCoins(requirements[0].requirement, coinElement)
+
+                const item = gameData.itemData[nextEntity.name]
+                if (item.baseData.description != null) {
+                    effectElement.classList.remove("hiddenTask")
+                    effectValueElement.textContent = item.baseData.description
+                }
+
             }
-            else if (data == gameData.milestoneData) {
+            else if (data == milestoneData) {
                 essenceElement.classList.remove("hiddenTask")
                 essenceElement.textContent = format(requirements[0].requirement) + " essence"
+
+                const milestone = milestoneData[nextEntity.name]
+                if (milestone.baseData.description != null) {
+                    effectElement.classList.remove("hiddenTask")
+                    effectValueElement.textContent = milestone.baseData.description
+                }
             }
         }
     }
@@ -917,7 +946,7 @@ function setLayout(id) {
         setTabDarkMatter("shopTab")
 
         document.getElementById("maincolumnDarkMatter").classList.remove("settings-main-column")
-        document.getElementById("skillTreePageDarkMaterTitle").textContent = "Dark Matter Skills"
+        document.getElementById("skillTreePageDarkMaterTitle").textContent = "Dark Matter Skills "
     }
     else {
         document.getElementById("tabcolumnDarkMater").classList.remove("hidden")
@@ -967,22 +996,36 @@ function setFontSize(id) {
 }
 
 function renderSkillTreeButton(element, categoryBought, elementBought, canBuy) {
-    element.disabled = categoryBought | !canBuy
+    if (gameData.perks.both_dark_mater_skills == 0) {
 
-    if (categoryBought) {
+        element.disabled = categoryBought | !canBuy
+
+        if (categoryBought) {
+            if (elementBought) {
+                element.textContent = "Accepted"
+                element.classList.add("w3-green")
+            } else {
+                element.textContent = "Rejected"
+                element.classList.add("w3-red")
+            }
+        }
+        else {
+            element.textContent = "Buy"
+            element.classList.remove("w3-green")
+            element.classList.remove("w3-red")
+        }
+    }
+    else {
+        element.disabled = elementBought
+
         if (elementBought) {
             element.textContent = "Accepted"
             element.classList.add("w3-green")
         } else {
-            element.textContent = "Rejected"
-            element.classList.add("w3-red")
+            element.textContent = "Buy"
+            element.classList.remove("w3-green")
+            element.classList.remove("w3-red")
         }
-    }
-    else
-    {        
-        element.textContent = "Buy"
-        element.classList.remove("w3-green")
-        element.classList.remove("w3-red")
     }
 }
 

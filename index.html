@@ -233,10 +233,10 @@
 							</tr>
 						</template>
 						<template class="requiredRowTemplate">
-							<td class="w3-text-gray" style="padding-left: 0.8em;" colspan=5>
-								Required:
+							<td style="padding-left: 0.8em;" colspan=5>
+								<span class="w3-text-gray">Required:</span>
 								<div class="value" colspan=5 style="display:inline">
-									<span class="levels"></span>
+									<span class="levels color-income"></span>
 									<div class="coins" style="display:inline">
 										<span></span>
 										<span></span>
@@ -247,6 +247,9 @@
 									<span class="essence color-essence"></span>
 									<span class="darkMatter color-dark-mater"></span>
 									<span class="hypercube color-hypercubes"></span>
+								</div>
+								<div class="effect">
+									<span class="w3-text-gray">Next effect:</span> <span class="effectValue"></span>
 								</div>
 							</td>
 						</template>
@@ -550,7 +553,7 @@
 												but divide <span class="color-evil">Evil</span> gain by <b>2x</b>
 											</span>
 										</div>
-										<div style="padding: 0.6em">OR</div>
+										<div class="darkMatterSkillOR" style="padding: 0.6em">OR</div>
 										<div style="color:gray; padding-bottom:0.3em">
 											<button id="speedIsLife2" class="w3-button button" onclick="buySpeedOfLife(2)">Buy</button> -
 											Multiply <span class="color-time-warping">Time Warping</span> by <b>7x</b><span class="negative-effect">
@@ -569,7 +572,7 @@
 												but divide <span class="color-income">Income</span> by <b>10x</b>
 											</span>
 										</div>
-										<div style="padding: 0.6em">OR</div>
+										<div class="darkMatterSkillOR" style="padding: 0.6em">OR</div>
 										<div style="color:gray; padding-bottom:0.3em">
 											<button id="yourGreatestDebt2" class="w3-button button" onclick="buyYourGreatestDebt(2)">Buy</button> -
 											Multiply <span class="color-evil">Evil gain</span> by <b>100x</b><span class="negative-effect">
@@ -588,7 +591,7 @@
 												but divide <span class="color-evil">Evil</span> gain by <b>2x</b>
 											</span>
 										</div>
-										<div style="padding: 0.6em">OR</div>
+										<div class="darkMatterSkillOR" style="padding: 0.6em">OR</div>
 										<div style="color:gray; padding-bottom:0.3em">
 											<button id="essenceCollector2" class="w3-button button" onclick="buyEssenceCollector(2)">Buy</button> -
 											Multiply <span class="color-essence">Essence</span> gain by <b>1000x</b><span class="negative-effect">
@@ -607,7 +610,7 @@
 												but divide <span class="color-essence">Essence</span> gain by <b>2x</b>
 											</span>
 										</div>
-										<div style="padding: 0.6em">OR</div>
+										<div class="darkMatterSkillOR" style="padding: 0.6em">OR</div>
 										<div style="color:gray; padding-bottom:0.3em">
 											<button id="explosionOfTheUniverse2" class="w3-button button" onclick="buyExplosionOfTheUniverse(2)">Buy</button> -
 											Multiply <span style="color:rgb(255, 204, 102)">all XP</span> gain by <b>1e150x</b><span class="negative-effect">
@@ -626,7 +629,7 @@
 												but divide <span class="color-time-warping">Time Warping</span> by <b>1000x</b>
 											</span>
 										</div>
-										<div style="padding: 0.6em">OR</div>
+										<div class="darkMatterSkillOR" style="padding: 0.6em">OR</div>
 										<div style="color:gray; padding-bottom:0.3em">
 											<button id="multiverseExplorer2" class="w3-button button" onclick="buyMultiverseExplorer(2)">Buy</button> -
 											Multiply <span class="color-essence">Essence</span> gain by <b>10000x</b><span class="negative-effect">
@@ -899,6 +902,7 @@
 	<script type="text/javascript" src="js/dark_matter.js"></script>
 	<script type="text/javascript" src="js/metaverse.js"></script>
 	<script type="text/javascript" src="js/tooltips.js"></script>
+	<script type="text/javascript" src="js/milestones.js"></script>
 	<script type="text/javascript" src="js/data.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
 </body>

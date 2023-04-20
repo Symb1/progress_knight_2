@@ -174,7 +174,7 @@ function getPerkCost(perkName) {
             return 3
         case "hypercube_boost":
             return 4
-        case "super_dark_mater_skills":
+        case "positive_dark_mater_skills":
             return 5
         case "save_challenges":
             return 6
@@ -188,8 +188,8 @@ function getPerkCost(perkName) {
             return 20
         case "hyper_speed":
             return 100
-        case "the_last_of_us":
-            return 10000
+        case "both_dark_mater_skills":
+            return 500
         default:
             return Infinity
     }
@@ -209,6 +209,19 @@ function buyPerk(perkName) {
     else {
         gameData.perks[perkName] = 0
         gameData.perks_points += getPerkCost(perkName)
+
+        if (perkName == "both_dark_mater_skills") {
+            if (gameData.dark_matter_shop.speed_is_life == 3)
+                gameData.dark_matter_shop.speed_is_life = 2
+            if (gameData.dark_matter_shop.your_greatest_debt == 3)
+                gameData.dark_matter_shop.your_greatest_debt = 1    
+            if (gameData.dark_matter_shop.essence_collector == 3)
+                gameData.dark_matter_shop.essence_collector = 2
+            if (gameData.dark_matter_shop.explosion_of_the_universe == 3)
+                gameData.dark_matter_shop.explosion_of_the_universe = 2
+            if (gameData.dark_matter_shop.multiverse_explorer == 3)
+                gameData.dark_matter_shop.multiverse_explorer = 2    
+        }
     }
 }
 
