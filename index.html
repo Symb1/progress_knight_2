@@ -153,12 +153,12 @@
 					<div id="hero">
 						<template class="headerRowTaskTemplate">
 							<tr>
-								<th class="category" style="width: 20em">Job</th>
-								<th>Level</th>
-								<th class="valueType" style="width: 18em">Value type</th>
-								<th>Xp/day</th>
-								<th>Xp&nbsp;left</th>
-								<th class="maxLevel">Max</th>
+								<th class="rowtitle category" style="width: 20em">Job</th>
+								<th class="rowtitle">Level</th>
+								<th class="rowtitle valueType" style="width: 18em">Value type</th>
+								<th class="rowtitle">XP/d</th>
+								<th class="rowtitle">XP&nbsp;left</th>
+								<th class="rowtitle maxLevel">Maxlvl</th>
 							</tr>
 						</template>
 						<template class="rowTaskTemplate">
@@ -669,6 +669,7 @@
 									<div style="border-bottom: 0.1em solid rgb(24, 210, 217); padding-top: 2em;"></div>
 									<div style="padding-top:1em">
 										<div class="text-caption"><span class="color-hypercubes">Hypercubes:</span> <span id="hypercubesMetaDisplay"></span></div>
+										<div><span>Total hypercube gain bonus:</span> <span id="hypercubesBonusMetaDisplay"></span></div>
 									</div>
 									<div style="padding-top:1em">
 										<button id="boostMetaButton" class="perk perk-boost" onclick="applyBoost()"> Boost </button>

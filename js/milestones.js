@@ -44,7 +44,7 @@ const milestoneBaseData = {
 
     // 1e80 for helping get to 1e90
 
-    "Ruler of the Metaverse": { name: "Ruler of the Metaverse", expense: 1e90, tier: 38, description: "Unlocks Metaverse Perks" },
+    "Ruler of the Metaverse": { name: "Ruler of the Metaverse", expense: 1e90, tier: 38, description: "Unlocks Metaverse Perks, Metaverse Guards Job Category" },
     "A New Hope": { name: "A New Hope", expense: 1e95, tier: 39, description: "Faint Hope always at maximum" },
     "The End": { name: "The End", expense: 1e300, tier: 99, description: "The End" },
 }

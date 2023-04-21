@@ -84,27 +84,18 @@ function renderSideBar() {
     const progressFill = progressBar.getElementsByClassName("progressFill")[0]
 
     if (task.isFinished) {
-        progressFill.style.width = "100%"
-        progressFill.classList.add("progress-fill-finished")
-        progressBar.classList.add("progress-bar-finished")
-        var time = gameData.realtime / 3
-        var x = time - Math.floor(time)
-        x = (x < 0.5 ? x : 1 - x) * 2;
-        progressFill.style.opacity = x
-
-        progressFill.classList.add("current-hero")
-        progressBar.classList.remove("progress-bar-hero")
-
-    } else {
-        progressFill.style.opacity = 1
-        progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
-        progressFill.classList.remove("progress-fill-finished")
-        progressBar.classList.remove("progress-bar-finished")
-
-        task.isHero ? progressFill.classList.add("current-hero") : progressFill.classList.remove("current-hero")
-        task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
+        let width = 100n * task.xpBigInt / task.getMaxBigIntXp()
+        if (width > 100n)
+            width = 100n
+        progressFill.style.width = width + "%"
     }
+     else 
+       progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
+    
 
+    task.isHero ? progressFill.classList.add("progress-fill-hero") : progressFill.classList.remove("progress-fill-hero")
+    task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
+    task == gameData.currentJob ? progressFill.classList.add(task.isHero ? "current-hero" : "current") : progressFill.classList.remove("current", "current-hero")
 
     document.getElementById("ageDisplay").textContent = formatAge(gameData.days)
     document.getElementById("lifespanDisplay").textContent = formatWhole(daysToYears(getLifespan()))
@@ -212,22 +203,18 @@ function renderJobs() {
         const progressFill = row.querySelector(".progressFill")
 
         if (task.isFinished) {
-            progressFill.style.width = "100%"
-            progressFill.classList.add("progress-fill-finished")
-            progressBar.classList.add("progress-bar-finished")
-            const time = gameData.realtime / 3
-            let x = time - Math.floor(time)
-            x = (x < 0.5 ? x : 1 - x) * 2;
-            progressFill.style.opacity = x
-        } else {
-            progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
-            progressFill.style.opacity = 1
-            progressFill.classList.remove("progress-fill-finished")
-            progressBar.classList.remove("progress-bar-finished")
-
-            task.isHero ? progressFill.classList.add("progress-fill-hero") : progressFill.classList.remove("progress-fill-hero")
-            task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
+            let width = 100n * task.xpBigInt / task.getMaxBigIntXp()
+            if (width > 100n)
+                width = 100n
+            progressFill.style.width = width + "%"
         }
+        else 
+            progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
+        
+
+        task.isHero ? progressFill.classList.add("progress-fill-hero") : progressFill.classList.remove("progress-fill-hero")
+        task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
+
 
 
         task == gameData.currentJob ? progressFill.classList.add(task.isHero ? "current-hero" : "current") : progressFill.classList.remove("current", "current-hero")
@@ -269,23 +256,16 @@ function renderSkills() {
         const progressFill = row.querySelector(".progressFill")
 
         if (task.isFinished) {
-            progressFill.style.width = "100%"
-            progressFill.classList.add("progress-fill-finished")
-            progressBar.classList.add("progress-bar-finished")
-            const time = gameData.realtime / 3
-            let x = time - Math.floor(time)
-            x = (x < 0.5 ? x : 1 - x) * 2;
-            progressFill.style.opacity = x
+            let width = 100n * task.xpBigInt / task.getMaxBigIntXp()
+            if (width > 100n)
+                width = 100n
+            progressFill.style.width = width + "%"
         }
-        else {
-            progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
-            progressFill.style.opacity = 1
-            progressFill.classList.remove("progress-fill-finished")
-            progressBar.classList.remove("progress-bar-finished")
+        else 
+            progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"        
 
-            task.isHero ? progressFill.classList.add("progress-fill-hero") : progressFill.classList.remove("progress-fill-hero")
-            task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
-        }
+        task.isHero ? progressFill.classList.add("progress-fill-hero") : progressFill.classList.remove("progress-fill-hero")
+        task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
 
 
         task == gameData.currentJob ? progressFill.classList.add(task.isHero ? "current-hero" : "current") : progressFill.classList.remove("current", "current-hero")
@@ -447,6 +427,7 @@ function renderMetaverse() {
     renderBoostButton("boostMetaButton")
 
     document.getElementById("hypercubesMetaDisplay").textContent = format(gameData.hypercubes)
+    document.getElementById("hypercubesBonusMetaDisplay").textContent = "x" + format(getHypercubeGeneration())
     document.getElementById("boostCooldownMetaDisplay").textContent = getBoostCooldownString()  
 
     document.getElementById("reduceBoostCooldown").textContent = formatTime(getBoostCooldownSeconds())
@@ -827,7 +808,7 @@ function updateRequiredRows(data, categoryType) {
             if (data == gameData.taskData) {
                 const task = gameData.taskData[nextEntity.name]
                 effectElement.classList.remove("hiddenTask")
-                effectValueElement.textContent = task.baseData.description != null ? task.baseData.description : "Income"
+                effectValueElement.textContent = task.unlocked ? (task.baseData.description != null ? task.baseData.description : "Income") : "Unknown"
 
                 if (requirementObject instanceof EvilRequirement) {
                     evilElement.classList.remove("hiddenTask")                    
@@ -865,7 +846,7 @@ function updateRequiredRows(data, categoryType) {
                 const item = gameData.itemData[nextEntity.name]
                 
                 effectElement.classList.remove("hiddenTask")
-                effectValueElement.textContent = item.baseData.description != null ? item.baseData.description : "Happiness"
+                effectValueElement.textContent = item.unlocked ? (item.baseData.description != null ? item.baseData.description : "Happiness") : "Unknown"
             }
             else if (data == milestoneData) {
                 essenceElement.classList.remove("hiddenTask")
@@ -874,7 +855,7 @@ function updateRequiredRows(data, categoryType) {
                 const milestone = milestoneData[nextEntity.name]
                 if (milestone.baseData.description != null) {
                     effectElement.classList.remove("hiddenTask")
-                    effectValueElement.textContent = milestone.baseData.description
+                    effectValueElement.textContent = (gameData.stats.maxEssenceReached > milestone.expense) ? milestone.baseData.description : "Unknown"
                 }
             }
         }

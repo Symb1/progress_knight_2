@@ -1073,6 +1073,10 @@ function replaceSaveDict(dict, saveDict) {
             if (saveDict[key].type != tempData["requirements"][key].type) {
                 saveDict[key] = tempData["requirements"][key]
             }
+            else if (saveDict[key].querySelectors == undefined) {
+                saveDict[key].querySelectors = tempData["requirements"][key].querySelectors
+            }
+
         }
     }
 
@@ -1253,6 +1257,9 @@ function updateStats() {
             gameData.stats.maxEssencePerSecondRt = gameData.rebirthThreeTime
         }
     }
+
+    if (gameData.essence > gameData.stats.maxEssenceReached)
+        gameData.stats.maxEssenceReached = gameData.essence
 }
 
 function resetGameData() {

@@ -1,7 +1,9 @@
 function getHypercubeGeneration() {
     if (gameData.rebirthFiveCount == 0) return 0   
 
-    return 0.03 * gameData.metaverse.hypercube_gain_modifier * (gameData.perks.hypercube_boost == 1 ? 10 : 1)
+    let hypersphereEffect = gameData.itemData['Hypersphere'].getEffect()
+
+    return 0.03 * hypersphereEffect * gameData.metaverse.hypercube_gain_modifier * (gameData.perks.hypercube_boost == 1 ? 10 : 1)
         * (gameData.perks.hyper_speed == 1 ? 1000 : 1)
 
 }

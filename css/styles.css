@@ -496,3 +496,7 @@ button:focus {
 .button-evil:hover {
     background-color: #f2caca !important;
 }
+
+.rowtitle {
+    padding: 0.3em 1em 0em 1em !important;
+}

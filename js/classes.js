@@ -8,6 +8,7 @@ class Task {
         this.xpBigInt = BigInt(0)
         this.isHero = false
         this.isFinished = false
+        this.unlocked = false
 
         this.xpMultipliers = []
     }
@@ -21,7 +22,8 @@ class Task {
             xp: this.xp,
             xpBigInt: bigIntToExponential(this.xpBigInt),
             isHero: this.isHero,
-            isFinished: this.isFinished
+            isFinished: this.isFinished,
+            unlocked: this.unlocked
         }
     }
 
@@ -49,7 +51,14 @@ class Task {
     }
 
     getMaxLevelMultiplier() {
-        return gameData.active_challenge == "dance_with_the_devil" || gameData.active_challenge == "the_darkest_time" ? (10 / (this.maxLevel + 1)) : 1 + this.maxLevel / 10
+        if (gameData.active_challenge == "dance_with_the_devil" || gameData.active_challenge == "the_darkest_time") {
+           return (10 / (this.maxLevel + 1))
+        }
+        else {
+            let effect = gameData.taskData['Cosmic Recollection'].getEffect();
+            effect = effect == 0 ? 1 : effect
+            return (this.baseData.heroxp < 1000) ? 1 + this.maxLevel / 10 : 1 + this.maxLevel / effect
+        }
     }
 
     getXpGain() {
@@ -95,6 +104,7 @@ class Task {
                         excess = -1n
 
                     this.level += 1
+                    this.unlocked = true
                     excess -= this.getMaxBigIntXp()
                 }
                 this.xpBigInt = this.getMaxBigIntXp() + excess
@@ -119,6 +129,7 @@ class Task {
                         excess = -1
 
                     this.level += 1
+                    this.unlocked = true
                     excess -= this.getMaxXp()
                 }
                 this.xp = this.getMaxXp() + excess
@@ -134,6 +145,7 @@ class Milestone {
         this.tier = baseData.tier
         this.expense = baseData.expense
         this.description = baseData.description
+        this.unlocked = false
     }
 
     getTier() { return this.tier }
@@ -180,6 +192,7 @@ class Item {
         this.name = baseData.name
         this.expenseMultipliers = []
         this.isHero = false
+        this.unlocked = false
     }
 
     getEffect() {
@@ -190,17 +203,23 @@ class Item {
             {
                 if (gameData.currentMisc.includes(this)) {
                     effect *= this.baseData.heroeffect                    
+                    this.unlocked = true
                 }
             }
 
             if (itemCategories["Properties"].includes(this.name)) {
-                if (gameData.currentProperty == this)
+                if (gameData.currentProperty == this) {
                     effect = this.baseData.heroeffect
+                    this.unlocked = true
+                }
                 else
                     effect = 1
             }
         } else {
-            if (gameData.currentProperty != this && !gameData.currentMisc.includes(this)) return 1
+            if (gameData.currentProperty != this && !gameData.currentMisc.includes(this))
+                return 1
+            else
+                this.unlocked = true
         }
 
         return effect

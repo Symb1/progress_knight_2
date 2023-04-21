@@ -44,6 +44,10 @@ const tooltips = {
     "Acallaris": "Primordial being that predate the universe, involved with the creation of life and powerful beyond mortal comprehension, existing as myths to the oldest species in the universe.",
     "One Above All": "Creator of everything.",
 
+    // Metaverse Guards
+    "Snow Crash": "Snow Crash, 1992",
+    "Player One": "Ready Player One, 2011",
+
     // Fundamentals
     "Concentration": "Improve your learning speed through practising intense concentration activities.",
     "Productivity": "Learn to procrastinate less at work and receive more job experience per day.",
