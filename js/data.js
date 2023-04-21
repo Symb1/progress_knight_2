@@ -256,6 +256,7 @@ const itemBaseData = {
     "Supercluster": { name: "Supercluster", expense: 1e33, effect: 100000000, heromult: 20, heroeffect: 1e50 },
     "Galaxy Filament": { name: "Galaxy Filament", expense: 1e36, effect: 1000000000, heromult: 25, heroeffect: 1e52 },
     "Observable Universe": { name: "Observable Universe", expense: 1e39, effect: 10000000000, heromult: 30, heroeffect: 1e54 },
+    "Multiverse": { name: "Multiverse", expense: 1e42, effect: 100000000000, heromult: 35, heroeffect: 1e58 },
 
     // Misc
     "Book": { name: "Book", expense: 10, effect: 1.5, description: "Skill XP", heromult: 2, heroeffect: 10 },
@@ -456,6 +457,7 @@ const requirementsBaseData = {
     "Supercluster": new CoinRequirement([getQuerySelector("Supercluster")], [{ requirement: 1e80 }]),
     "Galaxy Filament": new CoinRequirement([getQuerySelector("Galaxy Filament")], [{ requirement: 1e90 }]),
     "Observable Universe": new CoinRequirement([getQuerySelector("Observable Universe")], [{ requirement: 1e102 }]),
+    "Multiverse": new CoinRequirement([getQuerySelector("Multiverse")], [{ requirement: 1e116 }]),
 
     // Misc
     "Book": new CoinRequirement([getQuerySelector("Book")], [{ requirement: 0 }]),
@@ -540,7 +542,7 @@ const skillCategories = {
 }
 
 const itemCategories = {
-    "Properties": ["Homeless", "Tent", "Wooden Hut", "Cottage", "House", "Large House", "Small Palace", "Grand Palace", "Town Ruler", "City Ruler", "Nation Ruler", "Pocket Dimension", "Void Realm", "Void Universe", "Astral Realm", "Galactic Throne", "Spaceship", "Planet", "Ringworld", "Stellar Neighborhood", "Galaxy", "Supercluster", "Galaxy Filament", "Observable Universe"],
+    "Properties": ["Homeless", "Tent", "Wooden Hut", "Cottage", "House", "Large House", "Small Palace", "Grand Palace", "Town Ruler", "City Ruler", "Nation Ruler", "Pocket Dimension", "Void Realm", "Void Universe", "Astral Realm", "Galactic Throne", "Spaceship", "Planet", "Ringworld", "Stellar Neighborhood", "Galaxy", "Supercluster", "Galaxy Filament", "Observable Universe", "Multiverse"],
     "Misc": ["Book", "Dumbbells", "Personal Squire", "Steel Longsword", "Butler", "Sapphire Charm", "Study Desk", "Library", "Observatory", "Mind's Eye", "Void Necklace", "Void Armor", "Void Blade", "Void Orb", "Void Dust", "Celestial Robe", "Universe Fragment", "Multiverse Fragment", "Stairway to heaven", "Highway to hell"]
 }
 

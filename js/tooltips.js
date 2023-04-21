@@ -130,6 +130,7 @@ const tooltips = {
     "Supercluster": "A cluster of galactic groups spanning hundreds of millions of light years across and containing thousands of galaxies is under your control.",
     "Galaxy Filament": "One of the largest known structures of the universe, containing dozens of superclusters and millions of galaxies.",
     "Observable Universe": "You did it! You finally rule the entire universe...or do you?",
+    "Multiverse": "Universe is too small for you.",
 
     // Misc
     "Book": "A place to write down all your thoughts and discoveries, allowing you to learn a lot more quickly.",
