@@ -38,3 +38,20 @@
 }
 
 
+.dark .button-transcend {
+    background-color: #065c21 !important;
+}
+
+.dark .button-transcend:hover {
+    background-color: #137030 !important;
+}
+
+.dark .button-evil {
+    background-color: #4B0317 !important;
+}
+
+
+.dark .button-evil:hover {
+    background-color: #641028 !important;
+}
+

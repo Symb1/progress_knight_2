@@ -149,14 +149,19 @@ function renderSideBar() {
     document.getElementById("perkPointsGainDisplay").textContent = formatTreshold(getMetaversePerkPointsGain())
     document.getElementById("metaversePerkPointsGainButtonDisplay").textContent = "+" + formatTreshold(getMetaversePerkPointsGain())
 
-
     // Embrace evil indicator
     const embraceEvilButton = document.getElementById("rebirthButton2").querySelector(".button")
-    embraceEvilButton.style.background = isNextDarkMagicSkillInReach() ? (gameData.settings.theme == 0 ? "#f0b5b5" : "#4B0317") : ""
+    if (isNextDarkMagicSkillInReach())
+        embraceEvilButton.classList.add("button-evil")
+    else
+        embraceEvilButton.classList.remove("button-evil")
 
     // Transcend for Next Milestone indicator
     const transcendButton = document.getElementById("rebirthButton3").querySelector(".button")
-    transcendButton.style.background = isNextMilestoneInReach() ? (gameData.settings.theme == 0 ? "#b8f4cb": "#065c21") : ""
+    if (isNextMilestoneInReach())
+        transcendButton.classList.add("button-transcend")
+    else
+        transcendButton.classList.remove("button-transcend")
 
     // Hide the rebirthOneButton from the sidebar when you have `Almighty Eye` unlocked.
     document.getElementById("rebirthButton1").hidden = gameData.requirements["Almighty Eye"].isCompleted()

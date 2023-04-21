@@ -3,7 +3,7 @@
 .w3-button, .w3-bar-item {
     padding: 0.4em 0.8em;
 }
- 
+
 .w3-margin {
     margin: 0.8em !important
 }
@@ -41,10 +41,6 @@
     height: 2em;
     padding: 0 0 0 0;
     padding-left: 0.8em;
-}
-
-.w3-button:hover {
-    background-color: rgb(204, 204, 204) !important;
 }
 
 .w3-table td:first-child, .w3-table th:first-child {
@@ -483,4 +479,20 @@ button:focus {
 
 .perk-boost-active, .perk-boost-active:hover {
     background-color: #02bb11;
+}
+
+.button-transcend {
+    background-color: #b8f4cb !important;
+}
+
+.button-transcend:hover {
+    background-color: #cef5da !important;   
+}
+
+.button-evil {
+    background-color: #f0b5b5 !important;
+}
+
+.button-evil:hover {
+    background-color: #f2caca !important;
 }
