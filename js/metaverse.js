@@ -1,11 +1,19 @@
 function getHypercubeGeneration() {
     if (gameData.rebirthFiveCount == 0) return 0   
 
-    let hypersphereEffect = gameData.itemData['Hypersphere'].getEffect()
+    let tesseractEffect = gameData.itemData["Tesseract"].getEffect()
+    let hypersphereEffect = gameData.itemData["Hypersphere"].getEffect()
 
-    return 0.03 * hypersphereEffect * gameData.metaverse.hypercube_gain_modifier * (gameData.perks.hypercube_boost == 1 ? 10 : 1)
+    return 0.03 * hypersphereEffect * tesseractEffect * gameData.metaverse.hypercube_gain_modifier * (gameData.perks.hypercube_boost == 1 ? 10 : 1)
         * (gameData.perks.hyper_speed == 1 ? 1000 : 1)
+}
 
+function getNextPowerOfNumber(number, add_power = 0) {
+    return Math.pow(10, add_power + Math.ceil(Math.log10(number)))
+}
+
+function getTimeTillNextHypercubePower(add_power = 0) {
+    return (getNextPowerOfNumber(gameData.hypercubes, add_power) - gameData.hypercubes) / (applySpeed(getHypercubeGeneration()) * updateSpeed)
 }
 
 function getBoostTimeSeconds() {
@@ -162,39 +170,25 @@ function getMetaversePerkPointsGain() {
     return 0
 }
 
+const perks_cost = {
+    auto_dark_orb: 1,
+    auto_dark_shop: 1,
+    auto_boost: 1,
+    instant_evil: 2,
+    hypercube_boost: 5,
+    instant_essence: 10,
+    save_challenges: 15,   
+    instant_dark_matter: 25,
+    auto_sacrifice: 40,    
+    double_perk_points_gain: 50,
+    positive_dark_mater_skills: 100,   
+    hyper_speed: 200,   
+    both_dark_mater_skills: 300,
+    keep_dark_mater_skills: 500,
+}
+
 function getPerkCost(perkName) {
-    switch (perkName) {
-        case "auto_dark_orb":
-            return 1
-        case "auto_dark_shop":
-            return 1
-        case "auto_boost":
-            return 1
-        case "instant_evil":
-            return 2
-        case "instant_essence":
-            return 3
-        case "hypercube_boost":
-            return 4
-        case "positive_dark_mater_skills":
-            return 5
-        case "save_challenges":
-            return 6
-        case "auto_sacrifice":
-            return 8
-        case "double_perk_points_gain":
-            return 10
-        case "instant_dark_matter":
-            return 15
-        case "keep_dark_mater_skills":
-            return 20
-        case "hyper_speed":
-            return 100
-        case "both_dark_mater_skills":
-            return 500
-        default:
-            return Infinity
-    }
+    return perks_cost[perkName]
 }
 
 function canBuyPerk(perkName) {
@@ -248,4 +242,17 @@ function getBoostCooldownString() {
     return gameData.boost_active
         ? "Active: " + formatTime(gameData.boost_timer)
         : (gameData.boost_cooldown <= 0 ? "Ready!" : "Cooldown: " + formatTime(gameData.boost_cooldown))
+}
+
+function getLifeIsACircleXP() {
+    if (gameData.active_challenge == "the_darkest_time")
+        return 1
+
+    return 1e50
+}
+
+function getUnspentPerksDarkmatterGainBuff() {
+    const effect = softcap(gameData.perks_points * 0.0027 + 2, 80, 0.01)
+
+    return gameData.requirements["The End is near"].isCompleted() ? Math.pow(10, effect): 1
 }

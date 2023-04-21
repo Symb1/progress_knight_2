@@ -29,7 +29,7 @@
 						<div class="sidebarChallengeReward legends_never_die hidden"><span class="color-evil">Evil</span> x<span id="sidebarCurrentChallengeBuff5"></span> / x<span id="sidebarChallengeBuff5"></span></div>
 						<div class="sidebarChallengeReward the_darkest_time hidden"><span class="color-dark-mater">Dark Mater</span> x<span id="sidebarCurrentChallengeBuff6"></span> / x<span id="sidebarChallengeBuff6"></span></div>
 					</div>
-				</div>
+				</div>				
 				<div class="text-caption" id="errorInfo" hidden="hidden">
 					<div>⚠️ Oh no! It looks like something on the site broke.. If this issue persists, feel free to contact the developers.</div>
 					<br>
@@ -42,6 +42,7 @@
 				<div class="sidebar-element" style="color: gray">
 					Lifespan: <span id="lifespanDisplay">70</span> years
 					<br>Real Time: <span id="realtimeDisplay">00:00:00</span>
+					<div id="fps"></div>
 				</div>
 				<button id="pauseButton" class="w3-button button sidebar-element" onClick="togglePause()">Pause</button>
 				<div id="boostPanel" class="sidebar-element" style="color: gray">
@@ -669,6 +670,9 @@
 									<div style="border-bottom: 0.1em solid rgb(24, 210, 217); padding-top: 2em;"></div>
 									<div style="padding-top:1em">
 										<div class="text-caption"><span class="color-hypercubes">Hypercubes:</span> <span id="hypercubesMetaDisplay"></span></div>
+										<div id="timeTillNextHypercubePower"></div>
+										<div id="timeTillNextHypercubePower2"></div>
+										<div id="timeTillNextHypercubePower3"></div>
 										<div><span>Total hypercube gain bonus:</span> <span id="hypercubesBonusMetaDisplay"></span></div>
 									</div>
 									<div style="padding-top:1em">
@@ -726,7 +730,8 @@
 									</div>
 									<div style="padding-top:1em">
 										<div class="text-caption" style="padding-left: 1em;">You have <b><span id="perkPointDisplay" class="color-perk-points"></span></b> unspent Metaverse perk points. Total points: <b><span id="totalPerkPointDisplay" class="color-perk-points"></span></b>.</div>
-										<div class="text-caption" style="padding-left: 1em;">You can freely activate and deactivate perks for the points you have.</div>
+										<div id="mppInfo" class="text-caption" style="padding-left: 1em;">You can freely activate and deactivate perks for the points you have.</div>
+										<div id="mppInfo2" class="text-caption" style="padding-left: 1em;">Bonus to Dark Matter gain is x<span id="mppDMBuff"></span>.</div>
 									</div>
 									<div style="border-bottom: 0.1em solid rgb(217, 24, 119); padding-top: 2em;"></div>
 									<div id="perksLayout" class="perk-grid" style="padding-top:0em">

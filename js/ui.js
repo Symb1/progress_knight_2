@@ -8,7 +8,7 @@ function initializeUI() {
     createAllRows(itemCategories, "itemTable")
     createAllRows(milestoneCategories, "milestoneTable")
 
-    createPerks(Object.keys(gameData.perks), "perksLayout")
+    createPerks("perksLayout")
 
     setLayout(peekSettingFromSave("layout"))
     setFontSize(peekSettingFromSave("fontSize"))
@@ -41,19 +41,19 @@ function updateUI() {
 
     const currentTab = gameData.settings.selectedTab
 
-    if (currentTab == Tab.JOBS || gameData.settings.layout == 0) {
+    if (currentTab == Tab.JOBS) {
         updateRequiredRows(gameData.taskData, jobCategories)
         renderHeaderRows(jobCategories)
         renderJobs()
     }
 
-    if (currentTab == Tab.SKILLS || gameData.settings.layout == 0) {
+    if (currentTab == Tab.SKILLS || gameData.settings.layout == 0 && currentTab == Tab.JOBS) {
         updateRequiredRows(gameData.taskData, skillCategories)
         renderHeaderRows(skillCategories)
         renderSkills()
     }
 
-    if (currentTab == Tab.SHOP || gameData.settings.layout == 0) {
+    if (currentTab == Tab.SHOP || gameData.settings.layout == 0 && currentTab == Tab.JOBS) {
         updateRequiredRows(gameData.itemData, itemCategories)
         renderShop()
     }
@@ -82,16 +82,7 @@ function renderSideBar() {
     const progressBar = quickTaskDisplayElement.getElementsByClassName("job")[0]
     progressBar.getElementsByClassName("name")[0].textContent = (task.isHero ? "Great " : "") + task.name + " lvl " + formatLevel(task.level)
     const progressFill = progressBar.getElementsByClassName("progressFill")[0]
-
-    if (task.isFinished) {
-        let width = 100n * task.xpBigInt / task.getMaxBigIntXp()
-        if (width > 100n)
-            width = 100n
-        progressFill.style.width = width + "%"
-    }
-     else 
-       progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
-    
+    renderProgressBar(task, progressFill)    
 
     task.isHero ? progressFill.classList.add("progress-fill-hero") : progressFill.classList.remove("progress-fill-hero")
     task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
@@ -174,6 +165,22 @@ function renderSideBar() {
     if (getDarkMatter() == 0)
         gameData.requirements["Dark Matter info"].completed = false
 }
+function renderProgressBar(task, progressFill){
+    if (task.isFinished) {
+        let width = 0
+        if (task.level > 10000) {
+            width = task.level % 100
+        }
+        else {
+            width = 100n * task.xpBigInt / task.getMaxBigIntXp()
+            if (width > 100n)
+                width = 100n
+        }        
+        progressFill.style.width = width + "%"
+    }
+    else
+        progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
+}
 
 function renderJobs() {
     for (const key in gameData.taskData) {
@@ -202,19 +209,10 @@ function renderJobs() {
         progressBar.querySelector(".name").textContent = (task.isHero ? "Great " : "") + task.name
         const progressFill = row.querySelector(".progressFill")
 
-        if (task.isFinished) {
-            let width = 100n * task.xpBigInt / task.getMaxBigIntXp()
-            if (width > 100n)
-                width = 100n
-            progressFill.style.width = width + "%"
-        }
-        else 
-            progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
-        
+        renderProgressBar(task, progressFill)      
 
         task.isHero ? progressFill.classList.add("progress-fill-hero") : progressFill.classList.remove("progress-fill-hero")
         task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
-
 
 
         task == gameData.currentJob ? progressFill.classList.add(task.isHero ? "current-hero" : "current") : progressFill.classList.remove("current", "current-hero")
@@ -255,14 +253,7 @@ function renderSkills() {
         progressBar.querySelector(".name").textContent = (task.isHero ? "Great " : "") + task.name
         const progressFill = row.querySelector(".progressFill")
 
-        if (task.isFinished) {
-            let width = 100n * task.xpBigInt / task.getMaxBigIntXp()
-            if (width > 100n)
-                width = 100n
-            progressFill.style.width = width + "%"
-        }
-        else 
-            progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"        
+        renderProgressBar(task, progressFill)        
 
         task.isHero ? progressFill.classList.add("progress-fill-hero") : progressFill.classList.remove("progress-fill-hero")
         task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
@@ -424,10 +415,17 @@ function renderBoostButton(elemName) {
 
 function renderMetaverse() {
 
+    document.getElementById("timeTillNextHypercubePower").textContent =
+        format(getNextPowerOfNumber(gameData.hypercubes)) + " Hypercubes in " + formatTime(getTimeTillNextHypercubePower())
+
+    document.getElementById("timeTillNextHypercubePower2").textContent =
+        format(getNextPowerOfNumber(gameData.hypercubes)*10) + " Hypercubes in " + formatTime(getTimeTillNextHypercubePower(1))
+
+
     renderBoostButton("boostMetaButton")
 
     document.getElementById("hypercubesMetaDisplay").textContent = format(gameData.hypercubes)
-    document.getElementById("hypercubesBonusMetaDisplay").textContent = "x" + format(getHypercubeGeneration())
+    document.getElementById("hypercubesBonusMetaDisplay").textContent = "x" + format(getHypercubeGeneration() / 0.03)
     document.getElementById("boostCooldownMetaDisplay").textContent = getBoostCooldownString()  
 
     document.getElementById("reduceBoostCooldown").textContent = formatTime(getBoostCooldownSeconds())
@@ -469,6 +467,18 @@ function renderMetaverse() {
 function renderPerks() {
     document.getElementById("perkPointDisplay").textContent = formatTreshold(gameData.perks_points)
     document.getElementById("totalPerkPointDisplay").textContent = formatTreshold(getTotalPerkPoints())
+    // Info
+
+    if (gameData.requirements["The End is near"].isCompleted()) {
+        document.getElementById("mppInfo").hidden = true
+        document.getElementById("mppInfo2").hidden = false
+        document.getElementById("mppDMBuff").textContent = format(getUnspentPerksDarkmatterGainBuff())
+    }
+    else {
+        document.getElementById("mppInfo").hidden = false
+        document.getElementById("mppInfo2").hidden = true
+    }
+
 
 
     // PerkButtons
@@ -476,8 +486,11 @@ function renderPerks() {
     let hide_next = false
     let index = 0
 
-    for (const key of Object.keys(gameData.perks)) {
-        
+    //
+
+    sortable = getSortedPerks()
+    for (const perkName of sortable) {
+        const key = perkName[0]
         const button = document.getElementById("id" + key)
 
         if (hide_next)
@@ -879,13 +892,13 @@ function getHeroicRequiredTooltip(task) {
     }
 
     if (requirementObject instanceof EvilRequirement) {
-        reqlist += format(requirements[0].requirement) + " evil<br>"
+        reqlist += format((requirements[0].herequirement == undefined) ? requirements[0].requirement : requirements[0].herequirement) + " evil<br>"
     } else if (requirementObject instanceof EssenceRequirement) {
-        reqlist += format(requirements[0].requirement) + " essence<br>"
+        reqlist += format((requirements[0].herequirement == undefined) ? requirements[0].requirement : requirements[0].herequirement) + " essence<br>"
     } else if (requirementObject instanceof AgeRequirement) {
-        reqlist += "Age " + format(requirements[0].requirement) + "<br>"
+        reqlist += "Age " + format((requirements[0].herequirement == undefined) ? requirements[0].requirement : requirements[0].herequirement) + "<br>"
     } else if (requirementObject instanceof DarkMatterRequirement) {
-        reqlist += format(requirements[0].requirement) + " Dark Matter<br>"
+        reqlist += format((requirements[0].herequirement == undefined) ? requirements[0].requirement : requirements[0].herequirement) + " Dark Matter<br>"
     } else {
         for (const requirement of requirements) {
             const task_check = gameData.taskData[requirement.task]
@@ -1162,11 +1175,25 @@ function setTabMetaverse(tab) {
     element.classList.add("w3-blue-gray")
 }
 
-function createPerks(perkList, perkLayoutName) {
+function getSortedPerks() {
+    let sortable = [];
+    for (var perkname in perks_cost) {
+        sortable.push([perkname, perks_cost[perkname]]);
+    }
+
+    sortable.sort(function (a, b) {
+        return a[1] - b[1];
+    });
+
+    return sortable
+}
+
+function createPerks(perkLayoutName) {
+    sortable = getSortedPerks()
     const buttonTemplate = document.getElementsByClassName("perkItem")
     const perksLayout = document.getElementById(perkLayoutName)
-    for (const perkName of perkList) {
-        const perk = createPerk(buttonTemplate, perkName)
+    for (const perkName of sortable) {
+        const perk = createPerk(buttonTemplate, perkName[0])
         perksLayout.appendChild(perk)
     }
 }

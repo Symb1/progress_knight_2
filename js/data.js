@@ -1,4 +1,4 @@
-var gameData = {
+﻿var gameData = {
     taskData: {},
     itemData: {},
 
@@ -174,6 +174,8 @@ const jobBaseData = {
 
     "Snow Crash": { name: "Snow Crash", maxXp: Infinity, income: 2.5e52, heroxp: 1015 },
     "Player One": { name: "Player One", maxXp: Infinity, income: 2.5e54, heroxp: 1200 },
+    "Lost in the dark": { name: "Lost in the dark", maxXp: Infinity, income: 2.5e58, heroxp: 1358 },
+    "Omega": { name: "Omega", maxXp: Infinity, income: 2.5e62, heroxp: 3120 },
 }
 
 const skillBaseData = {
@@ -261,6 +263,8 @@ const itemBaseData = {
     "Galaxy Filament": { name: "Galaxy Filament", expense: 1e36, effect: 1000000000, heromult: 25, heroeffect: 1e52 },
     "Observable Universe": { name: "Observable Universe", expense: 1e39, effect: 10000000000, heromult: 30, heroeffect: 1e54 },
     "Multiverse": { name: "Multiverse", expense: 1e42, effect: 100000000000, heromult: 35, heroeffect: 1e60 },
+    "Quantum World": { name: "Quantum World", expense: 1e49, effect: 1000000000000, heromult: 40, heroeffect: 1e64 },
+    "Boötes Void": { name: "Boötes Void", expense: 3e74, effect: 1000000000000, heromult: 40, heroeffect: 1e80 },
 
     // Misc
     "Book": { name: "Book", expense: 10, effect: 1.5, description: "Skill XP", heromult: 2, heroeffect: 10 },
@@ -283,7 +287,10 @@ const itemBaseData = {
     "Multiverse Fragment": { name: "Multiverse Fragment", expense: 2e17, effect: 5, description: "Happiness", heromult: 15, heroeffect: 1000000 },
     "Stairway to heaven": { name: "Stairway to heaven", expense: 1e38, effect: 10, description: "Happiness", heromult: 30, heroeffect: 1000000 },
     "Highway to hell": { name: "Highway to hell", expense: 1e42, effect: 10, description: "Evil Gain", heromult: 30, heroeffect: 1000000 },
-    "Hypersphere": { name: "Hypersphere", expense: 1e140, effect: 1, description: "Hypercube Gain", heromult: 30, heroeffect: 10 },
+    "Tesseract": { name: "Tesseract", expense: 1e48, effect: 1, description: "Hypercube Gain", heromult: 30, heroeffect: 10 },
+    "Desintegration": { name: "Desintegration", expense: 1e55, effect: 1, description: "Dark Matter Gain", heromult: 30, heroeffect: 100 },
+    "Custom Galaxy": { name: "Custom Galaxy", expense: 1e64, effect: 1, description: "Skill XP", heromult: 30, heroeffect: 1e100 },
+    "Hypersphere": { name: "Hypersphere", expense: 1e91, effect: 1, description: "Hypercube Gain", heromult: 30, heroeffect: 1e50 },
 }
 
 const requirementsBaseData = {
@@ -300,7 +307,7 @@ const requirementsBaseData = {
     "Dark Milestones": new EssenceRequirement([removeSpaces(".Dark Milestones")], [{ requirement: 5e10 }]),
     "Metaverse Milestones": new EssenceRequirement([removeSpaces(".Metaverse Milestones")], [{ requirement: 1e60 }]),
     "Metaverse Guards": new EssenceRequirement([removeSpaces(".Metaverse Guards")], [{ requirement: 1e90 }]),
-
+    
     // Rebirth items
     "Rebirth tab": new AgeRequirement(["#rebirthTabButton"], [{ requirement: 25 }]),
     "Rebirth note 0": new AgeRequirement(["#rebirthNote0"], [{ requirement: 25 }]),
@@ -376,8 +383,10 @@ const requirementsBaseData = {
     "One Above All": new TaskRequirement([getQuerySelector("One Above All")], [{ task: "Meditation", requirement: 6300 }, { task: "Acallaris", requirement: 1400, herequirement: 500 }]),
 
     // Metaverse Guards
-    "Snow Crash": new TaskRequirement([getQuerySelector("Snow Crash")], [{ task: "One Above All", requirement: 95000, herequirement: 100000 }]),
-    "Player One": new TaskRequirement([getQuerySelector("Player One")], [{ task: "Snow Crash", requirement: 1000 }]),
+    "Snow Crash": new EssenceRequirement([getQuerySelector("Snow Crash")], [{ requirement: 1e90, herequirement: 1e120 }]),
+    "Player One": new TaskRequirement([getQuerySelector("Player One")], [{ task: "Snow Crash", requirement: 1000, herequirement: 160000 }]),
+    "Lost in the dark": new TaskRequirement([getQuerySelector("Lost in the dark")], [{ task: "Player One", requirement: 2500, herequirement: 158000 }]),
+    "Omega": new TaskRequirement([getQuerySelector("Omega")], [{ task: "Lost in the dark", requirement: 25000, herequirement: 400000 }]),
 
     // Fundamentals
     "Concentration": new TaskRequirement([getQuerySelector("Concentration")], []),
@@ -468,6 +477,8 @@ const requirementsBaseData = {
     "Galaxy Filament": new CoinRequirement([getQuerySelector("Galaxy Filament")], [{ requirement: 1e90 }]),
     "Observable Universe": new CoinRequirement([getQuerySelector("Observable Universe")], [{ requirement: 1e102 }]),
     "Multiverse": new CoinRequirement([getQuerySelector("Multiverse")], [{ requirement: 1e116 }]),
+    "Quantum World": new CoinRequirement([getQuerySelector("Quantum World")], [{ requirement: 1e124 }]),
+    "Boötes Void": new CoinRequirement([getQuerySelector("Boötes Void")], [{ requirement: 1e152 }]),
 
     // Misc
     "Book": new CoinRequirement([getQuerySelector("Book")], [{ requirement: 0 }]),
@@ -490,7 +501,11 @@ const requirementsBaseData = {
     "Multiverse Fragment": new CoinRequirement([getQuerySelector("Multiverse Fragment")], [{ requirement: itemBaseData["Multiverse Fragment"].expense * 100 }]),
     "Stairway to heaven": new CoinRequirement([getQuerySelector("Stairway to heaven")], [{ requirement: itemBaseData["Stairway to heaven"].expense * 100 }]),
     "Highway to hell": new CoinRequirement([getQuerySelector("Highway to hell")], [{ requirement: itemBaseData["Highway to hell"].expense * 100 }]),
-    "Hypersphere": new CoinRequirement([getQuerySelector("Hypersphere")], [{ requirement: itemBaseData["Hypersphere"].expense * 100 }]),
+    "Tesseract": new CoinRequirement([getQuerySelector("Tesseract")], [{ requirement: 1e112 }]),    
+    "Desintegration": new CoinRequirement([getQuerySelector("Desintegration")], [{ requirement: 1e122 }]),
+    "Custom Galaxy": new CoinRequirement([getQuerySelector("Custom Galaxy")], [{ requirement: 1e134 }]),
+    "Hypersphere": new CoinRequirement([getQuerySelector("Hypersphere")], [{ requirement: 1e160 }]),
+    
 
     // Milestones
     "Milestones": new EssenceRequirement(["#milestonesTabButton"], [{ requirement: 1 }]),
@@ -539,7 +554,7 @@ const jobCategories = {
     "The Arcane Association": ["Student", "Apprentice Mage", "Adept Mage", "Master Wizard", "Archmage", "Chronomancer", "Chairman", "Imperator"],
     "The Void": ["Corrupted", "Void Slave", "Void Fiend", "Abyss Anomaly", "Void Wraith", "Void Reaver", "Void Lord", "Abyss God"],
     "Galactic Council": ["Eternal Wanderer", "Nova", "Sigma Proioxis", "Acallaris", "One Above All"],
-    "Metaverse Guards": ["Snow Crash", "Player One"]
+    "Metaverse Guards": ["Snow Crash", "Player One", "Lost in the dark", "Omega"]
 }
 
 const skillCategories = {
@@ -554,8 +569,8 @@ const skillCategories = {
 }
 
 const itemCategories = {
-    "Properties": ["Homeless", "Tent", "Wooden Hut", "Cottage", "House", "Large House", "Small Palace", "Grand Palace", "Town Ruler", "City Ruler", "Nation Ruler", "Pocket Dimension", "Void Realm", "Void Universe", "Astral Realm", "Galactic Throne", "Spaceship", "Planet", "Ringworld", "Stellar Neighborhood", "Galaxy", "Supercluster", "Galaxy Filament", "Observable Universe", "Multiverse"],
-    "Misc": ["Book", "Dumbbells", "Personal Squire", "Steel Longsword", "Butler", "Sapphire Charm", "Study Desk", "Library", "Observatory", "Mind's Eye", "Void Necklace", "Void Armor", "Void Blade", "Void Orb", "Void Dust", "Celestial Robe", "Universe Fragment", "Multiverse Fragment", "Stairway to heaven", "Highway to hell", "Hypersphere"]
+    "Properties": ["Homeless", "Tent", "Wooden Hut", "Cottage", "House", "Large House", "Small Palace", "Grand Palace", "Town Ruler", "City Ruler", "Nation Ruler", "Pocket Dimension", "Void Realm", "Void Universe", "Astral Realm", "Galactic Throne", "Spaceship", "Planet", "Ringworld", "Stellar Neighborhood", "Galaxy", "Supercluster", "Galaxy Filament", "Observable Universe", "Multiverse", "Quantum World", "Boötes Void"],
+    "Misc": ["Book", "Dumbbells", "Personal Squire", "Steel Longsword", "Butler", "Sapphire Charm", "Study Desk", "Library", "Observatory", "Mind's Eye", "Void Necklace", "Void Armor", "Void Blade", "Void Orb", "Void Dust", "Celestial Robe", "Universe Fragment", "Multiverse Fragment", "Stairway to heaven", "Highway to hell", "Tesseract", "Desintegration", "Custom Galaxy", "Hypersphere"]
 }
 
 const headerRowColors = {

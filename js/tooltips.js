@@ -47,6 +47,8 @@ const tooltips = {
     // Metaverse Guards
     "Snow Crash": "Snow Crash, 1992",
     "Player One": "Ready Player One, 2011",
+    "Lost in the dark": "They both knew they would only go forward when next to each other. They vowed that they would always be together, earn a lot of money and move to a better place where they would be very happy.",
+    "Omega": "ω",
 
     // Fundamentals
     "Concentration": "Improve your learning speed through practising intense concentration activities.",
@@ -134,7 +136,9 @@ const tooltips = {
     "Supercluster": "A cluster of galactic groups spanning hundreds of millions of light years across and containing thousands of galaxies is under your control.",
     "Galaxy Filament": "One of the largest known structures of the universe, containing dozens of superclusters and millions of galaxies.",
     "Observable Universe": "You did it! You finally rule the entire universe...or do you?",
-    "Multiverse": "Universe is too small for you.",
+    "Multiverse": "Universe is too small for you?!",
+    "Quantum World": "You try to find at least some place that is still beyond your control, but all in vain.",
+    "Boötes Void": "The Great Nothing",
 
     // Misc
     "Book": "A place to write down all your thoughts and discoveries, allowing you to learn a lot more quickly.",
@@ -157,6 +161,10 @@ const tooltips = {
     "Multiverse Fragment": "Came into existance long before our universe was created, this strange looking object with no shape radiates unlimited energy.",
     "Stairway to heaven": "A staircase to the all mighty themselves.",
     "Highway to hell": "The devil invites you to his palace of terror.",
+    "Tesseract": "This object is from a higher dimensional world.",
+    "Desintegration": "Why do you need it?",
+    "Custom Galaxy": "You know about the pocket dimension, right?",
+    "Hypersphere": "You gain the limitless pow... ah, you're already omnipotent...",
 
     // Essence Milestones
     "Magic Eye": "The Eye in your Amulet starts to glow.",
@@ -203,5 +211,7 @@ const tooltips = {
     "Strong Hope": "Another Faint Hope buff?!",
     "Ruler of the Metaverse": "Now you are thinking with portals",
     "A New Hope": "No more of this Faint Hope nonsense!!!",
+    "Time is a flat circle": "This is a world where nothing is solved. Someone once told me, time is a flat circle. Everything we’ve ever done or will do, we’re gonna do over and over and over again.",
+    "The End is near": "We don't try to live forever",
     "The End": "The End",
 }

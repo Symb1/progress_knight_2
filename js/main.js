@@ -6,6 +6,19 @@ onerror = () => {
     }, 30 * 1000)
 }
 
+function resettask(task) {
+    
+    gameData.taskData[task].level = 0
+    gameData.taskData[task].maxLevel = 0
+    gameData.taskData[task].xp = 0
+    gameData.taskData[task].xpBigInt = BigInt(0)
+    gameData.taskData[task].isHero = false
+    gameData.taskData[task].isFinished = false
+    gameData.taskData[task].unlocked = false
+    gameData.requirements[task].completed = false
+
+}
+
 function addMultipliers() {
     for (const taskName in gameData.taskData) {
         const task = gameData.taskData[taskName]
@@ -23,6 +36,7 @@ function addMultipliers() {
         task.xpMultipliers.push(getBindedTaskEffect("Immortal Ruler"))
         task.xpMultipliers.push(getBindedTaskEffect("Blinded By Darkness"))
         task.xpMultipliers.push(getDarkMatterSkillXP)
+        task.xpMultipliers.push(getLifeIsACircleXP)
 
         if (task instanceof Job) {
             task.incomeMultipliers.push(task.getLevelMultiplier.bind(task))
@@ -39,6 +53,7 @@ function addMultipliers() {
             task.xpMultipliers.push(getBindedItemEffect("Void Blade"))
             task.xpMultipliers.push(getBindedTaskEffect("Void Symbiosis"))
             task.xpMultipliers.push(getBindedItemEffect("Universe Fragment"))
+            task.xpMultipliers.push(getBindedItemEffect("Custom Galaxy"))
             task.xpMultipliers.push(getBindedTaskEffect("Evil Incarnate"))
             task.xpMultipliers.push(getBindedTaskEffect("Dark Prince"))
         }
@@ -354,8 +369,12 @@ function getDarkMatterGain() {
     const darkMatterHarvester = gameData.requirements["Dark Matter Harvester"].isCompleted() ? 10 : 1
     const darkMatterMining = gameData.requirements["Dark Matter Mining"].isCompleted() ? 3 : 1
     const darkMatterMillionaire = gameData.requirements["Dark Matter Millionaire"].isCompleted() ? 500 : 1
+    const Desintegration = gameData.itemData['Desintegration'].getEffect()
+    const TheEndIsNear = getUnspentPerksDarkmatterGainBuff() 
 
-    return 1 * darkRuler.getEffect() * darkMatterHarvester * darkMatterMining * darkMatterMillionaire * getChallengeBonus("the_darkest_time") * getDarkMatterSkillDarkMater() * darkMaterMultGain()
+
+    return 1 * darkRuler.getEffect() * darkMatterHarvester * darkMatterMining * darkMatterMillionaire * getChallengeBonus("the_darkest_time") * getDarkMatterSkillDarkMater() * darkMaterMultGain() *
+        (Desintegration == 0 ? 1 : Desintegration) * TheEndIsNear
 }
 
 function getDarkMatter() {
@@ -387,12 +406,13 @@ function getUnpausedGameSpeed() {
     const timeLoop = gameData.taskData["Time Loop"]
     const warpDrive = (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
     const speedSpeedSpeed = gameData.requirements["Speed speed speed"].isCompleted() ? 1000 : 1
+    const timeIsaFlatCircle = gameData.requirements["Time is a flat circle"].isCompleted() ? 1000 : 1
 
-    const timeWarpingSpeed = boostWarping * timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive * speedSpeedSpeed
+    const timeWarpingSpeed = boostWarping * timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive * speedSpeedSpeed * timeIsaFlatCircle
 
     const gameSpeed = baseGameSpeed * timeWarpingSpeed * getChallengeBonus("time_does_not_fly") * getGottaBeFastGain() * getDarkMatterSkillTimeWarping() 
 
-    return gameData.active_challenge == "time_does_not_fly" || gameData.active_challenge == "the_darkest_time" ? Math.pow(gameSpeed, 0.7) : gameSpeed
+    return (gameData.active_challenge == "time_does_not_fly" || gameData.active_challenge == "the_darkest_time") ? Math.pow(gameSpeed, 0.7) : gameSpeed
 }
 
 function applyExpenses() {
@@ -516,6 +536,39 @@ function increaseCoins() {
     gameData.coins += applySpeed(getIncome())
 }
 
+function autoPerks() {
+    // perks
+    if (gameData.perks.auto_boost == 1 && !gameData.boost_active && gameData.boost_cooldown <= 0)
+        applyBoost()
+
+    if (gameData.perks.auto_dark_orb == 1 && gameData.dark_matter >= getDarkOrbGeneratorCost() * 10 && gameData.dark_orbs != Infinity)
+        buyDarkOrbGenerator()
+
+    if (gameData.perks.auto_dark_orb == 1 && gameData.dark_matter >= 100 && gameData.dark_matter_shop.a_miracle == false)
+        buyAMiracle()
+
+    if (gameData.perks.auto_dark_shop == 1 && gameData.dark_orbs >= 1000) {
+        buyADealWithTheChairman()
+        buyAGiftFromGod()
+        buyGottaBeFast()
+        buyLifeCoach()
+    }
+
+    if (gameData.perks.auto_sacrifice == 1 && gameData.hypercubes > 1000) {
+        buyDarkMaterMult()
+        buyChallengeAltar()
+        buyEssenceMult()
+        if (gameData.hypercubes > evilTranCost() * 100)
+            buyEvilTran()
+        if (gameData.hypercubes > boostDurationCost() * 100)
+            buyBoostDuration()
+        if (gameData.hypercubes > reduceBoostCooldownCost() * 100)
+            buyReduceBoostCooldown()
+        if (gameData.hypercubes > hypercubeGainCost() * 100)
+            buyHypercubeGain()
+    }
+}
+
 function autoPromote() {
     let maxIncome = 0;
     for (const key in gameData.taskData) {
@@ -567,38 +620,7 @@ function autoBuy() {
                 }
             }
         }
-    }
-
-    // perks
-    if (gameData.perks.auto_boost == 1 && !gameData.boost_active && gameData.boost_cooldown <= 0) 
-        applyBoost()    
-
-    if (gameData.perks.auto_dark_orb == 1 && gameData.dark_matter >= getDarkOrbGeneratorCost() * 10 && gameData.dark_orbs != Infinity)
-        buyDarkOrbGenerator()
-
-    if (gameData.perks.auto_dark_orb == 1 && gameData.dark_matter >= 100 && gameData.dark_matter_shop.a_miracle == false)
-        buyAMiracle()
-
-    if (gameData.perks.auto_dark_shop == 1 && gameData.dark_orbs >= 1000) {
-        buyADealWithTheChairman()
-        buyAGiftFromGod()
-        buyGottaBeFast()
-        buyLifeCoach()
-    }    
-
-    if (gameData.perks.auto_sacrifice == 1 && gameData.hypercubes > 1000) {
-        buyDarkMaterMult()
-        buyChallengeAltar()
-        buyEssenceMult()
-        if (gameData.hypercubes > evilTranCost() * 100)
-            buyEvilTran()
-        if (gameData.hypercubes > boostDurationCost() * 100)
-            buyBoostDuration()
-        if (gameData.hypercubes > reduceBoostCooldownCost() * 100)
-            buyReduceBoostCooldown()
-        if (gameData.hypercubes > hypercubeGainCost() * 100)
-            buyHypercubeGain()
-    }
+    }   
 }
 
 function increaseDays() {
@@ -882,6 +904,7 @@ function rebirthReset(set_tab_to_jobs = true) {
         if (task.level > task.maxLevel) task.maxLevel = task.level
         task.level = 0
         task.xp = 0
+        task.xpBigInt = BigInt(0)
         task.isHero = false
         task.isFinished =false
     }
@@ -980,6 +1003,10 @@ function makeHeroes() {
                     isNewHero = false
                     break
                 }
+        }
+        else if (req instanceof EssenceRequirement) {
+            if (!req.isCompletedActual(true))
+                continue
         }
 
         if (isNewHero)
@@ -1196,6 +1223,7 @@ function update(needUpdateUI = true) {
     makeHeroes()
     increaseRealtime()
     increaseDays()
+    autoPerks()
     autoPromote()
     autoBuy()
     applyExpenses()
@@ -1392,6 +1420,22 @@ var gameloop = setInterval(function() {
     if (ticking) return;
     ticking = true;
     update();
+
+    // fps for debug only
+    //var thisFrameTime = (thisLoop = new Date) - lastLoop;
+    //frameTime += (thisFrameTime - frameTime) / filterStrength;
+    //lastLoop = thisLoop;
+
     ticking = false;
 }, 1000 / updateSpeed)
 var saveloop = setInterval(saveGameData, 3000)
+
+/* FPS */
+/*
+var filterStrength = 20;
+var frameTime = 0, lastLoop = new Date, thisLoop;
+var fpsOut = document.getElementById('fps');
+setInterval(function () {
+    fpsOut.innerHTML = (1000 / frameTime).toFixed(1) + " fps";
+}, 1000);
+*/
