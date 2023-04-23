@@ -1036,9 +1036,11 @@ function renderSkillTreeButton(element, categoryBought, elementBought, canBuy) {
             if (elementBought) {
                 element.textContent = "Accepted"
                 element.classList.add("w3-green")
+                element.classList.remove("w3-red")
             } else {
                 element.textContent = "Rejected"
                 element.classList.add("w3-red")
+                element.classList.remove("w3-green")
             }
         }
         else {
@@ -1053,6 +1055,7 @@ function renderSkillTreeButton(element, categoryBought, elementBought, canBuy) {
         if (elementBought) {
             element.textContent = "Accepted"
             element.classList.add("w3-green")
+            element.classList.remove("w3-red")
         } else {
             element.textContent = "Buy"
             element.classList.remove("w3-green")

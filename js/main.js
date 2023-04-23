@@ -337,14 +337,14 @@ function getEvilGain() {
     const absoluteWish = gameData.taskData ["Absolute Wish"]
     const oblivionEmbodiment = gameData.taskData ["Void Embodiment"]
     const yingYang = gameData.taskData["Yin Yang"]
-    const inferno = gameData.requirements["Inferno"].isCompleted() ? 5 : 1
-
+    const inferno = gameData.requirements["Inferno"].isCompleted() ? 5 : 1    
     const theDevilInsideYou = gameData.requirements["The Devil inside you"].isCompleted() ? 1e15 : 1
     const stairWayToHell = getBindedItemEffect("Highway to hell")
+    const evilBooster = (gameData.perks.evil_booster == 1) ? 1e50 : 1
 
     return evilControl.getEffect() * bloodMeditation.getEffect() * absoluteWish.getEffect()
         * oblivionEmbodiment.getEffect() * yingYang.getEffect() * inferno * getChallengeBonus("legends_never_die")
-        * getDarkMatterSkillEvil() * theDevilInsideYou * stairWayToHell()
+        * getDarkMatterSkillEvil() * theDevilInsideYou * stairWayToHell() * evilBooster
 }
 
 function getEssenceGain() {
@@ -713,6 +713,8 @@ function rebirthTwo() {
 function rebirthThree() {
     gameData.rebirthThreeCount += 1
     gameData.essence += getEssenceGain()
+    if (gameData.essence == Infinity)
+        gameData.essence = 1e308
     gameData.evil = evilTranGain()
 
 
@@ -865,6 +867,8 @@ function applyMilestones() {
                 gameData.essence = 1
             if (gameData.essence < getEssenceGain() * 10)
                 gameData.essence *= Math.pow(1.002, 1)
+            if (gameData.essence == Infinity)
+                gameData.essence = 1e308
         }
     }
 }
@@ -1256,6 +1260,8 @@ function applyPerks() {
     if (gameData.perks.instant_essence == 1) {
         if (gameData.essence < getEssenceGain() * 10)
             gameData.essence = getEssenceGain() * 10
+        if (gameData.essence == Infinity)
+            gameData.essence = 1e308
     }
 
     if (gameData.perks.instant_dark_matter == 1) {

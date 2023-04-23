@@ -26,6 +26,8 @@
         keep_dark_mater_skills: 0,
         hyper_speed: 0,
         both_dark_mater_skills: 0,
+        evil_booster: 0,
+        more_perk_points : 0
     },
 
 
@@ -386,7 +388,7 @@ const requirementsBaseData = {
     "Snow Crash": new EssenceRequirement([getQuerySelector("Snow Crash")], [{ requirement: 1e90, herequirement: 1e120 }]),
     "Player One": new TaskRequirement([getQuerySelector("Player One")], [{ task: "Snow Crash", requirement: 1000, herequirement: 160000 }]),
     "Lost in the dark": new TaskRequirement([getQuerySelector("Lost in the dark")], [{ task: "Player One", requirement: 2500, herequirement: 158000 }]),
-    "Omega": new TaskRequirement([getQuerySelector("Omega")], [{ task: "Lost in the dark", requirement: 25000, herequirement: 400000 }]),
+    "Omega": new TaskRequirement([getQuerySelector("Omega")], [{ task: "Lost in the dark", requirement: 25000, herequirement: 185000 }]),
 
     // Fundamentals
     "Concentration": new TaskRequirement([getQuerySelector("Concentration")], []),

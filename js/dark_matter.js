@@ -166,9 +166,9 @@ function buyDarkMatterSkill(skill_name, cost, number) {
 
         if (gameData.dark_matter_shop[skill_name] == 0)
             gameData.dark_matter_shop[skill_name] = number
-        else if (gameData.dark_matter_shop[skill_name] == 1 && number == 2)
+        else if (gameData.dark_matter_shop[skill_name] == 1 && (number == 2 || number == 3))
             gameData.dark_matter_shop[skill_name] = 3
-        else if (gameData.dark_matter_shop[skill_name] == 2 && number == 1)
+        else if (gameData.dark_matter_shop[skill_name] == 2 && (number == 1 || number == 3))
             gameData.dark_matter_shop[skill_name] = 3
         else
             gameData.dark_matter += cost

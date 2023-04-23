@@ -165,7 +165,9 @@ function buyDarkMaterMult() {
 
 function getMetaversePerkPointsGain() {
     if (gameData.essence >= 1e90)
-        return (gameData.perks.double_perk_points_gain == 1 ? 2 : 1) * (Math.floor(Math.log10(gameData.essence)) - 89)
+        return (gameData.perks.more_perk_points == 1 ? 10 : 1)
+            * (gameData.perks.double_perk_points_gain == 1 ? 2 : 1)
+            * (Math.floor(Math.log10(gameData.essence)) - 89)
 
     return 0
 }
@@ -185,6 +187,8 @@ const perks_cost = {
     hyper_speed: 200,   
     both_dark_mater_skills: 300,
     keep_dark_mater_skills: 500,
+    evil_booster: 2500,
+    more_perk_points: 5000,
 }
 
 function getPerkCost(perkName) {
@@ -200,6 +204,14 @@ function buyPerk(perkName) {
         if (canBuyPerk(perkName)) {
             gameData.perks_points -= getPerkCost(perkName)
             gameData.perks[perkName] = 1
+
+            if (perkName == "both_dark_mater_skills") {
+                buySpeedOfLife(3)
+                buyYourGreatestDebt(3)
+                buyEssenceCollector(3)
+                buyExplosionOfTheUniverse(3)
+                buyMultiverseExplorer(3)
+            }
         }
     }
     else {
@@ -252,7 +264,7 @@ function getLifeIsACircleXP() {
 }
 
 function getUnspentPerksDarkmatterGainBuff() {
-    const effect = softcap(gameData.perks_points * 0.0027 + 2, 80, 0.01)
+    const effect = softcap(gameData.perks_points * 0.0027 + 2, 75, 0.01)
 
     return gameData.requirements["The End is near"].isCompleted() ? Math.pow(10, effect): 1
 }
