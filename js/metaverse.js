@@ -256,11 +256,11 @@ function getBoostCooldownString() {
         : (gameData.boost_cooldown <= 0 ? "Ready!" : "Cooldown: " + formatTime(gameData.boost_cooldown))
 }
 
-function getLifeIsACircleXP() {
+function getTimeIsAFlatCircleXP() {
     if (gameData.active_challenge == "the_darkest_time")
         return 1
 
-    return 1e50
+    return gameData.requirements["Time is a flat circle"].isCompleted() ? 1e50 : 1
 }
 
 function getUnspentPerksDarkmatterGainBuff() {

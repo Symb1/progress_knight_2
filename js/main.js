@@ -36,7 +36,7 @@ function addMultipliers() {
         task.xpMultipliers.push(getBindedTaskEffect("Immortal Ruler"))
         task.xpMultipliers.push(getBindedTaskEffect("Blinded By Darkness"))
         task.xpMultipliers.push(getDarkMatterSkillXP)
-        task.xpMultipliers.push(getLifeIsACircleXP)
+        task.xpMultipliers.push(getTimeIsAFlatCircleXP)
 
         if (task instanceof Job) {
             task.incomeMultipliers.push(task.getLevelMultiplier.bind(task))
@@ -406,9 +406,9 @@ function getUnpausedGameSpeed() {
     const timeLoop = gameData.taskData["Time Loop"]
     const warpDrive = (gameData.requirements["Eternal Time"].isCompleted()) ? 2 : 1
     const speedSpeedSpeed = gameData.requirements["Speed speed speed"].isCompleted() ? 1000 : 1
-    const timeIsaFlatCircle = gameData.requirements["Time is a flat circle"].isCompleted() ? 1000 : 1
+    const timeIsAFlatCircle = gameData.requirements["Time is a flat circle"].isCompleted() ? 1000 : 1
 
-    const timeWarpingSpeed = boostWarping * timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive * speedSpeedSpeed * timeIsaFlatCircle
+    const timeWarpingSpeed = boostWarping * timeWarping.getEffect() * temporalDimension.getEffect() * timeLoop.getEffect() * warpDrive * speedSpeedSpeed * timeIsAFlatCircle
 
     const gameSpeed = baseGameSpeed * timeWarpingSpeed * getChallengeBonus("time_does_not_fly") * getGottaBeFastGain() * getDarkMatterSkillTimeWarping() 
 
