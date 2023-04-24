@@ -1,3 +1,15 @@
+version 2.3 / 24.04.2023
+* Added Metaverse
+* New Items, Jobs, Milestones
+* Added keyboard shortcuts for Challenges and Rebirths
+* Added 1 new challenge and 1 new Dark skill
+* UI improvements
+* Reverted some changes from 2.2.11 update
+* Increased load stability of saves
+* Requirement rows now show the next effect if is is unlocked
+* Dark matter and Dark skills tabs combined in W I D E layout
+* and more small fixes and improvements
+
 version 2.2.11 / 19.04.2023
 * Make the last milestones achievable.
 
