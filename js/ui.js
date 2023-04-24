@@ -134,10 +134,13 @@ function renderSideBar() {
         rebirth5button.classList.add("color-perk-points")
         rebirth5button.classList.remove("color-hypercubes")
     }
-    else {
+    else if (gameData.rebirthFiveCount > 0) {
         rebirth5button.textContent = format(getHypercubeCap(1))
         rebirth5button.classList.remove("color-perk-points")
         rebirth5button.classList.add("color-hypercubes")
+    }
+    else {
+        rebirth5button.textContent = "Unlock Hypercubes"
     }
 
     // Embrace evil indicator
@@ -450,8 +453,10 @@ function renderMetaverse() {
         const nextH = getNextPowerOfNumber(gameData.hypercubes * Math.pow(10, i))
         elem.textContent =
             format(nextH) + " Hypercubes in " + formatTime(getTimeTillNextHypercubePower(i))
-        elem.hidden = nextH > getHypercubeCap()
-
+        if (i>0)
+            elem.hidden = nextH > getHypercubeCap() || gameData.perks_points == 0 || gameData.hypercubes < 1e20 * Math.pow(10, i)
+        else
+            elem.hidden = false
     }
 
     renderBoostButton("boostMetaButton")
@@ -1270,6 +1275,9 @@ function changeTab(direction){
 }
 
 function toggleChallenge(challengeName) {
+    if (!gameData.requirements["Challenges"].isCompleted())
+        return
+
     if (gameData.active_challenge == "") {
         if (gameData.requirements["Challenge_" + challengeName].isCompleted())
             enterChallenge(challengeName)
