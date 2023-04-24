@@ -5,6 +5,7 @@ version 2.3 / 24.04.2023
 * Added 1 new challenge and 1 new Dark skill
 * UI improvements
 * Reverted some changes from 2.2.11 update
+* Buffed last Dark Milestones
 * Increased load stability of saves
 * Requirement rows now show the next effect if is is unlocked
 * Dark matter and Dark skills tabs combined in W I D E layout
