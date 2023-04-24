@@ -127,7 +127,7 @@ function buyEssenceMult() {
 
 
 function challengeAltarCost() {
-    return 1e17
+    return 1e10
 }
 
 function canBuyChallengeAltar() {
