@@ -121,7 +121,7 @@ function renderSideBar() {
     document.getElementById("hypercubesDisplay").textContent = formatTreshold(gameData.hypercubes)
 
 
-    document.getElementById("hypercubeCapText").hidden = gameData.rebirthFiveCount == 0
+    document.getElementById("hypercubeCapText").hidden = gameData.rebirthFiveCount == 0 || getTotalPerkPoints() > 0
     document.getElementById("hypercubeCapDisplay").textContent = format(getHypercubeCap(1))
 
     document.getElementById("perkPointsGainText").hidden = gameData.essence < 1e90        
@@ -142,6 +142,8 @@ function renderSideBar() {
     else {
         rebirth5button.textContent = "Unlock Hypercubes"
     }
+
+    document.getElementById("rebirthButton5").hidden = getHypercubeCap() == Infinity && gameData.essence < 1e90
 
     // Embrace evil indicator
     const embraceEvilButton = document.getElementById("rebirthButton2").querySelector(".button")
