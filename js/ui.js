@@ -79,14 +79,11 @@ function updateUI() {
 function renderSideBar() {
     const task = gameData.currentJob
     const quickTaskDisplayElement = document.getElementById("quickTaskDisplay")
-    const progressBar = quickTaskDisplayElement.getElementsByClassName("job")[0]
-    progressBar.getElementsByClassName("name")[0].textContent = (task.isHero ? "Great " : "") + task.name + " lvl " + formatLevel(task.level)
-    const progressFill = progressBar.getElementsByClassName("progressFill")[0]
-    renderProgressBar(task, progressFill)    
 
-    task.isHero ? progressFill.classList.add("progress-fill-hero") : progressFill.classList.remove("progress-fill-hero")
-    task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
-    task == gameData.currentJob ? progressFill.classList.add(task.isHero ? "current-hero" : "current") : progressFill.classList.remove("current", "current-hero")
+    const progressBar = quickTaskDisplayElement.getElementsByClassName("job")[0]
+    progressBar.querySelector(".name").textContent = (task.isHero ? "Great " : "") + task.name + " lvl " + formatLevel(task.level)
+    const progressFill = progressBar.getElementsByClassName("progressFill")[0]
+    renderProgressBar(task, progressFill, progressBar)   
 
     document.getElementById("ageDisplay").textContent = formatAge(gameData.days)
     document.getElementById("lifespanDisplay").textContent = formatWhole(daysToYears(getLifespan()))
@@ -165,7 +162,7 @@ function renderSideBar() {
     if (getDarkMatter() == 0)
         gameData.requirements["Dark Matter info"].completed = false
 }
-function renderProgressBar(task, progressFill){
+function renderProgressBar(task, progressFill, progressBar){
     if (task.isFinished) {
         let width = 0
         if (task.level > 10000) {
@@ -180,6 +177,39 @@ function renderProgressBar(task, progressFill){
     }
     else
         progressFill.style.width = task.xp / task.getMaxXp() * 100 + "%"
+
+    if (task.isHero) {
+        progressFill.classList.add("progress-fill-hero")
+        progressBar.classList.add("progress-bar-hero")
+
+        if (task == gameData.currentJob) {
+            progressFill.classList.add("current-hero")
+            progressFill.classList.remove("current")
+        }
+        else {
+            progressFill.classList.remove("current")
+            progressFill.classList.remove("current-hero")
+        }
+
+        progressFill.classList.remove("progress-fill")
+        progressBar.classList.remove("progress-bar")
+    }
+    else {
+        progressFill.classList.remove("progress-fill-hero")
+        progressBar.classList.remove("progress-bar-hero")
+
+        if (task == gameData.currentJob) {
+            progressFill.classList.add("current")
+            progressFill.classList.remove("current-hero")
+        }
+        else {
+            progressFill.classList.remove("current")
+            progressFill.classList.remove("current-hero")
+        }
+
+        progressFill.classList.add("progress-fill")
+        progressBar.classList.add("progress-bar")
+    }
 }
 
 function renderJobs() {
@@ -208,14 +238,7 @@ function renderJobs() {
         const progressBar = row.querySelector(".progressBar")
         progressBar.querySelector(".name").textContent = (task.isHero ? "Great " : "") + task.name
         const progressFill = row.querySelector(".progressFill")
-
-        renderProgressBar(task, progressFill)      
-
-        task.isHero ? progressFill.classList.add("progress-fill-hero") : progressFill.classList.remove("progress-fill-hero")
-        task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
-
-
-        task == gameData.currentJob ? progressFill.classList.add(task.isHero ? "current-hero" : "current") : progressFill.classList.remove("current", "current-hero")
+        renderProgressBar(task, progressFill, progressBar)      
 
         const valueElement = row.querySelector(".value")
         valueElement.querySelector(".income").style.display = task instanceof Job
@@ -252,14 +275,7 @@ function renderSkills() {
         const progressBar = row.querySelector(".progressBar")
         progressBar.querySelector(".name").textContent = (task.isHero ? "Great " : "") + task.name
         const progressFill = row.querySelector(".progressFill")
-
-        renderProgressBar(task, progressFill)        
-
-        task.isHero ? progressFill.classList.add("progress-fill-hero") : progressFill.classList.remove("progress-fill-hero")
-        task.isHero ? progressBar.classList.add("progress-bar-hero") : progressBar.classList.remove("progress-bar-hero")
-
-
-        task == gameData.currentJob ? progressFill.classList.add(task.isHero ? "current-hero" : "current") : progressFill.classList.remove("current", "current-hero")
+        renderProgressBar(task, progressFill, progressBar)
 
         const valueElement = row.querySelector(".value")
         valueElement.querySelector(".income").style.display = task instanceof Job
@@ -419,7 +435,10 @@ function renderMetaverse() {
         format(getNextPowerOfNumber(gameData.hypercubes)) + " Hypercubes in " + formatTime(getTimeTillNextHypercubePower())
 
     document.getElementById("timeTillNextHypercubePower2").textContent =
-        format(getNextPowerOfNumber(gameData.hypercubes)*10) + " Hypercubes in " + formatTime(getTimeTillNextHypercubePower(1))
+        format(getNextPowerOfNumber(gameData.hypercubes) * 10) + " Hypercubes in " + formatTime(getTimeTillNextHypercubePower(1))
+
+    document.getElementById("timeTillNextHypercubePower3").textContent =
+        format(getNextPowerOfNumber(gameData.hypercubes) * 100) + " Hypercubes in " + formatTime(getTimeTillNextHypercubePower(2))
 
 
     renderBoostButton("boostMetaButton")

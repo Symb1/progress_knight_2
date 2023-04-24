@@ -34,9 +34,9 @@ const milestoneBaseData = {
     "Dark Matter Mining": { name: "Dark Matter Mining", expense: 1e25, tier: 29, description: "Multiply Dark Matter gain by 3x" },
     "The new gold": { name: "The new gold", expense: 1e30, tier: 30, description: "Multiply Essence gain by 1000x" },
     "The Devil inside you": { name: "The Devil inside you", expense: 1e35, tier: 31, description: "Multiply Evil gain by 1e15x" },
-    "Strange Magic": { name: "Strange Magic", expense: 1e40, tier: 32, description: "Multiply Darkness xp gain by 1e50x" },
-    "Speed speed speed": { name: "Speed speed speed", expense: 1e45, tier: 33, description: "Multiply Time Warping and Lifespan by 1000x. Heavily boosts Faint Hope" },
-    "Life is valueable": { name: "Life is valueable", expense: 1e50, tier: 34, description: "Multiply your lifespan by 1e5x. New challenge unlocked. Dark Matter boosts essence gain." },
+    "Strange Magic": { name: "Strange Magic", expense: 1e38, tier: 32, description: "Multiply Darkness xp gain by 1e50x" },
+    "Speed speed speed": { name: "Speed speed speed", expense: 1e40, tier: 33, description: "Multiply Time Warping and Lifespan by 1000x. Heavily boosts Faint Hope" },
+    "Life is valueable": { name: "Life is valueable", expense: 1e47, tier: 34, description: "Multiply your lifespan by 1e5x. New challenge unlocked. Dark Matter boosts essence gain." },
     "Dark Matter Millionaire": { name: "Dark Matter Millionaire", expense: 1e55, tier: 35, description: "Multiply Dark Matter gain by 500x" },
     "The new Dark Matter": { name: "The new Dark Matter", expense: 1e60, tier: 36, description: "Unlocks Metaverse" },
 
