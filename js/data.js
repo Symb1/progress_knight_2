@@ -326,7 +326,7 @@ const requirementsBaseData = {
     "Rebirth button 2": new AgeRequirement(["#rebirthButton2"], [{ requirement: 200 }]),
     "Rebirth button 3": new TaskRequirement(["#rebirthButton3"], [{ task: "Cosmic Recollection", requirement: 1 }]),
     "Rebirth button 4": new EssenceRequirement(["#rebirthButton4"], [{ requirement: 5e10 }]),
-    "Rebirth button 5": new EssenceRequirement(["#rebirthButton5"], [{ requirement: 1e90 }]),
+    "Rebirth button 5": new EssenceRequirement(["#rebirthButton5"], [{ requirement: 1e60 }]),
 
     "Rebirth stats evil": new AgeRequirement(["#statsEvilGain"], [{ requirement: 200 }]),
     "Rebirth stats essence": new TaskRequirement(["#statsEssenceGain"], [{ task: "Cosmic Recollection", requirement: 1 }]),

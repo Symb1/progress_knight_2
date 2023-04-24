@@ -1241,6 +1241,8 @@ function update(needUpdateUI = true) {
 
     gameData.dark_orbs += applySpeed(getDarkOrbGeneration())
     gameData.hypercubes += applySpeed(getHypercubeGeneration())
+    if (gameData.hypercubes > getHypercubeCap())
+        gameData.hypercubes = getHypercubeCap()
 
     applyMilestones()
     applyPerks()

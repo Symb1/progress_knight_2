@@ -120,13 +120,25 @@ function renderSideBar() {
 
     document.getElementById("hypercubesDisplay").textContent = formatTreshold(gameData.hypercubes)
 
-    if (gameData.rebirthFiveCount == 0)
-        document.getElementById("perkPointsGainText").hidden = true
-    else
-        document.getElementById("perkPointsGainText").hidden = false
 
+    document.getElementById("hypercubeCapText").hidden = gameData.rebirthFiveCount == 0
+    document.getElementById("hypercubeCapDisplay").textContent = format(getHypercubeCap(1))
+
+    document.getElementById("perkPointsGainText").hidden = gameData.essence < 1e90        
     document.getElementById("perkPointsGainDisplay").textContent = formatTreshold(getMetaversePerkPointsGain())
-    document.getElementById("metaversePerkPointsGainButtonDisplay").textContent = "+" + formatTreshold(getMetaversePerkPointsGain())
+
+    const rebirth5button = document.getElementById("metaversePerkPointsGainButtonDisplay")
+
+    if (gameData.essence > 1e90) {
+        rebirth5button.textContent = "+" + formatTreshold(getMetaversePerkPointsGain())
+        rebirth5button.classList.add("color-perk-points")
+        rebirth5button.classList.remove("color-hypercubes")
+    }
+    else {
+        rebirth5button.textContent = format(getHypercubeCap(1))
+        rebirth5button.classList.remove("color-perk-points")
+        rebirth5button.classList.add("color-hypercubes")
+    }
 
     // Embrace evil indicator
     const embraceEvilButton = document.getElementById("rebirthButton2").querySelector(".button")
@@ -430,16 +442,17 @@ function renderBoostButton(elemName) {
 }
 
 function renderMetaverse() {
+    document.getElementById("currentHypercubesCap").hidden = getHypercubeCap() == Infinity
+    document.getElementById("currentHypercubesCapValue").textContent = format(getHypercubeCap())
 
-    document.getElementById("timeTillNextHypercubePower").textContent =
-        format(getNextPowerOfNumber(gameData.hypercubes)) + " Hypercubes in " + formatTime(getTimeTillNextHypercubePower())
+    for (var i = 0; i < 3; i++) {
+        const elem = document.getElementById("timeTillNextHypercubePower" + (i + 1))
+        const nextH = getNextPowerOfNumber(gameData.hypercubes * Math.pow(10, i))
+        elem.textContent =
+            format(nextH) + " Hypercubes in " + formatTime(getTimeTillNextHypercubePower(i))
+        elem.hidden = nextH > getHypercubeCap()
 
-    document.getElementById("timeTillNextHypercubePower2").textContent =
-        format(getNextPowerOfNumber(gameData.hypercubes) * 10) + " Hypercubes in " + formatTime(getTimeTillNextHypercubePower(1))
-
-    document.getElementById("timeTillNextHypercubePower3").textContent =
-        format(getNextPowerOfNumber(gameData.hypercubes) * 100) + " Hypercubes in " + formatTime(getTimeTillNextHypercubePower(2))
-
+    }
 
     renderBoostButton("boostMetaButton")
 

@@ -268,3 +268,7 @@ function getUnspentPerksDarkmatterGainBuff() {
 
     return gameData.requirements["The End is near"].isCompleted() ? Math.pow(10, effect): 1
 }
+
+function getHypercubeCap(next = 0) {
+    return 1e7 * Math.pow(10, (gameData.rebirthFiveCount + next) * 3)
+}

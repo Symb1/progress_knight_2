@@ -135,7 +135,7 @@
 					<button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100% " onClick="rebirthFour()">Collapse the universe: <span class="color-dark-mater" id="darkMatterGainButtonDisplay"></span></button>
 				</div>
 				<div id="rebirthButton5" class="hidden">
-					<button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100% " onClick="rebirthFive()">Reset Multiverse: <span class="color-perk-points" id="metaversePerkPointsGainButtonDisplay"></span></button>
+					<button class="w3-button button" style="margin-bottom: 0.1em; margin-top: 0.8em; width: 100% " onClick="rebirthFive()">Go to Metaverse: <span id="metaversePerkPointsGainButtonDisplay"></span></button>
 				</div>
 			</div>
 			<div class="column">
@@ -480,6 +480,7 @@
 											<i style="color: grey">
 												<br>
 												When you go to the Metaverse, you will lose everything that you have earned before. You will start from scratch, but over time you will become far superior.
+												<span id="hypercubeCapText">Your hypercubes cap will be increased to <span class="color-hypercubes" id="hypercubeCapDisplay"></span>.</span>
 												<span id="perkPointsGainText">You will gain <span class="color-perk-points"><span id="perkPointsGainDisplay"></span> Metaverse perk points</span>.</span>
 											</i>
 											<br>
@@ -670,7 +671,8 @@
 									<div style="border-bottom: 0.1em solid rgb(24, 210, 217); padding-top: 2em;"></div>
 									<div style="padding-top:1em">
 										<div class="text-caption"><span class="color-hypercubes">Hypercubes:</span> <span id="hypercubesMetaDisplay"></span></div>
-										<div id="timeTillNextHypercubePower" style="color:gray;"></div>
+										<div id="currentHypercubesCap" style="color:red">Current hypercubes cap: <span id="currentHypercubesCapValue"></span></div>
+										<div id="timeTillNextHypercubePower1" style="color:gray;"></div>
 										<div id="timeTillNextHypercubePower2" style="color:gray;"></div>
 										<div id="timeTillNextHypercubePower3" style="color:gray;"></div>
 										<div style="color:gray;"><span>Total hypercube gain bonus:</span> <span id="hypercubesBonusMetaDisplay"></span></div>
