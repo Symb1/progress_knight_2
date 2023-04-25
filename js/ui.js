@@ -17,6 +17,7 @@ function initializeUI() {
     setStickySidebar(peekSettingFromSave("stickySidebar"))
 
     setTheme(peekSettingFromSave("theme"))
+    selectElementInGroup("EnableKeybinds", peekSettingFromSave("enableKeybinds") ? 0 : 1)
 
     for (const key in gameData.requirements) {
         const requirement = gameData.requirements[key]
@@ -179,6 +180,7 @@ function renderSideBar() {
     if (getDarkMatter() == 0)
         gameData.requirements["Dark Matter info"].completed = false
 }
+
 function renderProgressBar(task, progressFill, progressBar){
     if (task.isFinished) {
         let width = 0
@@ -231,14 +233,14 @@ function renderProgressBar(task, progressFill, progressBar){
 
 function renderJobs() {
     for (const key in gameData.taskData) {
-        let task = gameData.taskData[key]
+        const task = gameData.taskData[key]
         if (!(task instanceof Job)) continue
 
         const row = getRowByName(task.name)
 
-        row.querySelector(".level").textContent = formatLevel(task.level)
-        row.querySelector(".xpGain").textContent = task.getXpGainFormatted()
-        row.querySelector(".xpLeft").textContent = task.getXpLeftFormatted()
+        task.querySelector(".level", row).textContent = formatLevel(task.level)
+        task.querySelector(".xpGain", row).textContent = task.getXpGainFormatted()
+        task.querySelector(".xpLeft", row).textContent = task.getXpLeftFormatted()
 
         let tooltip = tooltips[key]
 
@@ -246,20 +248,22 @@ function renderJobs() {
             tooltip += getHeroicRequiredTooltip(key)
         }
 
-        row.querySelector(".tooltipText").innerHTML = tooltip
+        const tooltipElement = task.querySelector(".tooltipText", row)
+        if (tooltipElement.innerHTML != tooltip)
+            tooltipElement.innerHTML = tooltip
 
         const maxLevel = row.getElementsByClassName("maxLevel")[0]
         maxLevel.textContent = formatLevel(task.maxLevel)
         gameData.rebirthOneCount > 0 ? maxLevel.classList.remove("hidden") : maxLevel.classList.add("hidden")
 
-        const progressBar = row.querySelector(".progressBar")
+        const progressBar = task.querySelector(".progressBar", row)
         progressBar.querySelector(".name").textContent = (task.isHero ? "Great " : "") + task.name
-        const progressFill = row.querySelector(".progressFill")
-        renderProgressBar(task, progressFill, progressBar)      
+        const progressFill = task.querySelector(".progressFill", row)
+        renderProgressBar(task, progressFill, progressBar)
 
-        const valueElement = row.querySelector(".value")
-        valueElement.querySelector(".income").style.display = task instanceof Job
-        valueElement.querySelector(".effect").style.display = task instanceof Skill
+        const valueElement = task.querySelector(".value", row)
+        valueElement.querySelector(".income").style.display = true
+        valueElement.querySelector(".effect").style.display = false
 
         formatCoins(task.getIncome(), valueElement.querySelector(".income"))
     }
@@ -267,15 +271,15 @@ function renderJobs() {
 
 function renderSkills() {
     for (const key in gameData.taskData) {
-        let task = gameData.taskData[key]
+        const task = gameData.taskData[key]
 
         if (!(task instanceof Skill)) continue
 
         const row = getRowByName(task.name)
 
-        row.querySelector(".level").textContent = formatLevel(task.level)
-        row.querySelector(".xpGain").textContent = task.getXpGainFormatted()
-        row.querySelector(".xpLeft").textContent = task.getXpLeftFormatted()
+        task.querySelector(".level", row).textContent = formatLevel(task.level)
+        task.querySelector(".xpGain", row).textContent = task.getXpGainFormatted()
+        task.querySelector(".xpLeft", row).textContent = task.getXpLeftFormatted()
 
         let tooltip = tooltips[key]
 
@@ -283,20 +287,22 @@ function renderSkills() {
             tooltip += getHeroicRequiredTooltip(key)
         }
 
-        row.querySelector(".tooltipText").innerHTML = tooltip
+        const tooltipElement = task.querySelector(".tooltipText", row)
+        if (tooltipElement.innerHTML != tooltip)
+            tooltipElement.innerHTML = tooltip
 
-        const maxLevel = row.getElementsByClassName("maxLevel")[0]
+        const maxLevel = task.querySelector(".maxLevel", row)
         maxLevel.textContent = formatLevel(task.maxLevel)
         gameData.rebirthOneCount > 0 ? maxLevel.classList.remove("hidden") : maxLevel.classList.add("hidden")
 
-        const progressBar = row.querySelector(".progressBar")
+        const progressBar = task.querySelector(".progressBar", row)
         progressBar.querySelector(".name").textContent = (task.isHero ? "Great " : "") + task.name
-        const progressFill = row.querySelector(".progressFill")
+        const progressFill = task.querySelector(".progressFill", row)
         renderProgressBar(task, progressFill, progressBar)
 
-        const valueElement = row.querySelector(".value")
-        valueElement.querySelector(".income").style.display = task instanceof Job
-        valueElement.querySelector(".effect").style.display = task instanceof Skill
+        const valueElement = task.querySelector(".value", row)
+        valueElement.querySelector(".income").style.display = false
+        valueElement.querySelector(".effect").style.display = true
 
         valueElement.querySelector(".effect").textContent = task.getEffectDescription()
     }
@@ -1303,6 +1309,10 @@ window.addEventListener('keydown', function (e) {
         }
         if (e.key == "ArrowRight") changeTab(1)
         if (e.key == "ArrowLeft") changeTab(-1)
+
+        // The "dangerous" keybinds can be disabled.
+        if (!gameData.settings.enableKeybinds)
+            return
 
         if (e.key == "q") {
             if (gameData.requirements["Rebirth button 1"].isCompleted())
