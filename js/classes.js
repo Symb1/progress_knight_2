@@ -11,6 +11,8 @@ class Task {
         this.unlocked = false
 
         this.xpMultipliers = []
+
+        this.elementsCache = {}
     }
 
     toJSON() {
@@ -136,6 +138,18 @@ class Task {
             }
         }
     }
+
+    querySelector(selector, row) {
+        const cachedElement = this.elementsCache[selector]
+
+        if (cachedElement !== undefined)
+            return cachedElement
+
+        const element = row.querySelector(selector)
+        this.elementsCache[selector] = element
+        return element
+    }
+
 }
 
 class Milestone {

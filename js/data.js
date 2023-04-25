@@ -56,7 +56,8 @@
         numberNotation: 1,
         layout: 1,
         fontSize: 3,
-        selectedTab: 'jobs'
+        selectedTab: 'jobs',
+        enableKeybinds: false,
     },
     stats: {
         startDate: new Date(),
@@ -131,7 +132,7 @@ const heroIncomeMult = 2.5e18
 
 const permanentUnlocks = ["Quick task display", "Rebirth tab", "Dark Matter", "Dark Matter Skills", "Dark Matter Skills2", "Metaverse", "Metaverse Perks", "Metaverse Perks Button"]
 const metaverseUnlocks = ["Reduce Boost Cooldown", "Increase Boost Duration", "Increase Hypercube Gain", "Gain evil at new transcension",
-    "Essence gain multiplier", "Challenges are not reset", "Dark Mater gain multiplier"]
+    "Essence gain multiplier", "Challenges are not reset", "Dark Matter gain multiplier"]
 
 const jobBaseData = {
     "Beggar": { name: "Beggar", maxXp: 50, income: 5, heroxp: 36 },
@@ -534,7 +535,7 @@ const requirementsBaseData = {
     "Gain evil at new transcension": new HypercubeRequirement(["#EvilAltar"], [{ requirement: 50000000 }]),
     "Essence gain multiplier": new HypercubeRequirement(["#EssenceAltar"], [{ requirement: 500000000 }]),
     "Challenges are not reset": new HypercubeRequirement(["#ChallengeAltar"], [{ requirement: 1e15 }]),
-    "Dark Mater gain multiplier": new HypercubeRequirement(["#DarkMaterAltar"], [{ requirement: 1e17 }]),
+    "Dark Matter gain multiplier": new HypercubeRequirement(["#DarkMaterAltar"], [{ requirement: 1e17 }]),
 
     // Metaverse Perks
     "Metaverse Perks": new PerkPointRequirement(["#metaversePage2"], [{ requirement: 1 }]),

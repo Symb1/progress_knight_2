@@ -683,6 +683,11 @@ function setTheme(index, reload=false) {
     }
 }
 
+function setEnableKeybinds(enableKeybinds) {
+    gameData.settings.enableKeybinds = enableKeybinds
+    selectElementInGroup("EnableKeybinds", enableKeybinds ? 0 : 1)
+}
+
 function rebirthOne() {
     gameData.rebirthOneCount += 1
     if (gameData.stats.fastest1 == null || gameData.rebirthOneTime < gameData.stats.fastest1)
@@ -1350,7 +1355,7 @@ function copyTextToClipboard(text) {
 
 function outExportButton() {
     const tooltip = document.getElementById("exportTooltip");
-    tooltip.innerHTML = "";
+    tooltip.textContent = "";
 }
 
 function onFontButtonHover() {
@@ -1384,10 +1389,7 @@ function isNextDarkMagicSkillInReach() {
 
 
 
-// Init
-
-// TODO(Thomas) The order sucks. Refactor this in the future.
-// A good start would be to replace the requirements dom elements with query selectors and fetch them later
+// Loads the game save, does the initial render and starts the game update and render loop.
 
 createGameObjects(gameData.taskData, jobBaseData)
 createGameObjects(gameData.taskData, skillBaseData)
