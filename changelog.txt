@@ -1,3 +1,8 @@
+version 2.3.1 / 25.04.2023
+* Fix a few small bugs
+* Add a setting to enable dangerous keybinds, which is disabled by default
+* Improve the performance
+
 version 2.3 / 24.04.2023
 * Added Metaverse
 * New Items, Jobs, Milestones
