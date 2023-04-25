@@ -1,6 +1,6 @@
 version 2.3.1 / 25.04.2023
 * Fix a few small bugs
-* Add an setting to disable dangerous keybinds, which is disabled by default
+* Add a setting to enable dangerous keybinds, which is disabled by default
 * Improve the performance
 
 version 2.3 / 24.04.2023
