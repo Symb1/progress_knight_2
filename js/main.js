@@ -6,19 +6,6 @@ onerror = () => {
     }, 30 * 1000)
 }
 
-function resettask(task) {
-    
-    gameData.taskData[task].level = 0
-    gameData.taskData[task].maxLevel = 0
-    gameData.taskData[task].xp = 0
-    gameData.taskData[task].xpBigInt = BigInt(0)
-    gameData.taskData[task].isHero = false
-    gameData.taskData[task].isFinished = false
-    gameData.taskData[task].unlocked = false
-    gameData.requirements[task].completed = false
-
-}
-
 function addMultipliers() {
     for (const taskName in gameData.taskData) {
         const task = gameData.taskData[taskName]
