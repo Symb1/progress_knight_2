@@ -323,6 +323,14 @@ function applySpeed(value) {
     return value * getGameSpeed() / updateSpeed
 }
 
+function applyUnpausedSpeed(value) {
+    if (value == 0)
+        return 0
+    if (value == Infinity)
+        return Infinity
+    return value * getUnpausedGameSpeed() / updateSpeed
+}
+
 function applySpeedOnBigInt(value) {
     if (value == 0n)
         return 0n

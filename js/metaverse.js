@@ -13,7 +13,7 @@ function getNextPowerOfNumber(number, add_power = 0) {
 }
 
 function getTimeTillNextHypercubePower(add_power = 0) {
-    return (getNextPowerOfNumber(gameData.hypercubes, add_power) - gameData.hypercubes) / (applySpeed(getHypercubeGeneration()) * updateSpeed)
+    return (getNextPowerOfNumber(gameData.hypercubes, add_power) - gameData.hypercubes) / (applyUnpausedSpeed(getHypercubeGeneration()) * updateSpeed)
 }
 
 function getBoostTimeSeconds() {
