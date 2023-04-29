@@ -631,16 +631,19 @@ function increaseDays() {
 function increaseRealtime() {
     if (!canSimulate())
         return;
-    gameData.realtime += 1.0 / updateSpeed
-    gameData.realtimeRun += 1.0 / updateSpeed
-    gameData.rebirthOneTime += 1.0 / updateSpeed
-    gameData.rebirthTwoTime += 1.0 / updateSpeed
-    gameData.rebirthThreeTime += 1.0 / updateSpeed
-    gameData.rebirthFourTime += 1.0 / updateSpeed
-    gameData.rebirthFiveTime += 1.0 / updateSpeed
+
+    const realDiff = 1.0 / updateSpeed
+
+    gameData.realtime += realDiff
+    gameData.realtimeRun += realDiff
+    gameData.rebirthOneTime += realDiff
+    gameData.rebirthTwoTime += realDiff
+    gameData.rebirthThreeTime += realDiff
+    gameData.rebirthFourTime += realDiff
+    gameData.rebirthFiveTime += realDiff
 
     if (gameData.boost_active) {
-        gameData.boost_timer -= 1.0 / updateSpeed
+        gameData.boost_timer -= realDiff
         if (gameData.boost_timer < 0) {
             gameData.boost_timer = 0
             gameData.boost_active = false
@@ -648,7 +651,7 @@ function increaseRealtime() {
         }
     }
     else {
-        gameData.boost_cooldown -= 1.0 / updateSpeed
+        gameData.boost_cooldown -= realDiff
 
         if (gameData.boost_cooldown < 0) 
             gameData.boost_cooldown = 0
