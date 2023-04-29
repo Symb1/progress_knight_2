@@ -380,6 +380,8 @@ function renderChallenges() {
     document.getElementById("challengeEssenceGainBuff").textContent = format(getChallengeBonus("dance_with_the_devil"), 2)
     document.getElementById("challengeEvilGainBuff").textContent = format(getChallengeBonus("legends_never_die"), 2)
     document.getElementById("challengeDarkMatterGainBuff").textContent = format(getChallengeBonus("the_darkest_time"), 2)
+
+    document.getElementById("challenge5MetaverseLifespanDebuff").hidden = gameData.rebirthFiveCount == 0
 }
 
 function renderCurrentChallengeReward(blockclass) {
