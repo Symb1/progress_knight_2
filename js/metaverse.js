@@ -270,7 +270,7 @@ function getUnspentPerksDarkmatterGainBuff() {
 }
 
 function getHypercubeCap(next = 0) {
-    if (getTotalPerkPoints() >= 1)
+    if (getTotalPerkPoints() >= 1 || (next > 0 && getMetaversePerkPointsGain() > 0))
         return Infinity
 
     return 1e7 * Math.pow(10, (gameData.rebirthFiveCount + next) * 3)
