@@ -136,7 +136,7 @@ function canBuyChallengeAltar() {
 
 function buyChallengeAltar() {
     if (canBuyChallengeAltar()) {
-        gameData.hypercubes -= essenceMultCost()
+        gameData.hypercubes -= challengeAltarCost()
         gameData.metaverse.challenge_altar = 1
     }
 }
