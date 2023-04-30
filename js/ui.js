@@ -483,7 +483,7 @@ function renderMetaverse() {
     document.getElementById("boostDurationCost").textContent = format(boostDurationCost())
     document.getElementById("boostDurationBuyButton").disabled = !canBuyBoostDuration()
 
-    document.getElementById("hypercubeGain").textContent = format(getHypercubeGeneration() * getGameSpeed(),2)
+    document.getElementById("hypercubeGain").textContent = format(applyUnpausedSpeed(getHypercubeGeneration()),2)
     document.getElementById("hypercubeGainCost").textContent = format(hypercubeGainCost())
     document.getElementById("hypercubeGainBuyButton").disabled = !canBuyHypercubeGain()
 
