@@ -46,7 +46,7 @@ const milestoneBaseData = {
     "A New Hope": { name: "A New Hope", expense: 1e95, tier: 39, description: "Faint Hope always at maximum" },
     "Time is a flat circle": { name: "Time is a flat circle", expense: 1e100, tier: 40, description: "Multiply Time Warping by 1000x, Multiply all xp gain by 1e50x" },
     "The End is near": { name: "The End is near", expense: 1e200, tier: 50, description: "Unspent Multiverse Perk Points buffs Dark Matter" },
-    "The End": { name: "The End", expense: 1e300, tier: 99, description: "The End" },
+    "The End": { name: "The End", expense: 1e300, tier: 99, description: "Congratulations! You have beaten the game!" },
 }
 
 const milestoneCategories = {

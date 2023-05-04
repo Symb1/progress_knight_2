@@ -500,3 +500,14 @@ button:focus {
 .rowtitle {
     padding: 0.3em 1em 0em 1em !important;
 }
+
+.congrats {
+    margin-top: 1em;
+    padding: 1em 1em 1em 1em !important;
+    font-size: 320%;
+    color: #d30202;
+    text-align: center;
+    border: 0.01em solid red;
+    border-radius: 0.5em;
+    animation: currency-rainbow 40s infinite;
+}

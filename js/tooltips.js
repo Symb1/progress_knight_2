@@ -213,5 +213,5 @@ const tooltips = {
     "A New Hope": "No more of this Faint Hope nonsense!!!",
     "Time is a flat circle": "This is a world where nothing is solved. Someone once told me, time is a flat circle. Everything we’ve ever done or will do, we’re gonna do over and over and over again.",
     "The End is near": "We don't try to live forever",
-    "The End": "The End",
+    "The End": "There is always an end",
 }
