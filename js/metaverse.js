@@ -142,21 +142,21 @@ function buyChallengeAltar() {
 }
 
 
-function darkMaterMultGain() {
+function darkMatterMultGain() {
     return (gameData.metaverse.dark_mater_gain_modifer == 0) ? 1 : Math.pow(10, gameData.metaverse.dark_mater_gain_modifer)
 }
 
-function darkMaterMultCost() {
+function darkMatterMultCost() {
     return 1e19 * Math.pow(10, gameData.metaverse.dark_mater_gain_modifer)
 }
 
-function canBuyDarkMaterMult() {
-    return gameData.hypercubes >= darkMaterMultCost()
+function canBuyDarkMatterMult() {
+    return gameData.hypercubes >= darkMatterMultCost()
 }
 
 function buyDarkMaterMult() {
-    if (canBuyDarkMaterMult()) {
-        gameData.hypercubes -= darkMaterMultCost()
+    if (canBuyDarkMatterMult()) {
+        gameData.hypercubes -= darkMatterMultCost()
         gameData.metaverse.dark_mater_gain_modifer += 1
     }
 }

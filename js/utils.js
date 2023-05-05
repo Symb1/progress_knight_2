@@ -242,6 +242,11 @@ function getFormattedChallengeTaskGoal(taskName, level) {
 }
 
 function getFormattedTitle(parameter) {
-    const Title = parameter.replaceAll("_", " ")
-    return Title.charAt(0).toUpperCase() + Title.slice(1)
+    let title = parameter.replaceAll("_", " ")
+    // Ducttape to fix the many spelling mistakes caused by the metaverse update.
+    // I can't fix it at the root problem, because that will ruin people their saves..
+    title = title.replace("mater", "matter")
+    title = title.charAt(0).toUpperCase() + title.slice(1)
+
+    return title
 }

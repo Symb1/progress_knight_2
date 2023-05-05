@@ -428,7 +428,7 @@ function renderMilestones() {
     }
 }
 
-function renderDarkMaterShopButton(elemName, condition) {
+function renderDarkMatterShopButton(elemName, condition) {
     document.getElementById(elemName).disabled = !condition    
 }
 
@@ -503,9 +503,9 @@ function renderMetaverse() {
     else
         document.getElementById("challengeAltarButton").classList.add("hidden")
 
-    document.getElementById("darkMaterMultGain").textContent = format(darkMaterMultGain(), 2)
-    document.getElementById("darkMaterMultCost").textContent = format(darkMaterMultCost())
-    document.getElementById("darkMaterMultButton").disabled = !canBuyDarkMaterMult()
+    document.getElementById("darkMatterMultGain").textContent = format(darkMatterMultGain(), 2)
+    document.getElementById("darkMatterMultCost").textContent = format(darkMatterMultCost())
+    document.getElementById("darkMaterMultButton").disabled = !canBuyDarkMatterMult()
 
     // Perks
     renderPerks()
@@ -533,10 +533,7 @@ function renderPerks() {
     let hide_next = false
     let index = 0
 
-    //
-
-    sortable = getSortedPerks()
-    for (const perkName of sortable) {
+    for (const perkName of getSortedPerks()) {
         const key = perkName[0]
         const button = document.getElementById("id" + key)
 
@@ -599,12 +596,12 @@ function renderDarkMatter() {
 
     // enable/disable buttons
 
-    renderDarkMaterShopButton("darkOrbGeneratorBuyButton", canBuyDarkOrbGenerator())
-    renderDarkMaterShopButton("aMiracleBuyButton", canBuyAMiracle())
-    renderDarkMaterShopButton("aDealWithTheChairmanBuyButton", canBuyADealWithTheChairman())
-    renderDarkMaterShopButton("aGiftFromGodBuyButton", canBuyAGiftFromGod())
-    renderDarkMaterShopButton("gottaBeFastBuyButton", canBuyGottaBeFast())
-    renderDarkMaterShopButton("lifeCoachBuyButton", canBuyLifeCoach())
+    renderDarkMatterShopButton("darkOrbGeneratorBuyButton", canBuyDarkOrbGenerator())
+    renderDarkMatterShopButton("aMiracleBuyButton", canBuyAMiracle())
+    renderDarkMatterShopButton("aDealWithTheChairmanBuyButton", canBuyADealWithTheChairman())
+    renderDarkMatterShopButton("aGiftFromGodBuyButton", canBuyAGiftFromGod())
+    renderDarkMatterShopButton("gottaBeFastBuyButton", canBuyGottaBeFast())
+    renderDarkMatterShopButton("lifeCoachBuyButton", canBuyLifeCoach())
 
     // Dark Matter Skill tree
     renderSkillTreeButton(document.getElementById("speedIsLife1"), gameData.dark_matter_shop.speed_is_life != 0, [1, 3].includes(gameData.dark_matter_shop.speed_is_life), gameData.dark_matter >= 100)
@@ -1239,10 +1236,9 @@ function getSortedPerks() {
 }
 
 function createPerks(perkLayoutName) {
-    sortable = getSortedPerks()
     const buttonTemplate = document.getElementsByClassName("perkItem")
     const perksLayout = document.getElementById(perkLayoutName)
-    for (const perkName of sortable) {
+    for (const perkName of getSortedPerks()) {
         const perk = createPerk(buttonTemplate, perkName[0])
         perksLayout.appendChild(perk)
     }
