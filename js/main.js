@@ -584,8 +584,8 @@ function applyExpenses() {
 function getExpense() {
     var expense = 0
     expense += gameData.currentProperty.getExpense()
-    for (misc of gameData.currentMisc) {
-        expense += misc.getExpense()
+    for (item of gameData.currentMisc) {
+        expense += item.getExpense()
     }
     return expense
 }
@@ -977,6 +977,40 @@ function autoPromote() {
     if (requirement.isCompleted()) gameData.currentJob = nextEntity
 }
 
+function autoBuy(){
+    if (!autoBuyElement.checked) return
+    var nextProperty = getNextEntity(gameData.itemData, itemCategories, gameData.currentProperty.name)
+    var miscLength = gameData.currentMisc.length
+    var nextMisc = itemCategories.Misc[miscLength]
+    
+    if (nextProperty == null && nextMisc == null)
+        return
+    else if (nextProperty == null)
+        checkMisc(nextMisc)
+    else if (nextMisc == null || nextProperty.getExpense() < itemBaseData[nextMisc].expense)
+        checkProperty(nextProperty)
+    else
+        checkMisc(nextMisc)
+
+    
+    //console.log(nextProperty)
+    //console.log(nextMisc)
+
+	//gameData.currentJob
+
+}
+
+function checkProperty(nextProperty){
+    if (nextProperty.getExpense() < getIncome() - getExpense())
+        gameData.currentProperty = nextProperty
+}
+
+function checkMisc(nextMisc){
+    if (itemBaseData[nextMisc].expense < getIncome() - getExpense()){
+
+    }
+}
+
 function checkSkillSkipped(skill) {
     var row = document.getElementById("row " + skill.name)
     var isSkillSkipped = row.getElementsByClassName("checkbox")[0].checked
@@ -1318,6 +1352,7 @@ function updateUI() {
 function update() {
     increaseDays()
     autoPromote()
+    autoBuy()
     autoLearn()
     doCurrentTask(gameData.currentJob)
     doCurrentTask(gameData.currentSkill)
