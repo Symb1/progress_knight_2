@@ -29,6 +29,7 @@ var skillWithLowestMaxXp = null
 
 const autoPromoteElement = document.getElementById("autoPromote")
 const autoLearnElement = document.getElementById("autoLearn")
+const autoBuyElement = document.getElementById("autoBuy")
 
 const updateSpeed = 20
 
@@ -1392,6 +1393,7 @@ function loadLoadout(num){
 	}
 	 document.getElementById("autoLearn").checked = false
 	 document.getElementById("autoPromote").checked= false
+	 document.getElementById("autoBuy").checked= false
 }
 
 window.addEventListener('keydown', function(e) {
