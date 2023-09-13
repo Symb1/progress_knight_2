@@ -98,6 +98,12 @@ button:focus {
     opacity: 0.8;
 }
 
+.selections{
+display: block;
+height: 100px;
+vertical-align:top;
+}
+
 .sidebar-element {
     margin-bottom: 16px;
 }
