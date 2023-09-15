@@ -24,6 +24,7 @@ var gameData = {
 }
 
 var tempData = {}
+var bonus = null
 
 var skillWithLowestMaxXp = null
 
@@ -447,13 +448,18 @@ function addMultipliers() {
 
     for (itemName in gameData.itemData) {
         var item = gameData.itemData[itemName]
-        item.expenseMultipliers = []
-        item.expenseMultipliers.push(getBindedTaskEffect("Bargaining"))
-        item.expenseMultipliers.push(getBindedTaskEffect("Intimidation"))
-		item.expenseMultipliers.push(getBindedTaskEffect("Brainwashing"))
-		item.expenseMultipliers.push(getBindedTaskEffect("Abyss Manipulation"))
-		item.expenseMultipliers.push(getBindedTaskEffect("Galactic Command"))
+        item.expenseMultipliers = addExpenseMultipliers()
     }
+}
+
+function addExpenseMultipliers(){
+    var expenseMultipliers = []
+    expenseMultipliers.push(getBindedTaskEffect("Bargaining"))
+    expenseMultipliers.push(getBindedTaskEffect("Intimidation"))
+	expenseMultipliers.push(getBindedTaskEffect("Brainwashing"))
+	expenseMultipliers.push(getBindedTaskEffect("Abyss Manipulation"))
+	expenseMultipliers.push(getBindedTaskEffect("Galactic Command"))
+    return expenseMultipliers
 }
 
 function setCustomEffects() {
@@ -969,6 +975,15 @@ function getNextEntity(data, categoryType, entityName) {
     return nextEntity
 }
 
+function getPreviousEntity(data, categoryType, entityName) {
+    var category = getCategoryFromEntityName(categoryType, entityName)
+    var previousIndex = category.indexOf(entityName) - 1
+    if (previousIndex < 0) return null
+    var previousEntityName = category[previousIndex]
+    var previousEntity = data[previousEntityName]
+    return previousEntity
+}
+
 function autoPromote() {
     if (!autoPromoteElement.checked) return
     var nextEntity = getNextEntity(gameData.taskData, jobCategories, gameData.currentJob.name)
@@ -980,24 +995,52 @@ function autoPromote() {
 function autoBuy(){
     if (!autoBuyElement.checked) return
     var nextProperty = getNextEntity(gameData.itemData, itemCategories, gameData.currentProperty.name)
+    var previousProperty = getPreviousEntity(gameData.itemData, itemCategories, gameData.currentProperty.name)
     var miscLength = gameData.currentMisc.length
-    var nextMisc = itemCategories.Misc[miscLength]
-    
-    if (nextProperty == null && nextMisc == null)
+    var nextMiscName = itemCategories.Misc[miscLength]
+    var nextMisc = itemBaseData[nextMiscName]
+    var miscCost = applyMultipliers(nextMisc.expense, addExpenseMultipliers())
+    var propertyChange = nextProperty.getExpense() - gameData.currentProperty.getExpense()
+    if (nextProperty == null && nextMisc == null){
         return
-    else if (nextProperty == null)
-        checkMisc(nextMisc)
-    else if (nextMisc == null || nextProperty.getExpense() < itemBaseData[nextMisc].expense)
+    }
+    else if (nextProperty == null){
+        checkMisc(nextMisc, miscCost)
+    }
+    else if (nextMisc == null || propertyChange < miscCost){
         checkProperty(nextProperty)
+    }
+    else if (propertyChange >= miscCost){
+        checkMisc(nextMisc, miscCost)
+    }
     else
-        checkMisc(nextMisc)
+        getBonus(nextProperty, previousProperty, propertyChange, nextMisc, miscCost)
+}
 
-    
-    //console.log(nextProperty)
-    //console.log(nextMisc)
-
-	//gameData.currentJob
-
+function getBonus(nextProperty, previousProperty, propertyChange, nextMisc, miscCost){
+    if (bonus == null){
+        console.log("work")
+        if (gameData.coins > propertyChange*1000 ){
+            gameData.currentProperty = nextProperty
+            bonus = "Property"
+            console.log("Bonus: ", bonus)
+        }
+        else if (gameData.coins > miscCost * 1000){
+            setMisc(nextMisc.name)
+            bonus = "Misc"
+            console.log("Bonus: ", bonus)
+        }
+    }
+    else if (gameData.coins < getNet() * 10){
+        if (bonus == "Property"){
+            gameData.currentProperty = previousProperty
+        }
+        else {
+            gameData.currentMisc.pop()
+        }
+        console.log("Over")
+        bonus = null
+    }
 }
 
 function checkProperty(nextProperty){
@@ -1005,9 +1048,9 @@ function checkProperty(nextProperty){
         gameData.currentProperty = nextProperty
 }
 
-function checkMisc(nextMisc){
-    if (itemBaseData[nextMisc].expense < getIncome() - getExpense()){
-
+function checkMisc(nextMisc, miscCost){
+    if (miscCost < getIncome() - getExpense()){
+        setMisc(nextMisc.name)
     }
 }
 
