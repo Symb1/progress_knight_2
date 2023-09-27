@@ -1027,7 +1027,7 @@ function autoBuy(){
     else {
         checkMisc(nextMisc, miscCost)
     }
-
+    
     if (bonusRun >= 5){
         getBonus(nextProperty, previousProperty, propertyChange, nextMisc, miscCost)
     }
@@ -1064,9 +1064,10 @@ function getBonus(nextProperty, previousProperty, propertyChange, nextMisc, misc
 }
 
 function checkProperty(nextProperty){
-    if (nextProperty.getExpense() < getIncome() - getExpense())
+    if (nextProperty.getExpense() < getIncome() - getExpense()){
         gameData.currentProperty = nextProperty
         bonusRun = 0
+    }
 }
 
 function checkMisc(nextMisc, miscCost){
