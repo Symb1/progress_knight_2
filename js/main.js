@@ -25,6 +25,7 @@ var gameData = {
 
 var tempData = {}
 var bonus = null
+var bonusRun = 0
 
 var skillWithLowestMaxXp = null
 
@@ -882,15 +883,15 @@ function updateText() {
     formatCoins(getIncome(), document.getElementById("incomeDisplay"))
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
-    document.getElementById("happinessDisplay").textContent = getHappiness().toFixed(1)
+    document.getElementById("happinessDisplay").textContent = getHappiness().toLocaleString('en-US')
 
-    document.getElementById("evilDisplay").textContent = gameData.evil.toFixed(1)
-    document.getElementById("evilGainDisplay").textContent = getEvilGain().toFixed(1)
+    document.getElementById("evilDisplay").textContent = gameData.evil.toLocaleString('en-US')
+    document.getElementById("evilGainDisplay").textContent = getEvilGain().toLocaleString('en-US')
 	
-	document.getElementById("essenceDisplay").textContent = gameData.essence.toFixed(1)
-	document.getElementById("essenceGainDisplay").textContent = getEssenceGain().toFixed(1)
+	document.getElementById("essenceDisplay").textContent = gameData.essence.toLocaleString('en-US')
+	document.getElementById("essenceGainDisplay").textContent = getEssenceGain().toLocaleString('en-US')
 
-    document.getElementById("timeWarpingDisplay").textContent = "x" + (gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toFixed(1)
+    document.getElementById("timeWarpingDisplay").textContent = "x" + (gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toLocaleString('en-US')
     document.getElementById("timeWarpingButton").textContent = gameData.timeWarpingEnabled ? "Disable warp" : "Enable warp"
 	}
 
@@ -999,8 +1000,21 @@ function autoBuy(){
     var miscLength = gameData.currentMisc.length
     var nextMiscName = itemCategories.Misc[miscLength]
     var nextMisc = itemBaseData[nextMiscName]
-    var miscCost = applyMultipliers(nextMisc.expense, addExpenseMultipliers())
-    var propertyChange = nextProperty.getExpense() - gameData.currentProperty.getExpense()
+    var miscCost, propertyChange
+
+    if (nextMisc != null){
+        miscCost = applyMultipliers(nextMisc.expense, addExpenseMultipliers())
+    }
+    else{
+        miscCost = 0
+    }
+    if (nextProperty != null && gameData.currentProperty.getExpense() != null){
+        propertyChange = nextProperty.getExpense() - gameData.currentProperty.getExpense()
+    }
+    else{
+        propertyChange = 0
+    }
+    
     if (nextProperty == null && nextMisc == null){
         return
     }
@@ -1010,28 +1024,33 @@ function autoBuy(){
     else if (nextMisc == null || propertyChange < miscCost){
         checkProperty(nextProperty)
     }
-    else if (propertyChange >= miscCost){
+    else {
         checkMisc(nextMisc, miscCost)
     }
-    else
+
+    if (bonusRun >= 5){
         getBonus(nextProperty, previousProperty, propertyChange, nextMisc, miscCost)
+    }
+    else{
+        bonusRun = bonusRun + 1
+    }
 }
 
 function getBonus(nextProperty, previousProperty, propertyChange, nextMisc, miscCost){
     if (bonus == null){
         console.log("work")
-        if (gameData.coins > propertyChange*1000 ){
+        if (gameData.coins > propertyChange*10000  && propertyChange != 0){
             gameData.currentProperty = nextProperty
             bonus = "Property"
-            console.log("Bonus: ", bonus)
+            console.log("Bonus Property")
         }
-        else if (gameData.coins > miscCost * 1000){
+        else if (gameData.coins > miscCost * 10000 && miscCost != 0){
             setMisc(nextMisc.name)
             bonus = "Misc"
-            console.log("Bonus: ", bonus)
+            console.log("Bonus Misc")
         }
     }
-    else if (gameData.coins < getNet() * 10){
+    else if (gameData.coins < getIncome() * 1000){
         if (bonus == "Property"){
             gameData.currentProperty = previousProperty
         }
@@ -1040,17 +1059,20 @@ function getBonus(nextProperty, previousProperty, propertyChange, nextMisc, misc
         }
         console.log("Over")
         bonus = null
+        bonusRun = 0
     }
 }
 
 function checkProperty(nextProperty){
     if (nextProperty.getExpense() < getIncome() - getExpense())
         gameData.currentProperty = nextProperty
+        bonusRun = 0
 }
 
 function checkMisc(nextMisc, miscCost){
     if (miscCost < getIncome() - getExpense()){
         setMisc(nextMisc.name)
+        bonusRun = 0
     }
 }
 
@@ -1150,7 +1172,7 @@ function format(number,decimals= 1) {
     // scale the number
     var scaled = number / scale;
     // format number and add suffix
-    return scaled.toFixed(decimals) + suffix;
+    return scaled.toLocaleString('en-US') + suffix;
 }
 
 function formatCoins(coins, element) {
