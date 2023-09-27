@@ -92,7 +92,7 @@ const jobBaseData = {
 const skillBaseData = {
     "Concentration": {name: "Concentration", maxXp: 100, effect: 0.01, description: "Ability XP"},
     "Productivity": {name: "Productivity", maxXp: 100, effect: 0.01, description: "Class XP"},
-    "Bargaining": {name: "Bargaining", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
+    "Bargaining": {name: "Bargaining", maxXp: 100, effect: -0.01, description: "Reduce Expenses"},
     "Meditation": {name: "Meditation", maxXp: 100, effect: 0.01, description: "Happiness"},
 
     "Strength": {name: "Strength", maxXp: 100, effect: 0.01, description: "Military Pay"},
@@ -105,26 +105,26 @@ const skillBaseData = {
     "Astral Body": {name: "Astral Body", maxXp: 100, effect: 0.0035, description: "Longer lifespan"},
 	"Temporal Dimension": {name: "Temporal Dimension", maxXp: 100, effect: 0.025, description: "Gamespeed"},
 	"All Seeing Eye": {name: "All Seeing Eye", maxXp: 100, effect: 0.0027, description: "T.A.A Pay"},
-	"Brainwashing": {name: "Brainwashing", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
+	"Brainwashing": {name: "Brainwashing", maxXp: 100, effect: -0.01, description: "Reduce Expenses"},
 	
 	"Absolute Wish": {name: "Absolute Wish", maxXp: 100, effect: 0.005, description: "Evil Gain"},
     "Void Amplification": {name: "Void Amplification", maxXp: 100, effect: 0.01, description: "The Void XP"},
-    "Mind Seize": {name: "Mind Seize", maxXp: 100, effect: 0.0006, description: "Reduced Happiness"},
+    "Mind Seize": {name: "Mind Seize", maxXp: 100, effect: 0.0006, description: "Reduce Happiness"},
 	"Ceaseless Abyss": {name: "Ceaseless Abyss", maxXp: 100, effect: 0.000585, description: "Longer Lifespan"},
 	"Void Symbiosis": {name: "Void Symbiosis", maxXp: 100, effect: 0.0015, description: "Ability XP"},
     "Void Embodiment": {name: "Void Embodiment", maxXp: 100, effect: 0.0025, description: "Evil Gain"},
-	"Abyss Manipulation": {name: "Abyss Manipulation", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
+	"Abyss Manipulation": {name: "Abyss Manipulation", maxXp: 100, effect: -0.01, description: "Reduce Expenses"},
 	
 	
 	"Cosmic Longevity": {name: "Cosmic Longevity", maxXp: 100, effect: 0.0015, description: "Longer Lifespan"},
     "Cosmic Recollection": {name: "Cosmic Recollection", maxXp: 100, effect: 0.00065, description: "Max Lvl Multiplier"},
 	"Essence Collector": {name: "Essence Collector", maxXp: 100, effect: 0.01, description: "Essence Gain"},
-	"Galactic Command": {name: "Galactic Command", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
+	"Galactic Command": {name: "Galactic Command", maxXp: 100, effect: -0.01, description: "Reduce Expenses"},
 	
 	
     "Dark Influence": {name: "Dark Influence", maxXp: 100, effect: 0.01, description: "All XP"},
     "Evil Control": {name: "Evil Control", maxXp: 100, effect: 0.01, description: "Evil Gain"},
-    "Intimidation": {name: "Intimidation", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
+    "Intimidation": {name: "Intimidation", maxXp: 100, effect: -0.01, description: "Reduce Expenses"},
     "Demon Training": {name: "Demon Training", maxXp: 100, effect: 0.01, description: "All XP"},
     "Blood Meditation": {name: "Blood Meditation", maxXp: 100, effect: 0.01, description: "Evil Gain"},
     "Demon's Wealth": {name: "Demon's Wealth", maxXp: 100, effect: 0.002, description: "Class Pay"},
@@ -883,15 +883,15 @@ function updateText() {
     formatCoins(getIncome(), document.getElementById("incomeDisplay"))
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
-    document.getElementById("happinessDisplay").textContent = getHappiness().toLocaleString('en-US')
+    document.getElementById("happinessDisplay").textContent = getHappiness().toLocaleString("en-US", {maximumFractionDigits: 2});
 
-    document.getElementById("evilDisplay").textContent = gameData.evil.toLocaleString('en-US')
-    document.getElementById("evilGainDisplay").textContent = getEvilGain().toLocaleString('en-US')
+    document.getElementById("evilDisplay").textContent = gameData.evil.toLocaleString("en-US", {maximumFractionDigits: 2});
+    document.getElementById("evilGainDisplay").textContent = getEvilGain().toLocaleString("en-US", {maximumFractionDigits: 2});
 	
-	document.getElementById("essenceDisplay").textContent = gameData.essence.toLocaleString('en-US')
-	document.getElementById("essenceGainDisplay").textContent = getEssenceGain().toLocaleString('en-US')
+	document.getElementById("essenceDisplay").textContent = gameData.essence.toLocaleString("en-US", {maximumFractionDigits: 2});
+	document.getElementById("essenceGainDisplay").textContent = getEssenceGain().toLocaleString("en-US", {maximumFractionDigits: 2});
 
-    document.getElementById("timeWarpingDisplay").textContent = "x" + (gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toLocaleString('en-US')
+    document.getElementById("timeWarpingDisplay").textContent = "x" + (gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toLocaleString("en-US", {maximumFractionDigits: 2});
     document.getElementById("timeWarpingButton").textContent = gameData.timeWarpingEnabled ? "Disable warp" : "Enable warp"
 	}
 
@@ -1038,6 +1038,7 @@ function autoBuy(){
 
 function getBonus(nextProperty, previousProperty, propertyChange, nextMisc, miscCost){
     if (bonus == null){
+        console.log("work")
         if (gameData.coins > propertyChange*10000  && propertyChange != 0){
             gameData.currentProperty = nextProperty
             bonus = "Property"
@@ -1172,7 +1173,7 @@ function format(number,decimals= 1) {
     // scale the number
     var scaled = number / scale;
     // format number and add suffix
-    return scaled.toLocaleString('en-US') + suffix;
+    return scaled.toLocaleString("en-US", {maximumFractionDigits: 2}) + suffix;
 }
 
 function formatCoins(coins, element) {
