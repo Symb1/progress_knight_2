@@ -1038,7 +1038,6 @@ function autoBuy(){
 
 function getBonus(nextProperty, previousProperty, propertyChange, nextMisc, miscCost){
     if (bonus == null){
-        console.log("work")
         if (gameData.coins > propertyChange*10000  && propertyChange != 0){
             gameData.currentProperty = nextProperty
             bonus = "Property"
