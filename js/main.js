@@ -1529,7 +1529,7 @@ window.addEventListener('keydown', function(e) {
     let span = document.createElement('span');
     let div = document.createElement('div');
     div.classList.add('inline');
-    div.textContent = 'Auto-pause(Void)';
+    div.textContent = 'Auto-pause';
     span.append(div);
     let checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
@@ -1542,6 +1542,9 @@ window.addEventListener('keydown', function(e) {
         var increase = applySpeed(1)
         var autoPause = document.getElementById("autoPause").checked;
         if (gameData.days < 365000 && gameData.days + increase > 365000 && autoPause){
+            gameData.paused = true;
+        }
+	if (gameData.days < 3650000 && gameData.days + increase > 3650000 && autoPause){
             gameData.paused = true;
         }
         gameData.days += increase
