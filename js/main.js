@@ -872,9 +872,9 @@ function updateHeaderRows(categories) {
 
 function updateText() {
     //Sidebar
-    document.getElementById("ageDisplay").textContent = daysToYears(gameData.days)
+    document.getElementById("ageDisplay").textContent = daysToYears(gameData.days).toLocaleString("en-US")
     document.getElementById("dayDisplay").textContent = getDay()
-    document.getElementById("lifespanDisplay").textContent = daysToYears(getLifespan())
+    document.getElementById("lifespanDisplay").textContent = daysToYears(getLifespan()).toLocaleString("en-US")
     document.getElementById("pauseButton").textContent = gameData.paused ? "Play" : "Pause"
 
     formatCoins(gameData.coins, document.getElementById("coinDisplay"))
