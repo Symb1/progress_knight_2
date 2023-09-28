@@ -1040,7 +1040,7 @@ function autoBuy(){
 
 function getBonus(nextProperty, previousProperty, propertyChange, nextMisc, miscCost){
     if (bonus == null){
-        //console.log("work")
+        console.log("work")
         if (gameData.coins > propertyChange*10000  && propertyChange != 0){
             gameData.currentProperty = nextProperty
             bonus = "Property"
@@ -1065,6 +1065,7 @@ function getBonus(nextProperty, previousProperty, propertyChange, nextMisc, misc
     }
     else{
 	bonusRun += 1
+	console.log(bonusRun)
     }
 }
 
@@ -1072,6 +1073,7 @@ function checkProperty(nextProperty){
     if (nextProperty.getExpense() < getIncome() - getExpense()){
         gameData.currentProperty = nextProperty
         bonusRun = 0
+	bonus = null
     }
 }
 
@@ -1079,6 +1081,7 @@ function checkMisc(nextMisc, miscCost){
     if (miscCost < getIncome() - getExpense()){
         setMisc(nextMisc.name)
         bonusRun = 0
+	bonus = null
     }
 }
 
