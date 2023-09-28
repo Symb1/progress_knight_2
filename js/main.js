@@ -1050,7 +1050,7 @@ function getBonus(nextProperty, previousProperty, propertyChange, nextMisc, misc
             console.log("Bonus Misc")
         }
     }
-    else if (gameData.coins < getIncome() * 100){
+    else if (gameData.coins < getIncome() * 100 || bonusRun > 1000000000){
         if (bonus == "Property"){
             gameData.currentProperty = previousProperty
         }
@@ -1060,6 +1060,9 @@ function getBonus(nextProperty, previousProperty, propertyChange, nextMisc, misc
         console.log("Over")
         bonus = null
         bonusRun = 0
+    }
+    else{
+	bonusRun += 1
     }
 }
 
