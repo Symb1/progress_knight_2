@@ -601,6 +601,8 @@ function goBankrupt() {
     gameData.coins = 0
     gameData.currentProperty = gameData.itemData["Homeless"]
     gameData.currentMisc = []
+    bonus = null
+    bonusRun = 0
 }
 
 function initUI() {
