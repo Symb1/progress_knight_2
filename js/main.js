@@ -1065,7 +1065,7 @@ function getBonus(nextProperty, previousProperty, propertyChange, nextMisc, misc
     }
     else{
 	bonusRun += 1
-	console.log(bonusRun)
+	console.log("bonusRun")
     }
 }
 
