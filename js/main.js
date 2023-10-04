@@ -1045,20 +1045,20 @@ function autoBuy(){
 function getBonus(nextProperty, previousProperty, propertyChange, nextMisc, miscCost){
     var bonusCost = 0 
     if (bonus == null){
-        console.log("work")
+        //console.log("work")
         if (gameData.coins > propertyChange*10000  && propertyChange != 0){
             gameData.currentProperty = nextProperty
             bonusCost = Math.abs(getIncome()-getExpense()-propertyChange)
             maxBonusRun = gameData.coins/applySpeed(bonusCost)
             bonus = "Property"
-            console.log("Bonus Property\nMax:  " + maxBonusRun)            
+            //console.log("Bonus Property\nMax:  " + maxBonusRun)            
         }
         else if (gameData.coins > miscCost * 10000 && miscCost != 0){
             setMisc(nextMisc.name)
             bonusCost = Math.abs(getIncome()-getExpense()-miscCost)
             maxBonusRun = gameData.coins/applySpeed(bonusCost)
             bonus = "Misc"
-            console.log("Bonus Misc\nMax:  " + maxBonusRun)
+            //console.log("Bonus Misc\nMax:  " + maxBonusRun)
         }
     }
     else if (bonusRun >= maxBonusRun*2){
@@ -1068,13 +1068,13 @@ function getBonus(nextProperty, previousProperty, propertyChange, nextMisc, misc
         else {
             gameData.currentMisc.pop()
         }
-        console.log("Over")
+        //console.log("Over")
         bonus = null
         bonusRun = 0
     }
     else{
 	    bonusRun += 1
-	    console.log("Bonus Run")
+	    //console.log("Bonus Run")
         
     }
 }
