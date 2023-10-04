@@ -549,7 +549,7 @@ function applyMultipliers(value, multipliers) {
 }
 
 function applySpeed(value) {
-    if (gameData < 400){
+    if (gameData.days < 400){
         finalValue = (value * getGameSpeed() / updateSpeed)
     }
     else{
