@@ -549,7 +549,12 @@ function applyMultipliers(value, multipliers) {
 }
 
 function applySpeed(value) {
-    finalValue = value * getGameSpeed() / updateSpeed
+    if (gameData < 400){
+        finalValue = (value * getGameSpeed() / updateSpeed)
+    }
+    else{
+        finalValue = (value * getGameSpeed() / updateSpeed) * Math.ceil((daysToYears(gameData.days))/10000)
+    }
     return finalValue
 }
 
