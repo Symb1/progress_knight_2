@@ -28,6 +28,8 @@ var bonus = null
 var bonusRun = 0
 var maxBonusRun = 10
 
+var daySpeed = 0
+
 var skillWithLowestMaxXp = null
 
 const autoPromoteElement = document.getElementById("autoPromote")
@@ -1175,6 +1177,7 @@ function getDay() {
 
 function increaseDays() {
     var increase = applySpeed(1)
+    daySpeed = increase
     gameData.days += increase
 }
 
@@ -1548,6 +1551,7 @@ window.addEventListener('keydown', function(e) {
     document.querySelector('span#automation').prepend(span);
     increaseDays = () => {
         var increase = applySpeed(1)
+	daySpeed = increase
         var autoPause = document.getElementById("autoPause").checked;
         if (gameData.days < 365000 && gameData.days + increase > 365000 && autoPause){
             gameData.paused = true;
