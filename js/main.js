@@ -551,7 +551,7 @@ function applyMultipliers(value, multipliers) {
 }
 
 function applySpeed(value) {
-    finalValue = (value * getGameSpeed() / updateSpeed) * Math.max(1, Math.ceil((daysToYears(gameData.days))/100000))
+    finalValue = value * getGameSpeed() / updateSpeed
     return finalValue
 }
 
