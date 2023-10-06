@@ -551,7 +551,7 @@ function applyMultipliers(value, multipliers) {
 }
 
 function applySpeed(value) {
-    finalValue = value * getGameSpeed() / updateSpeed
+    finalValue = value * getGameSpeed() / updateSpeed * (1 + (daysToYears(gameData.days)/1000000))
     return finalValue
 }
 
