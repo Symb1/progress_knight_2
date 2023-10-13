@@ -18,6 +18,8 @@ var gameData = {
     currentProperty: null,
     currentMisc: null,
 
+    saveDate: "",
+
     settings: {
         stickySidebar: false
     }
@@ -27,6 +29,7 @@ var tempData = {}
 var bonus = null
 var bonusRun = 0
 var maxBonusRun = 10
+var todayStart = true
 
 var daySpeed = 0
 
@@ -899,6 +902,11 @@ function updateText() {
 
     document.getElementById("timeWarpingDisplay").textContent = "x" + (gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toLocaleString("en-US", {maximumFractionDigits: 2});
     document.getElementById("timeWarpingButton").textContent = gameData.timeWarpingEnabled ? "Disable warp" : "Enable warp"
+
+if (todayStart){
+        document.getElementById("saveDisplay").textContent = gameData.saveDate
+        todayStart = false
+    }
 	}
 
 function setSignDisplay() {
@@ -1401,6 +1409,8 @@ function replaceSaveDict(dict, saveDict) {
 }
 
 function saveGameData() {
+    var dateData = new Date()
+    gameData.saveDate = dateData.toLocaleString()
     localStorage.setItem("gameDataSave", JSON.stringify(gameData))
 }
 
