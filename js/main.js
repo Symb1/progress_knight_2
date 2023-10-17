@@ -554,7 +554,7 @@ function applyMultipliers(value, multipliers) {
 }
 
 function applySpeed(value) {
-    finalValue = value * getGameSpeed() / updateSpeed * (1 + (daysToYears(gameData.days)/1000000))
+    finalValue = value * getGameSpeed() / updateSpeed * (1 + (daysToYears(gameData.days)/500000))
     return finalValue
 }
 
@@ -1052,16 +1052,20 @@ function autoBuy(){
 
 function getBonus(nextProperty, previousProperty, propertyChange, nextMisc, miscCost){
     var bonusCost = 0 
+    var bonusSpeed = 10000
+    if (daySpeed > 100){
+        bonusSpeed = daySpeed*100
+    }
     if (bonus == null){
         //console.log("work")
-        if (gameData.coins > propertyChange*10000  && propertyChange != 0){
+        if (gameData.coins > propertyChange * bonusSpeed  && propertyChange != 0){
             gameData.currentProperty = nextProperty
             bonusCost = Math.abs(getIncome()-getExpense()-propertyChange)
             maxBonusRun = gameData.coins/applySpeed(bonusCost)
             bonus = "Property"
             //console.log("Bonus Property\nMax:  " + maxBonusRun)            
         }
-        else if (gameData.coins > miscCost * 10000 && miscCost != 0){
+        else if (gameData.coins > miscCost * bonusSpeed && miscCost != 0){
             setMisc(nextMisc.name)
             bonusCost = Math.abs(getIncome()-getExpense()-miscCost)
             maxBonusRun = gameData.coins/applySpeed(bonusCost)
