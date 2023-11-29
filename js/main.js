@@ -1270,10 +1270,12 @@ function rebirthTwo() {
 	
     rebirthReset()
 
-    for (taskName in gameData.taskData) {
-        var task = gameData.taskData[taskName]
-        task.maxLevel = 0
-    }    
+    if (gameData.evil > gameData.essence){
+	    for (taskName in gameData.taskData) {
+	        var task = gameData.taskData[taskName]
+	        task.maxLevel = 0
+	    }    
+    }
 }
 
 function rebirthThree() {
