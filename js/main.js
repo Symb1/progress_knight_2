@@ -554,7 +554,7 @@ function applyMultipliers(value, multipliers) {
 }
 
 function applySpeed(value) {
-    finalValue = value * getGameSpeed() / updateSpeed * (1 + (daysToYears(gameData.days)/500000))
+    finalValue = value * getGameSpeed() / updateSpeed * (1 + (daysToYears(gameData.days)/100000))
     return finalValue
 }
 
@@ -900,7 +900,7 @@ function updateText() {
 	document.getElementById("essenceDisplay").textContent = gameData.essence.toLocaleString("en-US", {maximumFractionDigits: 2});
 	document.getElementById("essenceGainDisplay").textContent = getEssenceGain().toLocaleString("en-US", {maximumFractionDigits: 2});
 
-    document.getElementById("timeWarpingDisplay").textContent = "x" + (gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect() * (1 + (daysToYears(gameData.days)/500000))).toLocaleString("en-US", {maximumFractionDigits: 2});
+    document.getElementById("timeWarpingDisplay").textContent = "x" + (gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect() * (1 + (daysToYears(gameData.days)/100000))).toLocaleString("en-US", {maximumFractionDigits: 2});
     document.getElementById("timeWarpingButton").textContent = gameData.timeWarpingEnabled ? "Disable warp" : "Enable warp"
 
 if (todayStart){
