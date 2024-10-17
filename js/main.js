@@ -1,3 +1,14 @@
+/*
+Dimensinal Castle	2000000000000000000	9.975062242
+Space	100000000000000000000	50
+Reality	5000000000000000000000	50
+Power	250000000000000000000000	50
+Soul	12500000000000000000000000	50
+Mind	625000000000000000000000000	50
+Time	31250000000000000000000000000	50
+
+*/
+
 var gameData = {
     taskData: {},
     itemData: {},
@@ -18,17 +29,27 @@ var gameData = {
     currentProperty: null,
     currentMisc: null,
 
+    saveDate: "",
+    moneyHappy: 1,
+
     settings: {
         stickySidebar: false
     }
 }
 
 var tempData = {}
+var bonus = null
+var bonusRun = 0
+var maxBonusRun = 10
+var todayStart = true
+
+var daySpeed = 0
 
 var skillWithLowestMaxXp = null
 
 const autoPromoteElement = document.getElementById("autoPromote")
 const autoLearnElement = document.getElementById("autoLearn")
+const autoBuyElement = document.getElementById("autoBuy")
 
 const updateSpeed = 20
 
@@ -89,7 +110,7 @@ const jobBaseData = {
 const skillBaseData = {
     "Concentration": {name: "Concentration", maxXp: 100, effect: 0.01, description: "Ability XP"},
     "Productivity": {name: "Productivity", maxXp: 100, effect: 0.01, description: "Class XP"},
-    "Bargaining": {name: "Bargaining", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
+    "Bargaining": {name: "Bargaining", maxXp: 100, effect: -0.01, description: "Reduce Expenses"},
     "Meditation": {name: "Meditation", maxXp: 100, effect: 0.01, description: "Happiness"},
 
     "Strength": {name: "Strength", maxXp: 100, effect: 0.01, description: "Military Pay"},
@@ -102,26 +123,26 @@ const skillBaseData = {
     "Astral Body": {name: "Astral Body", maxXp: 100, effect: 0.0035, description: "Longer lifespan"},
 	"Temporal Dimension": {name: "Temporal Dimension", maxXp: 100, effect: 0.025, description: "Gamespeed"},
 	"All Seeing Eye": {name: "All Seeing Eye", maxXp: 100, effect: 0.0027, description: "T.A.A Pay"},
-	"Brainwashing": {name: "Brainwashing", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
+	"Brainwashing": {name: "Brainwashing", maxXp: 100, effect: -0.01, description: "Reduce Expenses"},
 	
 	"Absolute Wish": {name: "Absolute Wish", maxXp: 100, effect: 0.005, description: "Evil Gain"},
     "Void Amplification": {name: "Void Amplification", maxXp: 100, effect: 0.01, description: "The Void XP"},
-    "Mind Seize": {name: "Mind Seize", maxXp: 100, effect: 0.0006, description: "Reduced Happiness"},
+    "Mind Seize": {name: "Mind Seize", maxXp: 100, effect: 0.0006, description: "Reduce Happiness"},
 	"Ceaseless Abyss": {name: "Ceaseless Abyss", maxXp: 100, effect: 0.000585, description: "Longer Lifespan"},
 	"Void Symbiosis": {name: "Void Symbiosis", maxXp: 100, effect: 0.0015, description: "Ability XP"},
     "Void Embodiment": {name: "Void Embodiment", maxXp: 100, effect: 0.0025, description: "Evil Gain"},
-	"Abyss Manipulation": {name: "Abyss Manipulation", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
+	"Abyss Manipulation": {name: "Abyss Manipulation", maxXp: 100, effect: -0.01, description: "Reduce Expenses"},
 	
 	
 	"Cosmic Longevity": {name: "Cosmic Longevity", maxXp: 100, effect: 0.0015, description: "Longer Lifespan"},
     "Cosmic Recollection": {name: "Cosmic Recollection", maxXp: 100, effect: 0.00065, description: "Max Lvl Multiplier"},
 	"Essence Collector": {name: "Essence Collector", maxXp: 100, effect: 0.01, description: "Essence Gain"},
-	"Galactic Command": {name: "Galactic Command", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
+	"Galactic Command": {name: "Galactic Command", maxXp: 100, effect: -0.01, description: "Reduce Expenses"},
 	
 	
     "Dark Influence": {name: "Dark Influence", maxXp: 100, effect: 0.01, description: "All XP"},
     "Evil Control": {name: "Evil Control", maxXp: 100, effect: 0.01, description: "Evil Gain"},
-    "Intimidation": {name: "Intimidation", maxXp: 100, effect: -0.01, description: "Reduced Expenses"},
+    "Intimidation": {name: "Intimidation", maxXp: 100, effect: -0.01, description: "Reduce Expenses"},
     "Demon Training": {name: "Demon Training", maxXp: 100, effect: 0.01, description: "All XP"},
     "Blood Meditation": {name: "Blood Meditation", maxXp: 100, effect: 0.01, description: "Evil Gain"},
     "Demon's Wealth": {name: "Demon's Wealth", maxXp: 100, effect: 0.002, description: "Class Pay"},
@@ -446,13 +467,18 @@ function addMultipliers() {
 
     for (itemName in gameData.itemData) {
         var item = gameData.itemData[itemName]
-        item.expenseMultipliers = []
-        item.expenseMultipliers.push(getBindedTaskEffect("Bargaining"))
-        item.expenseMultipliers.push(getBindedTaskEffect("Intimidation"))
-		item.expenseMultipliers.push(getBindedTaskEffect("Brainwashing"))
-		item.expenseMultipliers.push(getBindedTaskEffect("Abyss Manipulation"))
-		item.expenseMultipliers.push(getBindedTaskEffect("Galactic Command"))
+        item.expenseMultipliers = addExpenseMultipliers()
     }
+}
+
+function addExpenseMultipliers(){
+    var expenseMultipliers = []
+    expenseMultipliers.push(getBindedTaskEffect("Bargaining"))
+    expenseMultipliers.push(getBindedTaskEffect("Intimidation"))
+	expenseMultipliers.push(getBindedTaskEffect("Brainwashing"))
+	expenseMultipliers.push(getBindedTaskEffect("Abyss Manipulation"))
+	expenseMultipliers.push(getBindedTaskEffect("Galactic Command"))
+    return expenseMultipliers
 }
 
 function setCustomEffects() {
@@ -517,7 +543,7 @@ function getHappiness() {
     var butlerEffect = getBindedItemEffect("Butler")
 	var mindseizeEffect = getBindedTaskEffect("Mind Seize")
 	var multiverseFragment = getBindedItemEffect("Multiverse Fragment")
-    var happiness = meditationEffect() * butlerEffect() / mindseizeEffect() * multiverseFragment() * gameData.currentProperty.getEffect()
+    var happiness = meditationEffect() * butlerEffect() / mindseizeEffect() * multiverseFragment() * gameData.currentProperty.getEffect() * gameData.moneyHappy
     return happiness
 }
 
@@ -583,8 +609,8 @@ function applyExpenses() {
 function getExpense() {
     var expense = 0
     expense += gameData.currentProperty.getExpense()
-    for (misc of gameData.currentMisc) {
-        expense += misc.getExpense()
+    for (item of gameData.currentMisc) {
+        expense += item.getExpense()
     }
     return expense
 }
@@ -593,6 +619,9 @@ function goBankrupt() {
     gameData.coins = 0
     gameData.currentProperty = gameData.itemData["Homeless"]
     gameData.currentMisc = []
+    bonus = null
+    bonusRun = 0
+    maxBonusRun = 10
 }
 
 function initUI() {
@@ -864,9 +893,9 @@ function updateHeaderRows(categories) {
 
 function updateText() {
     //Sidebar
-    document.getElementById("ageDisplay").textContent = daysToYears(gameData.days)
+    document.getElementById("ageDisplay").textContent = daysToYears(gameData.days).toLocaleString("en-US")
     document.getElementById("dayDisplay").textContent = getDay()
-    document.getElementById("lifespanDisplay").textContent = daysToYears(getLifespan())
+    document.getElementById("lifespanDisplay").textContent = daysToYears(getLifespan()).toLocaleString("en-US")
     document.getElementById("pauseButton").textContent = gameData.paused ? "Play" : "Pause"
 
     formatCoins(gameData.coins, document.getElementById("coinDisplay"))
@@ -875,16 +904,21 @@ function updateText() {
     formatCoins(getIncome(), document.getElementById("incomeDisplay"))
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
-    document.getElementById("happinessDisplay").textContent = getHappiness().toFixed(1)
+    document.getElementById("happinessDisplay").textContent = getHappiness().toLocaleString("en-US", {maximumFractionDigits: 2});
 
-    document.getElementById("evilDisplay").textContent = gameData.evil.toFixed(1)
-    document.getElementById("evilGainDisplay").textContent = getEvilGain().toFixed(1)
+    document.getElementById("evilDisplay").textContent = gameData.evil.toLocaleString("en-US", {maximumFractionDigits: 2});
+    document.getElementById("evilGainDisplay").textContent = getEvilGain().toLocaleString("en-US", {maximumFractionDigits: 2});
 	
-	document.getElementById("essenceDisplay").textContent = gameData.essence.toFixed(1)
-	document.getElementById("essenceGainDisplay").textContent = getEssenceGain().toFixed(1)
+	document.getElementById("essenceDisplay").textContent = gameData.essence.toLocaleString("en-US", {maximumFractionDigits: 2});
+	document.getElementById("essenceGainDisplay").textContent = getEssenceGain().toLocaleString("en-US", {maximumFractionDigits: 2});
 
-    document.getElementById("timeWarpingDisplay").textContent = "x" + (gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toFixed(1)
+    document.getElementById("timeWarpingDisplay").textContent = "x" + (gameData.taskData["Time Warping"].getEffect() * gameData.taskData["Temporal Dimension"].getEffect() * gameData.taskData["Time Loop"].getEffect()).toLocaleString("en-US", {maximumFractionDigits: 2});
     document.getElementById("timeWarpingButton").textContent = gameData.timeWarpingEnabled ? "Disable warp" : "Enable warp"
+
+if (todayStart){
+        document.getElementById("saveDisplay").textContent = gameData.saveDate
+        todayStart = false
+    }
 	}
 
 function setSignDisplay() {
@@ -968,12 +1002,127 @@ function getNextEntity(data, categoryType, entityName) {
     return nextEntity
 }
 
+function getPreviousEntity(data, categoryType, entityName) {
+    var category = getCategoryFromEntityName(categoryType, entityName)
+    var previousIndex = category.indexOf(entityName) - 1
+    if (previousIndex < 0) return null
+    var previousEntityName = category[previousIndex]
+    var previousEntity = data[previousEntityName]
+    return previousEntity
+}
+
 function autoPromote() {
     if (!autoPromoteElement.checked) return
     var nextEntity = getNextEntity(gameData.taskData, jobCategories, gameData.currentJob.name)
     if (nextEntity == null) return
     var requirement = gameData.requirements[nextEntity.name]
     if (requirement.isCompleted()) gameData.currentJob = nextEntity
+}
+
+function autoBuy(){
+    if (!autoBuyElement.checked) return
+    var nextProperty = getNextEntity(gameData.itemData, itemCategories, gameData.currentProperty.name)
+    var previousProperty = getPreviousEntity(gameData.itemData, itemCategories, gameData.currentProperty.name)
+    var miscLength = gameData.currentMisc.length
+    var nextMiscName = itemCategories.Misc[miscLength]
+    var nextMisc = itemBaseData[nextMiscName]
+    var miscCost, propertyChange
+
+    if (nextMisc != null){
+        miscCost = applyMultipliers(nextMisc.expense, addExpenseMultipliers())
+    }
+    else{
+        miscCost = 0
+    }
+    if (nextProperty != null && gameData.currentProperty.getExpense() != null){
+        propertyChange = nextProperty.getExpense() - gameData.currentProperty.getExpense()
+    }
+    else{
+        propertyChange = 0
+    }
+    
+    if (nextProperty == null && nextMisc == null){
+        if (gameData.coins > getExpense()*1000000){
+		gameData.moneyHappy+=100
+		gameData.coins = 0
+	}
+	return
+    }
+    else if (nextProperty == null){
+        checkMisc(nextMisc, miscCost)
+    }
+    else if (nextMisc == null || propertyChange < miscCost){
+        checkProperty(nextProperty)
+    }
+    else {
+        checkMisc(nextMisc, miscCost)
+    }
+    
+    if (bonusRun >= 5){
+        getBonus(nextProperty, previousProperty, propertyChange, nextMisc, miscCost)
+    }
+    else{
+        bonusRun = bonusRun + 1
+    }
+
+	
+}
+
+function getBonus(nextProperty, previousProperty, propertyChange, nextMisc, miscCost){
+    var bonusCost = 0 
+    var bonusSpeed = 10000
+    if (daySpeed > 100){
+        bonusSpeed = daySpeed*100
+    }
+    if (bonus == null){
+        //console.log("work")
+        if (gameData.coins > propertyChange * bonusSpeed  && propertyChange != 0){
+            gameData.currentProperty = nextProperty
+            bonusCost = Math.abs(getIncome()-getExpense()-propertyChange)
+            maxBonusRun = gameData.coins/applySpeed(bonusCost)
+            bonus = "Property"
+            //console.log("Bonus Property\nMax:  " + maxBonusRun)            
+        }
+        else if (gameData.coins > miscCost * bonusSpeed && miscCost != 0){
+            setMisc(nextMisc.name)
+            bonusCost = Math.abs(getIncome()-getExpense()-miscCost)
+            maxBonusRun = gameData.coins/applySpeed(bonusCost)
+            bonus = "Misc"
+            //console.log("Bonus Misc\nMax:  " + maxBonusRun)
+        }
+    }
+    else if (bonusRun >= maxBonusRun*2){
+        if (bonus == "Property"){
+            gameData.currentProperty = previousProperty
+        }
+        else {
+            gameData.currentMisc.pop()
+        }
+        //console.log("Over")
+        bonus = null
+        bonusRun = 0
+    }
+    else{
+	    bonusRun += 1
+	    //console.log("Bonus Run")
+        
+    }
+}
+
+function checkProperty(nextProperty){
+    if (nextProperty.getExpense() < getIncome() - getExpense()){
+        gameData.currentProperty = nextProperty
+        bonusRun = 0
+	bonus = null
+    }
+}
+
+function checkMisc(nextMisc, miscCost){
+    if (miscCost < getIncome() - getExpense()){
+        setMisc(nextMisc.name)
+        bonusRun = 0
+	bonus = null
+    }
 }
 
 function checkSkillSkipped(skill) {
@@ -1058,6 +1207,7 @@ function getDay() {
 
 function increaseDays() {
     var increase = applySpeed(1)
+    daySpeed = increase
     gameData.days += increase
 }
 
@@ -1072,7 +1222,7 @@ function format(number,decimals= 1) {
     // scale the number
     var scaled = number / scale;
     // format number and add suffix
-    return scaled.toFixed(decimals) + suffix;
+    return scaled.toLocaleString("en-US", {maximumFractionDigits: 2}) + suffix;
 }
 
 function formatCoins(coins, element) {
@@ -1139,8 +1289,8 @@ function rebirthTwo() {
     rebirthReset()
 
     for (taskName in gameData.taskData) {
-        var task = gameData.taskData[taskName]
-        task.maxLevel = 0
+	var task = gameData.taskData[taskName]
+	task.maxLevel = Math.round(gameData.essence/100)
     }    
 }
 
@@ -1172,6 +1322,7 @@ function rebirthReset() {
     gameData.currentSkill = gameData.taskData["Concentration"]
     gameData.currentProperty = gameData.itemData["Homeless"]
     gameData.currentMisc = []
+    gameData.moneyHappy = 1
 
     for (taskName in gameData.taskData) {
         var task = gameData.taskData[taskName]
@@ -1281,6 +1432,8 @@ function replaceSaveDict(dict, saveDict) {
 }
 
 function saveGameData() {
+    var dateData = new Date()
+    gameData.saveDate = dateData.toLocaleString()
     localStorage.setItem("gameDataSave", JSON.stringify(gameData))
 }
 
@@ -1317,6 +1470,7 @@ function updateUI() {
 function update() {
     increaseDays()
     autoPromote()
+    autoBuy()
     autoLearn()
     doCurrentTask(gameData.currentJob)
     doCurrentTask(gameData.currentSkill)
@@ -1392,6 +1546,7 @@ function loadLoadout(num){
 	}
 	 document.getElementById("autoLearn").checked = false
 	 document.getElementById("autoPromote").checked= false
+	 document.getElementById("autoBuy").checked= false
 }
 
 window.addEventListener('keydown', function(e) {
@@ -1418,7 +1573,7 @@ window.addEventListener('keydown', function(e) {
     let span = document.createElement('span');
     let div = document.createElement('div');
     div.classList.add('inline');
-    div.textContent = 'Auto-pause(Void)';
+    div.textContent = 'Auto-pause ';
     span.append(div);
     let checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
@@ -1429,8 +1584,12 @@ window.addEventListener('keydown', function(e) {
     document.querySelector('span#automation').prepend(span);
     increaseDays = () => {
         var increase = applySpeed(1)
+	daySpeed = increase
         var autoPause = document.getElementById("autoPause").checked;
         if (gameData.days < 365000 && gameData.days + increase > 365000 && autoPause){
+            gameData.paused = true;
+        }
+	if (gameData.days < 3650000 && gameData.days + increase > 3650000 && autoPause){
             gameData.paused = true;
         }
         gameData.days += increase
